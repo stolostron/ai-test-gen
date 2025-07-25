@@ -1,0 +1,49 @@
+{
+  "key": "ACM-10659",
+  "fields": {
+    "summary": "Implement pushing custom labels to ClusterCurator Job pods",
+    "issuetype": {
+      "name": "Story"
+    },
+    "project": {
+      "key": "ACM",
+      "name": "Red Hat Advanced Cluster Management"
+    },
+    "status": {
+      "name": "Closed",
+      "resolution": "Done"
+    },
+    "priority": {
+      "name": "Major"
+    },
+    "components": ["Cluster Lifecycle", "QE"],
+    "labels": ["Eng-Status:Green", "QE-Confidence:Green", "doc-required"],
+    "description": "Ability to quickly reference ClusterCurator Job pods by custom labels for network policy application, monitoring, and resource organization.",
+    "testingSpecification": {
+      "requiredTestLevels": [
+        "E2E"
+      ],
+      "e2eAcceptanceCriteria": [
+        {
+          "scenario": "Happy Path: Standard Label Propagation",
+          "given": "A ClusterCurator resource is created with the labels `{\"app\": \"my-curation\", \"owner\": \"qe-team\"}`.",
+          "when": "The controller creates a Job from this resource.",
+          "then": "A Pod created by that Job MUST have the labels `{\"app\": \"my-curation\", \"owner\": \"qe-team\"}`."
+        },
+        {
+          "scenario": "Edge Case: No Labels on ClusterCurator",
+          "given": "A ClusterCurator resource is created with no `metadata.labels` field.",
+          "when": "The controller creates a Job from this resource.",
+          "then": "The Job's pod template `metadata.labels` field MUST be empty or nil."
+        },
+        {
+          "scenario": "Edge Case: Label Update on Existing Resource",
+          "given": "An existing ClusterCurator has the label `{\"version\": \"v1\"}` and a new curation is triggered.",
+          "when": "The ClusterCurator resource is updated to have the label `{\"version\": \"v2\"}` and a new curation is triggered.",
+          "then": "The newly created Job pod MUST have the label `{\"version\": \"v2\"}` and MUST NOT have the label `{\"version\": \"v1\"}`."
+        }
+      ]
+    },
+    "comment": "Based on original comment from Feng Xiang: The core requirement is to ensure any labels specified in the ClusterCurator CR are passed down to the pods created from the Job CRs."
+  }
+}
