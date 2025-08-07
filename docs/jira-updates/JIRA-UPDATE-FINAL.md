@@ -49,9 +49,9 @@ Implemented **7-stage intelligent workflow** with adaptive learning:
 - **Single Ticket Focus**: Uses ACM-22079-specific prompts and validation logic
 
 ### **Technical Constraints**
-- Repository mapping hardcoded for ClusterCurator/CLC-UI
-- Validation logic tailored to Kubernetes/OpenShift operations
-- Test patterns based on ClusterCurator methodology
+- Feature-specific logic tailored for ClusterCurator digest upgrade functionality
+- Validation logic focused on Kubernetes/OpenShift operations for ACM-22079
+- Test patterns based on ClusterCurator methodology and scenarios
 
 ---
 
