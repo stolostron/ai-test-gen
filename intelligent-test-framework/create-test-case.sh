@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# analyze-jira.sh - Single Script Orchestrator for JIRA Analysis & Test Generation
-# Usage: ./analyze-jira.sh <JIRA-TICKET> [OPTIONS]
-# Example: ./analyze-jira.sh ACM-22079 --test-plan-only
+# create-test-case.sh - Single Script Orchestrator for JIRA Analysis & Test Generation
+# Usage: ./create-test-case.sh <JIRA-TICKET> [OPTIONS]
+# Example: ./create-test-case.sh ACM-22079 --test-plan-only
 
 set -e
 
@@ -986,7 +986,7 @@ IMPL_SECTION
 
 $([ "$TEST_PLAN_ONLY" = true ] && cat << 'PLAN_NEXT'
 1. Review the generated test plan
-2. Run with full implementation mode: ./analyze-jira.sh $JIRA_TICKET
+2. Run with full implementation mode: ./create-test-case.sh $JIRA_TICKET
 3. Integrate generated tests with existing test suite
 PLAN_NEXT
 )
@@ -1064,7 +1064,7 @@ main() {
     
     if [ "$TEST_PLAN_ONLY" = true ]; then
         print_status "Test plan ready for review: 02-test-planning/test-plan.md"
-        print_status "To generate implementation, run: ./analyze-jira.sh $JIRA_TICKET"
+        print_status "To generate implementation, run: ./create-test-case.sh $JIRA_TICKET"
     else
         print_status "Complete test implementation ready for integration"
         print_status "Review implementation: 03-implementation/"

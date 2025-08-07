@@ -32,13 +32,13 @@ Each versioned directory contains:
 ### **Basic Usage** (Integrated into main workflow)
 ```bash
 # First run - creates examples/ACM-22079/
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Second run - creates examples/ACM-22079-2/  
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Third run - creates examples/ACM-22079-3/
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 ```
 
 ### **Manual Versioning Commands**
@@ -138,9 +138,9 @@ ls examples/ACM-22079-3/03-implementation/
 ### **Version Management**
 ```bash
 # Create meaningful runs with different configurations
-./analyze-jira.sh ACM-22079 --config cypress-config.yaml
-./analyze-jira.sh ACM-22079 --config selenium-config.yaml
-./analyze-jira.sh ACM-22079 --config go-config.yaml
+./create-test-case.sh ACM-22079 --config cypress-config.yaml
+./create-test-case.sh ACM-22079 --config selenium-config.yaml
+./create-test-case.sh ACM-22079 --config go-config.yaml
 
 # Document version purposes in run metadata
 echo "Testing cypress-specific implementation" > examples/ACM-22079-2/PURPOSE.md
@@ -177,7 +177,7 @@ done
 
 The versioning system is fully integrated with the main workflow:
 
-1. **Automatic Setup**: Called during `analyze-jira.sh` execution
+1. **Automatic Setup**: Called during `create-test-case.sh` execution
 2. **Environment Variables**: Sets `CURRENT_EXAMPLE_DIR` for other scripts
 3. **Completion Tracking**: Automatically marks runs as completed
 4. **Status Reporting**: Shows version info in workflow summaries
@@ -201,7 +201,7 @@ The versioning system is fully integrated with the main workflow:
 
 ```bash
 # Automatic versioning (recommended)
-./analyze-jira.sh ACM-22079              # Creates next version automatically
+./create-test-case.sh ACM-22079              # Creates next version automatically
 
 # Manual versioning
 ./01-setup/example-versioning.sh setup ACM-22079    # Set up new version

@@ -13,10 +13,10 @@ Transform your QE workflow from manual test creation to intelligent automation:
 
 ```bash
 # Generate comprehensive test plan in 15 minutes instead of 2 hours
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Generate full test implementation with validation
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 ```
 
 ## ⚡ Quick Start
@@ -36,7 +36,7 @@ cd intelligent-test-framework
 ./quick-start.sh
 
 # Generate test plan for ACM-22079 (currently supported)
-./analyze-jira.sh ACM-22079 --test-plan-only --verbose
+./create-test-case.sh ACM-22079 --test-plan-only --verbose
 
 # Review generated test plan
 open 02-test-planning/test-plan.md
@@ -51,7 +51,7 @@ cp team-config.yaml my-team-config.yaml
 vim my-team-config.yaml
 
 # Use custom configuration (ACM-22079 only)  
-./analyze-jira.sh ACM-22079 --config my-team-config.yaml
+./create-test-case.sh ACM-22079 --config my-team-config.yaml
 ```
 
 ## 🏗️ Framework Architecture
@@ -277,4 +277,4 @@ The framework automatically analyzes related repositories:
 **Supported ACM Versions**: 2.8, 2.9, 2.10+  
 **Maintained by**: ACM QE Team  
 
-**Get Started**: `./analyze-jira.sh ACM-22079 --test-plan-only`
+**Get Started**: `./create-test-case.sh ACM-22079 --test-plan-only`
