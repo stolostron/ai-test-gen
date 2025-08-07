@@ -237,6 +237,11 @@ git push origin feature/your-improvement
 - **[JIRA Examples](./JIRA-details/)**: Sample JIRA ticket analysis
 - **[Generated Tests](./e2e-test-generated/)**: Example Cypress tests
 
+### Project Documentation
+- **[Documentation Hub](./docs/)**: Comprehensive project documentation
+- **[JIRA Updates](./docs/jira-updates/)**: Progress tracking and ticket updates
+- **[API Setup Guide](./docs/JIRA_API_SETUP.md)**: Automated JIRA integration
+
 ---
 
 ## 📈 Metrics & ROI

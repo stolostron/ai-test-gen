@@ -84,9 +84,9 @@ graph TD
 - **Custom Prompts**: Uses ACM-22079-specific analysis prompts and validation logic
 
 ### 🔧 **Technical Constraints**
-- **Repository Mapping**: Hardcoded for ClusterCurator and CLC-UI repositories
-- **Validation Logic**: Tailored to Kubernetes/OpenShift cluster operations
-- **Test Patterns**: Based on ClusterCurator testing methodology
+- **Feature-Specific Logic**: Tailored specifically for ClusterCurator digest upgrade functionality
+- **Validation Logic**: Focused on Kubernetes/OpenShift cluster operations for ACM-22079
+- **Test Patterns**: Based on ClusterCurator testing methodology and scenarios
 
 ---
 
