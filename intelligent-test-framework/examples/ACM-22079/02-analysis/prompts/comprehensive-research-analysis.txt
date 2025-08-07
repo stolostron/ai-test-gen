@@ -1,0 +1,64 @@
+I need a comprehensive analysis of ACM-22079 that leverages ALL available research and documentation.
+
+## Research Sources Available
+Please reference and analyze:
+
+### Core Implementation
+@file:06-reference/pr-files/ACM-22079-PR-468/pr-summary.md
+@file:06-reference/pr-files/ACM-22079-PR-468/hive.go
+@file:06-reference/pr-files/ACM-22079-PR-468/hive_test.go
+
+### ClusterCurator Architecture
+@file:06-reference/comprehensive-research/clustercurator-docs/
+@file:06-reference/stolostron-cluster-curator-controller/README.md
+
+### ACM Ecosystem Documentation
+@file:06-reference/comprehensive-research/acm-docs/
+@file:06-reference/comprehensive-research/architecture-docs/
+
+### Existing Test Patterns
+@file:06-reference/comprehensive-research/test-patterns/
+@file:/Users/ashafi/Documents/work/automation/clc-ui/cypress/
+@file:/Users/ashafi/Documents/work/automation/clc-non-ui/
+
+### Related Research
+@file:06-reference/comprehensive-research/linked-docs/
+@file:06-reference/comprehensive-research/related-tickets/
+
+## Comprehensive Analysis Request
+
+Based on ALL available research sources above, provide:
+
+1. **Complete Feature Context**:
+   - How ACM-22079 fits into the broader ACM architecture
+   - Relationship to other cluster lifecycle features
+   - Customer use cases and business drivers
+   - Technical dependencies and integration points
+
+2. **Comprehensive Implementation Analysis**:
+   - Code-level implementation details from actual PR
+   - Architecture patterns and design decisions
+   - Integration with existing ACM components
+   - Performance and security implications
+
+3. **Exhaustive Test Strategy**:
+   - Test cases covering all identified use cases
+   - Integration tests for all ACM component interactions
+   - Edge cases from customer requirements and architecture
+   - Test automation aligned with existing ACM patterns
+
+4. **Production Readiness Assessment**:
+   - Deployment considerations for different environments
+   - Monitoring and observability requirements
+   - Troubleshooting scenarios and runbooks
+   - Documentation and training needs
+
+## Output Requirements
+- Reference specific files and code sections
+- Cite related tickets and design documents
+- Align with existing ACM test automation patterns
+- Provide implementation-ready test code and configurations
+
+This analysis should demonstrate deep understanding of both the specific feature 
+and its place in the broader ACM ecosystem, based on comprehensive research 
+rather than just the PR implementation.

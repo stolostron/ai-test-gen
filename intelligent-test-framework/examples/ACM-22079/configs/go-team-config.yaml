@@ -1,0 +1,75 @@
+team:
+  name: "ACM Go Unit Testing"
+  framework: "go"
+  repositories:
+    automation: "cluster-curator-controller"
+    automation_path: "/path/to/cluster-curator-controller"
+    feature_repos: 
+      - "cluster-curator-controller"
+      - "lifecycle-apis"
+      - "acm-apis"
+
+test_environment:
+  cluster_config_path: "/path/to/kubeconfig"
+  acm_namespace: "open-cluster-management"
+  hub_url: "https://api.cluster.example.com:6443"
+  validation_commands:
+    - "oc get clustercurator"
+    - "oc get managedclusteraction"
+    - "oc get managedclusterview"
+    - "kubectl get pods -n open-cluster-management"
+
+frameworks:
+  go:
+    test_directory: "pkg"
+    spec_pattern: "**/*_test.go"
+    page_objects: "N/A"  # Not applicable for Go unit tests
+    utilities: "test/utils"
+    data: "test/testdata"
+    commands:
+      run_tests: "go test ./..."
+      lint: "golangci-lint run"
+      format: "gofmt -w ."
+      coverage: "go test -coverprofile=coverage.out ./..."
+    
+    go_config:
+      test_timeout: "10m"
+      race_detection: true
+      verbose: true
+      parallel: true
+      build_tags: "integration"
+
+ai_prompts:
+  analysis_depth: "comprehensive"
+  test_coverage: "exhaustive"
+  validation_rigor: "production"
+  include_implementation_details: true
+  include_customer_context: true
+  include_integration_points: true
+  go_specific:
+    focus_on_table_driven_tests: true
+    include_mocking_strategies: true
+    error_handling_patterns: true
+    interface_testing: true
+
+validation:
+  test_plan_requirements:
+    - "Unit test coverage for all functions"
+    - "Integration test scenarios"
+    - "Table-driven test structures"
+    - "Mock interface usage"
+    - "Error path testing"
+  
+  implementation_requirements:
+    - "Go testing best practices"
+    - "Testify assertions"
+    - "Interface mocking"
+    - "Test helper functions"
+    - "Benchmark tests where appropriate"
+
+integration:
+  existing_test_patterns: true
+  code_style_matching: true
+  framework_conventions: true
+  team_specific_utilities: true
+  go_modules: true

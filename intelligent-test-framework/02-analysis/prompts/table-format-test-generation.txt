@@ -1,0 +1,151 @@
+MANDATORY: Generate test cases for ACM-22079 in EXACT TABLE FORMAT with Test Steps and Expected Results columns.
+
+IGNORE ALL OTHER STYLE INSTRUCTIONS. USE ONLY THE TABLE FORMAT SPECIFIED BELOW.
+
+## CRITICAL REQUIREMENTS FOR TEST CASE GENERATION (OVERRIDE ALL OTHER PROMPTS)
+
+### 1. HUMAN-FRIENDLY TEST STEPS
+- Provide COMPLETE oc commands, not vague instructions
+- Include oc login steps when needed
+- Add sample YAML files when applicable
+- Make verification steps crystal clear with specific commands
+- Write for new engineers who need detailed guidance
+
+### 2. PRACTICAL SETUP DESCRIPTIONS
+- Avoid obvious statements (don't say "ACM hub cluster with ClusterCurator installed" - it's always there)
+- Focus on specific test environment requirements
+- Include prerequisite configurations and test data
+- Mention required cluster permissions and access
+
+### 3. CONSOLIDATED TEST SCENARIOS
+- Group related scenarios into single test cases (max 3-4 total test cases)
+- Use sub-steps within test cases for different scenarios
+- Keep tables manageable and focused
+
+### 4. CLEAR VERIFICATION COMMANDS
+- Always provide exact oc commands for verification
+- Specify what output to look for
+- Include grep/jq commands for parsing results
+- Make it clear what success/failure looks like
+
+## MANDATORY TABLE FORMAT
+
+### Test Case X: [Descriptive Name]
+**Setup**: 
+- Specific environment requirements
+- Required test data or configurations
+- Prerequisites beyond standard ACM setup
+
+| Test Steps | Expected Results |
+|------------|------------------|
+| 1. Log into ACM hub cluster: `oc login <hub-cluster-url> -u <username>` | Login successful, prompt shows correct cluster context |
+| 2. Create test namespace: `oc create namespace acm-test-upgrade` | Namespace created: `namespace/acm-test-upgrade created` |
+| 3. Apply ClusterCurator with complete YAML example | Resource created with specific output |
+| 4. Verify resource with: `oc get clustercurator -o yaml \| grep annotation` | Shows expected annotation value |
+
+## FEATURE UNDER TEST
+**ACM-22079**: Support digest-based upgrades via ClusterCurator for non-recommended upgrades
+
+## GENERATE EXACTLY 3-4 TEST CASES COVERING:
+
+### Test Case 1: Digest-Based Upgrade Success Scenarios
+**Setup**: 
+- ACM hub cluster with managed cluster already imported
+- Target cluster must be OpenShift 4.12+ with available updates
+- Test user must have cluster-admin permissions on both hub and managed cluster
+- Verify `oc get managedcluster <cluster-name>` shows Available=True
+
+| Test Steps | Expected Results |
+|------------|------------------|
+| 1. Log into ACM hub cluster: `oc login https://api.hub-cluster.example.com:6443 -u testuser` | Login successful: `Login successful. You have access to X projects...` |
+| 2. Create test namespace: `oc create namespace digest-upgrade-test` | Namespace created: `namespace/digest-upgrade-test created` |
+| 3. Create ClusterCurator with force annotation:<br/>```yaml<br/>apiVersion: cluster.open-cluster-management.io/v1beta1<br/>kind: ClusterCurator<br/>metadata:<br/>  name: test-digest-upgrade<br/>  namespace: managed-cluster-1<br/>  annotations:<br/>    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: "true"<br/>spec:<br/>  desiredCuration: upgrade<br/>  upgrade:<br/>    desiredUpdate: "4.15.10"<br/>```<br/>Apply with: `oc apply -f clustercurator.yaml` | ClusterCurator created: `clustercurator.cluster.open-cluster-management.io/test-digest-upgrade created` |
+| 4. Verify annotation is set: `oc get clustercurator test-digest-upgrade -o jsonpath='{.metadata.annotations.cluster\.open-cluster-management\.io/upgrade-allow-not-recommended-versions}'` | Output shows: `"true"` |
+| 5. Monitor ManagedClusterView creation: `oc get managedclusterview -n managed-cluster-1 --watch` | New ManagedClusterView appears: `managedclusterview.view.open-cluster-management.io/test-digest-upgrade-cv-xxxxx` |
+| 6. Check ManagedClusterView retrieves ClusterVersion: `oc get managedclusterview <mcv-name> -o jsonpath='{.status.result.status.conditionalUpdates[0].image}'` | Returns digest format: `quay.io/openshift-release-dev/ocp-release@sha256:abc123...` |
+| 7. Verify ManagedClusterAction uses digest (not tag): `oc get managedclusteraction -n managed-cluster-1 -o yaml \| grep -A5 "desiredUpdate"` | Shows image with digest format, NO force: true flag |
+| **Scenario 2: Fallback to availableUpdates** |  |
+| 8. Delete previous test: `oc delete clustercurator test-digest-upgrade` | Resource deleted successfully |
+| 9. Create ClusterCurator targeting version only in availableUpdates (modify desiredUpdate to "4.15.9") | ClusterCurator created with different target version |
+| 10. Verify fallback behavior: `oc get managedclusterview <mcv-name> -o jsonpath='{.status.result.status.availableUpdates[?(@.version=="4.15.9")].image}'` | Shows digest extracted from availableUpdates array |
+
+### Test Case 2: Tag-Based Fallback and Error Handling
+**Setup**:
+- Same environment as Test Case 1
+- Mock or configure scenario where target version has no digest available
+- Ensure test cluster has connectivity to verify fallback behavior
+
+| Test Steps | Expected Results |
+|------------|------------------|
+| 1. Log into ACM hub cluster: `oc login https://api.hub-cluster.example.com:6443 -u testuser` | Login successful with cluster context |
+| 2. Create ClusterCurator targeting version with no digest:<br/>```yaml<br/>spec:<br/>  desiredCuration: upgrade<br/>  upgrade:<br/>    desiredUpdate: "4.14.99"  # Version not in digest lists<br/>``` | ClusterCurator created with non-digest version |
+| 3. Monitor upgrade process: `oc get clustercurator test-fallback -o jsonpath='{.status.conditions[*].message}'` | Shows progression through digest search failure |
+| 4. Verify tag-based fallback in ManagedClusterAction: `oc get managedclusteraction -n managed-cluster-1 -o yaml \| grep -A10 "desiredUpdate"` | Shows tag format: `quay.io/openshift-release-dev/ocp-release:4.14.99-multi` AND `force: true` |
+| **Scenario 2: Without force annotation** |  |
+| 5. Create ClusterCurator WITHOUT force annotation (remove annotation from YAML) | ClusterCurator created without digest capability |
+| 6. Verify standard upgrade behavior: `oc get managedclusteraction -n managed-cluster-1 -o yaml \| grep force` | Shows `force: true` (standard behavior) |
+| **Scenario 3: Error handling** |  |
+| 7. Create ClusterCurator with invalid version: "invalid.version.format" | ClusterCurator created but upgrade should fail gracefully |
+| 8. Check error messages: `oc get clustercurator test-error -o jsonpath='{.status.conditions[?(@.type=="Failed")].message}'` | Clear error message about invalid version format |
+
+### Test Case 3: Disconnected Environment and Multi-Cluster Scenarios
+**Setup**:
+- Air-gapped or disconnected ACM environment with mirror registry configured
+- Multiple managed clusters (minimum 2) for concurrent testing
+- Mirror registry must contain the target OpenShift release images
+- Network policies that simulate disconnected environment
+
+| Test Steps | Expected Results |
+|------------|------------------|
+| 1. Verify disconnected environment: `oc get image.config.openshift.io/cluster -o jsonpath='{.spec.registrySource}'` | Shows mirror registry configuration |
+| 2. Log into ACM hub: `oc login https://api.disconnected-hub.internal:6443 -u testuser` | Login successful to disconnected cluster |
+| 3. Create mirror registry ClusterCurator:<br/>```yaml<br/>spec:<br/>  upgrade:<br/>    desiredUpdate: "4.15.10"<br/>    channel: "stable-4.15"<br/>``` | ClusterCurator accepts mirror registry configuration |
+| 4. Verify digest discovery works with mirror: `oc get managedclusterview <mcv> -o jsonpath='{.status.result.status.conditionalUpdates[0].image}' \| grep mirror-registry.internal` | Digest points to internal mirror registry |
+| **Scenario 2: Concurrent multi-cluster upgrades** |  |
+| 5. Create ClusterCurator for cluster-1: `oc apply -f clustercurator-cluster1.yaml -n cluster-1` | First ClusterCurator created |
+| 6. Create ClusterCurator for cluster-2: `oc apply -f clustercurator-cluster2.yaml -n cluster-2` | Second ClusterCurator created simultaneously |
+| 7. Monitor both upgrades: `oc get clustercurator -A --watch` | Both show independent progress without conflicts |
+| 8. Verify independent ManagedClusterViews: `oc get managedclusterview -A \| grep -E "(cluster-1\|cluster-2)"` | Each cluster has separate ManagedClusterView resources |
+| 9. Check no resource conflicts: `oc get managedclusteraction -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,TARGET:.spec.actionRequest.object.metadata.name` | Each action targets correct cluster without interference |
+
+### Test Case 4: RBAC and Security Validation
+**Setup**:
+- Test service account with limited permissions
+- ACM hub cluster with RBAC policies configured
+- Managed cluster with different permission levels for testing
+
+| Test Steps | Expected Results |
+|------------|------------------|
+| 1. Create test service account: `oc create serviceaccount clustercurator-test -n default` | Service account created successfully |
+| 2. Create limited RBAC role:<br/>```yaml<br/>apiVersion: rbac.authorization.k8s.io/v1<br/>kind: ClusterRole<br/>metadata:<br/>  name: clustercurator-limited<br/>rules:<br/>- apiGroups: ["cluster.open-cluster-management.io"]<br/>  resources: ["clustercurators"]<br/>  verbs: ["get", "list", "create"]<br/>```<br/>Apply with: `oc apply -f limited-role.yaml` | ClusterRole created with limited permissions |
+| 3. Bind role to service account: `oc create clusterrolebinding clustercurator-test --clusterrole=clustercurator-limited --serviceaccount=default:clustercurator-test` | RoleBinding created successfully |
+| 4. Test with limited permissions: `oc auth can-i create managedclusteraction --as=system:serviceaccount:default:clustercurator-test` | Returns `no` - service account cannot create ManagedClusterAction |
+| 5. Verify ClusterCurator creation still works: `oc create -f clustercurator.yaml --as=system:serviceaccount:default:clustercurator-test` | ClusterCurator created (controller will handle ManagedClusterAction) |
+| 6. Check controller creates ManagedClusterAction with proper permissions: `oc get managedclusteraction -n managed-cluster-1` | ManagedClusterAction created by controller, not test user |
+| 7. Verify audit logs capture permission checks: `oc logs -n open-cluster-management deployment/clustercurator-controller \| grep "RBAC"` | Shows proper permission validation in controller logs |
+
+## OUTPUT REQUIREMENTS
+
+- Generate EXACTLY 3-4 test cases maximum
+- Each test case can have multiple scenarios within it
+- Always provide complete oc commands with expected output
+- Include sample YAML configurations
+- Make verification steps crystal clear
+- Write for engineers who may be new to ACM/OpenShift
+- Focus on practical, executable test steps
+
+## MANDATORY FORMAT OVERRIDE
+
+DO NOT GENERATE:
+- HTML format
+- Complex styling
+- Multiple file formats
+- Style-matching content
+
+DO GENERATE:
+- Simple markdown tables ONLY
+- "| Test Steps | Expected Results |" format EXACTLY
+- Setup sections with bullet points
+- Clear, practical test steps
+
+FINAL INSTRUCTION: Output MUST contain "| Test Steps | Expected Results |" table headers. No exceptions.

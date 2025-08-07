@@ -1,0 +1,234 @@
+You are generating comprehensive test cases for {JIRA_TICKET} based on real-time analysis of stolostron repositories. Your goal is to create implementation-ready tests that align with current codebase patterns and validate the actual feature implementation.
+
+## DYNAMIC ANALYSIS FOUNDATION
+
+### Real-Time Code Understanding
+Before generating tests, perform live analysis:
+- **Current Implementation**: Examine the actual current code state
+- **Recent Changes**: Understand recent commits and PRs related to the feature  
+- **Active Development**: Consider ongoing work and planned changes
+- **Integration Points**: Map actual service dependencies and interactions
+
+### Repository-Aware Context
+Your test generation should consider:
+{DETECTED_REPOSITORIES}
+
+Access pattern: Direct repository analysis via API and SSH access
+
+## TEST GENERATION METHODOLOGY
+
+### 1. IMPLEMENTATION-DRIVEN TEST DESIGN
+
+#### Backend Testing (cluster-curator-controller focus)
+Analyze current implementation to generate tests for:
+
+**Digest Resolution Logic**
+```go
+// Example: Analyze actual implementation in pkg/jobs/hive/hive.go
+// Generate tests based on real function signatures and logic
+```
+- Test digest vs tag resolution logic
+- Validate fallback mechanisms
+- Test error handling for invalid digests
+- Verify retry logic and timeout behavior
+
+**Upgrade Validation**
+- Test non-recommended upgrade validation
+- Verify annotation handling
+- Test compatibility checks
+- Validate upgrade path verification
+
+**API Integration**  
+- Test ManagedClusterView creation and status checking
+- Validate ManagedClusterAction execution
+- Test ClusterVersion API interactions
+- Verify error propagation through API layers
+
+#### Frontend Testing (console/clc-ui-e2e focus)
+Based on current UI implementation:
+
+**User Interface Components**
+- Test form components for digest input
+- Validate dropdown behavior for upgrade options
+- Test error message display and formatting
+- Verify loading states and progress indicators
+
+**User Workflows**
+- Test complete upgrade configuration workflow
+- Validate form submission and validation
+- Test error recovery and retry mechanisms
+- Verify navigation and state management
+
+**API Integration**
+- Test frontend API calls and responses
+- Validate error handling and user feedback
+- Test loading states and async operations
+- Verify data persistence and state updates
+
+### 2. PATTERN-ALIGNED TEST STRUCTURE
+
+#### Follow Current Test Patterns
+Analyze existing test structure in repositories:
+- **Naming Conventions**: Match existing test file and function naming
+- **Organization**: Follow current directory structure and categorization
+- **Assertions**: Use existing assertion patterns and helpers
+- **Setup/Teardown**: Align with current test lifecycle management
+
+#### Framework-Specific Implementation
+Based on team configuration {FRAMEWORK}:
+
+**Cypress (CLC Team)**
+```javascript
+// Generate tests following clc-ui-e2e patterns
+describe('Digest-Based Upgrades', () => {
+  // Follow actual patterns found in repository analysis
+})
+```
+
+**Selenium (Java Teams)**
+```java
+// Generate tests following Java test patterns
+@Test
+public void testDigestBasedUpgrade() {
+    // Follow actual patterns found in repository analysis
+}
+```
+
+**Go Testing (Backend Teams)**
+```go
+// Generate tests following Go test patterns
+func TestValidateUpgradeVersion(t *testing.T) {
+    // Follow actual patterns found in repository analysis
+}
+```
+
+### 3. COMPREHENSIVE SCENARIO COVERAGE
+
+#### Happy Path Scenarios
+Based on actual feature implementation:
+- **Standard Digest Upgrade**: Using valid SHA256 digest
+- **Tag to Digest Conversion**: Automatic resolution of tags to digests
+- **Non-Recommended Upgrade**: Using annotation to enable
+- **Fallback Handling**: When digest resolution fails
+
+#### Error Scenarios
+Based on actual error handling code:
+- **Invalid Digest Format**: Malformed SHA256 digests
+- **Network Failures**: Registry connectivity issues
+- **Permission Errors**: Insufficient access to registry
+- **Timeout Scenarios**: Slow or unresponsive registries
+- **Version Conflicts**: Incompatible upgrade paths
+
+#### Edge Cases
+Based on code analysis findings:
+- **Large Clusters**: Performance with many nodes
+- **Disconnected Environments**: Air-gapped scenarios
+- **Concurrent Upgrades**: Multiple upgrade requests
+- **Rollback Scenarios**: Failed upgrade recovery
+
+#### Integration Scenarios
+Based on actual service interactions:
+- **Cross-Service Communication**: API calls between services
+- **State Synchronization**: Data consistency across services
+- **Event Handling**: Proper event propagation
+- **Configuration Updates**: Dynamic configuration changes
+
+### 4. QUALITY ASSURANCE INTEGRATION
+
+#### Validation Requirements
+Generate tests that validate:
+- **Business Logic**: Core feature functionality
+- **User Experience**: Complete user workflows
+- **System Integration**: Service-to-service communication
+- **Error Resilience**: Graceful error handling and recovery
+- **Performance**: Response times and resource usage
+- **Security**: Input validation and access control
+
+#### Coverage Analysis
+Ensure tests cover:
+- **Code Coverage**: All modified functions and branches
+- **Functional Coverage**: All user-facing features
+- **Integration Coverage**: All service interactions
+- **Error Coverage**: All error conditions and edge cases
+
+## DYNAMIC TEST REQUIREMENTS
+
+### 1. REAL-TIME VALIDATION
+Tests must validate against actual implementation:
+- **Current API Signatures**: Match actual function signatures
+- **Live Error Messages**: Use actual error messages from code
+- **Current UI Elements**: Target actual selectors and components
+- **Active Endpoints**: Test against real API endpoints
+
+### 2. EVOLUTION-AWARE DESIGN
+Tests should accommodate ongoing development:
+- **Flexible Assertions**: Don't break with minor changes
+- **Robust Selectors**: Use stable UI selectors
+- **Configurable Parameters**: Allow easy test data updates
+- **Maintainable Structure**: Easy to update as code evolves
+
+### 3. INTEGRATION-FOCUSED VALIDATION
+Tests must validate real system integration:
+- **End-to-End Workflows**: Complete user journeys
+- **Service Dependencies**: Actual service communication
+- **Data Persistence**: Real data storage and retrieval
+- **State Management**: Actual state transitions
+
+## OUTPUT SPECIFICATIONS
+
+### 1. TEST PLAN STRUCTURE
+Generate comprehensive test plan including:
+- **Test Categories**: Unit, Integration, E2E, Performance
+- **Priority Levels**: Critical, High, Medium, Low
+- **Execution Strategy**: Parallel vs Sequential execution
+- **Environment Requirements**: Test environment specifications
+
+### 2. IMPLEMENTATION-READY TESTS
+Generate actual test code including:
+- **Complete Test Files**: Ready-to-run test implementations
+- **Test Data**: Realistic test fixtures and mock data
+- **Helper Functions**: Reusable test utilities
+- **Configuration**: Test configuration and setup scripts
+
+### 3. VALIDATION CRITERIA
+Define clear success criteria:
+- **Acceptance Criteria**: What constitutes test success
+- **Performance Benchmarks**: Expected response times
+- **Coverage Targets**: Required code and functional coverage
+- **Quality Gates**: When tests can be considered complete
+
+## FRAMEWORK-SPECIFIC ADAPTATIONS
+
+### Cypress Framework (Default)
+- **Page Objects**: Reusable element selectors and actions
+- **Custom Commands**: Domain-specific test utilities
+- **Fixtures**: Test data management
+- **API Testing**: Backend API validation
+- **Visual Testing**: UI component validation
+
+### Selenium Framework
+- **Page Object Model**: Structured page representations
+- **WebDriver Management**: Browser automation
+- **Test Data Management**: Data-driven testing
+- **Parallel Execution**: Concurrent test execution
+- **Reporting**: Test result reporting and analysis
+
+### Go Testing Framework
+- **Table-Driven Tests**: Parameterized testing
+- **Mock Management**: Interface mocking and stubbing
+- **Test Fixtures**: Test setup and teardown
+- **Benchmark Testing**: Performance validation
+- **Integration Testing**: Service integration validation
+
+## OUTPUT FORMAT
+
+Structure your test generation as:
+
+1. **DYNAMIC ANALYSIS SUMMARY** (current implementation findings)
+2. **TEST STRATEGY OVERVIEW** (comprehensive testing approach)
+3. **IMPLEMENTATION-READY TESTS** (actual test code)
+4. **INTEGRATION REQUIREMENTS** (cross-service testing needs)
+5. **EXECUTION FRAMEWORK** (how to run and maintain tests)
+6. **VALIDATION CRITERIA** (success definitions and quality gates)
+
+Begin by analyzing the current implementation state and then generate tests that validate the actual feature as implemented.
