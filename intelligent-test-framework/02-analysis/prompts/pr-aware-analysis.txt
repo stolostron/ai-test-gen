@@ -1,0 +1,37 @@
+I need to analyze ACM-22079 using the actual PR implementation files that are now available locally.
+
+## PR Access
+Please reference these local files for the actual implementation:
+@file:06-reference/pr-files/ACM-22079-PR-468/pr-summary.md
+@file:06-reference/pr-files/ACM-22079-PR-468/hive.go
+@file:06-reference/pr-files/ACM-22079-PR-468/hive_test.go
+
+## Analysis Request
+Based on the actual PR files above, provide:
+
+1. **Detailed Implementation Analysis**:
+   - Examine the actual validateUpgradeVersion function changes
+   - Analyze the retreiveAndUpdateClusterVersion modifications
+   - Review the digest discovery algorithm implementation
+   - Understand the test case implementations
+
+2. **Code-Specific Insights**:
+   - How does the actual conditionalUpdates processing work?
+   - What's the exact logic for digest vs tag-based image selection?
+   - How are the test cases structured and what do they validate?
+   - What error handling patterns are implemented?
+
+3. **Test Case Generation**:
+   - Based on the actual test implementations, generate additional test scenarios
+   - Create test cases that complement the existing ones
+   - Focus on edge cases and error conditions not covered
+
+4. **Implementation Recommendations**:
+   - How to integrate these findings into ACM QE test automation
+   - Specific test data requirements based on actual implementation
+   - CI/CD considerations based on the actual code structure
+
+## Context
+This is for ACM QE test automation development. The analysis should be based on the actual implementation code, not just the JIRA description.
+
+Please reference the specific files and code sections in your analysis.

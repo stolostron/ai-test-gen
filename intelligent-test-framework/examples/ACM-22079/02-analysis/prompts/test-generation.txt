@@ -1,0 +1,199 @@
+Generate comprehensive test cases for ACM-22079 digest-based upgrades feature. This is for ACM QE test automation implementation.
+
+## Testing Requirements
+
+### Feature Under Test
+**ACM-22079**: Support digest-based upgrades via ClusterCurator for non-recommended upgrades
+- **Component**: ClusterCurator in Advanced Cluster Management
+- **Scope**: Digest-based cluster upgrades for disconnected environments
+- **Customer**: Amadeus enterprise deployment requirements
+
+### Test Categories Needed
+
+#### 1. Core Functionality Tests
+Generate test cases for:
+
+**A. Digest Discovery Logic**
+- Test digest extraction from conditionalUpdates array
+- Test digest extraction from availableUpdates array (fallback)
+- Test search priority (conditionalUpdates before availableUpdates)
+- Test empty/missing update arrays handling
+- Test malformed digest format handling
+
+**B. Force Upgrade Annotation Behavior**
+- Test with force annotation present vs absent
+- Test annotation value validation ("true" vs other values)
+- Test annotation effect on digest discovery activation
+- Test non-recommended upgrade enablement
+
+**C. Image Reference Selection**
+- Test digest-based image selection when available
+- Test tag-based fallback when digest not found
+- Test force flag logic (only for tag-based, not digest-based)
+- Test image URL construction for both approaches
+
+#### 2. Environment-Specific Tests
+Generate test cases for:
+
+**A. Disconnected Environment Scenarios**
+- Test digest-based upgrades in air-gapped environments
+- Test registry connectivity failures with digest vs tag approaches
+- Test mirror registry scenarios with digest preservation
+- Test network partition scenarios during upgrade
+
+**B. Non-Recommended Upgrade Paths**
+- Test version skipping (e.g., 4.5.8 → 4.5.10)
+- Test candidate release upgrades
+- Test development version upgrades
+- Test patch version targeting
+
+#### 3. Integration Tests
+Generate test cases for:
+
+**A. ManagedClusterView Integration**
+- Test MCV creation and lifecycle
+- Test MCV data retrieval and parsing
+- Test MCV timeout and retry scenarios
+- Test MCV permissions and RBAC
+
+**B. ManagedClusterAction Integration**
+- Test MCA creation with digest-based updates
+- Test MCA status monitoring and completion
+- Test MCA failure handling and rollback
+- Test MCA concurrent operations
+
+**C. Hub-Spoke Communication**
+- Test upgrade coordination between hub and managed clusters
+- Test communication failures during upgrade process
+- Test partial upgrade scenarios
+- Test multi-cluster upgrade orchestration
+
+#### 4. Error Handling and Edge Cases
+Generate test cases for:
+
+**A. Data Validation**
+- Test invalid digest formats
+- Test missing ClusterVersion data
+- Test corrupted JSON responses
+- Test version mismatch scenarios
+
+**B. Resource Constraints**
+- Test quota exceeded scenarios
+- Test resource conflicts during upgrade
+- Test storage and compute limitations
+- Test concurrent upgrade limitations
+
+**C. Network and Infrastructure**
+- Test network timeouts during digest lookup
+- Test DNS resolution failures
+- Test certificate validation issues
+- Test proxy and firewall scenarios
+
+#### 5. Backwards Compatibility Tests
+Generate test cases for:
+
+**A. Existing Workflow Preservation**
+- Test recommended upgrades without force annotation
+- Test existing tag-based upgrade flows
+- Test legacy ClusterCurator configurations
+- Test API compatibility maintenance
+
+**B. Migration Scenarios**
+- Test upgrading from tag-based to digest-based approach
+- Test downgrading back to tag-based approach
+- Test mixed environment scenarios
+- Test gradual rollout scenarios
+
+### Test Implementation Requirements
+
+#### Testing Frameworks
+Target these ACM QE testing approaches:
+
+**A. Unit Tests (Go)**
+- Mock ClusterVersion responses
+- Mock ManagedClusterView operations
+- Test validateUpgradeVersion function
+- Test retreiveAndUpdateClusterVersion function
+
+**B. Integration Tests (Go)**
+- Real Kubernetes cluster testing
+- End-to-end ClusterCurator operations
+- Multi-component integration validation
+- Performance and timing validation
+
+**C. E2E Tests (Cypress)**
+- UI-driven ClusterCurator operations
+- Complete upgrade workflow testing
+- User experience validation
+- Cross-browser compatibility
+
+**D. System Tests**
+- Multi-cluster environment testing
+- Production-like scenario validation
+- Load and stress testing
+- Disaster recovery testing
+
+#### Test Data Requirements
+Generate specifications for:
+
+**A. Test Clusters**
+- Various OpenShift versions for upgrade testing
+- Different cluster configurations (size, network, storage)
+- Disconnected environment setups
+- Development and staging environments
+
+**B. Test Images and Digests**
+- Valid digest collections for testing
+- Invalid digest examples for negative testing
+- Mirror registry image configurations
+- Version progression test sets
+
+**C. ClusterCurator Configurations**
+- Various annotation combinations
+- Different upgrade target specifications
+- Channel and upstream configurations
+- Custom image registry settings
+
+### Test Automation Integration
+
+#### CI/CD Pipeline Integration
+- Jenkins pipeline test configurations
+- Automated test execution scheduling  
+- Test result reporting and analysis
+- Failure notification and alerting
+
+#### Test Environment Management
+- Automated test cluster provisioning
+- Test data setup and teardown
+- Environment isolation and cleanup
+- Resource usage optimization
+
+### Expected Test Deliverables
+
+#### Test Case Documentation
+- Detailed test scenarios with steps
+- Expected results and acceptance criteria
+- Test data requirements and setup
+- Environment prerequisites and configuration
+
+#### Test Implementation Code
+- Go unit and integration tests
+- Cypress E2E test suites
+- Test utility functions and helpers
+- Test data generation scripts
+
+#### Test Automation Infrastructure
+- Jenkins pipeline configurations
+- Test environment setup scripts
+- Monitoring and reporting dashboards
+- Documentation and runbooks
+
+### Success Criteria
+Generate tests that validate:
+1. **Functional Correctness**: All digest-based upgrade scenarios work properly
+2. **Reliability**: Consistent behavior across environments and conditions
+3. **Performance**: No significant impact on upgrade timing or resource usage
+4. **Compatibility**: No regression in existing ACM functionality
+5. **Maintainability**: Clear, well-documented tests for future maintenance
+
+This comprehensive test suite should provide complete coverage of the ACM-22079 digest-based upgrade feature for production deployment validation.

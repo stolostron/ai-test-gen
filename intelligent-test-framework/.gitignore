@@ -1,0 +1,36 @@
+# Session logs and temporary files
+02-analysis/sessions/
+*.tmp
+*.log
+
+# Validation results
+validation-results.json
+adaptive-feedback-report.md
+workflow-state.json
+feedback-database.json
+knowledge-base.json
+
+# Environment-specific files
+.validation-warnings
+.approval-status
+
+# Dynamic repository clones
+06-reference/dynamic-repos/
+06-reference/comprehensive-research/
+
+# Local configuration overrides
+*-local.yaml
+local-*.yaml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary test plans
+test-plan-*.md
