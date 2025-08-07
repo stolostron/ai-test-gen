@@ -55,7 +55,7 @@ test_shell_syntax() {
     print_test_header "Shell Script Syntax Validation"
     
     local scripts=(
-        "analyze-jira.sh"
+        "create-test-case.sh"
         "quick-start.sh"
         "01-setup/smart-validation-engine.sh"
         "01-setup/adaptive-feedback-integrator.sh"
@@ -85,7 +85,7 @@ test_file_permissions() {
     print_test_header "File Permissions and Executability"
     
     local executables=(
-        "analyze-jira.sh"
+        "create-test-case.sh"
         "quick-start.sh"
         "01-setup/smart-validation-engine.sh"
         "01-setup/adaptive-feedback-integrator.sh"
@@ -274,23 +274,23 @@ test_dry_run_execution() {
     print_test_header "Dry Run Execution Tests"
     
     print_test "Testing main script dry run"
-    if ./analyze-jira.sh ACM-22079 --dry-run --test-plan-only 2>/dev/null; then
+    if ./create-test-case.sh ACM-22079 --dry-run --test-plan-only 2>/dev/null; then
         print_pass "Main script dry run successful"
     else
         print_fail "Main script dry run failed"
         print_info "Running with verbose output for debugging..."
-        ./analyze-jira.sh ACM-22079 --dry-run --test-plan-only
+        ./create-test-case.sh ACM-22079 --dry-run --test-plan-only
     fi
     
     print_test "Testing help functionality"
-    if ./analyze-jira.sh --help >/dev/null 2>&1; then
+    if ./create-test-case.sh --help >/dev/null 2>&1; then
         print_pass "Help functionality working"
     else
         print_fail "Help functionality failed"
     fi
     
     print_test "Testing invalid arguments"
-    if ! ./analyze-jira.sh INVALID-FORMAT --dry-run >/dev/null 2>&1; then
+    if ! ./create-test-case.sh INVALID-FORMAT --dry-run >/dev/null 2>&1; then
         print_pass "Invalid argument handling working"
     else
         print_fail "Invalid argument handling not working"
@@ -401,14 +401,14 @@ test_error_handling() {
     print_test_header "Error Handling"
     
     print_test "Testing missing configuration file handling"
-    if ./analyze-jira.sh ACM-22079 --config=nonexistent.yaml --dry-run 2>/dev/null; then
+    if ./create-test-case.sh ACM-22079 --config=nonexistent.yaml --dry-run 2>/dev/null; then
         print_warning "Missing config file handling (should create default)"
     else
         print_pass "Missing config file properly handled"
     fi
     
     print_test "Testing invalid JIRA ticket format"
-    if ! ./analyze-jira.sh INVALID --dry-run >/dev/null 2>&1; then
+    if ! ./create-test-case.sh INVALID --dry-run >/dev/null 2>&1; then
         print_pass "Invalid JIRA ticket format rejected"
     else
         print_fail "Invalid JIRA ticket format accepted"
@@ -429,7 +429,7 @@ test_file_generation() {
     
     # Test workflow state file generation
     print_test "Testing workflow state file generation"
-    ./analyze-jira.sh ACM-22079 --dry-run --test-plan-only >/dev/null 2>&1
+    ./create-test-case.sh ACM-22079 --dry-run --test-plan-only >/dev/null 2>&1
     
     if [ -f "workflow-state.json" ]; then
         print_pass "Workflow state file generated"

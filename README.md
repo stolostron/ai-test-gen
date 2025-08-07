@@ -43,10 +43,10 @@ Transform your QE workflow from manual test creation to intelligent automation. 
 cd intelligent-test-framework
 
 # Generate test plan for ACM-22079
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Generate full implementation
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 ```
 
 **🎯 Results**: 
@@ -62,13 +62,13 @@ The framework automatically manages multiple runs of the same JIRA ticket:
 
 ```bash
 # First run creates: examples/ACM-22079/
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Second run creates: examples/ACM-22079-2/  
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Third run creates: examples/ACM-22079-3/
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 ```
 
 **Benefits:**
@@ -168,13 +168,13 @@ cd intelligent-test-framework
 ./quick-start.sh
 
 # 3. Generate test plan for ACM-22079  
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # 4. Review the generated test plan
 open 02-test-planning/test-plan.md
 
 # 5. Generate full implementation (optional)
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 ```
 
 ### Team Configuration
@@ -187,7 +187,7 @@ cp intelligent-test-framework/team-config.yaml my-team-config.yaml
 vim my-team-config.yaml
 
 # Use your configuration (ACM-22079 only)
-./analyze-jira.sh ACM-22079 --config my-team-config.yaml
+./create-test-case.sh ACM-22079 --config my-team-config.yaml
 ```
 
 ---
@@ -249,7 +249,7 @@ git checkout -b feature/your-improvement
 
 # Make changes and test
 cd intelligent-test-framework
-./analyze-jira.sh TEST-TICKET --dry-run
+./create-test-case.sh TEST-TICKET --dry-run
 
 # Submit pull request
 git push origin feature/your-improvement

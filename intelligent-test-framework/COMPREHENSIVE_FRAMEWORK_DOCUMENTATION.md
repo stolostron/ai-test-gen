@@ -75,7 +75,7 @@ The framework showcases how AI/LLM capabilities can be combined with intelligent
 
 ## 🔧 Core Components
 
-### 1. Main Orchestrator (`analyze-jira.sh`)
+### 1. Main Orchestrator (`create-test-case.sh`)
 
 **Purpose**: Central controller that manages the entire workflow from JIRA ticket input to final test generation.
 
@@ -88,16 +88,16 @@ The framework showcases how AI/LLM capabilities can be combined with intelligent
 **Usage Examples** (ACM-22079 only):
 ```bash
 # Generate test plan only for ACM-22079
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # Full workflow with implementation for ACM-22079
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 
 # Dry run mode for ACM-22079
-./analyze-jira.sh ACM-22079 --dry-run --verbose
+./create-test-case.sh ACM-22079 --dry-run --verbose
 
 # Custom configuration for ACM-22079
-./analyze-jira.sh ACM-22079 --config selenium-team-config.yaml
+./create-test-case.sh ACM-22079 --config selenium-team-config.yaml
 ```
 
 **⚠️ Note**: Other JIRA tickets are not currently supported without framework customization.
@@ -517,7 +517,7 @@ ai_settings:
 #### **Graceful Degradation**
 ```bash
 # Framework adapts to different scenarios
-VALIDATION_STRICTNESS=relaxed ./analyze-jira.sh ACM-22079
+VALIDATION_STRICTNESS=relaxed ./create-test-case.sh ACM-22079
 # Continues with warnings instead of failing
 ```
 
@@ -589,13 +589,13 @@ cd ai-test-gen/intelligent-test-framework
 ./quick-start.sh
 
 # 3. Generate test plan for ACM-22079 (currently the only supported ticket)
-./analyze-jira.sh ACM-22079 --test-plan-only
+./create-test-case.sh ACM-22079 --test-plan-only
 
 # 4. Review generated test plan
 open 02-test-planning/test-plan.md
 
 # 5. Generate full implementation for ACM-22079  
-./analyze-jira.sh ACM-22079
+./create-test-case.sh ACM-22079
 ```
 
 ### Configuration for Your Team
@@ -608,7 +608,7 @@ cp team-config.yaml my-team-config.yaml
 vim my-team-config.yaml
 
 # Use custom configuration
-./analyze-jira.sh ACM-22079 --config my-team-config.yaml
+./create-test-case.sh ACM-22079 --config my-team-config.yaml
 ```
 
 ## 📈 Success Metrics & ROI
@@ -729,7 +729,7 @@ feature_patterns:
 
 ```
 intelligent-test-framework/
-├── analyze-jira.sh                 # Main orchestrator
+├── create-test-case.sh             # Main orchestrator
 ├── 01-setup/                       # Setup and validation scripts
 │   ├── smart-validation-engine.sh  # Intelligent validation
 │   ├── adaptive-feedback-integrator.sh # Learning system
