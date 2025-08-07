@@ -36,6 +36,7 @@ Transform your QE workflow from manual test creation to intelligent automation. 
 - **🎛️ Multi-Framework Support**: Cypress, Selenium, Go, Playwright
 - **📋 Standardized Output**: Human-readable test plans in table format
 - **🔗 Dynamic GitHub Integration**: Real-time repository analysis and documentation mining
+- **🗂️ Intelligent Versioning**: Automatically creates versioned directories for multiple runs of the same JIRA ticket
 
 #### Quick Start
 ```bash
@@ -54,6 +55,38 @@ cd intelligent-test-framework
 - Continuous learning and improvement
 
 **📚 Documentation**: [Complete Framework Guide](./intelligent-test-framework/COMPREHENSIVE_FRAMEWORK_DOCUMENTATION.md)
+
+#### 🗂️ Intelligent Versioning System  
+
+The framework automatically manages multiple runs of the same JIRA ticket:
+
+```bash
+# First run creates: examples/ACM-22079/
+./analyze-jira.sh ACM-22079 --test-plan-only
+
+# Second run creates: examples/ACM-22079-2/  
+./analyze-jira.sh ACM-22079 --test-plan-only
+
+# Third run creates: examples/ACM-22079-3/
+./analyze-jira.sh ACM-22079
+```
+
+**Benefits:**
+- ✅ **No Lost Work**: Previous runs are always preserved
+- ✅ **Easy Comparison**: Compare results across iterations  
+- ✅ **Audit Trail**: Complete history of testing approaches
+- ✅ **Team Collaboration**: Share specific version results
+
+**Version Management:**
+```bash
+# List all versions for a ticket
+./01-setup/example-versioning.sh list ACM-22079
+
+# Access specific version artifacts
+cat examples/ACM-22079-2/02-test-planning/test-plan.md
+```
+
+📖 **[Complete Versioning Guide](./intelligent-test-framework/05-documentation/versioning-guide.md)**
 
 ---
 
