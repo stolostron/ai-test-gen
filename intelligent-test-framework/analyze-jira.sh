@@ -1022,6 +1022,22 @@ main() {
         fi
     done
     
+    # Set up versioned example environment
+    print_status "🗂️  Setting up versioned example environment..."
+    if [ -f "01-setup/example-versioning.sh" ]; then
+        EXAMPLE_DIR=$(./01-setup/example-versioning.sh setup "$JIRA_TICKET")
+        if [ $? -eq 0 ] && [ -n "$EXAMPLE_DIR" ]; then
+            export CURRENT_EXAMPLE_DIR="$EXAMPLE_DIR"
+            print_success "✅ Versioned environment ready: $EXAMPLE_DIR"
+        else
+            print_warning "⚠️  Versioning setup had issues, continuing with current directory"
+            export CURRENT_EXAMPLE_DIR="."
+        fi
+    else
+        print_warning "⚠️  Versioning script not found, using current directory"
+        export CURRENT_EXAMPLE_DIR="."
+    fi
+    
     # Execute workflow stages
     stage_environment_setup
     stage_repository_access
@@ -1035,6 +1051,13 @@ main() {
     
     # Collect final feedback for continuous learning
     collect_execution_feedback
+    
+    # Mark the versioned run as completed
+    if [ -n "$CURRENT_EXAMPLE_DIR" ] && [ "$CURRENT_EXAMPLE_DIR" != "." ]; then
+        if [ -f "01-setup/example-versioning.sh" ]; then
+            ./01-setup/example-versioning.sh complete "$CURRENT_EXAMPLE_DIR"
+        fi
+    fi
     
     print_success "🎉 Workflow completed successfully!"
     print_status "Summary: $(ls WORKFLOW_SUMMARY_*.md | tail -1)"
@@ -1050,6 +1073,16 @@ main() {
     # Display feedback insights if available
     if [ -f "adaptive-feedback-report.md" ]; then
         print_status "📊 Feedback insights available: adaptive-feedback-report.md"
+    fi
+    
+    # Display versioned example information
+    if [ -n "$CURRENT_EXAMPLE_DIR" ] && [ "$CURRENT_EXAMPLE_DIR" != "." ]; then
+        print_status "📁 Complete example saved to: $CURRENT_EXAMPLE_DIR"
+        if [ -f "$CURRENT_EXAMPLE_DIR/run-metadata.json" ]; then
+            local version=$(jq -r '.version' "$CURRENT_EXAMPLE_DIR/run-metadata.json" 2>/dev/null || echo "unknown")
+            print_status "🔢 Example version: $version"
+        fi
+        print_status "🔍 View all versions: ./01-setup/example-versioning.sh list $JIRA_TICKET"
     fi
 }
 
