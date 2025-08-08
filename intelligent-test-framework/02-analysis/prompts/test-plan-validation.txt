@@ -6,7 +6,7 @@ CONTEXT:
 - Testing Framework: {FRAMEWORK}
 - Team: {TEAM_NAME}
 
-VALIDATION REQUIREMENTS:
+VALIDATION REQUIREMENTS (manual-first, outcome-based):
 Please review the test plan against these criteria:
 
 1. **Comprehensive Feature Coverage**
@@ -16,10 +16,10 @@ Please review the test plan against these criteria:
    - Integration points tested
 
 2. **Technical Validation Points**
-   - Appropriate use of `oc` commands for resource validation
-   - Kubernetes API interactions properly tested
-   - ACM-specific resources (ManagedCluster, ClusterCurator, etc.) validated
-   - Hub-spoke cluster communication tested
+   - Appropriate use of `oc` commands for resource validation; avoid fragile `--watch` and timing-dependent steps
+   - Prefer simple, readable commands over complex regex/jsonpath; include sample expected outputs
+   - ACM-specific resources (ManagedCluster, ClusterCurator, ManagedClusterView, ManagedClusterAction) validated using outcome checks
+   - Hub–spoke cluster communication tested when relevant
 
 3. **Environment Considerations**
    - Different deployment scenarios (BM, VMware, Cloud)
@@ -28,16 +28,14 @@ Please review the test plan against these criteria:
    - Performance and scale considerations
 
 4. **Quality Standards**
-   - Clear test steps with expected outcomes
-   - Proper setup and teardown procedures
-   - Error handling and negative test cases
+   - Clear test steps with expected outcomes and 1–2 line rationale/context per step
+   - Description + Setup sections precede each table; 8–10 steps per table (split into additional tables if exceeded)
+   - Error handling and negative test cases when meaningful
    - Test data requirements specified
 
-5. **Framework-Specific Requirements**
-   - Cypress: Page objects, custom commands, fixtures
-   - Selenium: Page object model, WebDriver best practices
-   - Go: Table-driven tests, proper mocking
-   - General: Maintainable test structure
+5. **Framework-Specific Requirements (Phase 1: Plan Only)**
+   - Script generation is disabled; focus on human-executable manual steps
+   - Maintainable structure for future automation (concise, deterministic validations)
 
 TEST PLAN TO VALIDATE:
 {TEST_PLAN_CONTENT}
@@ -83,8 +81,8 @@ DELIVERABLES:
 2. **Improved Test Plan**
    - Enhanced test scenarios
    - Additional validation points
-   - Better structured test cases
-   - Framework-optimized implementation
+   - Better-structured test cases (Description + Setup, 8–10 steps per table)
+   - Replace fragile steps with outcome-based checks (no `--watch`)
 
 3. **Implementation Guidance**
    - Specific validation commands to use

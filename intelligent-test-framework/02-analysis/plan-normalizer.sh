@@ -17,50 +17,76 @@ rm -f "$tmpfile"
 # Read all lines
 mapfile -t lines < "$PLAN_FILE"
 
-# Identify header and step lines
 HEADER_1='| Test Steps | Expected Results |'
 HEADER_2='|------------|------------------|'
 
-echo "$HEADER_1" >> "$tmpfile"
-echo "$HEADER_2" >> "$tmpfile"
+emit_table_chunks() {
+  local -n _rows=$1
+  local count=0
+  for row in "${_rows[@]}"; do
+    if [ "$count" -eq 0 ]; then
+      echo "$HEADER_1" >> "$tmpfile"
+      echo "$HEADER_2" >> "$tmpfile"
+    fi
+    echo "$row" >> "$tmpfile"
+    count=$((count+1))
+    if [ "$count" -ge "$MAX_STEPS" ]; then
+      echo >> "$tmpfile"
+      count=0
+    fi
+  done
+}
 
-steps=()
-for ln in "${lines[@]}"; do
-  # Skip initial header duplicates when normalizing
-  if [[ "$ln" == "$HEADER_1" ]] || [[ "$ln" == "$HEADER_2" ]]; then
-    continue
-  fi
-  if [[ "$ln" =~ ^\|.*\|$ ]]; then
-    steps+=("$ln")
+inside_table=0
+table_rows=()
+
+for (( i=0; i<${#lines[@]}; i++ )); do
+  ln="${lines[$i]}"
+
+  if [ "$inside_table" -eq 0 ]; then
+    # Detect start of a table
+    if [[ "$ln" == "$HEADER_1" ]]; then
+      inside_table=1
+      table_rows=()
+      # Skip writing this header now; we'll re-emit headers when chunking
+      continue
+    else
+      # Pass-through non-table content verbatim
+      echo "$ln" >> "$tmpfile"
+      continue
+    fi
+  else
+    # We are inside a table until a non-table line appears
+    if [[ "$ln" == "$HEADER_2" ]]; then
+      # Skip the dashed header separator
+      continue
+    fi
+
+    if [[ "$ln" =~ ^\|.*\|$ ]]; then
+      # Filter out flaky/timing-based steps
+      if echo "$ln" | grep -q -- "--watch"; then
+        continue
+      fi
+      table_rows+=("$ln")
+      continue
+    fi
+
+    # End of table encountered; emit normalized chunks and then handle current line
+    emit_table_chunks table_rows
+    echo >> "$tmpfile"
+    inside_table=0
+    table_rows=()
+    # Now process the current non-table line in outer loop context
+    echo "$ln" >> "$tmpfile"
   fi
 done
 
-# Ensure setup section exists at the beginning
-has_setup=0
-for s in "${steps[@]}"; do
-  if echo "$s" | grep -qE '^\| (\*\*)?Setup'; then
-    has_setup=1; break
-  fi
-done
-if [ "$has_setup" -eq 0 ]; then
-  steps=("| Setup | Prerequisites and environment validation present |" "${steps[@]}")
+# If file ended while still inside a table, emit the remaining rows
+if [ "$inside_table" -eq 1 ]; then
+  emit_table_chunks table_rows
 fi
 
-# Emit steps in chunks with table headers
-count=0
-emitted=0
-for ln in "${steps[@]}"; do
-  if [ "$count" -ge "$MAX_STEPS" ]; then
-    echo >> "$tmpfile"
-    echo "$HEADER_1" >> "$tmpfile"
-    echo "$HEADER_2" >> "$tmpfile"
-    count=0
-  fi
-  echo "$ln" >> "$tmpfile"
-  count=$((count+1))
-  emitted=$((emitted+1))
-done
-
 mv "$tmpfile" "$PLAN_FILE"
-echo "[NORMALIZER] Normalized ${PLAN_FILE} into tables of up to ${MAX_STEPS} steps (total steps: ${emitted})" >&2
+echo "[NORMALIZER] Normalized ${PLAN_FILE} into tables of up to ${MAX_STEPS} steps" >&2
+
 
