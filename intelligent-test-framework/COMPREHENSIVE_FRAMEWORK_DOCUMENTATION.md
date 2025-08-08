@@ -2,19 +2,22 @@
 
 ## 🎯 Overview
 
-This comprehensive framework demonstrates AI-powered JIRA analysis and test generation capabilities. **Currently, this is a proof-of-concept implementation specifically designed for ACM-22079 (ClusterCurator digest upgrades)**. 
+This framework demonstrates AI-powered JIRA analysis and test plan generation. It is currently focused on ACM-22079 (ClusterCurator digest upgrades) and operating in Phase 1: Test-Plan-Only mode.
 
-The framework showcases how AI/LLM capabilities can be combined with intelligent validation, adaptive feedback loops, and robust error handling to create production-ready test automation. While the architecture is designed to be extensible, the current implementation requires significant customization for other JIRA tickets.
+- Implementation (script/code generation) is intentionally disabled for now and logged as "under development".
+- The architecture is extensible, but other JIRA tickets will need customization.
 
 ## ⚠️ **Current Limitations**
 
-**IMPORTANT**: This framework currently works **only with ACM-22079**. Using it with other JIRA tickets (e.g., `ACM-12345`) will require:
+**IMPORTANT (Phase 1: Test-Plan-Only)**
+- The framework currently generates validated test plans only (no test scripts).
+- It is focused on ACM-22079. Using it with other JIRA tickets will require:
 - Custom prompt development for the specific feature
 - Feature-specific validation logic  
 - Domain-specific test patterns
 - Updated repository mappings and analysis
 
-## 🏗️ Architecture Overview
+## 🏗️ Architecture Overview (Phase 1)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -59,17 +62,16 @@ The framework showcases how AI/LLM capabilities can be combined with intelligent
 └─────────────────────┬───────────────────────────────────────┘
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
-│            Stage 6: Test Implementation                     │
-│   • Framework-specific code generation                     │
-│   • Cypress/Selenium/Go test creation                      │
-│   • Repository integration                                 │
+│      Stage 6: Test Implementation (Disabled in Phase 1)     │
+│   • Under development                                       │
+│   • Logged and skipped                                      │
 └─────────────────────┬───────────────────────────────────────┘
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
-│             Stage 7: Quality Validation                    │
-│   • Generated code validation                              │
-│   • Test execution verification                            │
-│   • Performance and reliability checks                     │
+│           Stage 7: Quality Validation (Test Plan)           │
+│   • Plan structure/clarity validation                       │
+│   • Expected-results realism checks                          │
+│   • Style normalization (8–10 steps/table, Setup section)    │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -90,7 +92,7 @@ The framework showcases how AI/LLM capabilities can be combined with intelligent
 # Generate test plan only for ACM-22079
 ./create-test-case.sh ACM-22079 --test-plan-only
 
-# Full workflow with implementation for ACM-22079
+# Full workflow (Phase 1 produces plan only; implementation disabled)
 ./create-test-case.sh ACM-22079
 
 # Dry run mode for ACM-22079
@@ -737,8 +739,8 @@ intelligent-test-framework/
 ├── 02-analysis/                    # AI analysis workspace
 │   ├── prompts/                    # AI prompt templates
 │   └── sessions/                   # Analysis session logs
-├── 02-test-planning/               # Generated test plans
-├── 04-implementation/              # Generated test code
+├── 02-test-planning/               # Generated test plans (Phase 1)
+├── 04-implementation/              # Disabled in Phase 1
 ├── configs/                        # Framework configurations
 └── 06-reference/                   # Documentation and research
 ```
