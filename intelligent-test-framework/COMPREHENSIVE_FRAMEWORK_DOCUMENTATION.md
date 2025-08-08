@@ -670,8 +670,8 @@ feature_patterns:
 
 ### Planned Features
 
-1. **Multi-Ticket Support**: Generalized framework for any ACM JIRA ticket
-2. **Feature Type Detection**: Automatic categorization of JIRA tickets  
+1. **Enhanced Multi-Ticket Support**: Implemented in release-1.2 (story-agnostic generation via feature detection + overrides). Ongoing: expand override coverage and team manifests
+2. **Advanced Feature Type Detection**: Automatic categorization of JIRA tickets beyond current heuristics  
 3. **Pattern Library**: Reusable test patterns for different ACM components
 4. **Cross-Product Integration**: Support for other Red Hat products
 
