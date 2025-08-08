@@ -1,0 +1,43 @@
+{
+  "ticket": "ACM-22079",
+  "mode": "test_plan_only",
+  "config": "team-config.yaml",
+  "started_at": "2025-08-08T03:00:12-04:00",
+  "stages": {
+    "environment_setup": {
+      "status": "completed",
+      "started_at": "2025-08-08T03:00:29-04:00",
+      "completed_at": "2025-08-08T03:00:44-04:00"
+    },
+    "repository_access": {
+      "status": "completed",
+      "started_at": "2025-08-08T03:00:44-04:00",
+      "completed_at": "2025-08-08T03:00:49-04:00"
+    },
+    "ai_analysis": {
+      "status": "completed",
+      "started_at": "2025-08-08T03:00:49-04:00",
+      "completed_at": "2025-08-08T03:02:16-04:00"
+    },
+    "test_plan_generation": {
+      "status": "in_progress",
+      "started_at": "2025-08-08T03:02:16-04:00",
+      "completed_at": null
+    },
+    "human_review": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null
+    },
+    "test_implementation": {
+      "status": "skipped",
+      "started_at": null,
+      "completed_at": null
+    },
+    "quality_validation": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null
+    }
+  }
+}

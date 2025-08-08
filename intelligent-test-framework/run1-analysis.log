@@ -1,0 +1,129 @@
+==========================================
+🚀 ACM JIRA Analysis & Test Generation
+🆕 AI-Powered Framework (Beta)
+==========================================
+Ticket: ACM-22079
+Mode: Test Plan Only
+Config: team-config.yaml
+Framework: AI-powered analysis with intelligent feedback
+==========================================
+
+[0;34m[INFO][0m 🗂️  Setting up versioned example environment...
+[0;32m[SUCCESS][0m ✅ Versioned environment ready: [0;34m[VERSIONING][0m Setting up versioned environment for ACM-22079
+[0;34m[VERSIONING][0m Checking for incomplete runs to clean up...
+[0;34m[VERSIONING][0m Creating versioned example directory...
+[0;32m[SUCCESS][0m Versioned environment ready: examples/ACM-22079-8
+[0;34m[VERSIONING][0m Version: 8
+[0;34m[VERSIONING][0m Previous versions available:
+  - **Version 1**: `examples/ACM-22079/` (2025-08-07 07:37)
+  - **Version 2**: `examples/ACM-22079-2/` (2025-08-07T17:04:47-04:00)
+  - **Version 3**: `examples/ACM-22079-3/` (2025-08-07T17:06:27-04:00)
+  - **Version 4**: `examples/ACM-22079-4/` (2025-08-07T17:07:10-04:00)
+  - **Version 5**: `examples/ACM-22079-5/` (2025-08-07T17:07:18-04:00)
+  - **Version 6**: `examples/ACM-22079-6/` (2025-08-07T17:13:17-04:00)
+  - **Version 7**: `examples/ACM-22079-7/` (2025-08-07T17:36:29-04:00)
+  - **Version 8**: `examples/ACM-22079-8/` (2025-08-07T19:35:02-04:00)
+examples/ACM-22079-8
+[0;34m[INFO][0m 🏗️ Building team-aware Application Model...
+[0;32m[SUCCESS][0m ✅ Application Model ready for team: CLC
+[0;34m[INFO][0m 📁 Model artifacts available at: /Users/ashafi/Documents/work/ai/ai-test-gen/intelligent-test-framework/01-setup/../application-models/clc
+[0;34m[INFO][0m 🔧 Stage 1: Environment Setup & Validation
+[0;34m[INFO][0m Validating Claude Code environment...
+[0;34m[INFO][0m Testing Claude Code connectivity...
+[0;34m[INFO][0m 🔐 Validating SSH GitHub access to stolostron repositories...
+[1;33m[WARNING][0m SSH GitHub access issues detected - using GitHub API fallback
+[0;34m[INFO][0m Some features may be limited, but analysis will continue
+[0;32m[SUCCESS][0m Environment setup completed
+[0;34m[INFO][0m 🔗 Stage 2: Dynamic GitHub Repository Access
+[0;34m[INFO][0m 🔗 Setting up dynamic GitHub repository access...
+
+========================================
+[0;34m🔗 Dynamic GitHub Repository Access[0m
+========================================
+Setting up real-time access to stolostron repositories
+JIRA Ticket: ACM-22079
+Analysis Mode: full
+
+[0;35m[STEP][0m 1. Detecting relevant stolostron repositories for ACM-22079...
+[0;32m[SUCCESS][0m Detected 5 relevant repositories
+Repositories:
+  • stolostron/backplane-operator
+  • stolostron/clc-ui-e2e
+  • stolostron/cluster-curator-controller
+  • stolostron/console
+  • stolostron/managedcluster-import-controller
+[0;35m[STEP][0m 2. Analyzing recent changes in stolostron repositories...
+[0;34m[INFO][0m Analyzing recent changes in stolostron/cluster-curator-controller...
+[0;34m[INFO][0m Analyzing recent changes in stolostron/clc-ui-e2e...
+[0;34m[INFO][0m Analyzing recent changes in stolostron/console...
+[0;32m[SUCCESS][0m Recent changes analysis complete
+[0;35m[STEP][0m 3. Setting up dynamic repository workspace...
+[0;34m[INFO][0m Setting up access to stolostron/backplane-operator...
+[0;34m[INFO][0m Repository backplane-operator already exists, updating...
+[0;34m[INFO][0m Setting up access to stolostron/clc-ui-e2e...
+[0;34m[INFO][0m Repository clc-ui-e2e already exists, updating...
+[0;34m[INFO][0m Setting up access to stolostron/cluster-curator-controller...
+[0;34m[INFO][0m Repository cluster-curator-controller already exists, updating...
+[0;34m[INFO][0m Setting up access to stolostron/console...
+[0;34m[INFO][0m Repository console already exists, updating...
+[0;34m[INFO][0m Setting up access to stolostron/managedcluster-import-controller...
+[0;34m[INFO][0m Repository managedcluster-import-controller already exists, updating...
+[0;32m[SUCCESS][0m Dynamic workspace setup complete
+[0;35m[STEP][0m 4. Fetching changes specifically related to ACM-22079...
+[0;32m[SUCCESS][0m JIRA-related changes fetched and prepared
+[0;35m[STEP][0m 5. Generating Claude Code context files...
+cat: 06-reference/detected-repositories.txt: No such file or directory
+find: 06-reference/dynamic-repos: No such file or directory
+./01-setup/dynamic-github-access.sh: line 243: 06-reference/detected-repositories.txt: No such file or directory
+[0;32m[SUCCESS][0m Claude Code context files generated
+[0;35m[STEP][0m 6. Creating dynamic access summary...
+find: 06-reference/dynamic-repos: No such file or directory
+cat: 06-reference/detected-repositories.txt: No such file or directory
+[0;32m[SUCCESS][0m Dynamic access summary created: DYNAMIC_GITHUB_ACCESS_SUMMARY.md
+
+========================================
+[0;32m[SUCCESS][0m 🎉 Dynamic GitHub access setup complete!
+
+[0;34m[INFO][0m Claude Code now has real-time access to:
+  ✅ All relevant stolostron repositories
+  ✅ Recent PRs and commits
+  ✅ Specific branches and changes
+  ✅ Cross-repository analysis capabilities
+
+[0;34m[INFO][0m Next: Use this setup in your Claude Code analysis!
+========================================
+[0;32m[SUCCESS][0m Dynamic repository access configured
+[0;34m[INFO][0m ✅ Real-time access to stolostron repositories enabled
+[0;34m[INFO][0m Setting up fallback repository access...
+🔗 Enabling GitHub PR Access for Claude Code
+=============================================
+
+Please run from: /Users/ashafi/Documents/work/ai/claude/ACM-22079
+[0;34m[INFO][0m Setting up comprehensive research access...
+🔍 Comprehensive Research Setup for Claude Code
+===============================================
+
+Please run from: /Users/ashafi/Documents/work/ai/claude/ACM-22079
+[0;34m[INFO][0m Validating repository access...
+[0;32m[SUCCESS][0m Comprehensive research access validated
+[0;32m[SUCCESS][0m Repository access configured
+[0;34m[INFO][0m 🤖 Stage 3: AI-Powered Comprehensive Analysis
+[0;34m[INFO][0m 🔗 Running Context Augmentation...
+[0;36m[STATUS][0m 🔗 Stage 2.5: Context Augmentation with Application Model
+[0;34m[INFO][0m 🎯 Augmenting context for team: CLC
+[0;36m[STATUS][0m 🔗 Starting Context Augmentation...
+[0;34m[INFO][0m 📋 Input: 02-analysis/jira-details.md
+[0;34m[INFO][0m 🎯 Team: CLC
+[0;34m[INFO][0m 📁 Model: /Users/ashafi/Documents/work/ai/ai-test-gen/intelligent-test-framework/01-setup/../application-models/clc
+[0;34m[INFO][0m 📝 Generating augmented context file...
+[0;34m[INFO][0m 🔍 Extracting keywords from JIRA content...
+[0;34m[INFO][0m 🧩 Finding relevant components from Application Model...
+[0;32m[SUCCESS][0m ✅ Found relevant components: ClusterListPage createClusterButton 
+[0;34m[INFO][0m ⚡ Finding relevant actions from Action Catalog...
+[0;34m[INFO][0m 👥 Finding relevant data personas...
+[0;32m[SUCCESS][0m ✅ Augmented context generated: 02-analysis/augmented-context.md
+[0;32m[SUCCESS][0m ✅ Context Augmentation complete!
+[0;36m[STATUS][0m 📄 Generated file: 02-analysis/augmented-context.md (     113 lines)
+[0;32m[SUCCESS][0m ✅ Context augmentation completed
+[0;34m[INFO][0m 📄 Using augmented context: 02-analysis/augmented-context.md
+[0;34m[INFO][0m Performing comprehensive feature analysis with enhanced context...

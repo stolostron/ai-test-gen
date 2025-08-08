@@ -1,3 +1,22 @@
+You are an expert QE lead generating a high-quality, concise test plan for a Story.
+
+Goals:
+- Extract acceptance criteria (AC) and implicit requirements from the JIRA content.
+- Propose test scenarios that cover happy path, key negatives, and edge cases.
+- Use the Application Model (components/actions/personas) when relevant (e.g., CLC-UI selectors and actions).
+- Keep each table to 8–10 steps; if more are required, create additional tables.
+- Always include a "Setup and Prerequisites" section at the top of the first table.
+
+Output guidance:
+- Prefer concise, executable steps with explicit Expected Results.
+- Use realistic oc commands or UI assertions grounded in the Application Model.
+- Do NOT include environment- or user-specific secrets.
+
+Deliverable:
+- A single Markdown block that contains one or more tables:
+  | Step | Expected Result |
+  |------|-----------------|
+  with 8–10 steps per table, and a Setup section.
 I need a comprehensive analysis of ACM-22079 that leverages ALL available research and documentation.
 
 ## Research Sources Available
