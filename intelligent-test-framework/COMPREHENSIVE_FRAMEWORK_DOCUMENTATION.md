@@ -7,6 +7,14 @@ This framework demonstrates AI-powered JIRA analysis and test plan generation. I
 - Implementation (script/code generation) is intentionally disabled for now and logged as "under development".
 - The architecture is extensible, but other JIRA tickets will need customization.
 
+### Phase 1 scope
+- Generates validated, normalized test plans in exact table format (with Description and Setup sections)
+- Applies intelligent validation and adaptive feedback to improve plans
+- Emits per-run artifacts under `intelligent-test-framework/examples/ACM-22079-<n>/`
+- Writes a consolidated report to `intelligent-test-framework/05-documentation/ACM-22079-Test-Plan-Explained.md`
+
+Planned Phase 2+: enable framework-specific script generation (Cypress/Selenium/Go) once plan quality stabilizes.
+
 ## ⚠️ **Current Limitations**
 
 **IMPORTANT (Phase 1: Test-Plan-Only)**
@@ -186,8 +194,9 @@ fi
 
 **Enhanced Prompt Engineering**:
 - **Format Override**: Dominates all other style instructions
-- **Command Completeness**: Ensures full `oc` commands with parameters
-- **Verification Clarity**: Specifies exact expected outputs
+- **Command Completeness**: Ensures full `oc` commands with parameters; include CLI and UI variants when applicable
+- **Verification Clarity**: Specifies exact expected outputs and rationale; include sample output lines for grep/jsonpath where used
+- **Namespace Standardization**: Use `ocm` for ClusterCurator examples in ACM environments
 
 ### 5. Dynamic GitHub Integration
 
@@ -382,8 +391,8 @@ fi
 - Applies learned patterns to improve test quality
 - Refines test plans based on environment limitations
 
-**Validation Exit Codes**:
-- `0`: Full validation passed
+**Validation Exit Codes (Plan Validation)**:
+- `0`: Validation passed
 - `1`: Hard validation failure (environment issues)
 - `2`: Soft failure with adaptation (missing features)
 
@@ -403,63 +412,9 @@ Do you approve the test plan despite validation warnings? (y/n/modify):
 # modify - Return to generation with feedback
 ```
 
-### Stage 6: Test Implementation (Framework-Specific)
+### Stage 6: Test Implementation (Disabled in Phase 1)
 
-**Code Generation Strategy**:
-
-#### **Cypress Implementation**
-```typescript
-// Generated Cypress test example
-describe('ACM-22079: ClusterCurator Digest Upgrades', () => {
-  beforeEach(() => {
-    cy.login(Cypress.env('ACM_HUB_URL'));
-    cy.validateClusterCuratorCRD();
-  });
-  
-  it('should perform digest-based upgrade with force annotation', () => {
-    cy.createClusterCurator({
-      name: 'test-digest-upgrade',
-      annotations: {
-        'cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions': 'true'
-      },
-      desiredUpdate: '4.15.10'
-    });
-    
-    cy.verifyManagedClusterViewCreation('managed-cluster-1');
-    cy.validateDigestExtraction('conditionalUpdates');
-    cy.confirmManagedClusterActionFormat('digest');
-  });
-});
-```
-
-#### **Go Test Implementation**
-```go
-func TestClusterCuratorDigestUpgrade(t *testing.T) {
-    client := setupTestClient(t)
-    
-    // Create ClusterCurator with force annotation
-    curator := &clustercuratorv1.ClusterCurator{
-        ObjectMeta: metav1.ObjectMeta{
-            Name: "test-digest-upgrade",
-            Annotations: map[string]string{
-                "cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions": "true",
-            },
-        },
-        Spec: clustercuratorv1.ClusterCuratorSpec{
-            DesiredCuration: "upgrade",
-            Upgrade: clustercuratorv1.UpgradeHooks{
-                DesiredUpdate: "4.15.10",
-            },
-        },
-    }
-    
-    require.NoError(t, client.Create(context.TODO(), curator))
-    
-    // Validate digest extraction logic
-    validateDigestExtraction(t, client, "managed-cluster-1")
-    validateManagedClusterActionFormat(t, client, "digest")
-}
-```
+Implementation is intentionally deferred. The orchestrator logs this stage as under development and stops after test plan validation.
 
 ### Stage 7: Quality Validation
 
@@ -770,7 +725,7 @@ The framework's ability to handle missing features, adapt to different environme
 
 ---
 
-**Framework Version**: 2.0  
-**Last Updated**: 2025-01-07  
+**Framework Version**: 2.0 (Phase 1)  
+**Last Updated**: 2025-08-08  
 **Maintainer**: ACM QE Team  
 **Repository**: https://github.com/stolostron/ai-test-gen
