@@ -95,22 +95,22 @@ Planned Phase 2+: enable framework-specific script generation (Cypress/Selenium/
 - **State management**: Tracks workflow progress in `workflow-state.json`
 - **Human interaction**: Implements review gates and feedback collection
 
-**Usage Examples** (ACM-22079 only):
+**Usage Examples** (any ACM Story):
 ```bash
-# Generate test plan only for ACM-22079
-./create-test-case.sh ACM-22079 --test-plan-only
+# Generate test plan only for any ACM Story (e.g., ACM-12345)
+./create-test-case.sh ACM-12345 --test-plan-only
 
 # Full workflow (Phase 1 produces plan only; implementation disabled)
-./create-test-case.sh ACM-22079
+./create-test-case.sh ACM-12345
 
 # Dry run mode for ACM-22079
 ./create-test-case.sh ACM-22079 --dry-run --verbose
 
-# Custom configuration for ACM-22079
-./create-test-case.sh ACM-22079 --config selenium-team-config.yaml
+# Custom configuration for specific team
+./create-test-case.sh ACM-12345 --config selenium-team-config.yaml
 ```
 
-**⚠️ Note**: Other JIRA tickets are not currently supported without framework customization.
+**⚠️ Note**: Feature detection + overrides now allow any ACM Story. If no specific override exists, the generic fallback is used while preserving strict table format and validation.
 
 ### 2. Smart Validation Engine (`01-setup/smart-validation-engine.sh`)
 
@@ -282,8 +282,9 @@ test_patterns:
 - `github-aware-analysis.txt`: Real-time repository analysis
 
 #### **Generation Prompts**
-- `table-format-test-generation.txt`: **Primary test plan generation**
-- `environment-aware-implementation.txt`: Code generation with validation context
+- `table-format-test-generation.txt`: Primary test plan generation (story-agnostic)
+- `prompts/feature-overrides/*.txt`: Feature-specific refinements applied after detection
+- `environment-aware-implementation.txt`: (Phase 2) Code generation with validation context
 - `dynamic-test-generation.txt`: Tests based on live repository analysis
 
 #### **Validation Prompts**
