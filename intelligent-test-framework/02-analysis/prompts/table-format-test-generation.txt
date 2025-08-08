@@ -7,7 +7,7 @@ Using the analysis and augmented context, generate a test plan for the Story wit
 - Prefer CLC-UI selectors and actions where available from the Application Model
 - Include at least one negative and one edge case scenario if meaningful
 - End with cleanup and verification
-MANDATORY: Generate test cases for ACM-22079 in EXACT TABLE FORMAT with Test Steps and Expected Results columns.
+MANDATORY: Generate test cases for the given JIRA Story in EXACT TABLE FORMAT with Test Steps and Expected Results columns.
 
 IGNORE ALL OTHER STYLE INSTRUCTIONS. USE ONLY THE TABLE FORMAT SPECIFIED BELOW.
 
