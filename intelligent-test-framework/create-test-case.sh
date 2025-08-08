@@ -511,16 +511,29 @@ $(head -50 adaptive-feedback-report.md)
 Please incorporate these insights when generating the test plan."
     fi
     
-    # Use table-format test generation for user's preferred format
+    # Use table-format test generation with feature-specific overrides
+    BASE_PROMPT=""
     if [ -f "02-analysis/prompts/table-format-test-generation.txt" ]; then
         print_status "Using improved table-format prompt for test generation"
-        TEST_GEN_PROMPT=$(cat 02-analysis/prompts/table-format-test-generation.txt)
+        BASE_PROMPT=$(cat 02-analysis/prompts/table-format-test-generation.txt)
     elif [ -f "02-analysis/prompts/style-aware-test-generation.txt" ]; then
         print_status "Falling back to style-aware prompt"
-        TEST_GEN_PROMPT=$(cat 02-analysis/prompts/style-aware-test-generation.txt)
+        BASE_PROMPT=$(cat 02-analysis/prompts/style-aware-test-generation.txt)
     else
         print_status "Using basic test generation prompt"
-        TEST_GEN_PROMPT=$(cat 02-analysis/prompts/test-generation.txt)
+        BASE_PROMPT=$(cat 02-analysis/prompts/test-generation.txt)
+    fi
+    # Feature detection for overrides
+    DETECT_OUTPUT=$(bash 02-analysis/feature-detection.sh "$JIRA_TICKET" "02-analysis/jira-details.md" || true)
+    DETECTED_FEATURE_KEY=$(echo "$DETECT_OUTPUT" | awk -F= '/^DETECTED_FEATURE_KEY=/{print $2}')
+    TEST_GEN_PROMPT="$BASE_PROMPT"
+    if [ -n "$DETECTED_FEATURE_KEY" ] && [ -f "02-analysis/prompts/feature-overrides/${DETECTED_FEATURE_KEY}.txt" ]; then
+        print_status "Applying feature override: ${DETECTED_FEATURE_KEY}"
+        TEST_GEN_PROMPT="$BASE_PROMPT
+
+### FEATURE-SPECIFIC OVERRIDES
+$(cat "02-analysis/prompts/feature-overrides/${DETECTED_FEATURE_KEY}.txt")
+"
     fi
     
     # Prepare cluster-curator sample YAML (prefer live from cluster, else repo template)

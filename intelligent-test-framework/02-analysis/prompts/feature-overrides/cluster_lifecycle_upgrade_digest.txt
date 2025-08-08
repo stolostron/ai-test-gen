@@ -1,0 +1,11 @@
+# Feature-Specific Overrides: Cluster Lifecycle — Digest-Based Upgrades
+
+APPLY THESE OVERRIDES TO THE MAIN TABLE-FORMAT PROMPT:
+
+- Scope: ACM-22079-like stories (ClusterCurator digest upgrades)
+- Enforce namespace: `ocm` for curator examples/commands
+- Include dual CLI/UI variants per step when applicable
+- Always provide sample output lines for grep/jsonpath
+- Include scenarios: digest via conditionalUpdates, fallback to availableUpdates, tag+force fallback, RBAC, disconnected/mirror, concurrency
+
+Do not alter the mandatory table format. Append concrete command correctness checks and expected outputs to each step.

@@ -204,13 +204,21 @@ validate_test_logic() {
     local test_logic_valid=true
     local validation_details=()
     
-    # Check if test commands are valid
-    local test_commands=(
-        "oc get clustercurator"
-        "oc get managedclusters"
-        "oc get managedclusteraction"
-        "oc get managedclusterview"
-    )
+    # Check if test commands are valid (feature-aware)
+    local test_commands=()
+    if grep -qi "curator\|digest\|upgrade" "$PROJECT_ROOT/02-analysis/jira-details.md" 2>/dev/null; then
+        test_commands=(
+            "oc get clustercurator"
+            "oc get managedcluster"
+            "oc get managedclusteraction"
+            "oc get managedclusterview"
+        )
+    else
+        test_commands=(
+            "oc get ns"
+            "oc api-resources"
+        )
+    fi
     
     for cmd in "${test_commands[@]}"; do
         if eval "$cmd --help" &> /dev/null; then
@@ -253,16 +261,20 @@ validate_expected_results() {
     local results_valid=true
     local validation_details=()
     
-    # Create a test ClusterCurator to validate behavior
+    # Create a test ClusterCurator to validate behavior (feature-aware; skip if not applicable)
+    if ! grep -qi "curator\|digest\|upgrade" "$PROJECT_ROOT/02-analysis/jira-details.md" 2>/dev/null; then
+        update_validation_result "expected_results" "passed" "Non-curator story: skipping curator behavior probe"
+        print_success "Expected results validation passed (non-curator story)"
+        return 0
+    fi
+
     local test_curator_name="validation-test-$(date +%s)"
-    
-    # Create test ClusterCurator with minimal config
     cat > "/tmp/test-curator.yaml" << EOF
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ClusterCurator
 metadata:
   name: $test_curator_name
-  namespace: default
+  namespace: ocm
 spec:
   desiredCuration: "install"
   cluster:
