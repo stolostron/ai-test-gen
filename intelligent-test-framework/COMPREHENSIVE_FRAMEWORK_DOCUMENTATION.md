@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-This framework demonstrates AI-powered JIRA analysis and test plan generation. It is currently focused on ACM-22079 (ClusterCurator digest upgrades) and operating in Phase 1: Test-Plan-Only mode.
+This framework demonstrates AI-powered JIRA analysis and test plan generation. It supports any ACM JIRA Story via feature detection with team-aware overrides and is operating in Phase 1: Test-Plan-Only mode (implementation disabled). Defaults are optimized for the CLC team.
 
 - Implementation (script/code generation) is intentionally disabled for now and logged as "under development".
 - The architecture is extensible, but other JIRA tickets will need customization.
