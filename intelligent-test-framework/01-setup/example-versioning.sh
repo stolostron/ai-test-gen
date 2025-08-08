@@ -14,19 +14,19 @@ PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
 print_status() {
-    echo -e "${BLUE}[VERSIONING]${NC} $1"
+    echo -e "${BLUE}[VERSIONING]${NC} $1" >&2
 }
 
 print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo -e "${GREEN}[SUCCESS]${NC} $1" >&2
 }
 
 print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo -e "${YELLOW}[WARNING]${NC} $1" >&2
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    echo -e "${RED}[ERROR]${NC} $1" >&2
 }
 
 # Determine the next version number for a JIRA ticket
@@ -157,6 +157,7 @@ ls $example_dir/03-implementation/
 EOF
     fi
     
+    # Output only the directory path on stdout to avoid consumers mis-parsing colored logs
     echo "$example_dir"
 }
 
@@ -359,7 +360,8 @@ setup_versioned_environment() {
         
         if [ "$prev_count" -gt 1 ]; then
             print_status "Previous versions available:"
-            list_previous_versions_markdown "$jira_ticket" | sed 's/^/  /'
+            # Redirect list output to stderr to keep stdout clean for the caller
+            list_previous_versions_markdown "$jira_ticket" | sed 's/^/  /' >&2
         fi
     else
         print_error "Failed to create versioned environment"

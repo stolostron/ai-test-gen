@@ -1,0 +1,817 @@
+{
+  "execution_feedback": [
+    {
+      "execution_session": {
+        "jira_ticket": "ACM-22079",
+        "mode": "test_plan_only",
+        "config": "team-config.yaml",
+        "completed_at": "2025-08-07T17:07:10-04:00"
+      },
+      "stage_performance": {
+        "environment_setup": {
+          "status": "completed",
+          "started_at": "2025-08-07T17:07:10-04:00",
+          "completed_at": "2025-08-07T17:07:10-04:00"
+        },
+        "repository_access": {
+          "status": "completed",
+          "started_at": "2025-08-07T17:07:10-04:00",
+          "completed_at": "2025-08-07T17:07:10-04:00"
+        },
+        "ai_analysis": {
+          "status": "completed",
+          "started_at": "2025-08-07T17:07:10-04:00",
+          "completed_at": "2025-08-07T17:07:10-04:00"
+        },
+        "test_plan_generation": {
+          "status": "completed",
+          "started_at": "2025-08-07T17:07:10-04:00",
+          "completed_at": "2025-08-07T17:07:10-04:00"
+        },
+        "human_review": {
+          "status": "completed",
+          "started_at": "2025-08-07T17:07:10-04:00",
+          "completed_at": "2025-08-07T17:07:10-04:00"
+        },
+        "test_implementation": {
+          "status": "skipped",
+          "started_at": null,
+          "completed_at": null
+        },
+        "quality_validation": {
+          "status": "skipped",
+          "started_at": null,
+          "completed_at": null
+        }
+      },
+      "validation_results": {},
+      "learning_opportunities": [],
+      "user_satisfaction": null,
+      "improvement_suggestions": []
+    },
+    {
+      "execution_session": {
+        "jira_ticket": "ACM-22079",
+        "mode": "full_implementation",
+        "config": "team-config.yaml",
+        "completed_at": "2025-08-07T22:10:57-04:00"
+      },
+      "stage_performance": {
+        "environment_setup": {
+          "status": "completed",
+          "started_at": "2025-08-07T21:58:18-04:00",
+          "completed_at": "2025-08-07T21:58:29-04:00"
+        },
+        "repository_access": {
+          "status": "completed",
+          "started_at": "2025-08-07T21:58:29-04:00",
+          "completed_at": "2025-08-07T21:58:42-04:00"
+        },
+        "ai_analysis": {
+          "status": "completed",
+          "started_at": "2025-08-07T21:58:42-04:00",
+          "completed_at": "2025-08-07T22:03:31-04:00"
+        },
+        "test_plan_generation": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:03:31-04:00",
+          "completed_at": "2025-08-07T22:07:28-04:00"
+        },
+        "human_review": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:07:28-04:00",
+          "completed_at": "2025-08-07T22:07:28-04:00"
+        },
+        "test_implementation": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:07:28-04:00",
+          "completed_at": "2025-08-07T22:09:22-04:00"
+        },
+        "quality_validation": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:09:23-04:00",
+          "completed_at": "2025-08-07T22:10:57-04:00"
+        }
+      },
+      "validation_results": {
+        "validation_session": {
+          "started_at": "2025-08-07T22:03:31-04:00",
+          "jira_ticket": "ACM-22079",
+          "feature": "ClusterCurator Digest Upgrades",
+          "environment": "default"
+        },
+        "validation_stages": {
+          "feature_availability": {
+            "status": "passed",
+            "details": [
+              "ClusterCurator CRD found",
+              "ClusterCurator controller not found",
+              "ClusterCurator API available"
+            ],
+            "completed_at": "2025-08-07T22:03:32-04:00"
+          },
+          "environment_readiness": {
+            "status": "passed",
+            "details": [
+              "Cluster connectivity: OK",
+              "ACM installation: OK",
+              "Required permissions: OK",
+              "Storage classes available:        1"
+            ],
+            "completed_at": "2025-08-07T22:03:33-04:00"
+          },
+          "test_logic": {
+            "status": "failed",
+            "details": [
+              "Command valid: oc get clustercurator",
+              "Command valid: oc get managedclusters",
+              "Command valid: oc get managedclusteraction",
+              "Command valid: oc get managedclusterview",
+              "ClusterCurator creation: Invalid"
+            ],
+            "completed_at": "2025-08-07T22:03:33-04:00"
+          },
+          "expected_results": {
+            "status": "passed",
+            "details": [
+              "Test ClusterCurator creation: SUCCESS",
+              "ClusterCurator status structure: VALID"
+            ],
+            "completed_at": "2025-08-07T22:03:40-04:00"
+          }
+        },
+        "feedback_analysis": {
+          "root_cause": "test_logic: Test commands or resource definitions are invalid",
+          "recommended_actions": [
+            "Update test commands to match current API version",
+            "Verify resource schemas and required fields",
+            "Check RBAC permissions for test operations",
+            "Review API deprecations and changes"
+          ],
+          "confidence_score": 0.8,
+          "learning_insights": [
+            "test_logic failure pattern: Test commands or resource definitions are invalid"
+          ]
+        }
+      },
+      "learning_opportunities": [],
+      "user_satisfaction": null,
+      "improvement_suggestions": []
+    },
+    {
+      "execution_session": {
+        "jira_ticket": "ACM-22079",
+        "mode": "full_implementation",
+        "config": "team-config.yaml",
+        "completed_at": "2025-08-07T22:29:38-04:00"
+      },
+      "stage_performance": {
+        "environment_setup": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:15:24-04:00",
+          "completed_at": "2025-08-07T22:15:46-04:00"
+        },
+        "repository_access": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:15:46-04:00",
+          "completed_at": "2025-08-07T22:15:54-04:00"
+        },
+        "ai_analysis": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:15:54-04:00",
+          "completed_at": "2025-08-07T22:18:05-04:00"
+        },
+        "test_plan_generation": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:18:06-04:00",
+          "completed_at": "2025-08-07T22:23:00-04:00"
+        },
+        "human_review": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:23:00-04:00",
+          "completed_at": "2025-08-07T22:23:00-04:00"
+        },
+        "test_implementation": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:23:00-04:00",
+          "completed_at": "2025-08-07T22:26:35-04:00"
+        },
+        "quality_validation": {
+          "status": "completed",
+          "started_at": "2025-08-07T22:26:35-04:00",
+          "completed_at": "2025-08-07T22:29:38-04:00"
+        }
+      },
+      "validation_results": {
+        "validation_session": {
+          "started_at": "2025-08-07T22:18:06-04:00",
+          "jira_ticket": "ACM-22079",
+          "feature": "ClusterCurator Digest Upgrades",
+          "environment": "default"
+        },
+        "validation_stages": {
+          "feature_availability": {
+            "status": "passed",
+            "details": [
+              "ClusterCurator CRD found",
+              "ClusterCurator controller not found",
+              "ClusterCurator API available"
+            ],
+            "completed_at": "2025-08-07T22:18:07-04:00"
+          },
+          "environment_readiness": {
+            "status": "passed",
+            "details": [
+              "Cluster connectivity: OK",
+              "ACM installation: OK",
+              "Required permissions: OK",
+              "Storage classes available:        1"
+            ],
+            "completed_at": "2025-08-07T22:18:08-04:00"
+          },
+          "test_logic": {
+            "status": "failed",
+            "details": [
+              "Command valid: oc get clustercurator",
+              "Command valid: oc get managedclusters",
+              "Command valid: oc get managedclusteraction",
+              "Command valid: oc get managedclusterview",
+              "ClusterCurator creation: Invalid"
+            ],
+            "completed_at": "2025-08-07T22:18:08-04:00"
+          },
+          "expected_results": {
+            "status": "passed",
+            "details": [
+              "Test ClusterCurator creation: SUCCESS",
+              "ClusterCurator status structure: VALID"
+            ],
+            "completed_at": "2025-08-07T22:18:15-04:00"
+          }
+        },
+        "feedback_analysis": {
+          "root_cause": "test_logic: Test commands or resource definitions are invalid",
+          "recommended_actions": [
+            "Update test commands to match current API version",
+            "Verify resource schemas and required fields",
+            "Check RBAC permissions for test operations",
+            "Review API deprecations and changes"
+          ],
+          "confidence_score": 0.8,
+          "learning_insights": [
+            "test_logic failure pattern: Test commands or resource definitions are invalid"
+          ]
+        }
+      },
+      "learning_opportunities": [],
+      "user_satisfaction": null,
+      "improvement_suggestions": []
+    },
+    {
+      "execution_session": {
+        "jira_ticket": "ACM-22079",
+        "mode": "full_implementation",
+        "config": "team-config.yaml",
+        "completed_at": "2025-08-08T01:02:29-04:00"
+      },
+      "stage_performance": {
+        "environment_setup": {
+          "status": "completed",
+          "started_at": "2025-08-08T00:52:42-04:00",
+          "completed_at": "2025-08-08T00:52:54-04:00"
+        },
+        "repository_access": {
+          "status": "completed",
+          "started_at": "2025-08-08T00:52:54-04:00",
+          "completed_at": "2025-08-08T00:52:59-04:00"
+        },
+        "ai_analysis": {
+          "status": "completed",
+          "started_at": "2025-08-08T00:52:59-04:00",
+          "completed_at": "2025-08-08T00:55:33-04:00"
+        },
+        "test_plan_generation": {
+          "status": "completed",
+          "started_at": "2025-08-08T00:55:33-04:00",
+          "completed_at": "2025-08-08T01:01:25-04:00"
+        },
+        "human_review": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:01:25-04:00",
+          "completed_at": "2025-08-08T01:01:26-04:00"
+        },
+        "test_implementation": {
+          "status": "completed",
+          "started_at": null,
+          "completed_at": "2025-08-08T01:01:26-04:00"
+        },
+        "quality_validation": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:01:26-04:00",
+          "completed_at": "2025-08-08T01:02:29-04:00"
+        }
+      },
+      "validation_results": {
+        "validation_session": {
+          "started_at": "2025-08-08T00:55:33-04:00",
+          "jira_ticket": "ACM-22079",
+          "feature": "ClusterCurator Digest Upgrades",
+          "environment": "default"
+        },
+        "validation_stages": {
+          "feature_availability": {
+            "status": "passed",
+            "details": [
+              "ClusterCurator CRD found",
+              "ClusterCurator controller not found",
+              "ClusterCurator API available"
+            ],
+            "completed_at": "2025-08-08T00:55:34-04:00"
+          },
+          "environment_readiness": {
+            "status": "passed",
+            "details": [
+              "Cluster connectivity: OK",
+              "ACM installation: OK",
+              "Required permissions: OK",
+              "Storage classes available:        1"
+            ],
+            "completed_at": "2025-08-08T00:55:36-04:00"
+          },
+          "test_logic": {
+            "status": "failed",
+            "details": [
+              "Command valid: oc get clustercurator",
+              "Command valid: oc get managedclusters",
+              "Command valid: oc get managedclusteraction",
+              "Command valid: oc get managedclusterview",
+              "ClusterCurator creation: Invalid"
+            ],
+            "completed_at": "2025-08-08T00:55:36-04:00"
+          },
+          "expected_results": {
+            "status": "passed",
+            "details": [
+              "Test ClusterCurator creation: SUCCESS",
+              "ClusterCurator status structure: VALID"
+            ],
+            "completed_at": "2025-08-08T00:55:46-04:00"
+          }
+        },
+        "feedback_analysis": {
+          "root_cause": "test_logic: Test commands or resource definitions are invalid",
+          "recommended_actions": [
+            "Update test commands to match current API version",
+            "Verify resource schemas and required fields",
+            "Check RBAC permissions for test operations",
+            "Review API deprecations and changes"
+          ],
+          "confidence_score": 0.8,
+          "learning_insights": [
+            "test_logic failure pattern: Test commands or resource definitions are invalid"
+          ]
+        }
+      },
+      "learning_opportunities": [],
+      "user_satisfaction": null,
+      "improvement_suggestions": []
+    },
+    {
+      "execution_session": {
+        "jira_ticket": "ACM-22079",
+        "mode": "full_implementation",
+        "config": "team-config.yaml",
+        "completed_at": "2025-08-08T01:51:10-04:00"
+      },
+      "stage_performance": {
+        "environment_setup": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:32:07-04:00",
+          "completed_at": "2025-08-08T01:32:28-04:00"
+        },
+        "repository_access": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:32:28-04:00",
+          "completed_at": "2025-08-08T01:32:35-04:00"
+        },
+        "ai_analysis": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:32:35-04:00",
+          "completed_at": "2025-08-08T01:35:55-04:00"
+        },
+        "test_plan_generation": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:35:55-04:00",
+          "completed_at": "2025-08-08T01:48:49-04:00"
+        },
+        "human_review": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:48:49-04:00",
+          "completed_at": "2025-08-08T01:48:49-04:00"
+        },
+        "test_implementation": {
+          "status": "completed",
+          "started_at": null,
+          "completed_at": "2025-08-08T01:48:49-04:00"
+        },
+        "quality_validation": {
+          "status": "completed",
+          "started_at": "2025-08-08T01:48:49-04:00",
+          "completed_at": "2025-08-08T01:51:10-04:00"
+        }
+      },
+      "validation_results": {
+        "validation_session": {
+          "started_at": "2025-08-08T01:35:55-04:00",
+          "jira_ticket": "ACM-22079",
+          "feature": "ClusterCurator Digest Upgrades",
+          "environment": "default"
+        },
+        "validation_stages": {
+          "feature_availability": {
+            "status": "passed",
+            "details": [
+              "ClusterCurator CRD found",
+              "ClusterCurator controller not found",
+              "ClusterCurator API available"
+            ],
+            "completed_at": "2025-08-08T01:35:57-04:00"
+          },
+          "environment_readiness": {
+            "status": "passed",
+            "details": [
+              "Cluster connectivity: OK",
+              "ACM installation: OK",
+              "Required permissions: OK",
+              "Storage classes available:        1"
+            ],
+            "completed_at": "2025-08-08T01:36:01-04:00"
+          },
+          "test_logic": {
+            "status": "failed",
+            "details": [
+              "Command valid: oc get clustercurator",
+              "Command valid: oc get managedclusters",
+              "Command valid: oc get managedclusteraction",
+              "Command valid: oc get managedclusterview",
+              "ClusterCurator creation: Invalid"
+            ],
+            "completed_at": "2025-08-08T01:36:04-04:00"
+          },
+          "expected_results": {
+            "status": "passed",
+            "details": [
+              "Test ClusterCurator creation: SUCCESS",
+              "ClusterCurator status structure: VALID"
+            ],
+            "completed_at": "2025-08-08T01:36:18-04:00"
+          }
+        },
+        "feedback_analysis": {
+          "root_cause": "test_logic: Test commands or resource definitions are invalid",
+          "recommended_actions": [
+            "Update test commands to match current API version",
+            "Verify resource schemas and required fields",
+            "Check RBAC permissions for test operations",
+            "Review API deprecations and changes"
+          ],
+          "confidence_score": 0.8,
+          "learning_insights": [
+            "test_logic failure pattern: Test commands or resource definitions are invalid"
+          ]
+        }
+      },
+      "learning_opportunities": [],
+      "user_satisfaction": null,
+      "improvement_suggestions": []
+    }
+  ],
+  "feedback_patterns": [
+    {
+      "timestamp": "2025-08-07T21:30:49-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T22:03:33-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T22:18:08-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T22:35:53-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T22:39:47-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T22:46:13-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T22:51:24-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T23:16:50-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T23:25:36-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T23:30:00-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T23:34:41-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-07T23:51:59-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:00:40-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:08:38-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:20:51-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:30:51-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:36:53-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:42:56-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T00:55:36-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T01:36:04-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T01:58:14-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T02:04:45-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T02:47:55-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T02:57:10-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    },
+    {
+      "timestamp": "2025-08-08T03:02:18-04:00",
+      "jira_ticket": "ACM-22079",
+      "stage": "test_logic",
+      "failure_pattern": "Test commands or resource definitions are invalid",
+      "recommended_actions": [
+        "Update test commands to match current API version",
+        "Verify resource schemas and required fields",
+        "Check RBAC permissions for test operations",
+        "Review API deprecations and changes"
+      ],
+      "environment": "default"
+    }
+  ],
+  "learning_insights": []
+}

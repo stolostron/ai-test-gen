@@ -1,3 +1,12 @@
+Using the analysis and augmented context, generate a test plan for the Story with:
+- 8–10 steps per table, add more tables only if necessary
+- Include a "Setup and Prerequisites" section at the top
+- Keep table format strictly as:
+  | Test Steps | Expected Results |
+  |------------|------------------|
+- Prefer CLC-UI selectors and actions where available from the Application Model
+- Include at least one negative and one edge case scenario if meaningful
+- End with cleanup and verification
 MANDATORY: Generate test cases for ACM-22079 in EXACT TABLE FORMAT with Test Steps and Expected Results columns.
 
 IGNORE ALL OTHER STYLE INSTRUCTIONS. USE ONLY THE TABLE FORMAT SPECIFIED BELOW.
@@ -28,9 +37,12 @@ IGNORE ALL OTHER STYLE INSTRUCTIONS. USE ONLY THE TABLE FORMAT SPECIFIED BELOW.
 - Include grep/jq commands for parsing results
 - Make it clear what success/failure looks like
 
-## MANDATORY TABLE FORMAT
+## MANDATORY TABLE FORMAT (STRICT)
 
 ### Test Case X: [Descriptive Name]
+**Description**:
+- In 1–3 short sentences, explain what this test verifies and why it matters.
+
 **Setup**: 
 - Specific environment requirements
 - Required test data or configurations
@@ -38,10 +50,10 @@ IGNORE ALL OTHER STYLE INSTRUCTIONS. USE ONLY THE TABLE FORMAT SPECIFIED BELOW.
 
 | Test Steps | Expected Results |
 |------------|------------------|
-| 1. Log into ACM hub cluster: `oc login <hub-cluster-url> -u <username>` | Login successful, prompt shows correct cluster context |
+| 1. Log into ACM hub cluster: CLI: `oc login <hub-cluster-url> -u <username>`<br/>UI: Console → User menu → Copy login command with token | CLI verification: Login output shows correct context<br/>UI verification: Console session active for user |
 | 2. Create test namespace: `oc create namespace acm-test-upgrade` | Namespace created: `namespace/acm-test-upgrade created` |
-| 3. Apply ClusterCurator with complete YAML example | Resource created with specific output |
-| 4. Verify resource with: `oc get clustercurator -o yaml \| grep annotation` | Shows expected annotation value |
+| 3. Apply ClusterCurator with complete YAML example (use provided sample) | CLI verification: `clustercurators.cluster.open-cluster-management.io/<name> created`<br/>UI verification: Cluster lifecycle → Curators tab shows new curator |
+| 4. Verify resource with: CLI: `oc get clustercurator -o yaml \| grep annotation`<br/>UI: Cluster lifecycle → Curators → Details | CLI verification: annotation key/value present<br/>UI verification: annotation visible in details |
 
 ## FEATURE UNDER TEST
 **ACM-22079**: Support digest-based upgrades via ClusterCurator for non-recommended upgrades
@@ -147,5 +159,17 @@ DO GENERATE:
 - "| Test Steps | Expected Results |" format EXACTLY
 - Setup sections with bullet points
 - Clear, practical test steps
+ - Each step should include a brief 1–2 line rationale/context immediately after the command (inline in the "Expected Results" cell or as a concise note) explaining what is being validated and why
+ - For each applicable step, include BOTH variants in the same row:
+   - In the "Test Steps" cell, write: `CLI: <command>` then `<br/>UI: <short UI path>` (e.g., `Go to Search page → Enter "Kind:Pod" → Click Search`). If no UI is applicable, write `UI: N/A`.
+   - In the "Expected Results" cell, mirror the dual form: `CLI verification: ...` then `<br/>UI verification: ...` (or `UI verification: N/A`).
 
-FINAL INSTRUCTION: Output MUST contain "| Test Steps | Expected Results |" table headers. No exceptions.
+### Clarity and Simplicity Rules (OVERRIDE)
+- Prefer simple, readable commands; avoid complex regex and deeply nested jsonpath.
+- Break complex validations into multiple smaller steps (e.g., one step to list, next step to verify value).
+- Avoid ambiguous patterns like `grep -E "(cluster-[1-3])"`; state explicit criteria and show an example line of expected output.
+- When showing custom-columns/jsonpath, include a short explanation of each column and a sample output line.
+- Always provide explicit expected output (example line) when using grep/filters, not just the command.
+- Use namespace 'ocm' for hub-controller resources and examples unless clearly stated otherwise.
+
+FINAL INSTRUCTION: Output MUST contain "| Test Steps | Expected Results |" table headers. No exceptions. If you cannot produce a filled plan, output a minimal valid table with 3 executable rows.
