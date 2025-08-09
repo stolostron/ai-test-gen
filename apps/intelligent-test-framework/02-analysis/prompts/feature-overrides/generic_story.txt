@@ -1,0 +1,7 @@
+# Feature-Specific Overrides: Generic Story (Fallback)
+
+- Keep to table format and clarity rules
+- Include Description + Setup
+- Provide CLI+UI variants when meaningful; otherwise mark UI: N/A
+- Make expected results explicit with sample outputs
+- Split complex validations into simpler sequential steps

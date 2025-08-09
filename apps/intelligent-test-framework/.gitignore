@@ -1,0 +1,14 @@
+# Local run artifacts
+01-analysis/
+02-test-planning/
+03-implementation/
+04-quality/
+06-reference/
+validation-results.json
+WORKFLOW_SUMMARY_*
+# Generated models
+application-models/
+# Per-run examples ignored via nested examples/.gitignore
+examples/**
+!examples/.gitignore
+node_modules/

@@ -1,0 +1,44 @@
+{
+  "refinement_session": {
+    "started_at": "2025-08-08T14:14:42-04:00",
+    "jira_ticket": "ACM-20640",
+    "original_test_plan": "02-test-planning/test-plan.md",
+    "refinements_applied": []
+  },
+  "learning_insights": {
+    "patterns_detected": [
+      {
+        "timestamp": "2025-08-08T14:14:42-04:00",
+        "type": "test_invalid_resources",
+        "problem": "Resource definitions don't match current schema",
+        "solution": "Update resource definitions and validation logic",
+        "confidence": 0.8,
+        "source": "adaptive_analysis"
+      },
+      {
+        "timestamp": "2025-08-08T14:14:42-04:00",
+        "type": "results_status_missing",
+        "problem": "Expected status structure not found - API change",
+        "solution": "Update status validation logic for current API version",
+        "confidence": 0.8,
+        "source": "adaptive_analysis"
+      }
+    ],
+    "improvements_made": [],
+    "confidence_scores": {}
+  },
+  "next_iteration_recommendations": [
+    {
+      "source": "ai_generated",
+      "recommendation": "See ai-refinement-recommendations.md",
+      "timestamp": "2025-08-08T14:18:53-04:00",
+      "applied": false
+    },
+    {
+      "source": "ai_generated",
+      "recommendation": "See ai-refinement-recommendations.md",
+      "timestamp": "2025-08-08T14:19:54-04:00",
+      "applied": false
+    }
+  ]
+}
