@@ -1,0 +1,150 @@
+{
+  "version": "1.0",
+  "learned_patterns": [
+    {
+      "timestamp": "2025-08-07T21:30:56-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T22:03:40-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T22:18:15-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T22:36:04-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T22:46:20-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T23:16:58-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T23:30:06-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-07T23:52:10-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T00:00:47-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T00:21:00-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T00:37:00-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T00:55:47-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T01:36:18-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T01:58:25-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T02:48:06-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T14:14:42-04:00",
+      "type": "test_invalid_resources",
+      "problem": "Resource definitions don't match current schema",
+      "solution": "Update resource definitions and validation logic",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    },
+    {
+      "timestamp": "2025-08-08T14:14:42-04:00",
+      "type": "results_status_missing",
+      "problem": "Expected status structure not found - API change",
+      "solution": "Update status validation logic for current API version",
+      "confidence": 0.8,
+      "source": "adaptive_analysis"
+    }
+  ],
+  "success_strategies": [
+    {
+      "strategy": "Applied 0 prerequisite improvements",
+      "effectiveness": "high",
+      "learned_at": "2025-08-07T21:33:54-04:00",
+      "source": "adaptive_feedback"
+    }
+  ],
+  "common_failures": []
+}
