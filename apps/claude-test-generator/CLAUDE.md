@@ -691,30 +691,308 @@ Based on existing CLC test cases, follow these proven patterns:
 - **Intelligent Validation**: If validations fail, investigate environment state and proceed accordingly
 - **Flexible Approach**: Don't be too strict in validation; inform user of validation failures
 
-#### Feature Availability Analysis
-**Critical Step**: Always determine if the feature being tested is actually deployed in the validation environment.
+#### Comprehensive Feature Deployment Validation
+**CRITICAL REQUIREMENT**: Always perform thorough feature deployment validation before claiming tests can be executed.
 
-**Analysis Process:**
-1. **Version Detection**: Check deployment/pod image digests against known implementation commits
-2. **Feature Deployment Validation**: Compare target cluster's component versions with PR merge dates
-3. **Capability Assessment**: Determine what can be tested vs. what needs newer environment
-4. **Timeline Analysis**: Provide deployment status and expected availability dates
+**❌ NEVER claim "All test cases can be executed immediately" without proper validation**
+**✅ ALWAYS validate actual feature implementation in target environment**
 
-**Commands for Feature Detection:**
+**Mandatory Validation Process:**
+
+#### Phase 1: Basic Component Validation
 ```bash
-# Check component image versions
-oc get deployment <component> -n <namespace> -o jsonpath='{.spec.template.spec.containers[0].image}'
+# 1. CONTROLLER IMAGE ANALYSIS
+check_controller_deployment() {
+    local component="$1"
+    local namespace="$2"
+    
+    echo "🔍 Validating $component deployment..."
+    
+    # Get current image digest
+    CURRENT_IMAGE=$(oc get deployment $component -n $namespace -o jsonpath='{.spec.template.spec.containers[0].image}')
+    echo "Current Image: $CURRENT_IMAGE"
+    
+    # Check if digest-based (sha256) or tag-based
+    if [[ "$CURRENT_IMAGE" =~ @sha256: ]]; then
+        echo "✅ Using digest-based image"
+    else
+        echo "⚠️ Using tag-based image - may not have latest features"
+    fi
+    
+    # Extract image timestamp/version info if available
+    oc describe deployment $component -n $namespace | grep -A 5 -B 5 Image:
+}
 
-# Compare against known implementation commits
-# Use WebFetch to verify if PR commits are included in current image
+# 2. CRD SCHEMA VALIDATION
+validate_crd_schema() {
+    local crd_name="$1"
+    local feature_field="$2"
+    
+    echo "🔍 Validating CRD schema for feature support..."
+    
+    # Check if specific fields exist in CRD
+    oc get crd $crd_name -o yaml | grep -A 10 -B 10 "$feature_field" || echo "❌ Feature field not found in CRD schema"
+}
 
-# Document feature availability status in test plan
+# 3. CONTROLLER LOGS ANALYSIS
+analyze_controller_logs() {
+    local controller="$1"
+    local namespace="$2"
+    local feature_keyword="$3"
+    
+    echo "🔍 Analyzing controller logs for feature implementation..."
+    
+    # Look for feature-specific log messages
+    oc logs deployment/$controller -n $namespace --tail=100 | grep -i "$feature_keyword" || echo "❌ No feature-specific logs found"
+}
 ```
 
-**Test Plan Impact:**
-- **Feature Available**: Full validation possible, execute all test cases
-- **Feature Missing**: Document expected behavior, provide test readiness validation
-- **Partial Feature**: Identify which aspects can be tested with current deployment
+#### Phase 2: Feature-Specific Validation Tests
+```bash
+# 4. ANNOTATION RECOGNITION TEST
+test_annotation_recognition() {
+    local ticket_id="$1"
+    local annotation_key="$2"
+    local test_namespace="$3"
+    
+    echo "🧪 Testing annotation recognition..."
+    
+    # Create minimal test resource with annotation
+    cat > /tmp/feature-test.yaml <<EOF
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ClusterCurator
+metadata:
+  annotations:
+    ${annotation_key}: 'true'
+  name: feature-validation-test
+  namespace: ${test_namespace}
+spec:
+  desiredCuration: upgrade
+  upgrade:
+    desiredUpdate: 4.99.99  # Intentionally invalid to prevent actual execution
+    monitorTimeout: 1
+EOF
+    
+    # Apply and monitor controller response
+    oc apply -f /tmp/feature-test.yaml
+    sleep 10
+    
+    # Check controller logs for annotation processing
+    oc logs deployment/cluster-curator-controller -n multicluster-engine --since=30s | grep -i annotation || echo "❌ No annotation processing found"
+    
+    # Check resource status for annotation-related messages
+    oc get clustercurator feature-validation-test -n $test_namespace -o yaml | grep -A 5 -B 5 conditions
+    
+    # Cleanup
+    oc delete clustercurator feature-validation-test -n $test_namespace 2>/dev/null || true
+    rm -f /tmp/feature-test.yaml
+}
+
+# 5. FEATURE LOGIC VALIDATION
+validate_feature_logic() {
+    local feature_name="$1"
+    
+    echo "🔬 Validating feature logic implementation..."
+    
+    # Check for feature-specific code patterns in controller behavior
+    # Look for digest resolution, fallback mechanisms, etc.
+    
+    case "$feature_name" in
+        "digest-upgrade")
+            # Check for digest resolution logic
+            oc logs deployment/cluster-curator-controller -n multicluster-engine --tail=200 | grep -E "(digest|sha256|fallback)" && echo "✅ Digest logic found" || echo "❌ No digest logic detected"
+            ;;
+        "annotation-gated")
+            # Check for annotation validation logic  
+            oc logs deployment/cluster-curator-controller -n multicluster-engine --tail=200 | grep -E "(annotation|allow.*not.*recommended)" && echo "✅ Annotation gating found" || echo "❌ No annotation gating detected"
+            ;;
+        *)
+            echo "⚠️ No specific validation defined for feature: $feature_name"
+            ;;
+    esac
+}
+```
+
+#### Phase 3: Implementation Evidence Collection
+```bash
+# 6. PR/COMMIT VALIDATION
+validate_implementation_commits() {
+    local ticket_id="$1"
+    local repository="$2"
+    
+    echo "🔍 Validating implementation commits..."
+    
+    # Use WebFetch to check repository for implementation PRs
+    # Look for commits that match ticket ID or feature description
+    # Cross-reference with current deployment image timestamps
+    
+    echo "Checking repository: $repository for $ticket_id implementation..."
+    # WebFetch calls would go here to verify PR merge status and commit inclusion
+}
+
+# 7. ENVIRONMENT BUILD VERIFICATION
+verify_build_currency() {
+    local component="$1"
+    local namespace="$2"
+    
+    echo "🏗️ Verifying build currency..."
+    
+    # Check when current image was built
+    IMAGE_DIGEST=$(oc get deployment $component -n $namespace -o jsonpath='{.spec.template.spec.containers[0].image}' | cut -d@ -f2)
+    echo "Image Digest: $IMAGE_DIGEST"
+    
+    # Check image creation timestamp if available
+    oc get pods -n $namespace -l app=$component -o jsonpath='{.items[0].status.containerStatuses[0].imageID}'
+    
+    # Compare with Jenkins deployment timestamps
+    echo "Deployment timestamp comparison needed with Jenkins artifacts"
+}
+```
+
+#### Phase 4: Comprehensive Feature Assessment
+```bash
+# 8. FEATURE READINESS MATRIX
+generate_feature_readiness_assessment() {
+    local ticket_id="$1"
+    local feature_description="$2"
+    
+    echo "📊 Generating Feature Readiness Assessment for $ticket_id..."
+    
+    # Component Status
+    echo "## Component Status"
+    check_controller_deployment "cluster-curator-controller" "multicluster-engine"
+    
+    # CRD Schema
+    echo "## CRD Schema Validation"  
+    validate_crd_schema "clustercurators.cluster.open-cluster-management.io" "annotations"
+    
+    # Controller Behavior
+    echo "## Controller Behavior Analysis"
+    analyze_controller_logs "cluster-curator-controller" "multicluster-engine" "digest"
+    
+    # Feature Testing
+    echo "## Feature Recognition Testing"
+    test_annotation_recognition "$ticket_id" "cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions" "ocm"
+    
+    # Implementation Logic
+    echo "## Implementation Logic Validation"
+    validate_feature_logic "digest-upgrade"
+    
+    # Build Currency
+    echo "## Build Currency Verification"
+    verify_build_currency "cluster-curator-controller" "multicluster-engine"
+}
+```
+
+#### Phase 5: Final Deployment Status Classification
+```bash
+# 9. DEPLOYMENT STATUS CLASSIFICATION
+classify_deployment_status() {
+    local validation_results="$1"
+    
+    echo "🎯 Classifying Deployment Status..."
+    echo "📋 NOTE: Test plan generation remains comprehensive regardless of deployment status"
+    
+    # Analyze all validation results and classify:
+    
+    if [[ "$validation_results" =~ "✅.*digest.*logic.*found" ]] && 
+       [[ "$validation_results" =~ "✅.*annotation.*processing" ]] &&
+       [[ "$validation_results" =~ "✅.*feature.*recognition" ]]; then
+        echo "🟢 STATUS: FEATURE FULLY DEPLOYED"
+        echo "   ✅ Complete test plan executable immediately"
+        echo "   📋 All test cases ready for execution"
+        return 0
+    elif [[ "$validation_results" =~ "✅.*annotation.*processing" ]] &&
+         [[ "$validation_results" =~ "❌.*digest.*logic" ]]; then
+        echo "🟡 STATUS: FEATURE PARTIALLY DEPLOYED"  
+        echo "   ⚠️  Some test cases executable now, others ready for full deployment"
+        echo "   📋 Complete test plan provided for future readiness"
+        return 1
+    elif [[ "$validation_results" =~ "❌.*annotation.*processing" ]] &&
+         [[ "$validation_results" =~ "❌.*feature.*recognition" ]]; then
+        echo "🔴 STATUS: FEATURE NOT DEPLOYED"
+        echo "   📋 Complete test plan ready for post-deployment execution"
+        echo "   🎯 Test cases assume feature is fully implemented"
+        return 2
+    else
+        echo "🟠 STATUS: DEPLOYMENT STATUS UNCLEAR"
+        echo "   📋 Complete test plan provided with execution guidance"
+        echo "   ⚠️  Manual verification recommended for individual test cases"
+        return 3
+    fi
+}
+```
+
+#### Mandatory Implementation for All Tickets
+**EVERY analysis MUST include:**
+
+```bash
+# MANDATORY VALIDATION WORKFLOW
+perform_comprehensive_feature_validation() {
+    local ticket_id="$1"
+    local feature_description="$2"
+    
+    echo "🚀 Starting Comprehensive Feature Validation for $ticket_id"
+    echo "Feature: $feature_description"
+    echo "Environment: $(oc whoami --show-server)"
+    echo "Timestamp: $(date)"
+    echo "================================================"
+    
+    # Generate full assessment
+    VALIDATION_OUTPUT=$(generate_feature_readiness_assessment "$ticket_id" "$feature_description" 2>&1)
+    echo "$VALIDATION_OUTPUT"
+    
+    # Classify deployment status
+    DEPLOYMENT_STATUS=$(classify_deployment_status "$VALIDATION_OUTPUT")
+    echo "$DEPLOYMENT_STATUS"
+    
+    # Extract status code
+    STATUS_CODE=$?
+    
+    # Generate test plan recommendations
+    case $STATUS_CODE in
+        0)  echo "✅ RECOMMENDATION: Execute complete test plan immediately"
+            echo "📋 All test cases validated and ready for full execution"
+            ;;
+        1)  echo "⚠️ RECOMMENDATION: Execute available tests, complete plan ready"
+            echo "📋 Some test cases executable now, others ready for deployment"
+            echo "🎯 Complete test plan provided assuming full feature implementation"
+            ;;
+        2)  echo "📋 RECOMMENDATION: Complete test plan ready for post-deployment"
+            echo "🎯 Comprehensive test cases assume feature is fully implemented"
+            echo "✅ Test plan immediately executable when feature is deployed"
+            ;;
+        3)  echo "🔍 RECOMMENDATION: Complete test plan with execution guidance"
+            echo "📋 Comprehensive test cases provided with deployment status notes"
+            echo "⚠️ Review validation results for individual test case applicability"
+            ;;
+    esac
+    
+    return $STATUS_CODE
+}
+```
+
+**Updated Test Plan Generation Philosophy:**
+
+**🎯 ALWAYS GENERATE COMPREHENSIVE TEST PLANS**: Regardless of current deployment status, always create complete, thorough test cases that assume the feature is fully implemented. The test plan should be ready for a build that has the feature.
+
+**Test Plan Impact Classification:**
+- **🟢 FEATURE FULLY DEPLOYED**: All test cases executable immediately - proceed with full validation
+- **🟡 FEATURE PARTIALLY DEPLOYED**: Some test cases executable now, others ready for full deployment  
+- **🔴 FEATURE NOT DEPLOYED**: Complete test plan ready for post-deployment execution
+- **🟠 DEPLOYMENT STATUS UNCLEAR**: Full test plan ready, manual verification recommended
+
+**Balanced Validation Approach**: 
+- **Deployment Status**: Clearly document what can/cannot be tested in current environment
+- **Test Case Quality**: Never compromise test case comprehensiveness based on deployment status
+- **Future Readiness**: Test plans should be immediately executable when feature is deployed
+- **Value Delivery**: Provide maximum value regardless of current environment limitations
+
+**Complete-Analysis.md Requirements:**
+1. **Feature Deployment Status**: Clear assessment of current availability
+2. **Comprehensive Test Plan**: Full test cases assuming feature is implemented
+3. **Execution Guidance**: What can be tested now vs. post-deployment
+4. **Deployment Timeline**: Expected availability if known
 
 ### Cluster Validation
 **Process:**
@@ -911,13 +1189,17 @@ echo "📂 Quick access via: $RUN_DIR/latest/"
 6. **QE Integration**: Reference QE tasks and automation requirements
 7. **Feature Availability Analysis**: Always validate if feature is deployed in target environment
 
-### Workflow Execution Best Practices
+### Workflow Execution Best Practices - BALANCED VALIDATION APPROACH
 1. **Automatic Setup**: Use `source setup_clc qe6` for default environment configuration
 2. **Progress Tracking**: Use TodoWrite for all workflow stages
 3. **Comprehensive Analysis**: Don't skip subtasks or linked tickets
-4. **Error Handling**: Document limitations and environmental constraints
-5. **Dual File Generation**: Create both complete analysis and clean test-cases-only files
-6. **Feature Deployment Verification**: Always check if implementation is deployed in validation environment
+4. **FEATURE VALIDATION**: Run `perform_comprehensive_feature_validation()` to assess current deployment status
+5. **COMPREHENSIVE TEST PLANS**: ALWAYS generate complete test cases assuming feature is fully implemented
+6. **Balanced Reporting**: Document deployment status while providing maximum test plan value
+7. **Future Readiness**: Ensure test plans are immediately executable when feature is deployed
+8. **Clear Execution Guidance**: Specify what can be tested now vs. post-deployment
+9. **Error Handling**: Document limitations and environmental constraints gracefully
+10. **Dual File Generation**: Create both complete analysis and comprehensive test-cases files
 
 ## Common JIRA Ticket Types
 - **Story**: Main feature tickets (like ACM-20640)
