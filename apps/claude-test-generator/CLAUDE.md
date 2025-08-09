@@ -8,7 +8,7 @@ This is a **sophisticated AI-powered analysis engine** designed to perform human
 ## Intelligent System Overview
 **Mission:** Deploy advanced AI reasoning to understand complex software features at architectural, business, and technical levels, generating strategic test approaches that anticipate risks and optimize quality outcomes.
 **Intelligence Level:** Expert-level analysis with continuous learning and adaptation capabilities.
-**Scope:** Enterprise-scale systems with complex interdependencies, business-critical workflows, and advanced quality requirements.
+**Scope:** Universal application to any software project - enterprise systems, web applications, microservices, cloud platforms, mobile apps, and beyond. Adapts intelligence level to project complexity and domain.
 
 ## Available Tools
 - **Jira CLI**: Installed and configured for ticket analysis
@@ -105,12 +105,12 @@ The `setup_clc` script is **essential for sophisticated ACM testing** because it
 
 **🔍 CLC-Specific Intelligence & Test Repository Management:**
 
-**Why CLC Focus?** The Intelligent Test Analysis Engine is **strategically optimized for CLC (Cluster Lifecycle) testing** because:
+**Universal Project Intelligence?** The Intelligent Test Analysis Engine is **designed for any software project** with adaptive domain intelligence:
 
-1. **CLC is Mission-Critical**: Cluster lifecycle operations (create, upgrade, destroy) are the **highest-risk operations** in ACM
-2. **Complex Integration Points**: CLC touches **every ACM component** - console, backend, Hive, assisted-installer, etc.
-3. **Customer-Facing Impact**: CLC failures directly impact **customer operations and revenue**
-4. **Enterprise Complexity**: Multi-cloud, air-gapped, and enterprise-specific configurations
+1. **Domain Adaptation**: Automatically recognizes project type (web app, microservice, platform, mobile, etc.)
+2. **Technology Stack Intelligence**: Adapts to any tech stack - React, Java, Python, Go, .NET, mobile, cloud-native
+3. **Business Impact Analysis**: Understands customer/user impact regardless of industry or domain
+4. **Complexity Scaling**: Adjusts analysis depth from simple features to enterprise-scale systems
 
 **CLC Test Repository Ecosystem:**
 ```bash
@@ -459,136 +459,80 @@ design_sophisticated_test_architecture() {
 **Execution Environment**: Specific cluster and tool requirements
 
 **Prerequisites**: 
-- Environment setup with `source setup_clc qe6`
-- ACM hub cluster with [specific requirements]
-- Test data and configurations available
+- Environment and tools set up (e.g., cluster access, API auth) as applicable
+- Test data/configs available
 - Validation tools and access permissions
 
 | Test Steps (Max 8-10 for cognitive efficiency) | Expected Results (with specific validation criteria) |
 |------------|------------------|
-| **Step 1**: [Action with business context]<br/>**Goal**: [Why this step matters]<br/>**Commands**: `oc apply -f resource.yaml`<br/>**YAML Sample**: [See below] | **Success Criteria**: Specific, measurable outcome<br/>**Validation**: `oc get resource -o yaml \| grep status`<br/>**Business Impact**: [How this validates customer value] |
+| **Step 1**: [Action with business context]<br/>**Goal**: [Why this step matters]<br/>**Command**: `oc apply -f -` (stdin)<br/>Example YAML:<br/>```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  featureFlag: "enabled"
+``` | **Success Criteria**: Specific, measurable outcome<br/>Validation (example): `oc get configmap app-config -o jsonpath='{.data.featureFlag}'` → `enabled` |
 | **Step 2-10**: [Continue pattern...] | [Continue pattern...] |
 
-**Enterprise YAML Examples** (extracted from live qe6 environment):
+**Sample YAML snippets (generic, simple) to embed inline with steps:**
 
-**1. ClusterCurator with Digest-Based Upgrade (ACM-22079 feature):**
+Use these minimal examples directly inside a table cell when it helps clarify the action or expected state. Keep them short (3-10 lines).
+
+1) Small config value (ConfigMap)
 ```yaml
-# Real example from qe6 cluster (oc get clustercurator -o yaml)
-apiVersion: cluster.open-cluster-management.io/v1beta1
-kind: ClusterCurator
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: production-upgrade-digest
-  namespace: managed-cluster-ns
-  annotations:
-    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: "true"
-    # NEW: Digest-based upgrade annotation (ACM-22079)
-    cluster.open-cluster-management.io/digest-source: "disconnected-registry"
-spec:
-  desiredCuration: upgrade
-  upgrade:
-    # Traditional version-based upgrade
-    desiredUpdate: "4.15.10"
-    channel: "stable-4.15"
-    # NEW: Digest-based configuration for disconnected environments
-    digestSource:
-      registry: "registry.internal.company.com:5000"
-      digestReference: "quay.io/openshift-release-dev/ocp-release@sha256:abc123..."
-  clusterRef:
-    name: "production-cluster"
-status:
-  conditions:
-    - type: "UpgradeInProgress"
-      status: "True"
-      lastTransitionTime: "2025-01-08T10:30:00Z"
-      reason: "DigestValidationSuccessful"
+  name: app-config
+data:
+  featureFlag: "enabled"
 ```
 
-**2. ManagedCluster Resource (from actual environment):**
+2) Deployment readiness probe (fragment)
 ```yaml
-# Retrieved via: oc get managedcluster production-cluster -o yaml
-apiVersion: cluster.open-cluster-management.io/v1
-kind: ManagedCluster
-metadata:
-  name: production-cluster
-  labels:
-    cloud: "vsphere"
-    environment: "production"
-    region: "us-east-1"
-    cluster.open-cluster-management.io/clusterset: "production-set"
-spec:
-  hubAcceptsClient: true
-  leaseDurationSeconds: 60
-status:
-  conditions:
-    - type: "ManagedClusterConditionAvailable"
-      status: "True"
-      lastTransitionTime: "2025-01-08T09:15:00Z"
-      reason: "ManagedClusterAvailable"
-  version:
-    kubernetes: "v1.28.5+f1b5f6c"
-    openshift: "4.15.10"
-  allocatable:
-    cpu: "47500m"
-    memory: "191Gi"
-  capacity:
-    cpu: "48"
-    memory: "192Gi"
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
 ```
 
-**3. ClusterDeployment for Hive Integration:**
+3) Simple job/pipeline step
 ```yaml
-# From qe6: oc get clusterdeployment -n cluster-namespace -o yaml
-apiVersion: hive.openshift.io/v1
-kind: ClusterDeployment
-metadata:
-  name: enterprise-cluster-deployment
-  namespace: cluster-namespace
-  annotations:
-    hive.openshift.io/cluster-platform: "vsphere"
-spec:
-  baseDomain: "dev09.red-chesterfield.com"
-  clusterName: "enterprise-test-cluster"
-  platform:
-    vsphere:
-      credentialsSecretRef:
-        name: "vsphere-creds"
-      vCenter: "vcenter.internal.company.com"
-      datacenter: "Datacenter1"
-      defaultDatastore: "datastore1"
-  provisioning:
-    releaseImage: "quay.io/openshift-release-dev/ocp-release:4.15.10-x86_64"
-    # For digest-based deployments:
-    releaseImageDigest: "sha256:abc123def456..."
-  pullSecretRef:
-    name: "pull-secret"
-status:
-  conditions:
-    - type: "ClusterImageSetNotFound"
-      status: "False"
-      reason: "ClusterImageSetFound"
-  powerState: "Running"
+name: build
+run: npm ci && npm test
 ```
 
-**4. Application/ArgoCD Integration Example:**
+4) Minimal API payload example
 ```yaml
-# ACM Application resource for GitOps workflows
-apiVersion: app.k8s.io/v1beta1
-kind: Application
-metadata:
-  name: cluster-config-app
-  namespace: gitops-system
-  annotations:
-    apps.open-cluster-management.io/git-branch: "main"
-spec:
-  componentKinds:
-    - group: apps.open-cluster-management.io
-      kind: Subscription
-  descriptor: {}
-  selector:
-    matchExpressions:
-      - key: "cluster"
-        operator: "In"
-        values: ["production-cluster"]
+user:
+  id: 123
+  email: user@example.com
+```
+
+**Inline YAML in table cells (both columns) - examples:**
+
+```markdown
+| Test Steps | Expected Results |
+|---|---|
+| Create a readiness probe on the service deployment.<br/>Apply patch:<br/>```yaml
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+``` | Deployment becomes Ready within 30s.<br/>`kubectl get deploy svc -o jsonpath='{.status.readyReplicas}'` → `1` |
+
+| Send a POST request with payload below to /users API.<br/>Payload:<br/>```yaml
+user:
+  id: 123
+  email: user@example.com
+``` | API responds `201 Created` and returns the created user.<br/>Body contains:<br/>```yaml
+user:
+  id: 123
+  email: user@example.com
+``` |
 ```
 
 **Essential CLC-Specific CLI Commands with Expected Outputs**:
@@ -1045,85 +989,7 @@ Based on analysis of successful Polarion test cases, these patterns ensure high-
 4. **Edge case validation** (2-4 steps)
 5. **Integration testing** (1-3 steps)
 
-### 🌐 Advanced Offline-Mode Capabilities
-
-**What are Offline-Mode Capabilities?**
-The Intelligent Test Analysis Engine includes **sophisticated offline-mode support** designed for **enterprise disconnected environments** - a critical requirement for ACM clusters in air-gapped, secure, or regulatory-compliant scenarios.
-
-**Why Offline-Mode is Essential for ACM:**
-1. **Air-Gapped Enterprise Environments**: Many enterprise customers run ACM in completely disconnected networks
-2. **Regulatory Compliance**: Financial, healthcare, and government sectors require isolated testing environments  
-3. **Security-First Organizations**: Companies with strict network isolation policies
-4. **Edge Computing Scenarios**: Remote locations with limited or intermittent connectivity
-5. **Disaster Recovery Testing**: Validating cluster behavior when external connectivity is lost
-
-**Intelligent Offline-Mode Features:**
-
-**🔄 Local Knowledge Base Operations:**
-```bash
-# AI reasoning operates entirely from local patterns and knowledge
-analyze_feature_offline() {
-    # 1. LOCAL PATTERN ANALYSIS: Uses cached organizational learning data
-    # 2. OFFLINE JIRA PARSING: Analyzes local JIRA export files
-    # 3. CACHED REPOSITORY ANALYSIS: Uses local Git repository data
-    # 4. STATIC DOCUMENTATION MINING: Processes local docs and README files
-    # 5. HISTORICAL TEST SYNTHESIS: Leverages locally stored test history
-}
-```
-
-**📊 Disconnected Environment Test Generation:**
-- **Air-Gapped Cluster Scenarios**: Generate tests specifically for disconnected OpenShift clusters
-- **Local Registry Testing**: Focus on internal container registry and image management
-- **Network Isolation Validation**: Test behavior when external connectivity is unavailable
-- **Offline Upgrade Workflows**: Validate digest-based upgrades in disconnected environments
-- **Local DNS and Certificate Testing**: Internal PKI and service discovery scenarios
-
-**🏗️ Enterprise Disconnected Infrastructure Support:**
-```bash
-# Example offline-mode test scenarios automatically generated:
-
-# 1. DISCONNECTED CLUSTER CREATION
-test_disconnected_cluster_creation() {
-    # Validate cluster creation using only local/internal resources
-    # Test local registry image pulls
-    # Verify internal DNS resolution
-    # Validate certificate management without external CAs
-}
-
-# 2. AIR-GAPPED UPGRADE OPERATIONS  
-test_airgapped_digest_upgrades() {
-    # Test ACM-22079 digest-based upgrades in disconnected environments
-    # Validate local registry digest pulls
-    # Test upgrade rollback scenarios without external connectivity
-    # Verify cluster health monitoring in isolation
-}
-
-# 3. OFFLINE DISASTER RECOVERY
-test_offline_disaster_recovery() {
-    # Simulate complete network isolation scenarios
-    # Test cluster recovery with only local resources
-    # Validate backup/restore operations without external dependencies
-    # Test manual intervention workflows for isolated environments
-}
-```
-
-**🧠 Intelligent Offline Analysis Capabilities:**
-- **Local-First Intelligence**: AI operates entirely from cached knowledge and local repository analysis
-- **Pattern-Based Generation**: Uses organizational patterns stored locally from previous connected sessions  
-- **Disconnected Validation**: Generates test cases specifically for network isolation scenarios
-- **Regulatory Compliance Focus**: Emphasizes security and compliance testing for air-gapped environments
-- **Enterprise PKI Integration**: Tests internal certificate management and PKI workflows
-
-**📈 Offline-Mode Business Value:**
-- **Regulatory Compliance**: Enables testing in highly regulated environments
-- **Security Assurance**: Validates cluster behavior in security-first scenarios  
-- **Enterprise Readiness**: Ensures ACM works reliably in disconnected enterprise networks
-- **Risk Mitigation**: Tests disaster recovery and isolation scenarios
-- **Cost Optimization**: Reduces dependency on external connectivity for testing
-
-**This sophisticated offline-mode support ensures the Intelligent Test Analysis Engine delivers enterprise-grade testing capabilities even in the most restricted and secure environments.**
-
----
+<!-- Offline-mode content removed to keep the system universally applicable and simple. -->
 
 ## Framework Robustness & Best Practices
 
@@ -1234,9 +1100,8 @@ post_analysis_validation() {
    - Implement atomic file operations
 
 4. **Network Connectivity**:
-   - Detect and handle offline scenarios
-   - Cache frequently accessed data
-   - Provide offline-mode capabilities
+   - Detect connectivity issues and degrade gracefully
+   - Cache frequently accessed data where appropriate
 
 5. **Memory Management**:
    - Monitor for large file processing
