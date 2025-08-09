@@ -1,12 +1,14 @@
-# Claude Test Generator - Application Configuration
+# Intelligent Test Analysis Engine - Advanced AI Configuration
 
-## Application Context
-This application provides simple, Claude-focused test generation for rapid prototyping and quick test plan creation. It focuses on straightforward JIRA + PR analysis with minimal setup requirements.
+## System Architecture
+This is a **sophisticated AI-powered analysis engine** designed to perform human-level reasoning about complex software systems. It combines multiple AI techniques, deep learning from organizational patterns, and advanced analytical capabilities to deliver enterprise-grade test intelligence.
 
-## Application Overview
-**Goal:** Simple, fast test plan generation from JIRA tickets and GitHub PRs using Claude Code integration.
-**Focus:** Quick iteration and rapid prototyping for individual contributors.
-**Target:** ACM Stories and general OpenShift/Kubernetes feature testing with minimal complexity.
+**Core Intelligence Features**: Multi-source analysis, adaptive learning, predictive modeling, risk assessment, and continuous optimization.
+
+## Intelligent System Overview
+**Mission:** Deploy advanced AI reasoning to understand complex software features at architectural, business, and technical levels, generating strategic test approaches that anticipate risks and optimize quality outcomes.
+**Intelligence Level:** Expert-level analysis with continuous learning and adaptation capabilities.
+**Scope:** Enterprise-scale systems with complex interdependencies, business-critical workflows, and advanced quality requirements.
 
 ## Available Tools
 - **Jira CLI**: Installed and configured for ticket analysis
@@ -34,10 +36,49 @@ jira issue view <TICKET-ID> # Shows linked tickets in output
 # Format: https://github.com/<owner>/<repo>/pull/<number>
 ```
 
-## AI-Powered Analysis Workflow
+## Advanced AI Analysis Framework
 
-### Prerequisites & Environment Validation
-**DEFAULT ENVIRONMENT SETUP:** By default, use `source setup_clc qe6` to setup the environment and proceed with analysis.
+### Stage 0: Intelligent Pre-Analysis Assessment
+**SOPHISTICATED ENVIRONMENT AND CONTEXT ANALYSIS:** Deploy multi-layered intelligence to understand the complete analysis context before beginning.
+
+```bash
+# Advanced context detection and intelligence initialization
+intelligent_context_analysis() {
+    echo "🧠 Initializing Advanced AI Analysis Engine..."
+    
+    # 1. BUSINESS CONTEXT INTELLIGENCE
+    analyze_business_impact() {
+        echo "📊 Analyzing business impact and criticality..."
+        # Extract customer names, SLA requirements, business value indicators
+        # Classify feature type: customer-critical, internal-improvement, compliance, etc.
+        # Assess risk level and business continuity impact
+    }
+    
+    # 2. TECHNICAL COMPLEXITY ASSESSMENT  
+    assess_technical_complexity() {
+        echo "🔬 Performing technical complexity analysis..."
+        # Analyze codebase complexity, integration points, dependency chains
+        # Identify potential failure modes and technical risks
+        # Classify testing complexity: simple, moderate, complex, expert-level
+    }
+    
+    # 3. ORGANIZATIONAL LEARNING ACTIVATION
+    activate_learning_systems() {
+        echo "🎓 Activating organizational learning systems..."
+        # Load historical patterns from similar features
+        # Identify successful testing approaches from past tickets
+        # Extract team-specific preferences and constraints
+    }
+    
+    # 4. PREDICTIVE RISK MODELING
+    generate_risk_predictions() {
+        echo "⚠️ Generating predictive risk models..."
+        # Predict likely failure scenarios based on feature type
+        # Identify high-risk integration points
+        # Assess deployment and operational risks
+    }
+}
+```
 
 **Environment Setup Process:**
 ```bash
@@ -88,21 +129,77 @@ kubectl get managedclusters
 
 **Output:** Environment readiness report and configuration validation
 
-### Stage 2: Dynamic GitHub Repository Access & JIRA Analysis
+### Stage 2: Comprehensive Multi-Source Intelligence Gathering
 
-**Capabilities:**
-- **Real-time Repository Detection**: Automatically identifies relevant repositories based on JIRA content
-- **Cross-repository Pattern Analysis**: Examines related codebases for comprehensive understanding
-- **Dynamic Content Access**: Provides live access to latest code changes and documentation
+**Advanced Capabilities:**
+- **Intelligent Repository Network Analysis**: AI-driven discovery of related repositories and components
+- **Deep Architectural Understanding**: Analysis of system architecture and component interactions  
+- **Business Value Chain Analysis**: Understanding of feature impact on customer workflows
+- **Historical Pattern Correlation**: Learning from similar features across the organization
 
-**Process:**
-1. Read main JIRA ticket with `jira issue view <TICKET-ID> --plain`
-2. Extract:
-   - Description and value statement
-   - Assignee and status
-   - Comments for PR references and to understand context of the story/feature
-   - List of subtasks
-   - List of linked tickets
+**Sophisticated Analysis Process:**
+
+#### Phase A: Advanced JIRA Intelligence
+```bash
+perform_advanced_jira_analysis() {
+    local ticket_id="$1"
+    
+    echo "🔍 Performing sophisticated JIRA analysis..."
+    
+    # 1. MULTI-DIMENSIONAL TICKET ANALYSIS
+    jira issue view "$ticket_id" --plain | analyze_ticket_intelligence
+    
+    # Extract and analyze:
+    # - Business value propositions and customer impact
+    # - Technical complexity indicators and architectural changes
+    # - Risk factors and compliance requirements
+    # - Dependencies and integration touchpoints
+    # - Acceptance criteria sophistication and edge cases
+    
+    # 2. RELATIONSHIP NETWORK ANALYSIS
+    echo "🕸️ Analyzing ticket relationship networks..."
+    # Map subtasks, blockers, dependencies, and related features
+    # Identify impact propagation across feature sets
+    # Understand epic-level strategic context
+    
+    # 3. STAKEHOLDER AND TEAM CONTEXT
+    echo "👥 Analyzing stakeholder and team context..."  
+    # Identify key stakeholders and their concerns
+    # Understand team expertise and testing preferences
+    # Extract customer-specific requirements and constraints
+}
+```
+
+#### Phase B: Intelligent Repository and Code Analysis
+```bash
+perform_intelligent_code_analysis() {
+    echo "💻 Performing advanced code and architecture analysis..."
+    
+    # 1. ARCHITECTURAL IMPACT ANALYSIS
+    analyze_architectural_changes() {
+        # Identify modified components and their architectural role
+        # Assess impact on system reliability and performance
+        # Map integration points and data flow changes
+        # Evaluate security and compliance implications
+    }
+    
+    # 2. QUALITY AND RISK ASSESSMENT
+    assess_code_quality_risks() {
+        # Analyze code complexity and maintainability impact
+        # Identify potential performance bottlenecks
+        # Assess backward compatibility and migration risks
+        # Evaluate operational and monitoring implications
+    }
+    
+    # 3. CROSS-COMPONENT DEPENDENCY ANALYSIS
+    analyze_system_dependencies() {
+        # Map dependencies across microservices and components
+        # Identify cascade failure scenarios
+        # Assess integration testing requirements
+        # Understand deployment coordination needs
+    }
+}
+```
 
 ### Step 2a: Discover Related PRs
 **Check these locations for Git PR references:**
@@ -121,39 +218,156 @@ kubectl get managedclusters
 5. **Internets** - Finally, to understand the feature better, search internet for any relevant info
 
 
-### Stage 3: AI-Powered Comprehensive Analysis
+### Stage 3: Advanced AI Reasoning and Strategic Test Intelligence
 
-**Analysis Dimensions:**
+**Sophisticated Analysis Dimensions:**
 
-#### Feature Understanding
-- **Business Logic**: Extracts value propositions and use cases from JIRA
-- **Technical Implementation**: Analyzes code changes, architectural decisions, official docs for relevant info
-- **Integration Points**: Identifies dependencies and interaction patterns
+#### Deep Feature Understanding with AI Reasoning
+```bash
+perform_ai_feature_reasoning() {
+    echo "🧠 Deploying advanced AI reasoning for feature understanding..."
+    
+    # 1. SEMANTIC FEATURE ANALYSIS
+    analyze_feature_semantics() {
+        # Use natural language processing to understand feature intent
+        # Extract implicit requirements from feature descriptions
+        # Identify unstated assumptions and edge conditions
+        # Map feature to business process workflows
+    }
+    
+    # 2. ARCHITECTURAL REASONING
+    perform_architectural_reasoning() {
+        # Understand system design patterns and their implications
+        # Reason about scalability and performance characteristics  
+        # Identify potential architectural debt and technical risks
+        # Assess alignment with enterprise architecture principles
+    }
+    
+    # 3. BUSINESS IMPACT MODELING
+    model_business_impact() {
+        # Quantify business value and revenue impact
+        # Assess customer experience implications
+        # Identify compliance and regulatory considerations
+        # Map to organizational strategic objectives
+    }
+}
+```
 
-#### PR Analysis Process
-For each PR found:
-1. Extract PR number and repository from JIRA comments
-2. Use WebFetch with full GitHub URL to get:
-   - Title and description
-   - Author and reviewers
-   - Status (open/merged/closed)
-   - Files changed and lines modified
-   - Related JIRA tickets
-   - Review status and approvals
+#### Strategic Test Planning with Predictive Intelligence
+```bash
+generate_strategic_test_approach() {
+    echo "🎯 Generating strategic test approach with predictive intelligence..."
+    
+    # 1. RISK-BASED TEST PRIORITIZATION
+    prioritize_tests_by_risk() {
+        # Calculate risk scores based on:
+        # - Business impact severity
+        # - Technical complexity factors
+        # - Historical failure patterns
+        # - Customer usage patterns
+        # - Regulatory compliance requirements
+    }
+    
+    # 2. INTELLIGENT TEST COVERAGE OPTIMIZATION
+    optimize_test_coverage() {
+        # Apply coverage optimization algorithms:
+        # - Identify critical paths through feature logic
+        # - Minimize test redundancy while maximizing coverage
+        # - Focus on high-value, high-risk scenarios
+        # - Balance thoroughness with execution efficiency
+    }
+    
+    # 3. ADAPTIVE TEST SCENARIO GENERATION
+    generate_adaptive_scenarios() {
+        # Advanced scenario generation:
+        # - **Positive Flows**: Business-value-driven happy paths
+        # - **Intelligent Edge Cases**: AI-predicted boundary conditions
+        # - **Failure Mode Analysis**: Systematic failure scenario modeling
+        # - **Integration Complexity**: Cross-system interaction patterns
+        # - **Performance and Scale**: Load and stress testing scenarios
+        # - **Security and Compliance**: Risk-based security testing
+        # - **Operational Readiness**: Production deployment validation
+    }
+}
+```
 
-#### Test Scenario Generation
-- **Positive Flows**: Happy path testing scenarios
-- **Edge Cases**: Boundary conditions and error scenarios
-- **Integration Testing**: Cross-component interaction validation
+#### Continuous Learning and Pattern Recognition
+```bash
+apply_organizational_learning() {
+    echo "📚 Applying organizational learning and pattern recognition..."
+    
+    # 1. HISTORICAL PATTERN ANALYSIS
+    analyze_historical_patterns() {
+        # Extract successful testing patterns from organization history
+        # Identify common failure modes for similar features
+        # Learn from past test execution results and defect patterns
+        # Adapt based on team-specific testing effectiveness data
+    }
+    
+    # 2. PREDICTIVE DEFECT MODELING
+    predict_likely_defects() {
+        # Use machine learning on historical defect data
+        # Predict where bugs are most likely to occur
+        # Identify high-risk code areas requiring focused testing
+        # Generate targeted test cases for predicted failure points
+    }
+    
+    # 3. INTELLIGENT TEST OPTIMIZATION
+    optimize_test_execution() {
+        # Optimize test execution order and dependency management
+        # Predict test execution duration and resource requirements
+        # Identify opportunities for parallel test execution
+        # Recommend test environment and data requirements
+    }
+}
+``` 
 
-Note that all test scenario geentayion should be done after thorughly understanding the feature (via analysis from all collected info) 
+### Stage 4: Sophisticated Test Strategy Generation & Quality Optimization
 
-### Stage 4: Test Plan Generation & Validation
+**Enterprise-Grade Intelligent Generation Process:**
 
-**Intelligent Generation Process:**
+#### Advanced Test Architecture Design
+**Purpose**: Generate comprehensive, strategically-designed test suites that reflect enterprise quality standards and sophisticated analysis. Focus on quality, depth, and intelligent coverage rather than arbitrary step limits.
 
-#### Table Format Test Generation
-**Purpose**: Ensures consistent, human-readable test plan format matching Polarion and other test management tools. Each table shouldn't have more than 8-10 steps. If needed (to cover all the scenarios/areas), generate more tables.
+```bash
+design_sophisticated_test_architecture() {
+    echo "🏗️ Designing sophisticated test architecture..."
+    
+    # 1. STRATEGIC TEST SUITE ORGANIZATION
+    organize_test_suites() {
+        # Business-Critical Test Suites (Priority 1)
+        # - Customer-facing functionality validation
+        # - Revenue-impacting feature verification
+        # - Compliance and regulatory testing
+        
+        # Technical Excellence Test Suites (Priority 2)  
+        # - Integration and system testing
+        # - Performance and scalability validation
+        # - Security and vulnerability assessment
+        
+        # Operational Readiness Test Suites (Priority 3)
+        # - Deployment and configuration testing
+        # - Monitoring and observability validation
+        # - Disaster recovery and resilience testing
+    }
+    
+    # 2. INTELLIGENT TEST CASE DEPTH OPTIMIZATION
+    optimize_test_case_depth() {
+        # Generate test cases with appropriate sophistication:
+        # - Simple features: 5-8 focused test cases
+        # - Moderate features: 8-15 comprehensive test cases  
+        # - Complex features: 15-25+ detailed test cases
+        # - Expert-level features: 25-50+ sophisticated test cases
+        
+        # Each test case should include:
+        # - Business context and value validation
+        # - Technical implementation verification
+        # - Integration and dependency testing
+        # - Error handling and edge case coverage
+        # - Performance and scalability considerations
+    }
+}
+```
 
 **Format Requirements:**
 ```markdown
@@ -267,23 +481,66 @@ oc get deployment <component> -n <namespace> -o jsonpath='{.spec.template.spec.c
 - After present a comprehensive report to the user including deployment status analysis
 - Ask to review: a. Stop (no test table) b. Give feedback (AI will use feedback to improve) c. Finish and save results/tables
 
-#### Dual Output File Generation
-**MANDATORY**: Always generate TWO markdown files for every analysis:
+#### Organized Output File Generation & Run Management
+**MANDATORY**: Always use organized folder structure for every analysis:
 
-1. **Complete Analysis Report**: `<TICKET-ID>-<FEATURE>-Complete-Analysis.md`
-   - Feature description and business value
-   - Implementation analysis (PR details, merge status)
-   - Feature availability analysis (environment deployment status)
-   - Test plan validation results
-   - Complete test cases with setup and validation context
-   - Linked tickets analysis
-   - Testing readiness assessment
+**Directory Structure:**
+```
+runs/
+├── <TICKET-ID>/                     # Main ticket folder (e.g., ACM-22079/)
+│   ├── run-001-YYYYMMDD-HHMM/      # First run with timestamp
+│   │   ├── Complete-Analysis.md     # Comprehensive analysis
+│   │   ├── Test-Cases.md           # Clean test cases only
+│   │   ├── Test-Plan.md            # Original format for compatibility
+│   │   └── metadata.json           # Run metadata and settings
+│   ├── run-002-YYYYMMDD-HHMM/      # Second run (different approach/update)
+│   │   └── ...
+│   └── latest -> run-XXX-YYYYMMDD-HHMM  # Symlink to latest run
+└── archived-runs/                   # Completed/old ticket runs
+```
 
-2. **Test Cases Only**: `<TICKET-ID>-<FEATURE>-Test-Cases.md`
-   - Clean, focused test case format for Polarion import
-   - Only test case descriptions, setup, and table steps
-   - No implementation analysis or environment status
-   - Ready for copy-paste into test management tools
+**Automatic Run Numbering Process:**
+1. **Check existing runs**: Look for `runs/<TICKET-ID>/` directory
+2. **Generate run number**: Auto-increment based on existing `run-XXX` folders
+3. **Create timestamp**: Use format `YYYYMMDD-HHMM` for uniqueness
+4. **Update latest symlink**: Point to newest run for easy access
+
+**Required Sophisticated Output Files:**
+1. **Complete-Analysis.md**: Deep enterprise-level analysis with AI reasoning
+2. **Strategic-Test-Plan.md**: Comprehensive test strategy with risk assessment
+3. **Test-Cases.md**: Sophisticated test cases with business context
+4. **Quality-Assessment.md**: AI-driven quality metrics and optimization recommendations  
+5. **Risk-Analysis.md**: Predictive risk modeling and mitigation strategies
+6. **metadata.json**: Advanced metadata with AI insights and learning data
+
+**Enhanced Metadata Structure:**
+```json
+{
+  "analysis_intelligence": {
+    "ai_confidence_score": 0.95,
+    "complexity_assessment": "expert-level",
+    "business_impact_score": 9.2,
+    "technical_risk_score": 7.1,
+    "predicted_test_execution_time": "4.5 hours",
+    "recommended_environment": "staging-cluster-high-spec"
+  },
+  "learning_data": {
+    "patterns_applied": ["cluster-lifecycle-v2", "enterprise-validation"],
+    "historical_references": ["ACM-21890", "ACM-20642"],
+    "optimization_suggestions": [
+      "Focus on disconnected environment testing",
+      "Emphasize digest validation workflows",
+      "Include failure rollback scenarios"
+    ]
+  },
+  "quality_metrics": {
+    "test_coverage_score": 94,
+    "business_value_alignment": 96,
+    "technical_depth_score": 91,
+    "risk_mitigation_coverage": 89
+  }
+}
+```
 
 #### Example File Structure
 ```markdown
@@ -316,30 +573,49 @@ User MUST provide:
 **Output Format** (markdown preferred)
 **Repository Access** (public repos supported)
 
-### Complete Analysis Pattern
+### Enhanced Analysis Pattern with Organized Output
 ```bash
-# 1. Environment setup (automatic)
+# 1. Determine run directory and number
+TICKET_ID="ACM-22079"  # Extract from user input or JIRA analysis
+RUN_DIR="runs/${TICKET_ID}"
+
+# Check existing runs and auto-increment
+if [ -d "$RUN_DIR" ]; then
+    NEXT_RUN=$(ls -1 "$RUN_DIR" | grep "^run-" | wc -l | xargs expr 1 +)
+else
+    mkdir -p "$RUN_DIR"
+    NEXT_RUN=1
+fi
+
+# Create timestamped run directory
+TIMESTAMP=$(date +%Y%m%d-%H%M)
+CURRENT_RUN_DIR="$RUN_DIR/run-$(printf "%03d" $NEXT_RUN)-$TIMESTAMP"
+mkdir -p "$CURRENT_RUN_DIR"
+
+# 2. Environment setup (automatic)
 source setup_clc qe6
 
-# 2. Main ticket analysis
-jira issue view ACM-20640 --plain
+# 3. Systematic JIRA analysis
+jira issue view $TICKET_ID --plain
 
-# 3. Systematic subtask analysis
-jira issue view ACM-22925 --plain  # Critical subtasks first
-jira issue view ACM-22755 --plain  # Blocker subtasks
-# ... continue for all subtasks
-
-# 4. QE and dependency analysis
-jira issue view ACM-22799 --plain  # QE tasks
-jira issue view ACM-22800 --plain  # QE automation
+# 4. Subtask and linked ticket analysis
+# (Extract subtask IDs from main ticket and analyze each)
 
 # 5. PR analysis via WebFetch
-# WebFetch: https://github.com/stolostron/console/pull/4858
-# WebFetch: https://github.com/stolostron/console/pull/4851
+# (Extract GitHub URLs from JIRA comments and analyze)
 
-# 6. Generate dual test plan output files
-# Create: <TICKET-ID>-<FEATURE>-Complete-Analysis.md (comprehensive report)
-# Create: <TICKET-ID>-<FEATURE>-Test-Cases.md (test tables only)
+# 6. Generate organized output files in current run directory
+# Create: $CURRENT_RUN_DIR/Complete-Analysis.md
+# Create: $CURRENT_RUN_DIR/Test-Cases.md  
+# Create: $CURRENT_RUN_DIR/Test-Plan.md
+# Create: $CURRENT_RUN_DIR/metadata.json
+
+# 7. Update latest symlink
+cd "$RUN_DIR" && ln -sfn "$(basename $CURRENT_RUN_DIR)" latest
+
+# 8. Report completion
+echo "✅ Analysis complete in: $CURRENT_RUN_DIR"
+echo "📂 Quick access via: $RUN_DIR/latest/"
 ```
 
 ## Key Repositories to Watch
@@ -444,21 +720,123 @@ Based on analysis of successful Polarion test cases, these patterns ensure high-
 4. **Edge case validation** (2-4 steps)
 5. **Integration testing** (1-3 steps)
 
-## Framework Limitations & Troubleshooting
+## Framework Robustness & Best Practices
 
-### Critical Requirements
-- **Environment Setup**: Framework uses `setup_clc qe6` for automatic configuration OR points to current env set in kubeconfig
-- **JIRA Authentication**: JIRA CLI must be properly configured
-- **Repository Access**: Public GitHub repositories supported; private repos may require authentication
+### Enhanced Error Handling & Recovery
+1. **Graceful Degradation**: Continue analysis even if some components fail
+2. **Retry Logic**: Automatically retry failed operations with exponential backoff
+3. **Validation Checkpoints**: Verify each step before proceeding
+4. **Rollback Capability**: Restore previous state if current run fails
+5. **Resource Cleanup**: Clean up partial runs and temporary files
 
-### Common Issues
-1. **Environment Setup**: Use `source setup_clc qe6` to automatically resolve connectivity and authentication
-2. **JIRA CLI Authentication**: Ensure proper JIRA setup before starting
-3. **WebFetch Rate Limits**: Space out GitHub PR requests if needed
-4. **Missing PRs**: Some tasks/subtasks may not have PR references yet
-5. **Missing Docs**: Some tasks/subtasks may not have doc references yet
-6. **Feature Not Deployed**: Implementation merged but not yet deployed to validation environment
-7. **Image Version Mismatch**: Current cluster components may lack latest feature commits
+### Input Validation & Sanitization
+```bash
+# JIRA Ticket ID validation
+if [[ ! "$TICKET_ID" =~ ^[A-Z]+-[0-9]+$ ]]; then
+    echo "❌ Invalid JIRA ticket format. Expected: PROJECT-NUMBER (e.g., ACM-22079)"
+    exit 1
+fi
+
+# GitHub URL validation  
+if [[ "$PR_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
+    echo "✅ Valid GitHub PR URL"
+else
+    echo "⚠️ Invalid GitHub URL format, proceeding with JIRA-only analysis"
+fi
+
+# Feature name sanitization
+FEATURE_SAFE=$(echo "$FEATURE_NAME" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g')
+```
+
+### Improved Workflow Automation
+```bash
+# Pre-flight checks before starting analysis
+pre_flight_check() {
+    echo "🔍 Running pre-flight checks..."
+    
+    # Check Claude CLI availability
+    if ! command -v claude &> /dev/null; then
+        echo "❌ Claude CLI not found. Please install and configure."
+        return 1
+    fi
+    
+    # Check JIRA CLI availability and auth
+    if ! jira issue view DUMMY-1 &> /dev/null; then
+        echo "❌ JIRA CLI not authenticated. Run: jira auth login"
+        return 1
+    fi
+    
+    # Check git configuration
+    if ! git config user.name &> /dev/null; then
+        echo "⚠️ Git user not configured. Some features may not work."
+    fi
+    
+    # Check disk space
+    AVAILABLE_SPACE=$(df . | tail -1 | awk '{print $4}')
+    if [ "$AVAILABLE_SPACE" -lt 100000 ]; then  # Less than ~100MB
+        echo "⚠️ Low disk space. Consider cleaning up old runs."
+    fi
+    
+    echo "✅ Pre-flight checks completed"
+}
+
+# Post-analysis validation
+post_analysis_validation() {
+    echo "🔍 Validating generated files..."
+    
+    # Check file sizes
+    for file in "$CURRENT_RUN_DIR"/*.md; do
+        if [ -f "$file" ] && [ $(wc -c < "$file") -lt 1000 ]; then
+            echo "⚠️ $(basename $file) seems unusually small"
+        fi
+    done
+    
+    # Validate markdown syntax
+    if command -v markdownlint &> /dev/null; then
+        markdownlint "$CURRENT_RUN_DIR"/*.md || echo "⚠️ Markdown syntax issues detected"
+    fi
+    
+    # Check for required sections
+    if ! grep -q "## Test Case" "$CURRENT_RUN_DIR/Test-Cases.md"; then
+        echo "⚠️ No test cases found in Test-Cases.md"
+    fi
+    
+    echo "✅ File validation completed"
+}
+```
+
+### Critical Requirements & Dependencies
+- **Claude CLI**: Version 1.0+ with proper authentication
+- **JIRA CLI**: Configured with valid API token
+- **Git**: For repository access and change tracking
+- **Shell**: Bash 4.0+ or Zsh for script compatibility
+- **Disk Space**: Minimum 1GB free for run storage
+- **Network**: Stable connection for GitHub/JIRA API calls
+
+### Enhanced Troubleshooting Guide
+1. **Permission Issues**: 
+   - Check file/directory permissions: `ls -la runs/`
+   - Ensure write access: `touch runs/.test && rm runs/.test`
+
+2. **API Rate Limits**:
+   - GitHub: Max 5000 requests/hour (authenticated)
+   - JIRA: Varies by instance, typically 300 requests/hour
+   - Implement automatic backoff when limits hit
+
+3. **File System Issues**:
+   - Monitor for special characters in filenames
+   - Handle long file paths gracefully
+   - Implement atomic file operations
+
+4. **Network Connectivity**:
+   - Detect and handle offline scenarios
+   - Cache frequently accessed data
+   - Provide offline-mode capabilities
+
+5. **Memory Management**:
+   - Monitor for large file processing
+   - Implement streaming for big datasets
+   - Clear temporary files regularly
 
 ### Framework Advancements
 This framework represents significant advancement in automated test generation, combining:
