@@ -1,10 +1,12 @@
-# Claude Configuration
+# Claude Configuration - AI Test Generation Suite
 
-## Custom Slash Commands
+> **Global Claude slash commands for the AI Test Generation Suite**
 
-### QE Test Plan Generator
+## 🎯 Global Slash Commands
 
-#### /generate-e2e-test-plan
+These commands work from anywhere in the repository and provide quick access to common test generation workflows.
+
+### /generate-e2e-test-plan
 
 **Description:** Generate a formal E2E test plan for Red Hat ACM features based on PR specifications and JIRA requirements.
 
@@ -51,9 +53,7 @@ After generating the test plan table, save it to a file named: e2e-test-generate
 where {FEATURE_NAME_SANITIZED} is the feature name with spaces replaced by hyphens and special characters removed.
 ```
 
-### Generic Workflow Analyzer
-
-#### /analyze-workflow
+### /analyze-workflow
 
 **Description:** Analyze JIRA issues, PRs, and related documentation for any workflow task.
 
@@ -74,3 +74,58 @@ where {FEATURE_NAME_SANITIZED} is the feature name with spaces replaced by hyphe
 4. Perform {ACTION_TYPE} analysis based on gathered information
 5. Generate appropriate output format for the requested action type
 ```
+
+## 🏗️ Application-Specific Configurations
+
+For more advanced workflows and application-specific configurations, navigate to the appropriate application:
+
+### Claude Test Generator
+**Location:** `apps/claude-test-generator/`
+**Claude Config:** `apps/claude-test-generator/CLAUDE.md`
+**Best For:** Simple test generation with Claude slash commands
+
+### Intelligent Test Framework  
+**Location:** `apps/intelligent-test-framework/`
+**Documentation:** `apps/intelligent-test-framework/README.md`
+**Best For:** Advanced AI-powered comprehensive test generation
+
+## 🎯 Quick Navigation
+
+```bash
+# Use global commands from anywhere
+/generate-e2e-test-plan https://github.com/repo/pull/123 "Feature Name"
+
+# For simple Claude-focused generation
+cd apps/claude-test-generator
+
+# For advanced AI-powered generation
+cd apps/intelligent-test-framework
+```
+
+## 📋 Global Prerequisites
+
+- **Claude Code CLI** configured and authenticated
+- **GitHub access** to relevant repositories
+- **Repository structure** familiarity (see root README.md)
+
+## 🔄 Command Workflow Integration
+
+The global commands integrate with both applications:
+
+1. **Quick Generation**: Use global commands for immediate results
+2. **Simple Workflows**: Navigate to `claude-test-generator` for extended simple workflows
+3. **Advanced Analysis**: Navigate to `intelligent-test-framework` for comprehensive AI analysis
+
+## 📚 Documentation Hierarchy
+
+```
+Root CLAUDE.md (this file)          # Global slash commands
+├── apps/claude-test-generator/      
+│   └── CLAUDE.md                   # App-specific Claude config
+└── apps/intelligent-test-framework/
+    └── README.md                   # Advanced framework docs
+```
+
+---
+
+**This configuration provides global access to common test generation workflows while maintaining clean separation between simple and advanced application-specific features.**

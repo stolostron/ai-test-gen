@@ -80,27 +80,84 @@ intelligent_context_analysis() {
 }
 ```
 
-**Environment Setup Process:**
+**Enterprise Environment Setup Process:**
 ```bash
-# Default setup command
+# Intelligent environment setup with ACM cluster auto-discovery
 source setup_clc qe6
 
-# This automatically:
-# - Fetches latest successful deployment from Jenkins
-# - Configures kubectl/oc access to qe6 environment  
-# - Sets up ACM console environment variables
-# - Logs into OpenShift cluster
+# The setup_clc script provides sophisticated environment management:
+# 1. JENKINS INTEGRATION: Fetches latest successful deployment from ACM Jenkins CI/CD
+# 2. CLUSTER AUTO-LOGIN: Automatically logs into OpenShift cluster with deployment credentials  
+# 3. ACM ENVIRONMENT DISCOVERY: Auto-detects ACM/MCE namespaces and versions
+# 4. CLC REPOSITORY DETECTION: Finds and configures CLC test repositories automatically
+# 5. DEPENDENCY MANAGEMENT: Sets up npm dependencies and browserslist updates
+# 6. ENVIRONMENT VALIDATION: Validates cluster access and prerequisite tools
 ```
 
-**Setup Script Details:**
-- **Script Location**: `/Users/ashafi/bin/setup_clc`
-- **Purpose**: CLC Cypress Environment Setup for ACM testing
-- **Capabilities**: 
-  - Auto-fetch deployment info from Jenkins API
-  - Support for multiple environments (qe6, qe7, qe8, qe9, qe10)
-  - Automatic OpenShift login with deployment credentials
-  - Environment variable export for Cypress testing
-  - CLC repository detection and npm setup
+**Why setup_clc? - Enterprise Testing Intelligence:**
+The `setup_clc` script is **essential for sophisticated ACM testing** because it:
+
+**🏗️ Infrastructure Automation:**
+- **Auto-fetches deployment credentials** from Jenkins CI/CD pipeline artifacts
+- **Maps environment names** (qe6, qe7, qe8, qe9, qe10) to actual cluster deployments
+- **Handles authentication complexity** with multiple auth methods (user/pass, tokens)
+- **Manages cluster API endpoints** and console URLs automatically
+
+**🔍 CLC-Specific Intelligence & Test Repository Management:**
+
+**Why CLC Focus?** The Intelligent Test Analysis Engine is **strategically optimized for CLC (Cluster Lifecycle) testing** because:
+
+1. **CLC is Mission-Critical**: Cluster lifecycle operations (create, upgrade, destroy) are the **highest-risk operations** in ACM
+2. **Complex Integration Points**: CLC touches **every ACM component** - console, backend, Hive, assisted-installer, etc.
+3. **Customer-Facing Impact**: CLC failures directly impact **customer operations and revenue**
+4. **Enterprise Complexity**: Multi-cloud, air-gapped, and enterprise-specific configurations
+
+**CLC Test Repository Ecosystem:**
+```bash
+# PRIMARY TEST REPOSITORIES (Auto-detected by setup_clc):
+
+~/Documents/work/automation/clc-ui/          # CLC UI E2E Tests (Cypress)
+├── cypress/
+│   ├── integration/                        # Main test suites
+│   │   ├── create-cluster/                # Cluster creation workflows
+│   │   ├── upgrade-cluster/               # Cluster upgrade scenarios  
+│   │   ├── destroy-cluster/               # Cluster destruction flows
+│   │   └── import-cluster/                # Cluster import processes
+│   ├── fixtures/                          # Test data and configurations
+│   └── support/                           # Common utilities and helpers
+
+~/Documents/work/automation/clc-non-ui/     # CLC Backend/API Tests (Go)
+├── pkg/
+│   ├── clusterlifecycle/                  # Core CLC API testing
+│   ├── clustercurator/                    # ClusterCurator controller tests
+│   └── integration/                       # Cross-component integration tests
+
+~/Documents/work/automation/alc-ui/         # Application Lifecycle Tests
+├── tests/                                 # Application-focused test suites
+└── cypress/                               # UI automation for app workflows
+```
+
+**How the System Knows Where Tests Are:**
+The intelligent system uses **multi-layer test discovery**:
+
+1. **Repository Auto-Detection**: `setup_clc` script automatically finds CLC repos
+2. **Git Remote Analysis**: Validates repositories by checking Git remotes for `stolostron/clc*` patterns
+3. **Test Pattern Recognition**: Analyzes existing test structures to understand team patterns
+4. **Environment Integration**: Connects test locations with deployment environments (qe6, qe7, etc.)
+
+**Strategic CLC Focus Benefits:**
+- **Domain Expertise**: Deep understanding of CLC-specific testing challenges
+- **Pattern Recognition**: Learning from extensive CLC test history and patterns  
+- **Integration Intelligence**: Knowledge of CLC dependencies and failure modes
+- **Enterprise Scenarios**: Specialized handling of disconnected, air-gapped, and enterprise clusters
+
+**📊 Enterprise QE Workflow Integration:**
+- **Jenkins API Integration**: Direct connection to ACM QE Jenkins pipelines
+- **Multi-Environment Support**: Seamless switching between QE environments
+- **Credential Management**: Secure handling of cluster credentials and tokens
+- **Team Collaboration**: Standardized environment setup across QE team
+
+**This is why we use `setup_clc qe6` instead of manual setup** - it provides enterprise-grade automation for the complex ACM testing infrastructure.
 
 **Environment Validation Commands:**
 ```bash
@@ -326,47 +383,315 @@ apply_organizational_learning() {
 
 **Enterprise-Grade Intelligent Generation Process:**
 
-#### Advanced Test Architecture Design
-**Purpose**: Generate comprehensive, strategically-designed test suites that reflect enterprise quality standards and sophisticated analysis. Focus on quality, depth, and intelligent coverage rather than arbitrary step limits.
+#### Sophisticated Test Architecture Design with Intelligent Table Structure
+**Purpose**: Generate comprehensive, strategically-designed test suites with **optimal table organization**. Each test case table contains **8-10 steps maximum** for cognitive efficiency, with multiple tables generated as needed to achieve complete coverage.
 
 ```bash
 design_sophisticated_test_architecture() {
-    echo "🏗️ Designing sophisticated test architecture..."
+    echo "🏗️ Designing sophisticated test architecture with intelligent table structure..."
     
-    # 1. STRATEGIC TEST SUITE ORGANIZATION
-    organize_test_suites() {
-        # Business-Critical Test Suites (Priority 1)
-        # - Customer-facing functionality validation
-        # - Revenue-impacting feature verification
-        # - Compliance and regulatory testing
+    # 1. INTELLIGENT TABLE ORGANIZATION STRATEGY
+    organize_test_tables() {
+        # COGNITIVE LOAD OPTIMIZATION: Maximum 8-10 steps per table
+        # - Human attention span: 7±2 items (Miller's Law)
+        # - Polarion import efficiency: Tables under 10 steps
+        # - Test execution focus: Single logical workflow per table
         
-        # Technical Excellence Test Suites (Priority 2)  
-        # - Integration and system testing
-        # - Performance and scalability validation
-        # - Security and vulnerability assessment
+        # BUSINESS-CRITICAL TEST SUITES (Priority 1)
+        generate_business_critical_tables() {
+            # Table 1: Core Feature Validation (8-10 steps)
+            # Table 2: Customer Impact Scenarios (8-10 steps)  
+            # Table 3: Revenue Protection Workflows (8-10 steps)
+            # Table 4: Compliance Verification (8-10 steps)
+        }
         
-        # Operational Readiness Test Suites (Priority 3)
-        # - Deployment and configuration testing
-        # - Monitoring and observability validation
-        # - Disaster recovery and resilience testing
+        # TECHNICAL EXCELLENCE TEST SUITES (Priority 2)
+        generate_technical_excellence_tables() {
+            # Table 5: Integration Testing (8-10 steps)
+            # Table 6: Performance Validation (8-10 steps)
+            # Table 7: Security Assessment (8-10 steps)
+            # Table 8: Error Handling & Edge Cases (8-10 steps)
+        }
+        
+        # OPERATIONAL READINESS TEST SUITES (Priority 3)
+        generate_operational_readiness_tables() {
+            # Table 9: Deployment Verification (8-10 steps)
+            # Table 10: Monitoring & Observability (8-10 steps)
+            # Table 11: Disaster Recovery (8-10 steps)
+            # Table 12: Scalability Testing (8-10 steps)
+        }
     }
     
     # 2. INTELLIGENT TEST CASE DEPTH OPTIMIZATION
     optimize_test_case_depth() {
-        # Generate test cases with appropriate sophistication:
-        # - Simple features: 5-8 focused test cases
-        # - Moderate features: 8-15 comprehensive test cases  
-        # - Complex features: 15-25+ detailed test cases
-        # - Expert-level features: 25-50+ sophisticated test cases
+        # DYNAMIC COMPLEXITY-BASED TABLE GENERATION:
         
-        # Each test case should include:
-        # - Business context and value validation
-        # - Technical implementation verification
-        # - Integration and dependency testing
-        # - Error handling and edge case coverage
-        # - Performance and scalability considerations
+        # Simple Features (5-8 tables total):
+        # - 1-2 Business validation tables
+        # - 2-3 Technical verification tables  
+        # - 1-2 Operational readiness tables
+        
+        # Moderate Features (8-15 tables total):
+        # - 3-4 Business validation tables
+        # - 5-7 Technical verification tables
+        # - 3-4 Operational readiness tables
+        
+        # Complex Features (15-25 tables total):
+        # - 5-7 Business validation tables
+        # - 8-12 Technical verification tables
+        # - 5-8 Operational readiness tables
+        
+        # Expert-Level Features (25-50 tables total):
+        # - 8-12 Business validation tables
+        # - 12-25 Technical verification tables
+        # - 8-15 Operational readiness tables
     }
 }
+```
+
+**Sophisticated Table Structure Format:**
+```markdown
+### Test Case N: [Business Context] - [Technical Focus]
+
+**Business Value**: Clear statement of customer/business impact
+**Technical Scope**: Specific technical components and integration points  
+**Risk Level**: High/Medium/Low based on business impact analysis
+**Execution Environment**: Specific cluster and tool requirements
+
+**Prerequisites**: 
+- Environment setup with `source setup_clc qe6`
+- ACM hub cluster with [specific requirements]
+- Test data and configurations available
+- Validation tools and access permissions
+
+| Test Steps (Max 8-10 for cognitive efficiency) | Expected Results (with specific validation criteria) |
+|------------|------------------|
+| **Step 1**: [Action with business context]<br/>**Goal**: [Why this step matters]<br/>**Commands**: `oc apply -f resource.yaml`<br/>**YAML Sample**: [See below] | **Success Criteria**: Specific, measurable outcome<br/>**Validation**: `oc get resource -o yaml \| grep status`<br/>**Business Impact**: [How this validates customer value] |
+| **Step 2-10**: [Continue pattern...] | [Continue pattern...] |
+
+**Enterprise YAML Examples** (extracted from live qe6 environment):
+
+**1. ClusterCurator with Digest-Based Upgrade (ACM-22079 feature):**
+```yaml
+# Real example from qe6 cluster (oc get clustercurator -o yaml)
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ClusterCurator
+metadata:
+  name: production-upgrade-digest
+  namespace: managed-cluster-ns
+  annotations:
+    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: "true"
+    # NEW: Digest-based upgrade annotation (ACM-22079)
+    cluster.open-cluster-management.io/digest-source: "disconnected-registry"
+spec:
+  desiredCuration: upgrade
+  upgrade:
+    # Traditional version-based upgrade
+    desiredUpdate: "4.15.10"
+    channel: "stable-4.15"
+    # NEW: Digest-based configuration for disconnected environments
+    digestSource:
+      registry: "registry.internal.company.com:5000"
+      digestReference: "quay.io/openshift-release-dev/ocp-release@sha256:abc123..."
+  clusterRef:
+    name: "production-cluster"
+status:
+  conditions:
+    - type: "UpgradeInProgress"
+      status: "True"
+      lastTransitionTime: "2025-01-08T10:30:00Z"
+      reason: "DigestValidationSuccessful"
+```
+
+**2. ManagedCluster Resource (from actual environment):**
+```yaml
+# Retrieved via: oc get managedcluster production-cluster -o yaml
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: production-cluster
+  labels:
+    cloud: "vsphere"
+    environment: "production"
+    region: "us-east-1"
+    cluster.open-cluster-management.io/clusterset: "production-set"
+spec:
+  hubAcceptsClient: true
+  leaseDurationSeconds: 60
+status:
+  conditions:
+    - type: "ManagedClusterConditionAvailable"
+      status: "True"
+      lastTransitionTime: "2025-01-08T09:15:00Z"
+      reason: "ManagedClusterAvailable"
+  version:
+    kubernetes: "v1.28.5+f1b5f6c"
+    openshift: "4.15.10"
+  allocatable:
+    cpu: "47500m"
+    memory: "191Gi"
+  capacity:
+    cpu: "48"
+    memory: "192Gi"
+```
+
+**3. ClusterDeployment for Hive Integration:**
+```yaml
+# From qe6: oc get clusterdeployment -n cluster-namespace -o yaml
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: enterprise-cluster-deployment
+  namespace: cluster-namespace
+  annotations:
+    hive.openshift.io/cluster-platform: "vsphere"
+spec:
+  baseDomain: "dev09.red-chesterfield.com"
+  clusterName: "enterprise-test-cluster"
+  platform:
+    vsphere:
+      credentialsSecretRef:
+        name: "vsphere-creds"
+      vCenter: "vcenter.internal.company.com"
+      datacenter: "Datacenter1"
+      defaultDatastore: "datastore1"
+  provisioning:
+    releaseImage: "quay.io/openshift-release-dev/ocp-release:4.15.10-x86_64"
+    # For digest-based deployments:
+    releaseImageDigest: "sha256:abc123def456..."
+  pullSecretRef:
+    name: "pull-secret"
+status:
+  conditions:
+    - type: "ClusterImageSetNotFound"
+      status: "False"
+      reason: "ClusterImageSetFound"
+  powerState: "Running"
+```
+
+**4. Application/ArgoCD Integration Example:**
+```yaml
+# ACM Application resource for GitOps workflows
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: cluster-config-app
+  namespace: gitops-system
+  annotations:
+    apps.open-cluster-management.io/git-branch: "main"
+spec:
+  componentKinds:
+    - group: apps.open-cluster-management.io
+      kind: Subscription
+  descriptor: {}
+  selector:
+    matchExpressions:
+      - key: "cluster"
+        operator: "In"
+        values: ["production-cluster"]
+```
+
+**Essential CLC-Specific CLI Commands with Expected Outputs**:
+
+**1. Environment Discovery & Validation:**
+```bash
+# ACM/MCE namespace auto-discovery (from setup_clc)
+export ACM_NS=$(oc get subscriptions.operators.coreos.com -A -o json | jq -r '.items[] | select(.spec.name=="advanced-cluster-management").metadata.namespace')
+export MCE_NS=$(oc get mce -ojsonpath="{.items[0].spec.targetNamespace}")
+
+echo "ACM Namespace: $ACM_NS"    # Expected: "open-cluster-management" or custom
+echo "MCE Namespace: $MCE_NS"    # Expected: "multicluster-engine" or custom
+
+# Cluster connectivity validation
+oc whoami --show-server
+# Expected: https://api.qe6-vmware-ibm.install.dev09.red-chesterfield.com:6443
+
+oc get clusterversion
+# Expected: 
+# NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
+# version   4.15.10   True        False         5d      Cluster version is 4.15.10
+```
+
+**2. ACM Component Status Verification:**
+```bash
+# ACM Hub Status
+oc get multiclusterhub -n $ACM_NS
+# Expected:
+# NAME                STATUS    AGE
+# multiclusterhub     Running   25d
+
+# MCE Engine Status  
+oc get multiclusterengine -n $MCE_NS
+# Expected:
+# NAME                        STATUS      AGE
+# multiclusterengine-sample   Available   25d
+
+# Managed Cluster Inventory
+oc get managedclusters
+# Expected:
+# NAME              HUB ACCEPTED   MANAGED CLUSTER URLS                                            JOINED   AVAILABLE   AGE
+# local-cluster     true           https://api.qe6-vmware-ibm.install.dev09.red-chesterfield.com   True     True        25d
+# spoke-cluster-1   true           https://api.spoke1.company.com:6443                             True     True        10d
+```
+
+**3. CLC Operations Monitoring:**
+```bash
+# ClusterCurator Status (Upgrade Operations)
+oc get clustercurator -A -o wide
+# Expected:
+# NAMESPACE        NAME                     CURATION   STATUS        AGE
+# cluster-ns-1     production-upgrade       upgrade    InProgress    15m
+# cluster-ns-2     staging-upgrade          upgrade    Succeeded     2h
+
+# ClusterDeployment Status (Creation Operations)
+oc get clusterdeployment -A
+# Expected:
+# NAMESPACE      NAME                    PLATFORM   REGION      AGE
+# spoke-ns-1     new-cluster-deploy      vsphere    us-east-1   45m
+# spoke-ns-2     backup-cluster-deploy   aws        us-west-2   2h
+
+# Hive ClusterImageSet Availability
+oc get clusterimageset
+# Expected:
+# NAME                      RELEASE
+# img4.15.10-x86-64         quay.io/openshift-release-dev/ocp-release:4.15.10-x86_64
+# img4.14.15-x86-64         quay.io/openshift-release-dev/ocp-release:4.14.15-x86_64
+```
+
+**4. Digest-Based Upgrade Verification (ACM-22079):**
+```bash
+# Verify digest annotation support  
+oc get clustercurator production-upgrade -o jsonpath='{.metadata.annotations.cluster\.open-cluster-management\.io/digest-source}'
+# Expected: "disconnected-registry" (if digest-based) or empty (if version-based)
+
+# Check digest validation status
+oc get clustercurator production-upgrade -o jsonpath='{.status.conditions[?(@.type=="DigestValidationSuccessful")].status}'
+# Expected: "True" (success) or "False" (failure)
+
+# Monitor upgrade progress with digest details
+oc describe clustercurator production-upgrade | grep -A 5 -B 5 digest
+# Expected: Event logs showing digest validation and download progress
+```
+
+**5. Troubleshooting & Debug Commands:**
+```bash
+# ClusterCurator Controller Logs
+oc logs deployment/cluster-curator-controller -n $ACM_NS -f
+# Expected: Real-time controller logs showing upgrade operations
+
+# Hive Controller Logs for ClusterDeployment issues
+oc logs deployment/hive-controllers -n hive -f
+# Expected: Logs from Hive controllers managing cluster lifecycle
+
+# ACM Console Pod Status (for UI testing)
+oc get pods -n $ACM_NS | grep console
+# Expected:
+# console-chart-v2-console-v2-abc123-xyz789   1/1     Running   0          25d
+
+# Check for failed pods across ACM components
+oc get pods -A | grep -E "(Error|CrashLoopBackOff|ImagePullBackOff)"
+# Expected: Empty output (no failed pods) or specific failure details to investigate
+```
 ```
 
 **Format Requirements:**
@@ -719,6 +1044,86 @@ Based on analysis of successful Polarion test cases, these patterns ensure high-
 3. **Feature verification** (3-6 steps)
 4. **Edge case validation** (2-4 steps)
 5. **Integration testing** (1-3 steps)
+
+### 🌐 Advanced Offline-Mode Capabilities
+
+**What are Offline-Mode Capabilities?**
+The Intelligent Test Analysis Engine includes **sophisticated offline-mode support** designed for **enterprise disconnected environments** - a critical requirement for ACM clusters in air-gapped, secure, or regulatory-compliant scenarios.
+
+**Why Offline-Mode is Essential for ACM:**
+1. **Air-Gapped Enterprise Environments**: Many enterprise customers run ACM in completely disconnected networks
+2. **Regulatory Compliance**: Financial, healthcare, and government sectors require isolated testing environments  
+3. **Security-First Organizations**: Companies with strict network isolation policies
+4. **Edge Computing Scenarios**: Remote locations with limited or intermittent connectivity
+5. **Disaster Recovery Testing**: Validating cluster behavior when external connectivity is lost
+
+**Intelligent Offline-Mode Features:**
+
+**🔄 Local Knowledge Base Operations:**
+```bash
+# AI reasoning operates entirely from local patterns and knowledge
+analyze_feature_offline() {
+    # 1. LOCAL PATTERN ANALYSIS: Uses cached organizational learning data
+    # 2. OFFLINE JIRA PARSING: Analyzes local JIRA export files
+    # 3. CACHED REPOSITORY ANALYSIS: Uses local Git repository data
+    # 4. STATIC DOCUMENTATION MINING: Processes local docs and README files
+    # 5. HISTORICAL TEST SYNTHESIS: Leverages locally stored test history
+}
+```
+
+**📊 Disconnected Environment Test Generation:**
+- **Air-Gapped Cluster Scenarios**: Generate tests specifically for disconnected OpenShift clusters
+- **Local Registry Testing**: Focus on internal container registry and image management
+- **Network Isolation Validation**: Test behavior when external connectivity is unavailable
+- **Offline Upgrade Workflows**: Validate digest-based upgrades in disconnected environments
+- **Local DNS and Certificate Testing**: Internal PKI and service discovery scenarios
+
+**🏗️ Enterprise Disconnected Infrastructure Support:**
+```bash
+# Example offline-mode test scenarios automatically generated:
+
+# 1. DISCONNECTED CLUSTER CREATION
+test_disconnected_cluster_creation() {
+    # Validate cluster creation using only local/internal resources
+    # Test local registry image pulls
+    # Verify internal DNS resolution
+    # Validate certificate management without external CAs
+}
+
+# 2. AIR-GAPPED UPGRADE OPERATIONS  
+test_airgapped_digest_upgrades() {
+    # Test ACM-22079 digest-based upgrades in disconnected environments
+    # Validate local registry digest pulls
+    # Test upgrade rollback scenarios without external connectivity
+    # Verify cluster health monitoring in isolation
+}
+
+# 3. OFFLINE DISASTER RECOVERY
+test_offline_disaster_recovery() {
+    # Simulate complete network isolation scenarios
+    # Test cluster recovery with only local resources
+    # Validate backup/restore operations without external dependencies
+    # Test manual intervention workflows for isolated environments
+}
+```
+
+**🧠 Intelligent Offline Analysis Capabilities:**
+- **Local-First Intelligence**: AI operates entirely from cached knowledge and local repository analysis
+- **Pattern-Based Generation**: Uses organizational patterns stored locally from previous connected sessions  
+- **Disconnected Validation**: Generates test cases specifically for network isolation scenarios
+- **Regulatory Compliance Focus**: Emphasizes security and compliance testing for air-gapped environments
+- **Enterprise PKI Integration**: Tests internal certificate management and PKI workflows
+
+**📈 Offline-Mode Business Value:**
+- **Regulatory Compliance**: Enables testing in highly regulated environments
+- **Security Assurance**: Validates cluster behavior in security-first scenarios  
+- **Enterprise Readiness**: Ensures ACM works reliably in disconnected enterprise networks
+- **Risk Mitigation**: Tests disaster recovery and isolation scenarios
+- **Cost Optimization**: Reduces dependency on external connectivity for testing
+
+**This sophisticated offline-mode support ensures the Intelligent Test Analysis Engine delivers enterprise-grade testing capabilities even in the most restricted and secure environments.**
+
+---
 
 ## Framework Robustness & Best Practices
 

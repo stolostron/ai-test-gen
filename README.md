@@ -1,338 +1,219 @@
-# AI Test Generation 🤖
+# AI Test Generation Suite 🤖
 
-This repository hosts AI projects focused on automating the generation of end-to-end (E2E) test scripts. Our primary goal is to create intelligent agents that can analyze JIRA tickets and pull requests to produce fully functional test scripts for various testing frameworks.
+> **Professional AI-powered test generation framework for enterprise QE teams**
 
----
+A collection of AI-powered applications designed to automate test plan generation and implementation across multiple testing frameworks and environments.
 
-## 🎯 Core Objective
+## 🏗️ Project Structure
 
-As a QE team, our goal is to improve testing efficiency, increase test coverage, and reduce the manual effort required to write and maintain test automation. This project investigates the use of AI to automatically generate test scripts by interpreting the context and code changes associated with new features or bug fixes.
+```
+ai-test-gen_org/
+├── 📁 apps/                           # Self-contained applications
+│   ├── 📁 claude-test-generator/      # Claude-focused test generation
+│   └── 📁 intelligent-test-framework/ # Advanced AI framework
+├── 📁 docs/                           # Shared documentation
+├── 📁 e2e-test-generated/            # Legacy generated tests
+├── 📁 JIRA-details/                  # JIRA ticket analysis
+├── 📄 CLAUDE.md                      # Global Claude configuration
+├── 📄 README.md                      # This file
+└── 📄 OWNERS                         # Project maintainers
+```
 
-### Key Goals:
+## 🚀 Applications
 
-* **Automated Script Generation:** Leverage AI to create test scripts directly from JIRA tickets (descriptions, acceptance criteria, comments).
-* **Context from Code:** Analyze developer pull requests (PRs) to understand the scope of changes and inform the generated tests.
-* **Increased Efficiency:** Reduce the time it takes for a QE engineer to write initial test automation for a new feature.
-* **Improved Coverage:** Allow AI to suggest test scenarios that might be missed during manual test case design.
+### 1. Claude Test Generator 🎯
+**Location**: [`apps/claude-test-generator/`](./apps/claude-test-generator/)
 
----
+**Purpose**: Claude-focused test generation with custom slash commands and simple workflows.
 
-## 🚀 Projects
+**Best For**:
+- Quick test plan generation from JIRA + PR
+- Claude Code integration with custom commands
+- Simple Cypress test automation
+- Proof-of-concept demonstrations
 
-### 1. Intelligent Test Framework ⭐ **NEW**
-
-> **AI-powered test generation proof-of-concept for ACM-22079**
-
-**Location**: [`intelligent-test-framework/`](./intelligent-test-framework/)
-
-**⚠️ CURRENT SCOPE**: This framework currently works **only with ACM-22079** (ClusterCurator digest upgrades). It serves as a comprehensive proof-of-concept for AI-powered test generation.
-
-Transform your QE workflow from manual test creation to intelligent automation. Input ACM-22079, get comprehensive test plans and executable scripts in minutes instead of hours.
-
-#### ✨ Key Features
-- **🧠 Smart Analysis**: Understands JIRA tickets and automatically analyzes related code repositories
-- **🔄 Adaptive Learning**: Improves over time based on validation feedback and human input
-- **⚡ Missing Feature Intelligence**: Adapts when features aren't implemented yet in test environments  
-- **🎛️ Multi-Framework Support**: Cypress, Selenium, Go, Playwright
-- **📋 Standardized Output**: Human-readable test plans in table format
-- **🔗 Dynamic GitHub Integration**: Real-time repository analysis and documentation mining
-- **🗂️ Intelligent Versioning**: Automatically creates versioned directories for multiple runs of the same JIRA ticket
-
-#### Quick Start
+**Quick Start**:
 ```bash
-cd intelligent-test-framework
+cd apps/claude-test-generator
+# Use Claude slash commands: /generate-e2e-test-plan
+```
 
-# Generate test plan for ACM-22079
+### 2. Intelligent Test Framework 🧠
+**Location**: [`apps/intelligent-test-framework/`](./apps/intelligent-test-framework/)
+
+**Purpose**: Advanced AI-powered framework with comprehensive analysis and multi-framework support.
+
+**Best For**:
+- Enterprise-grade test generation
+- Multi-repository analysis
+- Adaptive learning and validation
+- Production-ready test suites
+
+**Quick Start**:
+```bash
+cd apps/intelligent-test-framework
 ./create-test-case.sh ACM-22079 --test-plan-only
-
-# Generate full implementation
-./create-test-case.sh ACM-22079
 ```
 
-**🎯 Results**: 
-- Test plan generation: 2 hours → 15 minutes (87% reduction)
-- Initial implementation: 1 day → 2 hours (75% reduction)
-- Continuous learning and improvement
+## 🎯 Choosing the Right Application
 
-**📚 Documentation**: [Complete Framework Guide](./intelligent-test-framework/COMPREHENSIVE_FRAMEWORK_DOCUMENTATION.md)
+| Feature | Claude Test Generator | Intelligent Test Framework |
+|---------|----------------------|---------------------------|
+| **Complexity** | Simple | Advanced |
+| **Setup Time** | Minutes | ~30 minutes |
+| **Input Required** | JIRA + PR URL | JIRA ticket ID only |
+| **AI Integration** | Claude slash commands | Full AI workflow |
+| **Frameworks** | Cypress | Cypress, Selenium, Go, Playwright |
+| **Learning** | Static | Adaptive |
+| **Validation** | Manual | Automated + Smart |
+| **Best For** | Quick tests, PoCs | Production, Enterprise |
 
-#### 🗂️ Intelligent Versioning System  
+## 🔧 Global Configuration
 
-The framework automatically manages multiple runs of the same JIRA ticket:
+### Claude Code Integration
 
+The repository provides **global Claude slash commands** via the root `CLAUDE.md`:
+
+#### Available Commands:
+- `/generate-e2e-test-plan` - Generate formal E2E test plans
+- `/analyze-workflow` - Comprehensive JIRA and PR analysis
+
+#### Usage:
 ```bash
-# First run creates: examples/ACM-22079/
-./create-test-case.sh ACM-22079 --test-plan-only
+# Global slash command (works anywhere in the repo)
+/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_FILE]
 
-# Second run creates: examples/ACM-22079-2/  
-./create-test-case.sh ACM-22079 --test-plan-only
-
-# Third run creates: examples/ACM-22079-3/
-./create-test-case.sh ACM-22079
+# Application-specific workflows
+cd apps/claude-test-generator     # For simple generation
+cd apps/intelligent-test-framework # For advanced analysis
 ```
 
-**Benefits:**
-- ✅ **No Lost Work**: Previous runs are always preserved
-- ✅ **Easy Comparison**: Compare results across iterations  
-- ✅ **Audit Trail**: Complete history of testing approaches
-- ✅ **Team Collaboration**: Share specific version results
+## 📋 Prerequisites
 
-**Version Management:**
-```bash
-# List all versions for a ticket
-./01-setup/example-versioning.sh list ACM-22079
-
-# Access specific version artifacts
-cat examples/ACM-22079-2/02-test-planning/test-plan.md
-```
-
-📖 **[Complete Versioning Guide](./intelligent-test-framework/05-documentation/versioning-guide.md)**
-
----
-
-### 2. Basic AI Test Generation (Original)
-
-**Location**: [`e2e-test-generated/`](./e2e-test-generated/) and [`JIRA-details/`](./JIRA-details/)
-
-The original proof-of-concept for AI-powered test generation focused on **Cypress** test scripts.
-
-#### ⚙️ How It Works (Basic Version)
-
-1. **Ingest Data:** The system takes a JIRA ticket and a corresponding PR as input.
-2. **Analyze Content:** It parses key information:  
-   * **JIRA Ticket:** Value Statement, Description, and Acceptance Criteria.  
-   * **Pull Request:** Code diffs, file changes, and commit messages.
-3. **Generate Test:** Based on the analysis, the AI generates a draft of a Cypress test file (`.cy.js` or `.cy.ts`).
-4. **Review & Refine:** The QE engineer reviews the generated script and makes necessary adjustments.
-
-#### Basic Usage
-```bash
-# Clone the repository
-git clone https://github.com/stolostron/ai-test-gen.git
-
-# Installation steps (TBD)
-cd ai-test-gen
-npm install
-
-# How to run the script (TBD)
-# Example: node generate-test.js --jira=TICKET-123 --pr=456
-```
-
----
-
-## 🆚 Comparison: Basic vs Intelligent Framework
-
-| Feature | Basic Version | Intelligent Framework |
-|---------|---------------|----------------------|
-| **Input** | Manual JIRA + PR | JIRA ticket ID only |
-| **Analysis** | Single PR analysis | Multi-repository + documentation |
-| **Frameworks** | Cypress only | Cypress, Selenium, Go, Playwright |
-| **Validation** | Manual review | Smart validation + missing feature detection |
-| **Learning** | Static | Adaptive learning and improvement |
-| **Output** | Code only | Test plans + code + validation |
-| **Time Investment** | Hours | Minutes |
-| **Enterprise Ready** | Proof of concept | Production ready |
-
----
-
-## 🎯 Recommended Usage
-
-### For New Projects: Use Intelligent Framework
-- **Complete workflow automation** from JIRA to test implementation
-- **Enterprise-grade validation** and error handling  
-- **Multi-framework support** for diverse teams
-- **Continuous learning** and improvement
-
-### For Simple Cypress Tests: Use Basic Version
-- **Lightweight approach** for straightforward scenarios
-- **Learning and experimentation** with AI test generation
-- **Proof of concept** demonstrations
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
+### Shared Requirements
 - **Claude Code CLI** configured and authenticated
-- **GitHub SSH access** to stolostron repositories  
-- **OpenShift cluster** with ACM installed (for validation)
-- **Development tools**: `jq`, `git`, `oc` CLI
+- **GitHub access** to relevant repositories
+- **JIRA CLI** for ticket analysis (intelligent framework)
+- **Git** for repository operations
 
-### Quick Start with Intelligent Framework
+### Application-Specific
+- **Claude Test Generator**: Basic Claude integration
+- **Intelligent Test Framework**: OpenShift/Kubernetes access, additional CLI tools
 
+## 🚀 Quick Start Guide
+
+### 1. Choose Your Application
 ```bash
-# 1. Navigate to the intelligent framework
-cd intelligent-test-framework
+# For simple, quick test generation
+cd apps/claude-test-generator
 
-# 2. Run initial setup
-./quick-start.sh
-
-# 3. Generate test plan for ACM-22079  
-./create-test-case.sh ACM-22079 --test-plan-only
-
-# 4. Review the generated test plan
-open 02-test-planning/test-plan.md
-
-# 5. Generate full implementation (optional)
-./create-test-case.sh ACM-22079
+# For comprehensive, enterprise-grade generation  
+cd apps/intelligent-test-framework
 ```
 
-### Team Configuration
+### 2. Follow Application README
+Each application has its own comprehensive setup and usage guide:
+- [Claude Test Generator README](./apps/claude-test-generator/README.md)
+- [Intelligent Test Framework README](./apps/intelligent-test-framework/README.md)
 
-```bash
-# Configure for your testing framework
-cp intelligent-test-framework/team-config.yaml my-team-config.yaml
+### 3. Use Global Commands
+The root CLAUDE.md provides slash commands that work across the entire repository for common workflows.
 
-# Edit for Cypress, Selenium, Go, or Playwright
-vim my-team-config.yaml
+## 📊 Success Metrics
 
-# Use your configuration (ACM-22079 only)
-./create-test-case.sh ACM-22079 --config my-team-config.yaml
-```
+### Claude Test Generator
+- **Setup Time**: < 5 minutes
+- **Test Generation**: 30 minutes → 5 minutes (83% reduction)
+- **Best For**: Individual contributors, quick iterations
 
----
-
-## 📊 Success Stories
-
-### ACM-22079: ClusterCurator Digest Upgrades
-**Challenge**: Complex feature with multi-component integration requiring comprehensive test coverage.
-
-**AI Framework Results**:
-- ✅ **Generated 4 comprehensive test cases** with 25+ detailed test steps
-- ✅ **Identified edge cases** for missing features and error handling
-- ✅ **Created executable test plans** with complete `oc` commands and expected outputs
-- ✅ **Adapted to test environment** where feature wasn't fully implemented yet
-
-**Time Savings**: Manual test planning (4+ hours) → AI-generated comprehensive plan (15 minutes)
-
----
-
-## 🏗️ Architecture Evolution
-
-### Phase 1: Basic AI Generation (Complete)
-- Single JIRA + PR analysis
-- Cypress test generation
-- Manual review process
-
-### Phase 2: Intelligent Framework (Current) ⭐
-- JIRA-driven comprehensive analysis
-- Multi-repository intelligence
-- Smart validation and adaptation
-- Multiple framework support
-- Continuous learning
-
-### Phase 3: Advanced Intelligence (Roadmap)
-- Predictive test generation
-- Cross-product integration
-- Performance test automation
-- Visual regression testing
-
----
+### Intelligent Test Framework  
+- **Setup Time**: ~30 minutes (one-time)
+- **Test Planning**: 2 hours → 15 minutes (87% reduction)
+- **Implementation**: 1 day → 2 hours (75% reduction)
+- **Best For**: Team workflows, complex features
 
 ## 🤝 Contributing
 
-### For Intelligent Framework
-See [intelligent-test-framework/README.md](./intelligent-test-framework/README.md) for comprehensive contribution guidelines.
-
-### General Contributions
-1. **Issues**: Report bugs and feature requests
-2. **Discussions**: Share patterns and improvements in team channels
-3. **Pull Requests**: Submit improvements with comprehensive testing
+### Project Structure Guidelines
+1. **Applications are self-contained** - each app should work independently
+2. **Shared resources** go in root-level directories (`docs/`, `JIRA-details/`)
+3. **Global configurations** in root `CLAUDE.md`
+4. **App-specific configs** in each app's directory
 
 ### Development Workflow
 ```bash
-# Fork repository
+# Fork and clone
 git clone https://github.com/YOUR-USERNAME/ai-test-gen.git
+cd ai-test-gen_org
 
-# Create feature branch
-git checkout -b feature/your-improvement
+# Work on specific application
+cd apps/[application-name]
 
 # Make changes and test
-cd intelligent-test-framework
-./create-test-case.sh TEST-TICKET --dry-run
+# ... development work ...
 
-# Submit pull request
-git push origin feature/your-improvement
+# Commit and push
+git add .
+git commit -m "feat(app-name): description"
+git push origin feature-branch
 ```
-
----
 
 ## 📚 Documentation
 
-### Intelligent Framework (Recommended)
-- **[Framework Overview](./intelligent-test-framework/README.md)**: Quick start and key features
-- **[Technical Documentation](./intelligent-test-framework/COMPREHENSIVE_FRAMEWORK_DOCUMENTATION.md)**: Complete technical details
-- **[Configuration Guide](./intelligent-test-framework/05-documentation/configuration-guide.md)**: Team setup
-- **[Examples](./intelligent-test-framework/examples/)**: Real-world usage patterns
+### Global Documentation
+- **[Root CLAUDE.md](./CLAUDE.md)**: Global slash commands and workflows
+- **[Project docs/](./docs/)**: Shared documentation and guides
+- **[JIRA Details](./JIRA-details/)**: Ticket analysis examples
 
-### Basic Version (Legacy)
-- **[Basic Setup](./CLAUDE.md)**: Original Claude integration documentation
-- **[JIRA Examples](./JIRA-details/)**: Sample JIRA ticket analysis
-- **[Generated Tests](./e2e-test-generated/)**: Example Cypress tests
-
-### Project Documentation
-- **[Documentation Hub](./docs/)**: Comprehensive project documentation
-- **[JIRA Updates](./docs/jira-updates/)**: Progress tracking and ticket updates
-- **[API Setup Guide](./docs/JIRA_API_SETUP.md)**: Automated JIRA integration
-
----
-
-## 📈 Metrics & ROI
-
-### Quantified Benefits (Intelligent Framework)
-- **87% reduction** in test plan creation time (2 hours → 15 minutes)
-- **75% reduction** in initial test implementation (1 day → 2 hours)  
-- **Improved coverage** through AI-identified edge cases
-- **Standardized quality** across all team test cases
-
-### Qualitative Improvements
-- **Early testing capability** before feature implementation
-- **Knowledge capture and reuse** across team members
-- **Reduced ramp-up time** for new team members
-- **Continuous improvement** through adaptive learning
-
----
+### Application Documentation
+- **[Claude Test Generator](./apps/claude-test-generator/)**: Simple generation docs
+- **[Intelligent Framework](./apps/intelligent-test-framework/)**: Comprehensive framework docs
 
 ## 🛣️ Roadmap
 
-### Q1 2025
-- [ ] **Playwright integration** for intelligent framework
-- [ ] **Performance test generation** capabilities
-- [ ] **Visual regression testing** support
+### Phase 1: ✅ Structure Organization (Current)
+- Separate applications into clean, self-contained modules
+- Professional project structure
+- Clear documentation hierarchy
 
-### Q2 2025
-- [ ] **Multi-language JIRA support** (non-English tickets)
-- [ ] **Custom AI model fine-tuning** for ACM-specific patterns
-- [ ] **Cross-product integration** (beyond ACM)
+### Phase 2: Integration Enhancement (Q1 2025)
+- Cross-application workflows
+- Shared learning between applications
+- Unified reporting and metrics
 
-### Q3+ 2025
-- [ ] **Predictive analytics** for test maintenance
-- [ ] **Automated test evolution** based on code changes
-- [ ] **Enterprise dashboard** for test generation metrics
+### Phase 3: Advanced Features (Q2+ 2025)
+- Multi-language support
+- Custom AI model training
+- Enterprise dashboard and analytics
+
+## 🎯 Support & Community
+
+### Getting Help
+- **Issues**: Report bugs and feature requests on GitHub
+- **Documentation**: Comprehensive guides in each application
+- **Community**: Team Slack channels for discussions
+
+### Professional Support
+- **Enterprise Setup**: Contact maintainers for team onboarding
+- **Custom Integrations**: Available for enterprise requirements
+- **Training**: Workshops and training sessions available
 
 ---
 
-## 🎯 Choose Your Path
+## 🏢 Enterprise Ready
 
-### 🚀 Ready for Production?
-**→ Use [Intelligent Framework](./intelligent-test-framework/)**
-- Complete JIRA-to-test workflow
-- Enterprise validation and learning
-- Multi-framework support
+This suite is designed for **professional QE teams** working on complex enterprise software. Each application serves different needs while maintaining consistency and quality standards.
 
-### 🧪 Learning & Experimenting?
-**→ Explore [Basic Version](./e2e-test-generated/)**
-- Simple Cypress generation
-- Educational examples  
-- Proof of concept patterns
-
-### 💡 Need Support?
-- **Issues**: GitHub issue tracker
-- **Discussions**: Team Slack channels
-- **Documentation**: Comprehensive guides in each directory
+**Choose your path**:
+- 🎯 **Simple & Fast**: Use Claude Test Generator
+- 🧠 **Advanced & Comprehensive**: Use Intelligent Test Framework
+- 🔄 **Both**: Use applications together for different scenarios
 
 ---
 
 **Repository Maintainers**: ACM QE Team  
 **Latest Update**: January 2025  
-**Framework Version**: 2.0 (Intelligent), 1.0 (Basic)
+**License**: Internal Use  
+**Status**: Production Ready
+
+**Get Started**: Choose an application in [`apps/`](./apps/) and follow its README.
