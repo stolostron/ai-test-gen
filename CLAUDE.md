@@ -10,11 +10,17 @@ These commands work from anywhere in the repository and provide quick access to 
 
 **Description:** Generate a formal E2E test plan for Red Hat ACM features based on PR specifications and JIRA requirements.
 
-**Usage:** `/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_FILE]`
+**Usage:** `/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_SOURCE]`
 
-**Example:** `/generate-e2e-test-plan https://github.com/stolostron/cluster-curator-controller/pull/203 "Implement pushing custom labels to ClusterCurator Job pods" ACM-10659.txt`
+**Example (either form):**
+ - Local file: `/generate-e2e-test-plan https://github.com/stolostron/cluster-curator-controller/pull/203 "Implement pushing custom labels to pods" ACM-10659.txt`
+ - JIRA key: `/generate-e2e-test-plan https://github.com/org/repo/pull/123 "Feature Name" ACM-10659`
 
-**Note:** JIRA_FILE is optional. If provided, I'll read JIRA details from JIRA-details/{JIRA_FILE}. Without JIRA MCP/CLI, I cannot fetch JIRA directly.
+**Note:** `JIRA_SOURCE` is optional and can be either:
+ - A local file stored under `JIRA-details/` (e.g., `ACM-10659.txt`)
+ - A JIRA issue key (e.g., `ACM-10659`), if your environment supports live JIRA fetch
+
+If live JIRA access isn't available, place a plain-text/markdown export in `JIRA-details/` and reference the filename.
 
 **Workflow:**
 ```
@@ -24,7 +30,9 @@ User: Your mission is to generate a formal E2E test plan for the feature: "{FEAT
 
 CONTEXT GATHERING:
 1. Fetch PR at {PR_URL} details and associated test specifications
-2. If {JIRA_FILE} provided, read JIRA details from JIRA-details/{JIRA_FILE} for business requirements
+2. If {JIRA_SOURCE} is provided:
+   - If it matches a file in JIRA-details/, read details from that file
+   - Otherwise, treat it as a JIRA key and fetch details (when supported)
 3. Review architectural documentation and related files if provided
 4. Use E2E Acceptance Criteria in JIRA to create the test plan
 
@@ -57,19 +65,21 @@ where {FEATURE_NAME_SANITIZED} is the feature name with spaces replaced by hyphe
 
 **Description:** Analyze JIRA issues, PRs, and related documentation for any workflow task.
 
-**Usage:** `/analyze-workflow {PR_URL} {ACTION_TYPE} [JIRA_FILE]`
+**Usage:** `/analyze-workflow {PR_URL} {ACTION_TYPE} [JIRA_SOURCE]`
 
 **Example:** `/analyze-workflow https://github.com/repo/pull/203 "test-plan" ACM-10659.txt`
 
 **Parameters:**
-- `{PR_URL}`: Full GitHub PR URL
-- `{ACTION_TYPE}`: Type of analysis needed (test-plan, review, validation, etc.)
-- `{JIRA_FILE}`: Optional file containing JIRA details (read from JIRA-details/ folder)
+ - `{PR_URL}`: Full GitHub PR URL
+ - `{ACTION_TYPE}`: Type of analysis needed (test-plan, review, validation, etc.)
+ - `{JIRA_SOURCE}`: Optional JIRA input. Either a local file from `JIRA-details/` or a JIRA key (e.g., `ACM-10659`)
 
 **Workflow:**
 ```
 1. Analyze PR at {PR_URL} for technical specifications
-2. If {JIRA_FILE} provided, read JIRA details and requirements from JIRA-details/{JIRA_FILE}
+2. If `{JIRA_SOURCE}` is provided:
+   - If it matches a file in `JIRA-details/`, read details from that file
+   - Otherwise, treat it as a JIRA key and fetch details (when supported)
 3. Gather related documentation and context files
 4. Perform {ACTION_TYPE} analysis based on gathered information
 5. Generate appropriate output format for the requested action type
@@ -79,10 +89,10 @@ where {FEATURE_NAME_SANITIZED} is the feature name with spaces replaced by hyphe
 
 For more advanced workflows and application-specific configurations, navigate to the appropriate application:
 
-### Claude Test Generator
+### Intelligent Test Analysis Engine
 **Location:** `apps/claude-test-generator/`
 **Claude Config:** `apps/claude-test-generator/CLAUDE.md`
-**Best For:** Simple test generation with Claude slash commands
+**Best For:** Sophisticated Claude-driven analysis, strategic test planning, and organized run management
 
 ### Intelligent Test Framework  
 **Location:** `apps/intelligent-test-framework/`
@@ -95,10 +105,10 @@ For more advanced workflows and application-specific configurations, navigate to
 # Use global commands from anywhere
 /generate-e2e-test-plan https://github.com/repo/pull/123 "Feature Name"
 
-# For simple Claude-focused generation
+# Intelligent Test Analysis Engine (Claude-based)
 cd apps/claude-test-generator
 
-# For advanced AI-powered generation
+# Intelligent Test Framework (full-stack)
 cd apps/intelligent-test-framework
 ```
 
