@@ -1,0 +1,5 @@
+# Feature-Specific Overrides: Application Lifecycle
+
+- Focus on creation/sync/update/delete flows (AppSet/Argo)
+- Provide UI path: Applications → {Create/Sync} and CLI equivalents
+- Validate resource health/sync status via CLI and UI

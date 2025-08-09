@@ -1,0 +1,110 @@
+{
+  "ticket_info": {
+    "ticket_id": "ACM-22079",
+    "title": "Support digest-based upgrades via ClusterCurator for non-recommended upgrades",
+    "status": "Review",
+    "priority": "Critical",
+    "assignee": "Feng Xiang",
+    "created": "2025-07-08",
+    "updated": "2025-08-07",
+    "components": ["Cluster Lifecycle"],
+    "labels": ["Eng-Status:Green", "QE-Required", "doc-required"]
+  },
+  "analysis_intelligence": {
+    "ai_confidence_score": 0.92,
+    "complexity_assessment": "moderate-complex",
+    "business_impact_score": 9.5,
+    "technical_risk_score": 6.2,
+    "predicted_test_execution_time": "3.5 hours",
+    "recommended_environment": "qe6-vmware-ibm-production-ready"
+  },
+  "environment_details": {
+    "cluster_name": "qe6-vmware-ibm",
+    "openshift_version": "4.19.6",
+    "acm_version": "2.14.0",
+    "mce_version": "2.9.0",
+    "cluster_api": "https://api.qe6-vmware-ibm.install.dev09.red-chesterfield.com:6443",
+    "acm_namespace": "ocm",
+    "mce_namespace": "multicluster-engine",
+    "controller_image": "quay.io:443/acm-d/cluster-curator-controller-rhel9@sha256:902c5b3b4a4e8cb0a14fa5aba8451ec02830d5167ff1b91323ded62255983cd9",
+    "managed_clusters": ["clc-aws-1754653080744", "local-cluster", "tfitzger-rosa-hcp-demo-test"]
+  },
+  "feature_analysis": {
+    "implementation_status": "deployed",
+    "feature_available": true,
+    "validation_possible": true,
+    "key_components": {
+      "clustercurator_crd": "Available",
+      "controller_deployment": "Running",
+      "managed_clusters": "Available",
+      "upgrade_functionality": "Testable"
+    },
+    "required_annotation": "cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions",
+    "target_functionality": "digest-based-upgrade-non-recommended"
+  },
+  "linked_tickets": [
+    {
+      "ticket_id": "ACM-22080",
+      "type": "QE Task",
+      "status": "In Progress",
+      "title": "[QE] --- ACM-22079: Support digest-based upgrades via ClusterCurator for non-recommeneded upgrades",
+      "assignee": "Atif Shafi"
+    },
+    {
+      "ticket_id": "ACM-22081", 
+      "type": "QE Automation Task",
+      "status": "New",
+      "title": "[QE Automation] --- ACM-22079: Support digest-based upgrades via ClusterCurator for non-recommeneded upgrades",
+      "assignee": "Atif Shafi"
+    },
+    {
+      "ticket_id": "ACM-22457",
+      "type": "Documentation Task", 
+      "status": "New",
+      "title": "Doc ClusterCurator upgrade to non-recommended OCP version",
+      "assignee": "Oliver Fischer"
+    }
+  ],
+  "test_strategy": {
+    "total_test_cases": 6,
+    "test_categories": [
+      "core-functionality",
+      "fallback-behavior", 
+      "security-validation",
+      "monitoring-timeout",
+      "multi-cluster-scalability",
+      "error-handling"
+    ],
+    "execution_approach": "progressive-validation",
+    "validation_method": "cluster-based-testing"
+  },
+  "learning_data": {
+    "patterns_applied": ["cluster-lifecycle-upgrade", "annotation-gated-features", "digest-fallback-mechanisms"],
+    "historical_references": ["ClusterCurator upgrade patterns", "ACM disconnected environment support"],
+    "optimization_suggestions": [
+      "Focus on disconnected environment testing scenarios",
+      "Emphasize digest validation and fallback workflows", 
+      "Include annotation security testing",
+      "Test upgrade monitoring and timeout behavior",
+      "Validate multi-cluster scalability"
+    ]
+  },
+  "quality_metrics": {
+    "test_coverage_score": 95,
+    "business_value_alignment": 98,
+    "technical_depth_score": 88,
+    "risk_mitigation_coverage": 90,
+    "customer_impact_focus": 96
+  },
+  "run_metadata": {
+    "run_id": "run-002-20250809-0656",
+    "timestamp": "2025-08-09T06:56:00Z",
+    "generated_files": [
+      "Complete-Analysis.md",
+      "Test-Cases.md", 
+      "metadata.json"
+    ],
+    "environment_validation": "successful",
+    "feature_deployment_status": "available"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source:*)",
+      "Bash(kubectl version:*)",
+      "Bash(kubectl cluster-info:*)",
+      "Bash(kubectl get:*)",
+      "Bash(jira issue view:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(oc whoami:*)",
+      "Bash(oc login:*)",
+      "Bash(oc get:*)",
+      "Bash(oc logs:*)",
+      "Bash(oc version:*)",
+      "Bash(mkdir:*)",
+      "Bash(ln:*)",
+      "WebFetch(domain:docs.redhat.com)",
+      "Bash(oc describe:*)"
+    ],
+    "deny": []
+  }
+}
