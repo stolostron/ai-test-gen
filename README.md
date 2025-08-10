@@ -9,8 +9,8 @@ A collection of AI-powered applications designed to automate test plan generatio
 ```
 ai-test-gen_org/
 ├── 📁 apps/                           # Self-contained applications
-│   ├── 📁 claude-test-generator/      # Claude-focused test generation
-│   └── 📁 intelligent-test-framework/ # Advanced AI framework
+│   ├── 📁 claude-test-generator/      # AI-powered test analysis engine
+│   └── 📁 intelligent-test-framework/ # Research-focused AI framework
 ├── 📁 docs/                           # Shared documentation
 ├── 📁 e2e-test-generated/            # Legacy generated tests
 ├── 📁 JIRA-details/                  # JIRA ticket analysis
@@ -21,16 +21,16 @@ ai-test-gen_org/
 
 ## 🚀 Applications
 
-### 1. Claude Test Generator 🎯
+### 1. Intelligent Test Analysis Engine 🎯
 **Location**: [`apps/claude-test-generator/`](./apps/claude-test-generator/)
 
-**Purpose**: Claude-focused test generation with custom slash commands and simple workflows.
+**Purpose**: AI-powered test analysis with smart scoping, E2E generation, and production-ready test plans.
 
 **Best For**:
-- Quick test plan generation from JIRA + PR
-- Claude Code integration with custom commands
-- Simple Cypress test automation
-- Proof-of-concept demonstrations
+- AI-powered test analysis and E2E generation
+- Smart test scoping and environment assessment
+- Production-ready test plans with feedback loops
+- Continuous improvement and quality optimization
 
 **Quick Start**:
 ```bash
@@ -41,13 +41,13 @@ cd apps/claude-test-generator
 ### 2. Intelligent Test Framework 🧠
 **Location**: [`apps/intelligent-test-framework/`](./apps/intelligent-test-framework/)
 
-**Purpose**: Advanced AI-powered framework with comprehensive analysis and multi-framework support.
+**Purpose**: Comprehensive AI framework with multi-repository analysis and automation workflows.
 
 **Best For**:
-- Enterprise-grade test generation
-- Multi-repository analysis
-- Adaptive learning and validation
-- Production-ready test suites
+- Multi-repository codebase analysis
+- Complex automation workflows with shell scripting
+- Cross-component integration testing
+- Comprehensive research and analysis projects
 
 **Quick Start**:
 ```bash
@@ -57,16 +57,16 @@ cd apps/intelligent-test-framework
 
 ## 🎯 Choosing the Right Application
 
-| Feature | Claude Test Generator | Intelligent Test Framework |
-|---------|----------------------|---------------------------|
-| **Complexity** | Simple | Advanced |
+| Feature | Intelligent Test Analysis Engine | Intelligent Test Framework |
+|---------|----------------------------------|----------------------------|
+| **Approach** | AI-powered test intelligence | Multi-repository automation |
 | **Setup Time** | Minutes | ~30 minutes |
-| **Input Required** | JIRA + PR URL | JIRA ticket ID only |
-| **AI Integration** | Claude slash commands | Full AI workflow |
-| **Frameworks** | Cypress | Cypress, Selenium, Go, Playwright |
-| **Learning** | Static | Adaptive |
-| **Validation** | Manual | Automated + Smart |
-| **Best For** | Quick tests, PoCs | Production, Enterprise |
+| **Input Required** | JIRA ticket ID | JIRA ticket ID + codebase |
+| **AI Integration** | Claude-based analysis | Shell-script workflows |
+| **Focus** | E2E test generation | Multi-component analysis |
+| **Learning** | Feedback loops | Adaptive patterns |
+| **Validation** | Environment assessment | Automated validation |
+| **Best For** | Production test plans | Research & automation |
 
 ## 🔧 Global Configuration
 
@@ -84,8 +84,8 @@ The repository provides **global Claude slash commands** via the root `CLAUDE.md
 /generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_FILE]
 
 # Application-specific workflows
-cd apps/claude-test-generator     # For simple generation
-cd apps/intelligent-test-framework # For advanced analysis
+cd apps/claude-test-generator      # For AI-powered test intelligence
+cd apps/intelligent-test-framework # For multi-repository automation
 ```
 
 ## 📋 Prerequisites
@@ -97,23 +97,23 @@ cd apps/intelligent-test-framework # For advanced analysis
 - **Git** for repository operations
 
 ### Application-Specific
-- **Claude Test Generator**: Basic Claude integration
+- **Intelligent Test Analysis Engine**: Claude Code CLI and ACM cluster access
 - **Intelligent Test Framework**: OpenShift/Kubernetes access, additional CLI tools
 
 ## 🚀 Quick Start Guide
 
 ### 1. Choose Your Application
 ```bash
-# For simple, quick test generation
+# For AI-powered test intelligence and E2E generation
 cd apps/claude-test-generator
 
-# For comprehensive, enterprise-grade generation  
+# For multi-repository automation and comprehensive analysis
 cd apps/intelligent-test-framework
 ```
 
 ### 2. Follow Application README
 Each application has its own comprehensive setup and usage guide:
-- [Claude Test Generator README](./apps/claude-test-generator/README.md)
+- [Intelligent Test Analysis Engine README](./apps/claude-test-generator/README.md)
 - [Intelligent Test Framework README](./apps/intelligent-test-framework/README.md)
 
 ### 3. Use Global Commands
@@ -121,16 +121,17 @@ The root CLAUDE.md provides slash commands that work across the entire repositor
 
 ## 📊 Success Metrics
 
-### Claude Test Generator
+### Intelligent Test Analysis Engine
 - **Setup Time**: < 5 minutes
 - **Test Generation**: 30 minutes → 5 minutes (83% reduction)
-- **Best For**: Individual contributors, quick iterations
+- **Quality**: Production-ready E2E test plans with environment assessment
+- **Best For**: AI-powered test intelligence, smart scoping, continuous improvement
 
 ### Intelligent Test Framework  
 - **Setup Time**: ~30 minutes (one-time)
 - **Test Planning**: 2 hours → 15 minutes (87% reduction)
 - **Implementation**: 1 day → 2 hours (75% reduction)
-- **Best For**: Team workflows, complex features
+- **Best For**: Multi-repository automation, complex integration workflows
 
 ## 🤝 Contributing
 
@@ -166,8 +167,8 @@ git push origin feature-branch
 - **[JIRA Details](./JIRA-details/)**: Ticket analysis examples
 
 ### Application Documentation
-- **[Claude Test Generator](./apps/claude-test-generator/)**: Simple generation docs
-- **[Intelligent Framework](./apps/intelligent-test-framework/)**: Comprehensive framework docs
+- **[Intelligent Test Analysis Engine](./apps/claude-test-generator/)**: AI-powered test intelligence docs
+- **[Intelligent Test Framework](./apps/intelligent-test-framework/)**: Multi-repository automation docs
 
 ## 🛣️ Roadmap
 
@@ -205,9 +206,9 @@ git push origin feature-branch
 This suite is designed for **professional QE teams** working on complex enterprise software. Each application serves different needs while maintaining consistency and quality standards.
 
 **Choose your path**:
-- 🎯 **Simple & Fast**: Use Claude Test Generator
-- 🧠 **Advanced & Comprehensive**: Use Intelligent Test Framework
-- 🔄 **Both**: Use applications together for different scenarios
+- 🎯 **AI-Powered Test Intelligence**: Use Intelligent Test Analysis Engine
+- 🧠 **Multi-Repository Automation**: Use Intelligent Test Framework
+- 🔄 **Both**: Use applications together for comprehensive coverage
 
 ---
 
