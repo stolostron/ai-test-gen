@@ -92,7 +92,7 @@ For more advanced workflows and application-specific configurations, navigate to
 ### Intelligent Test Analysis Engine
 **Location:** `apps/claude-test-generator/`
 **Claude Config:** `apps/claude-test-generator/CLAUDE.md`
-**Best For:** Sophisticated Claude-driven analysis, strategic test planning, and organized run management
+**Best For:** AI-powered test analysis, E2E test generation, smart test scoping, environment assessment, production-ready test plans, feedback loops, and continuous improvement
 
 ### Intelligent Test Framework  
 **Location:** `apps/intelligent-test-framework/`
@@ -123,8 +123,8 @@ cd apps/intelligent-test-framework
 The global commands integrate with both applications:
 
 1. **Quick Generation**: Use global commands for immediate results
-2. **Simple Workflows**: Navigate to `claude-test-generator` for extended simple workflows
-3. **Advanced Analysis**: Navigate to `intelligent-test-framework` for comprehensive AI analysis
+2. **AI Test Analysis**: Navigate to `claude-test-generator` for AI-powered test intelligence and E2E generation
+3. **Full Research Framework**: Navigate to `intelligent-test-framework` for comprehensive automation and research capabilities
 
 ## 📚 Documentation Hierarchy
 
