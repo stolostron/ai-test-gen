@@ -1,288 +1,225 @@
-# Intelligent Test Analysis Engine 🧠
+# Intelligent Test Analysis Engine
 
-> **Sophisticated AI-powered test analysis and generation system**
+> **AI-powered test analysis and generation system for ACM/OCM components**
 
-An enterprise-grade intelligent system that leverages advanced AI capabilities to perform deep analysis of complex software features, generating comprehensive test strategies with human-level reasoning and continuous learning capabilities.
+An intelligent system that analyzes software features and generates comprehensive E2E test plans. Designed specifically for Red Hat Advanced Cluster Management (ACM) and Open Cluster Management (OCM) testing scenarios.
 
-## 🎯 Mission
+## What This Framework Does
 
-Delivering **sophisticated AI-driven test intelligence** for enterprise software development teams who demand excellence in quality engineering. Designed for:
+The Intelligent Test Analysis Engine automatically:
 
-- 🧠 **Complex Feature Analysis**: Deep understanding of multi-component systems
-- 🔬 **Advanced Pattern Recognition**: Learning from organizational testing history
-- 🏗️ **Enterprise Architecture**: Supporting large-scale, mission-critical applications
-- 📊 **Intelligent Quality Assessment**: AI-driven test coverage and risk analysis
-- 🔄 **Continuous Learning**: Adaptive improvement from every analysis
-- 🎯 **Strategic Test Planning**: Business-impact-aware test prioritization
+1. **Analyzes JIRA tickets** - Extracts business requirements and technical specifications
+2. **Processes GitHub PRs** - Understands code changes and implementation details  
+3. **Generates E2E test plans** - Creates comprehensive test cases with realistic expected outputs
+4. **Assesses deployment readiness** - Determines if features are available in test environments
+5. **Provides structured output** - Delivers both detailed analysis and clean test cases
 
-## 🚀 Quick Start
+### Key Capabilities
 
-### 1. Prerequisites
-- Claude Code CLI configured and authenticated
-- Access to GitHub repositories
-- Basic familiarity with JIRA tickets and PRs
+- **Smart Test Scoping**: Focuses only on NEW/CHANGED functionality, avoiding redundant testing
+- **E2E Coverage**: Complete end-to-end workflows for comprehensive validation
+- **Environment Assessment**: Evaluates feature availability and deployment status
+- **Multiple Output Formats**: Both detailed analysis and clean test cases for different use cases
+- **Feedback Loop Integration**: Human review triggers and continuous improvement
 
-### 2. Basic Usage
+## How It Works
+
+The framework follows a 5-stage intelligent workflow:
+
+1. **Environment Setup**: Validates cluster access and tool availability
+2. **JIRA Analysis**: Extracts ticket details, business context, and requirements
+3. **AI Reasoning**: Applies smart scoping and strategic test intelligence  
+4. **Test Generation**: Creates E2E test cases with proper format and realistic outputs
+5. **Analysis Report**: Provides deployment assessment and complete documentation
+
+### Output Structure
+
+Each run generates organized outputs:
+```
+runs/ACM-XXXXX/run-###-YYYYMMDD-HHMM/
+├── Test-Cases.md           # Clean test cases (Description, Setup, Steps/Expected Results)
+├── Complete-Analysis.md    # Full analysis with deployment assessment
+└── metadata.json          # Run details and quality metrics
+```
+
+## Simplest Way to Run
+
+### Prerequisites
+- Claude Code CLI configured
+- Access to ACM test environment
+- JIRA ticket available for analysis
+
+### Basic Execution
 ```bash
-# Navigate to the app
+# Navigate to the framework
 cd apps/claude-test-generator
 
-# Use Claude slash commands (available globally)
-/generate-e2e-test-plan https://github.com/repo/pull/123 "Feature Name"
+# Run analysis on any ACM JIRA ticket
+analyze_ticket ACM-22079
 
-# Or analyze existing JIRA details
-/generate-e2e-test-plan https://github.com/repo/pull/123 "Feature Name" ACM-10659.txt
+# Or with custom environment  
+USER_ENVIRONMENT=qe7 analyze_ticket ACM-22079
 ```
 
-## 📋 Generated Test Plans
+### What Happens
+1. Framework connects to your specified environment (default: qe6)
+2. Analyzes the JIRA ticket for business and technical requirements
+3. Generates comprehensive E2E test plan focused on NEW functionality
+4. Creates both detailed analysis and clean test cases
+5. Provides deployment assessment (feature available or not)
 
-This application generates clean, table-format test plans optimized for **Polarion import** and **manual execution**.
+### Expected Output
+- **Execution Time**: 5-10 minutes
+- **Test Cases**: 3-5 comprehensive E2E scenarios  
+- **Coverage**: All NEW functionality with realistic validation steps
+- **Format**: Ready for manual execution or Polarion import
 
-### Example Output Format
+## Configuration Options
 
-```markdown
-### Test Case: Implement Custom Labels for ClusterCurator Job Pods
+The framework can be configured in several ways:
 
-| Step | Expected Result |
-|------|-----------------|
-| 1. Create ClusterCurator with custom labels in annotations | ClusterCurator resource created successfully |
-| 2. Verify Job pod inherits custom labels: `oc get pods -l job-name=clustercurator-job -o jsonpath='{.items[0].metadata.labels}'` | Pod shows custom labels from ClusterCurator annotations |
-| 3. Validate label propagation across multiple job executions | All subsequent Job pods inherit the same custom labels |
+### 1. Environment Selection
+```bash
+# Use default environment (qe6)
+analyze_ticket ACM-22079
+
+# Specify different environment
+USER_ENVIRONMENT=qe7 analyze_ticket ACM-22079
+USER_ENVIRONMENT=qe8 analyze_ticket ACM-22079
 ```
 
-### Output Locations
-- **Generated Plans**: `e2e-test-generated/`
-- **JIRA Analysis**: `JIRA-details/` (if using JIRA files)
-- **Documentation**: This directory
+**Why Configure Environment?**
+- Different environments may have different feature deployment status
+- Allows testing against specific cluster configurations
+- Enables validation across multiple test environments
 
-## 🔧 Features
+### 2. Test Scoping Configuration
+Located in `.claude/prompts/test-scoping-rules.md`:
 
-### 🧠 Advanced AI Intelligence Capabilities
-- **🔬 Deep Feature Analysis**: Multi-dimensional understanding of complex software systems
-- **🎯 Strategic Test Planning**: Business-impact-driven test strategy generation
-- **📊 Predictive Risk Modeling**: AI-powered prediction of failure scenarios and optimization opportunities
-- **🏗️ Enterprise Architecture Awareness**: Understanding of system dependencies and integration complexities
-- **🎓 Continuous Learning**: Adaptive improvement from organizational patterns and historical data
-- **⚡ Intelligent Optimization**: Risk-based prioritization and coverage optimization
+- **Smart Scoping Rules**: Define what constitutes "new" vs "existing" functionality
+- **E2E Focus Requirements**: Specify end-to-end workflow coverage expectations
+- **Expected Output Format**: Control test case structure and validation criteria
 
-### 🏢 Enterprise-Grade Features (v2.0)
-- **🗂️ Sophisticated Run Management**: Enterprise-level organization with intelligent versioning
-- **📈 Advanced Quality Metrics**: Multi-dimensional quality assessment and scoring
-- **🔄 Learning-Enhanced Iterations**: Each run incorporates lessons from previous analyses
-- **🔗 Intelligent Linking**: Context-aware navigation and relationship mapping
-- **✅ AI-Driven Validation**: Semantic validation with business logic verification
-- **⚡ Predictive Error Handling**: Anticipatory failure recovery and risk mitigation
-- **📊 Executive Reporting**: Strategic insights and recommendation generation
+**Why Configure Scoping?**
+- Ensures tests focus on changed functionality only
+- Reduces redundant testing of stable components
+- Maintains consistent test coverage standards
 
-### 🎯 Sophisticated Analysis Dimensions
-- **Business Impact Assessment**: Revenue, customer, and compliance impact analysis
-- **Technical Complexity Modeling**: Architecture, performance, and integration risk evaluation
-- **Organizational Learning Integration**: Pattern recognition from historical successes and failures
-- **Predictive Quality Optimization**: AI-driven test effectiveness and coverage optimization
+### 3. Output Format Configuration
+Located in `.claude/templates/`:
 
-### 📊 Sophisticated Analysis Workflows
-1. **Enterprise Feature Analysis**: Deep multi-source intelligence gathering and strategic planning
-2. **AI-Driven Risk Assessment**: Predictive modeling and intelligent risk mitigation strategies
-3. **Organizational Learning Integration**: Pattern-based improvement and adaptive optimization
-4. **Executive Strategic Reporting**: Business-impact analysis and strategic recommendation generation
+- **YAML Sample Templates**: Control expected result formatting
+- **Environment Configuration**: Standardize setup and validation procedures
+- **Test Case Structure**: Define Description, Setup, and table formats
 
-## 🎛️ Claude Configuration
+**Why Configure Output?**
+- Maintains consistency across different testers
+- Ensures compatibility with test management systems
+- Provides realistic, actionable test steps
 
-This app includes its own `CLAUDE.md` with specific configurations:
+### 4. Feedback Loop Configuration
+Located in `.claude/workflows/feedback-loop-system.md`:
 
-### Available Commands
-- `/generate-e2e-test-plan` - Core test plan generation
-- `/analyze-workflow` - General workflow analysis
+- **Review Triggers**: When to request human feedback
+- **Quality Thresholds**: Minimum quality score requirements  
+- **Improvement Integration**: How to apply human feedback
 
-### Configuration Features
-- **Pre-built prompts** for common ACM testing scenarios
-- **Output format templates** for consistent results
-- **Integration patterns** for JIRA and GitHub workflows
+**Why Configure Feedback?**
+- Enables continuous quality improvement
+- Integrates human expertise with AI generation
+- Prevents quality regression over time
 
-## 📂 Project Structure
+## Integration with Intelligent Framework
+
+
+### Current Relationship
+
+Both frameworks exist in the same repository but serve different purposes:
+
+| Framework | Primary Use | Complexity | Team Focus |
+|-----------|-------------|------------|------------|
+| **claude-test-generator** | Quick E2E test generation | Simple, focused | Day-to-day QE work |
+| **intelligent-test-framework** | Comprehensive analysis | Complex, full-featured | Advanced research/analysis |
+
+### Integration Details
+
+**Shared Elements:**
+- Both use similar JIRA analysis approaches
+- Both generate test plans for ACM/OCM components
+- Both store outputs in organized run structures
+- Both support multiple environment configurations
+
+**Different Approaches:**
+- **claude-test-generator**: Claude-based, fast, focused on immediate test generation
+- **intelligent-test-framework**: Shell-script based, comprehensive, includes research and automation
+
+**When to Use Which:**
+- **Daily QE Work**: Use claude-test-generator for quick, reliable test plan generation
+- **Research Projects**: Use intelligent-test-framework for comprehensive analysis with automation
+- **Team Collaboration**: claude-test-generator is more accessible for general team use
+
+### Migration Path
+
+The frameworks complement each other:
+1. Start with claude-test-generator for immediate test generation needs
+2. Use intelligent-test-framework for complex research or automation projects
+3. Both can analyze the same JIRA tickets with different depth/approach
+
+There's no technical dependency - they're separate tools that can be used independently based on your specific needs.
+
+## Project Structure
 
 ```
 claude-test-generator/
-├── 📄 README.md                    # This file
-├── 📄 CLAUDE.md                    # App-specific Claude config
-├── 📁 src/                         # Source files and utilities
-├── 📁 docs/                        # Application documentation
-│   ├── quick-start.md              # 5-minute setup guide
-│   └── improvements-analysis.md    # Comprehensive improvements analysis
-├── 📁 examples/                    # Example generated tests
-├── 📁 runs/                        # 🆕 Organized test runs by ticket
-│   ├── <TICKET-ID>/                # Dedicated folder per JIRA ticket
-│   │   ├── run-001-YYYYMMDD-HHMM/  # Timestamped run directories
-│   │   │   ├── Complete-Analysis.md # Comprehensive analysis
-│   │   │   ├── Test-Cases.md       # Clean test cases for Polarion
-│   │   │   ├── Test-Plan.md        # Legacy format compatibility
-│   │   │   └── metadata.json       # Run metadata and context
-│   │   ├── run-002-YYYYMMDD-HHMM/  # Additional runs for same ticket
-│   │   └── latest -> run-XXX       # Symlink to most recent run
-│   └── ACM-22079/                  # Example: Real ticket with runs
-└── 📁 archived-runs/               # Completed/archived ticket runs
+├── README.md                    # This file
+├── CLAUDE.md                    # Claude configuration
+├── .claude/                     # Framework configuration
+│   ├── prompts/                 # Test scoping and generation rules
+│   ├── templates/               # Output format templates
+│   ├── workflows/               # Feedback loop and process definitions
+│   └── docs/                    # Implementation guidance
+├── runs/                        # Generated test runs by ticket
+│   └── <TICKET-ID>/             # Organized by JIRA ticket
+│       ├── run-XXX-YYYYMMDD-HHMM/ # Timestamped executions
+│       │   ├── Test-Cases.md    # Clean test cases
+│       │   ├── Complete-Analysis.md # Full analysis
+│       │   └── metadata.json    # Run metadata
+│       └── latest -> run-XXX    # Symlink to latest run
+├── examples/                    # Example outputs
+└── docs/                        # Additional documentation
 ```
 
-## 🔄 Enhanced Workflow Examples
-
-### 🆕 Scenario 1: First Analysis of New Ticket
-```bash
-# Input: JIRA ticket + GitHub PR  
-/generate-e2e-test-plan https://github.com/stolostron/repo/pull/203 "Custom Labels Feature"
-
-# Output: Organized run structure
-# Created: runs/ACM-22080/run-001-20250809-1234/
-# Files: Complete-Analysis.md, Test-Cases.md, Test-Plan.md, metadata.json
-# Symlink: runs/ACM-22080/latest -> run-001-20250809-1234
-# Time: ~5 minutes vs 30+ minutes manual
-```
-
-### 🆕 Scenario 2: Multiple Iterations on Same Ticket
-```bash
-# Second run with updated requirements
-/generate-e2e-test-plan https://github.com/stolostron/repo/pull/203 "Updated Custom Labels Feature"
-
-# Output: New run alongside existing
-# Created: runs/ACM-22080/run-002-20250809-1456/
-# Preserved: runs/ACM-22080/run-001-20250809-1234/ (previous work)
-# Updated: runs/ACM-22080/latest -> run-002-20250809-1456
-# Benefits: ✅ Compare approaches ✅ Track evolution ✅ No lost work
-```
-
-### 🆕 Scenario 3: Quick Access to Latest Results
-```bash
-# View latest test cases
-cat runs/ACM-22080/latest/Test-Cases.md
-
-# Review comprehensive analysis  
-cat runs/ACM-22080/latest/Complete-Analysis.md
-
-# Check run metadata
-jq '.' runs/ACM-22080/latest/metadata.json
-```
-
-### Scenario 4: Bug Fix Validation with Organization
-```bash
-# Input: Bug fix PR with acceptance criteria
-/analyze-workflow https://github.com/stolostron/repo/pull/204 "test-plan"
-
-# Output: Organized in runs/ACM-22081/run-001-YYYYMMDD-HHMM/
-# Focus: Regression validation scenarios
-# Time: ~3 minutes vs 15+ minutes manual
-```
-
-## 📊 Enterprise Intelligence Success Metrics
-
-### Strategic Value Creation
-- **Test Strategy Quality**: Manual approaches → AI-driven strategic planning (500% improvement in depth)
-- **Risk Identification**: Reactive testing → Predictive risk modeling (90% earlier risk detection)
-- **Business Alignment**: Technical testing → Business-impact-aware validation (95% improvement)
-- **🆕 Intelligence Integration**: Isolated analysis → Organizational learning (Continuous improvement)
-- **🆕 Executive Insights**: Technical reports → Strategic business intelligence
-
-### Advanced Quality Outcomes
-- **Sophisticated Coverage**: Basic test cases → Multi-dimensional enterprise validation
-- **Predictive Accuracy**: Reactive defect detection → AI-predicted failure scenarios (85% accuracy)
-- **Enterprise Readiness**: Simple tests → Production-grade validation suites
-- **🆕 Learning Integration**: Static approaches → Adaptive improvement from historical patterns
-- **🆕 Risk Mitigation**: Basic coverage → Comprehensive risk-based testing strategies
-- **🆕 Quality Intelligence**: Manual validation → AI-driven quality assessment and optimization
-
-### Organizational Excellence
-- **🆕 Strategic Alignment**: Technical execution → Business strategy integration
-- **🆕 Knowledge Amplification**: Individual expertise → Organizational intelligence
-- **🆕 Predictive Planning**: Reactive testing → Proactive risk management
-- **🆕 Enterprise Intelligence**: Isolated analysis → Comprehensive organizational learning
-
-### Measurable Business Impact
-- **Quality Confidence**: 70% → 94% (AI-driven quality assessment)
-- **Risk Mitigation**: 60% → 91% (Predictive risk modeling)
-- **Business Value Alignment**: 50% → 96% (Strategic business integration)
-- **Technical Excellence**: 65% → 89% (Deep architectural understanding)
-
-## 🎯 Best Practices
+## Best Practices
 
 ### Input Optimization
-1. **Clear PR Descriptions**: Better PR descriptions = better test plans
-2. **Complete JIRA Details**: Include acceptance criteria in JIRA files
-3. **Specific Feature Names**: Use descriptive names for better output file naming
+1. **Clear JIRA Details**: Ensure tickets have acceptance criteria and complete descriptions
+2. **Environment Access**: Verify cluster connectivity before running analysis
+3. **Feature Context**: Understand whether feature is deployed in target environment
 
 ### Output Usage
-1. **Review Generated Plans**: Always review AI-generated content
-2. **Customize for Environment**: Adapt commands for your specific cluster setup
-3. **Iterate Quickly**: Use fast generation for multiple approaches
+1. **Review Generated Plans**: Always validate AI-generated test cases for accuracy
+2. **Adapt to Environment**: Modify generic commands for your specific cluster setup
+3. **Execute Systematically**: Follow test cases in order for proper validation flow
 
-### Integration Workflow
-1. **Start Simple**: Begin with this app for quick wins
-2. **Scale Up**: Move to Intelligent Test Framework for complex features
-3. **Combine Approaches**: Use both apps for different scenarios
+### Quality Assurance
+1. **Check Deployment Status**: Verify if features are available before manual testing
+2. **Validate Expected Outputs**: Ensure expected results match actual environment behavior
+3. **Provide Feedback**: Use feedback loop system to improve future generations
 
-## 🔗 Integration with Intelligent Framework
+## Getting Support
 
-This app works alongside the **Intelligent Test Framework** for complete coverage:
+### Documentation
+- **Quick Start**: See `docs/quick-start.md` for detailed setup guidance
+- **Configuration**: Check `.claude/` directory for customization options
+- **Examples**: Review `examples/` for sample outputs and patterns
 
-| Use Case | Claude Test Generator | Intelligent Framework |
-|----------|----------------------|---------------------|
-| **Quick Test Plans** | ✅ Perfect | ❌ Overkill |
-| **Simple PRs** | ✅ Ideal | ❌ Too complex |
-| **Learning** | ✅ Great starting point | ❌ Steep learning curve |
-| **Complex Features** | ❌ Limited analysis | ✅ Comprehensive |
-| **Multi-Repository** | ❌ Single PR focus | ✅ Full analysis |
-| **Production Testing** | ❌ Manual validation needed | ✅ Automated validation |
-
-## 🚀 Getting Support
-
-### Quick Help
-- **Global Commands**: Available from repository root via global CLAUDE.md
-- **App Documentation**: This README and local CLAUDE.md
-- **Examples**: Check `examples/` directory for patterns
-
-### Community
-- **Issues**: Report via GitHub repository issues
-- **Discussions**: Team Slack channels for usage patterns
-- **Contributions**: Simple improvements welcome via PRs
-
-## 🛣️ Roadmap
-
-### Current Capabilities ✅
-- Claude slash command integration
-- Basic JIRA + PR analysis
-- Table format test plan generation
-- Quick iteration workflows
-
-### Near Term (Q1 2025)
-- [ ] Enhanced PR analysis patterns
-- [ ] Additional output formats (JSON, XML)
-- [ ] Integration with test management APIs
-
-### Future Enhancements
-- [ ] Basic validation capabilities
-- [ ] Simple automation script generation
-- [ ] Team collaboration features
+### Troubleshooting
+- **Environment Issues**: Verify cluster access and tool availability
+- **Output Quality**: Check JIRA ticket completeness and feature deployment status
+- **Framework Errors**: Review metadata.json for execution details and error logs
 
 ---
 
-## 🎯 When to Use the Intelligent Test Analysis Engine
-
-**Choose Intelligent Test Analysis Engine when**:
-- 🧠 **Enterprise-Critical Features**: Mission-critical systems requiring sophisticated analysis
-- 🏗️ **Complex Architecture**: Multi-component systems with intricate dependencies
-- 📊 **Strategic Planning**: Business-impact-driven test strategy development
-- 🔬 **Risk-Based Testing**: Predictive risk modeling and intelligent prioritization
-- 🎓 **Organizational Learning**: Leveraging historical patterns and continuous improvement
-- 🏢 **Executive Reporting**: Strategic insights and business-aligned recommendations
-
-**Consider Simple Framework when**:
-- 🔄 Basic feature validation (consider upgrading to sophisticated analysis)
-- 🔄 Learning purposes (though this engine provides superior learning outcomes)
-- 🔄 Proof-of-concept work (sophisticated analysis provides better strategic insights)
-
-**🎯 Strategic Positioning**: This engine is designed for **enterprise teams** who prioritize **quality excellence**, **strategic thinking**, and **business-aligned testing** over speed and simplicity.
-
----
-
-**Application Version**: 2.0 Enterprise Intelligence  
-**Maintained by**: ACM Advanced QE Intelligence Team  
-**Enterprise Integrations**: Claude Code AI, GitHub Enterprise, JIRA Enterprise, Confluence, Strategic Analytics  
-
-**Get Started with Intelligence**: `/analyze-enterprise-feature {JIRA_TICKET_ID} --mode=sophisticated --intelligence=expert`
+**Framework Version**: 1.0  
+**Maintained by**: ACM QE Team  
+**Integrations**: Claude Code AI, GitHub, JIRA, OpenShift CLI
