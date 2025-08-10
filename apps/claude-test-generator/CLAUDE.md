@@ -1,42 +1,8 @@
 # Intelligent Test Analysis Engine
 
-## 🎯 Quick Start for New Users
+## 🎯 Framework Introduction
 
-Welcome! This AI-powered engine generates comprehensive E2E test plans for ACM/OCM components.
-
-### Key Features
-- **Analyzes JIRA tickets** → Extracts requirements and technical specs
-- **Smart test scoping** → Focuses only on NEW/CHANGED functionality  
-- **E2E test generation** → Creates complete workflows with realistic outputs
-- **Environment assessment** → Determines feature availability in test clusters
-- **Dual output formats** → Both detailed analysis and clean test cases
-
-### Sample Instructions You Can Give
-
-**Basic test plan generation:**
-```
-Generate test plan for ACM-22079
-```
-
-**With specific environment:**
-```
-Analyze JIRA ticket ACM-22080 using qe7 environment
-```
-
-**From GitHub PR:**
-```
-Create E2E test plan from https://github.com/stolostron/cluster-curator-controller/pull/203
-```
-
-**Quick analysis:**
-```
-What test scenarios are needed for the digest-based upgrade feature in ACM-22079?
-```
-
-**Re-run with improvements:**
-```
-Re-generate test plan for ACM-22079 with focus on error handling scenarios
-```
+> **Quick Start & Welcome Message**: See `.claude/greetings/framework-greetings.md`
 
 ---
 
@@ -61,6 +27,7 @@ This framework uses modular configuration files for maintainability:
 - **YAML Sample Templates**: `.claude/templates/yaml-samples.md` - YAML samples for expected results
 - **Environment Configuration**: `.claude/templates/environment-config.md` - Environment setup and validation
 - **Feedback Loop System**: `.claude/workflows/feedback-loop-system.md` - Human review and improvement integration
+- **Framework Greetings**: `.claude/greetings/framework-greetings.md` - Welcome message and quick start guide
 
 ## Common Commands
 
