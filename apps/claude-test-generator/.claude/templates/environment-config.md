@@ -1,6 +1,29 @@
 # Environment Configuration Templates
 
 ## Default Environment Setup
+
+### ⚠️ CRITICAL: Authentication Persistence
+
+**The setup_clc script creates temporary kubeconfig files that MUST be exported for all subsequent commands:**
+
+```bash
+# After running setup_clc, ALWAYS export the kubeconfig path
+source bin/setup_clc qe6                    # Creates /tmp/kubeconfig_XXXXX
+export KUBECONFIG=/tmp/kubeconfig_XXXXX     # Use actual path from setup output
+
+# OR combine all oc commands with export:
+export KUBECONFIG=/tmp/kubeconfig_XXXXX && oc [command]
+```
+
+**Common Authentication Errors:**
+- `Error: User "system:anonymous" cannot get resource` → Missing KUBECONFIG export
+- `Error from server (Forbidden)` → Authentication context not preserved
+
+**Framework Requirements:**
+- ALL oc/kubectl commands MUST include KUBECONFIG export
+- Framework should detect and export kubeconfig automatically
+- Bash tool calls must persist authentication between commands
+
 ```bash
 # Default to qe6 if no environment specified
 ENVIRONMENT="${USER_ENVIRONMENT:-qe6}"

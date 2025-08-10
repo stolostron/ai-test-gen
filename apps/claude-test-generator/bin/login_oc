@@ -1,0 +1,304 @@
+#!/bin/bash
+
+# Function to display help message
+usage() {
+  echo "Usage:"
+  echo "  $0 --token=<token> --server=<server> [--no-shell]"
+  echo "  $0 Console: <console-url> Creds: <user/password> [--no-shell]"
+  echo "  $0 Console: <console-url> Token: <token> [--no-shell]"
+  echo ""
+  echo "Options (token mode):"
+  echo "  --token     OpenShift authentication token (required)"
+  echo "  --server    OpenShift API server URL (required)"
+  echo "  --no-shell  Skip interactive shell (for programmatic use)"
+  echo ""
+  echo "Console/Creds mode:"
+  echo "  Console: <console-url>     OpenShift console URL"
+  echo "  Creds: <user/password>     Username and password"
+  echo "  Token: <token>             Authentication token"
+  echo ""
+  echo "Examples:"
+  echo "  $0 --token=sha256~xyz --server=https://api.cluster.com:6443"
+  echo "  $0 Console: https://console-openshift-console.apps.cluster.com Creds: kubeadmin/password123"
+  echo "  $0 Console: https://console-openshift-console.apps.cluster.com Token: sha256~xyz"
+  exit 1
+}
+
+# Initialize variables to empty
+TOKEN=""
+SERVER=""
+CONSOLE_URL=""
+USERNAME=""
+PASSWORD=""
+AUTH_MODE=""
+NO_SHELL=false
+KEEP_KUBECONFIG=false
+KUBECONFIG_OUT=""
+
+# Determine authentication mode based on first argument
+if [[ "$1" == --* ]]; then
+    AUTH_MODE="token"
+elif [[ "$1" == "Console:"* ]]; then
+    AUTH_MODE="console"
+elif [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    usage
+else
+    echo "Error: Invalid arguments. Use --help for usage information."
+    usage
+fi
+
+# Parse arguments based on mode
+if [[ "$AUTH_MODE" == "token" ]]; then
+    # Parse --token and --server format
+    for arg in "$@"
+    do
+      case $arg in
+        --token=*)
+          TOKEN="${arg#*=}"
+          ;;
+        --server=*)
+          SERVER="${arg#*=}"
+          ;;
+        --no-shell)
+          NO_SHELL=true
+          ;;
+        --keep-kubeconfig)
+          KEEP_KUBECONFIG=true
+          ;;
+        --kubeconfig-out=*)
+          KUBECONFIG_OUT="${arg#*=}"
+          ;;
+        --help|-h)
+          usage
+          ;;
+        *)
+          echo "Error: Invalid argument: $arg"
+          usage
+          ;;
+      esac
+    done
+elif [[ "$AUTH_MODE" == "console" ]]; then
+    # Parse Console/Creds format
+    CONSOLE_INPUT=""
+    CREDS_INPUT=""
+    
+    # Collect arguments - handle both formats:
+    # Format 1: "Console:" "https://..." "Creds:" "user/pass" (separate arguments)
+    # Format 2: "Console: https://..." "Creds: user/pass" (combined arguments)
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            # Format 1: Separate arguments
+            [Cc]onsole:)
+                CONSOLE_INPUT="$1 $2"
+                shift 2
+                ;;
+            [Cc]reds:)
+                CREDS_INPUT="$1 $2"
+                shift 2
+                ;;
+            [Tt]oken:)
+                CREDS_INPUT="$1 $2"
+                shift 2
+                ;;
+            # Format 2: Combined arguments (what setup_clc actually sends)
+            [Cc]onsole:*)
+                CONSOLE_INPUT="$1"
+                shift 1
+                ;;
+            [Cc]reds:*)
+                CREDS_INPUT="$1"
+                shift 1
+                ;;
+            [Tt]oken:*)
+                CREDS_INPUT="$1"
+                shift 1
+                ;;
+            *"password:"*|*"Password:"*)
+                # Handle "username password: password" format
+                CREDS_INPUT="$1 $2 $3"
+                shift 3
+                ;;
+            --no-shell)
+                NO_SHELL=true
+                shift 1
+                ;;
+            --keep-kubeconfig)
+                KEEP_KUBECONFIG=true
+                shift 1
+                ;;
+            --kubeconfig-out=*)
+                KUBECONFIG_OUT="${1#*=}"
+                shift 1
+                ;;
+            *)
+                echo "Error: Invalid argument: $1"
+                usage
+                ;;
+        esac
+    done
+    
+    # Parse console URL
+    if [[ -z "$CONSOLE_INPUT" ]]; then
+        echo "Error: Console URL is required"
+        usage
+    fi
+    
+    CONSOLE_URL=$(echo "$CONSOLE_INPUT" | sed 's/.*Console:[[:space:]]*//' | xargs)
+    if [[ -z "$CONSOLE_URL" ]]; then
+        echo "Error: Could not extract console URL"
+        usage
+    fi
+    
+    # Extract API server from console URL
+    FULL_DOMAIN=$(echo "$CONSOLE_URL" | sed 's#https://console-openshift-console\.apps\.##' | sed 's#/.*##')
+    
+    if [[ -z "$FULL_DOMAIN" ]] || [[ ! "$FULL_DOMAIN" == *"."* ]]; then
+        echo "Error: Could not extract cluster information from console URL: $CONSOLE_URL"
+        echo "Expected format: https://console-openshift-console.apps.<cluster>.<domain>"
+        usage
+    fi
+    
+    CLUSTER_STRING=$(echo "$FULL_DOMAIN" | cut -d'.' -f1)
+    DOMAIN_SUFFIX=$(echo "$FULL_DOMAIN" | cut -d'.' -f2-)
+    SERVER="https://api.${CLUSTER_STRING}.${DOMAIN_SUFFIX}:6443"
+    
+    # Parse credentials
+    if [[ -z "$CREDS_INPUT" ]]; then
+        echo "Error: Credentials (Creds: or Token:) are required"
+        usage
+    fi
+    
+    if [[ "$CREDS_INPUT" == *"Token:"* ]]; then
+        # Token format
+        TOKEN=$(echo "$CREDS_INPUT" | sed 's/.*Token:[[:space:]]*//' | xargs)
+        if [[ -z "$TOKEN" ]]; then
+            echo "Error: Could not extract token"
+            usage
+        fi
+    elif [[ "$CREDS_INPUT" == *"Creds:"* ]]; then
+        # Creds format
+        CREDS=$(echo "$CREDS_INPUT" | sed 's/.*Creds:[[:space:]]*//' | xargs)
+        USERNAME=$(echo "$CREDS" | awk -F'/' '{print $1}')
+        PASSWORD=$(echo "$CREDS" | awk -F'/' '{print $2}')
+        if [[ -z "$USERNAME" ]] || [[ -z "$PASSWORD" ]]; then
+            echo "Error: Could not extract username or password from credentials"
+            usage
+        fi
+    elif [[ "$CREDS_INPUT" == *"password:"* ]]; then
+        # Username password: format
+        USERNAME=$(echo "$CREDS_INPUT" | awk '{print $1}')
+        PASSWORD=$(echo "$CREDS_INPUT" | awk -F'password: ' '{print $2}' | xargs)
+        if [[ -z "$USERNAME" ]] || [[ -z "$PASSWORD" ]]; then
+            echo "Error: Could not extract username or password"
+            usage
+        fi
+    else
+        echo "Error: Invalid credentials format. Expected 'Creds: user/password' or 'Token: <token>'"
+        usage
+    fi
+fi
+
+# Validate required parameters based on authentication mode
+if [[ "$AUTH_MODE" == "token" ]]; then
+    if [ -z "$TOKEN" ] || [ -z "$SERVER" ]; then
+        echo "Error: Both --token and --server arguments are required."
+        usage
+    fi
+fi
+
+# Check that we have server URL
+if [[ -z "$SERVER" ]]; then
+    echo "Error: Server URL is required."
+    usage
+fi
+
+# Check that we have authentication credentials
+if [[ -z "$TOKEN" ]] && [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
+    echo "Error: Either token or username/password is required."
+    usage
+fi
+
+# Validate token format if provided
+if [[ -n "$TOKEN" ]] && [[ ! "$TOKEN" =~ ^sha256~[A-Za-z0-9_-]+$ ]]; then
+  echo "Error: Invalid token format. The token should start with 'sha256~' and follow the correct format."
+  exit 1
+fi
+
+# Validate server URL format
+if [[ ! "$SERVER" =~ ^https:// ]]; then
+  echo "Error: Invalid server URL. The server URL must start with 'https://'."
+  exit 1
+fi
+
+# Generate kubeconfig file path
+if [[ -n "$KUBECONFIG_OUT" ]]; then
+  KUBECONFIG_FILE="$KUBECONFIG_OUT"
+else
+  KUBECONFIG_FILE="/tmp/kubeconfig_$$"
+fi
+export KUBECONFIG="$KUBECONFIG_FILE"
+
+# Perform the login with the provided credentials and server, and skip TLS verification
+echo "Logging into OpenShift cluster..."
+
+if [[ -n "$TOKEN" ]]; then
+    # Token-based authentication
+    echo "Using token authentication..."
+    if oc login --token="$TOKEN" --server="$SERVER" --insecure-skip-tls-verify=true; then
+        echo "Login successful!"
+    else
+        echo ""
+        echo "❌ LOGIN FAILED: Token-based authentication unsuccessful"
+        echo ""
+        echo "🔍 Possible causes:"
+        echo "   • Token is invalid or expired"
+        echo "   • Server URL is incorrect: $SERVER"
+        echo "   • Cluster is unreachable or down"
+        echo ""
+        echo "💡 Troubleshooting:"
+        echo "   1. Verify the token is current (tokens usually expire)"
+        echo "   2. Get a fresh token from: $CONSOLE_URL"
+        echo "   3. Check if the cluster is accessible"
+        echo ""
+        exit 1
+    fi
+else
+    # Username/password authentication
+    echo "Using username/password authentication..."
+    if oc login --insecure-skip-tls-verify -u "$USERNAME" -p "$PASSWORD" "$SERVER"; then
+        echo "Login successful!"
+    else
+        echo ""
+        echo "❌ LOGIN FAILED: Username/password authentication unsuccessful"
+        echo ""
+        echo "🔍 Possible causes:"
+        echo "   • Username ($USERNAME) or password is incorrect"
+        echo "   • Cluster doesn't support username/password authentication"
+        echo "   • Server URL is incorrect: $SERVER"
+        echo "   • Cluster is unreachable or down"
+        echo ""
+        echo "💡 Try token-based authentication instead:"
+        echo "   1. Login to web console: $CONSOLE_URL"
+        echo "   2. Click your name (top right) → 'Copy login command'"
+        echo "   3. Use: $0 Console: $CONSOLE_URL Token: <your-token>"
+        echo ""
+        exit 1
+    fi
+fi
+
+# Print out the kubeconfig path in machine-readable and human-friendly forms
+echo "KUBECONFIG_PATH=$KUBECONFIG_FILE"
+echo "Kubeconfig for this terminal is set to: $KUBECONFIG_FILE"
+echo "You are now logged into the OpenShift cluster at $SERVER."
+
+# Set up cleanup only when interactive shell is spawned and user didn't request to keep kubeconfig
+if [[ "$NO_SHELL" != "true" && "$KEEP_KUBECONFIG" != "true" ]]; then
+  trap "echo 'Cleaning up kubeconfig file: $KUBECONFIG_FILE'; rm -f $KUBECONFIG_FILE" EXIT
+fi
+
+# Keep the terminal session alive (interactive mode) - unless --no-shell was specified
+if [[ "$NO_SHELL" != "true" ]]; then
+    exec "$SHELL"
+else
+    echo "Login complete. Returning control to calling script..."
+fi

@@ -17,7 +17,8 @@
       "Bash(ln:*)",
       "WebFetch(domain:docs.redhat.com)",
       "Bash(oc describe:*)",
-      "Bash(jira version:*)"
+      "Bash(jira version:*)",
+      "Bash(export:*)"
     ],
     "deny": []
   }

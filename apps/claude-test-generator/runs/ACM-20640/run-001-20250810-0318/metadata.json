@@ -1,0 +1,36 @@
+{
+  "ticket_id": "ACM-20640",
+  "title": "RBAC UI Implementation",
+  "run_number": "001",
+  "timestamp": "20250810-0318",
+  "environment": {
+    "cluster_url": "https://api.qe6-vmware-ibm.install.dev09.red-chesterfield.com:6443",
+    "console_url": "https://console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com",
+    "openshift_version": "4.19.6",
+    "acm_namespace": "ocm",
+    "mce_namespace": "multicluster-engine"
+  },
+  "analysis_summary": {
+    "feature_status": "partially_deployed",
+    "core_infrastructure": "available",
+    "ui_implementation": "in_progress",
+    "testing_readiness": "backend_ready_ui_pending"
+  },
+  "test_coverage": {
+    "total_test_cases": 8,
+    "backend_tests": 3,
+    "ui_tests": 5,
+    "integration_tests": 2
+  },
+  "linked_tickets": {
+    "critical_dependencies": ["ACM-22925", "ACM-22613", "ACM-22760", "ACM-22877"],
+    "qe_tickets": ["ACM-22799", "ACM-22800"],
+    "total_subtasks": 43
+  },
+  "framework_metadata": {
+    "generation_time_minutes": 8,
+    "investigation_depth": "comprehensive",
+    "ticket_analysis_complete": true,
+    "environment_validation": "successful"
+  }
+}
