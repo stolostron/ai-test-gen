@@ -19,6 +19,8 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 - **WebFetch**: For accessing GitHub PR details and analysis
 - **kubectl/oc**: Kubernetes/OpenShift CLI for cluster validation
 - **TodoWrite**: Task tracking and progress management
+- **setup_clc**: Environment setup script (bin/setup_clc) - Configures kubeconfig for specified QE environments
+- **login_oc**: OpenShift login script (bin/login_oc) - Handles authentication with cluster credentials
 
 ## Configuration Files
 This framework uses modular configuration files for maintainability:
@@ -26,28 +28,18 @@ This framework uses modular configuration files for maintainability:
 - **Test Scoping Rules**: `.claude/prompts/test-scoping-rules.md` - Smart test scoping methodology
 - **YAML Sample Templates**: `.claude/templates/yaml-samples.md` - YAML samples for expected results
 - **Environment Configuration**: `.claude/templates/environment-config.md` - Environment setup and validation
+- **Bash Command Patterns**: `.claude/templates/bash-command-patterns.md` - Command chaining and execution patterns
 - **Feedback Loop System**: `.claude/workflows/feedback-loop-system.md` - Human review and improvement integration
 - **Framework Greetings**: `.claude/greetings/framework-greetings.md` - Welcome message and quick start guide
 
-## Common Commands
+## Command Reference
 
-### JIRA Analysis
-```bash
-# View ticket details with description and comments
-jira issue view <TICKET-ID> --plain
-
-# Get ticket with comments
-jira issue view <TICKET-ID> --comments
-
-# List subtasks and linked issues
-jira issue view <TICKET-ID> # Shows linked tickets in output
-```
-
-### GitHub PR Analysis
-```bash
-# Use WebFetch tool with GitHub URLs for PR analysis
-# Format: https://github.com/<owner>/<repo>/pull/<number>
-```
+**Detailed Command Patterns**: See `.claude/templates/bash-command-patterns.md` for comprehensive examples of:
+- Environment setup and validation with proper command chaining
+- JIRA analysis workflows
+- GitHub PR analysis patterns  
+- Testing and validation commands
+- Troubleshooting procedures
 
 ## Workflow Overview
 
@@ -92,16 +84,47 @@ The framework follows a structured 5-stage approach:
 ## Framework Execution
 
 ### Basic Usage
-```bash
-# Navigate to framework
-cd apps/claude-test-generator
 
-# Analyze any ACM JIRA ticket
-analyze_ticket ACM-22079
+The framework supports two environment setup options:
 
-# With custom environment
-USER_ENVIRONMENT=qe7 analyze_ticket ACM-22079
-```
+#### **Option 1: Automatic QE Setup** (Recommended)
+- Uses qe6 environment (currently the only supported QE environment)
+- Automatic credential fetching from Jenkins
+- Framework calls `source setup_clc qe6` during environment setup
+
+#### **Option 2: User-Provided Kubeconfig** (Maximum Flexibility)  
+- Use any cluster with any authentication method
+- Custom environments: production, staging, personal dev clusters
+- User kubeconfig takes precedence over automatic setup
+
+**Detailed Examples**: See `.claude/examples/environment-setup-examples.md`
+
+### Framework Environment Setup Options
+
+#### **Automatic Setup** (Uses Framework Scripts)
+- **bin/setup_clc**: Automatically fetches latest credentials from Jenkins and configures kubeconfig
+- **bin/login_oc**: Handles OpenShift authentication with various credential formats  
+- **Supported Environment**: qe6 (default and currently only supported QE environment)
+- **Auto-Detection**: Framework calls `source setup_clc qe6` during environment setup phase
+- **Authentication Details**: See `.claude/templates/environment-config.md` for authentication persistence requirements
+
+**⚠️ CRITICAL - Command Chaining for Environment Setup**:
+- **Session Persistence Issue**: `setup_clc` modifies environment variables that don't persist across separate command executions
+- **Required Approach**: Always chain commands with `&&` after setup to maintain session state
+- **Correct Pattern**: `source setup_clc qe6 && oc whoami && oc get namespaces`
+- **Avoid**: Running `setup_clc` separately from subsequent `oc` commands
+
+**⚠️ IMPORTANT - Report Generation Guidelines**:
+- **Framework Internal Use**: The framework uses `setup_clc` and `login_oc` scripts internally for robust authentication
+- **Final Report Instructions**: All generated test cases MUST use generic `oc login` commands for broader team usability
+- **Generic Format**: `oc login https://api.cluster-url.com:6443 -u username -p password --insecure-skip-tls-verify`
+- **Rationale**: Team members may not have access to framework scripts but can use standard oc login
+
+#### **Manual Setup** (User-Provided Kubeconfig)
+- **Flexibility**: Use any cluster with any authentication method
+- **Custom Environments**: Production, staging, personal dev clusters
+- **Authentication**: Token, certificate, or any oc login method
+- **Override**: User kubeconfig takes precedence over automatic setup
 
 ### What Happens
 1. Framework connects to specified environment (default: qe6)
@@ -170,12 +193,50 @@ runs/
 - **Human Review Integration**: Smart feedback loop system with quality tracking
 - **Continuous Improvement**: Learning from feedback to enhance future generations
 
+## Missing Data Intelligence & Linked Ticket Investigation
+
+### 🔍 Comprehensive Ticket Analysis Protocol
+
+The framework performs **thorough investigation** of all related tickets:
+
+#### **Multi-Level Ticket Investigation**
+1. **Main Ticket Analysis**: Requirements, acceptance criteria, technical specifications
+2. **All Subtasks Investigation**: Implementation status, PR links, completion state
+3. **Dependency Chain Analysis**: Blocking/blocked tickets, prerequisites
+4. **Epic Context Review**: Parent epics, strategic objectives, architectural decisions
+5. **Related Ticket Mining**: Historical context, previous implementations, lessons learned
+6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context
+
+#### **PR and Implementation Deep Dive**
+- **Code Change Analysis**: Actual implementation details from attached PRs
+- **Deployment Status Assessment**: Whether changes are live in test environments
+- **Feature Availability Determination**: What can be tested now vs. future testing
+- **Integration Point Identification**: How components connect and interact
+
+#### **Missing Data Detection & Response**
+When critical data is missing, the framework:
+- **🚨 Identifies Gaps**: Missing PRs, inaccessible designs, undefined architectures
+- **📊 Quantifies Impact**: What specific testing cannot be performed
+- **✅ Scopes Available Work**: Focus on testable components
+- **📋 Provides Future Roadmap**: Test cases ready for when missing data becomes available
+
+**Detailed Examples**: See `.claude/workflows/missing-data-examples.md`
+
+### 🎯 Investigation Quality Standards
+
+- **100% Ticket Coverage**: Every linked ticket analyzed regardless of nesting level
+- **PR Verification**: All attached PRs examined for implementation details
+- **Cross-Reference Validation**: Ensuring consistency across related tickets
+- **Context Preservation**: Understanding full feature history and evolution
+
 ## Framework Advantages
 
 This framework delivers significant advancement in automated test generation:
 - **AI-Powered Analysis**: Human-level reasoning about complex software systems
 - **Smart Test Scoping**: Focus only on changed functionality for efficiency
 - **Environment Adaptability**: Work with available resources, plan for ideal conditions
+- **Comprehensive Investigation**: Deep analysis of all linked tickets and nested dependencies
+- **Missing Data Intelligence**: Automatic detection and graceful handling of incomplete information
 - **Modular Organization**: Maintainable configuration with specialized files
 - **Team Collaboration**: Clean outputs usable by any team member
 
@@ -184,3 +245,4 @@ The modular design enables:
 - **Team Collaboration**: Multiple experts can maintain different components
 - **Reusable Templates**: Share YAML samples and scoping rules across projects
 - **Flexible Configuration**: Adapt to different project types and requirements
+- **Quality Investigation**: Standardized deep-dive analysis protocols

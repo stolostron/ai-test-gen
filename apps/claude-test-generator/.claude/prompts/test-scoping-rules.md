@@ -45,7 +45,9 @@ UNCHANGED: Existing functions with no changes
 
 ### Setup
 **Prerequisites**:
-- Hub cluster login: `source setup_clc qe6`
+- Hub cluster access (choose one):
+  - **Option A**: Automatic setup: `source setup_clc qe6`
+  - **Option B**: Custom kubeconfig: `export KUBECONFIG=/path/to/your/kubeconfig && oc login <cluster-url>`
 - Environment verification: `oc whoami && oc get managedclusters`
 - [Any specific setup requirements]
 
