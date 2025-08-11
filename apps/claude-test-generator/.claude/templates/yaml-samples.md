@@ -1,5 +1,109 @@
 # YAML Sample Templates for Expected Results
 
+## Validation Status Reporting Templates
+
+### Environment Assessment Section Template
+
+```markdown
+## Environment Assessment
+
+### Validation Results
+**Environment**: [qe6/qe7/custom/unavailable]
+**Resource Schema Validation**: [✅ Verified / ⚠️ Partial / ❌ Unable to verify / 🔍 Not attempted]
+**Component Architecture**: [✅ Identified / ⚠️ Assumed / ❌ Unknown]
+**Feature Deployment**: [✅ Available / ⚠️ Partial / ❌ Not Available / 🔍 Unknown]
+
+### Validation Details
+- **Successful Validations**: [List what was successfully verified]
+- **Validation Limitations**: [List what couldn't be verified and why]
+- **Assumptions Made**: [List any assumptions due to validation failures]
+- **Alternative Approaches**: [List alternative validation methods provided]
+
+### Test Plan Impact
+- **Immediate Execution**: [✅ Ready / ⚠️ Limited / ❌ Requires Deployment / 🌍 Requires Environment]
+- **Current Limitations**: [Describe what prevents full testing now]
+- **Future Execution**: [What becomes possible when limitations are resolved]
+```
+
+### Validation Issue Documentation Template
+
+```markdown
+### ⚠️ Validation Limitations
+
+**Resource Schema Verification**: Could not verify [specific resource] field existence
+- **Impact**: Using generic inspection commands (`oc get resource -o yaml`)
+- **Alternative**: Multiple validation approaches provided in test cases
+
+**Component Architecture**: Unable to determine exact operational patterns
+- **Impact**: Providing both controller and job-based logging approaches
+- **Alternative**: Test cases include investigation steps for architecture detection
+
+**Feature Deployment**: Cannot confirm [specific feature] availability
+- **Impact**: Generated tests for both current and post-deployment scenarios
+- **Alternative**: Basic functionality checks included in test prerequisites
+```
+
+## OpenShift/ACM Common Patterns
+
+### Standard Resource Validation Approaches
+
+```bash
+# Generic resource inspection (always works)
+oc get <resource-type> <name> -o yaml
+
+# Common status field patterns in OpenShift/ACM
+oc get <resource> <name> -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}'
+oc get <resource> <name> -o jsonpath='{.status.conditions[?(@.type=="Available")].status}'
+oc get <resource> <name> -o jsonpath='{.status.phase}'
+
+# Standard ACM resource patterns
+oc get managedclusters
+oc get clustercurators -A
+oc get multiclusterhub -A
+oc get multiclusterengine -A
+```
+
+### Common Component Architecture Patterns
+
+```bash
+# Controller-based components (logs in deployment)
+oc logs -n <namespace> deployment/<component>-controller
+
+# Operator-based components (logs in operator deployment)  
+oc logs -n <namespace> deployment/<component>-operator
+
+# Job-based operations (logs in job pods)
+oc logs -n <namespace> job/<job-name>
+oc get pods -n <namespace> -l job-name=<job-name>
+
+# ACM-specific patterns
+oc logs -n open-cluster-management deployment/<component>
+oc logs -n multicluster-engine deployment/<component>
+```
+
+### Alternative Validation Methods
+
+When specific validation fails, provide these alternatives:
+
+```markdown
+**Method 1: Direct Resource Inspection**
+```bash
+oc get <resource> <name> -o yaml | grep -A 10 "status:"
+```
+
+**Method 2: Conditions-Based Validation**
+```bash
+oc get <resource> <name> -o jsonpath='{.status.conditions[*].type}'
+oc get <resource> <name> -o jsonpath='{.status.conditions[*].message}'
+```
+
+**Method 3: Events and Logs Investigation**
+```bash
+oc get events -n <namespace> --sort-by='.lastTimestamp'
+oc logs -n <namespace> <pod-name>
+```
+```
+
 ## Complete Test Scenarios with Expected Outputs
 
 ### Digest-Based Upgrade Test (NEW Functionality)

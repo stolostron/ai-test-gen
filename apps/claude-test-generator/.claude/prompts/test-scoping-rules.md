@@ -3,6 +3,8 @@
 ## Core Philosophy
 Focus ONLY on testing what actually changed in the implementation, avoiding redundant testing of existing stable functionality.
 
+**CRITICAL**: Always validate implementation reality before generating test cases to prevent assumption-based errors.
+
 ## Analysis Framework
 
 ### 1. Code Change Classification
@@ -12,7 +14,21 @@ MODIFIED: Existing functions with changed behavior
 UNCHANGED: Existing functions with no changes
 ```
 
-### 2. Test Scope Rules
+### 2. Implementation Reality Assessment (RECOMMENDED)
+
+#### **Attempt to validate when possible:**
+- **Resource Schemas**: Check OpenShift/ACM resource structures when environment accessible
+- **Component Patterns**: Identify standard operator/controller deployment patterns
+- **Feature Status**: Assess basic functionality availability when environment allows
+- **Operational Patterns**: Understand logging and monitoring approaches for accurate commands
+
+#### **Adaptive Generation Rules:**
+- **Continue regardless of validation results** - always generate comprehensive test plan
+- **Document validation limitations** - clearly report what couldn't be verified
+- **Provide multiple approaches** - offer alternative validation methods when specific ones fail
+- **Use OpenShift/ACM best practices** - leverage standard patterns even when verification incomplete
+
+### 3. Test Scope Rules
 
 #### ✅ INCLUDE IN TESTING:
 - NEW functionality and code paths
@@ -28,13 +44,13 @@ UNCHANGED: Existing functions with no changes
 - UI components (unless changed for new feature)
 - Network/infrastructure (unless modified)
 
-### 3. Table Optimization
+### 4. Table Optimization
 - **Target**: 1-3 tables for most features
 - **Maximum**: 8-10 steps per table
 - **Focus**: E2E scenarios exercising new code paths
 - **Avoid**: Comprehensive testing of every edge case in unchanged code
 
-### 4. Enhanced Test Case Structure
+### 5. Enhanced Test Case Structure
 
 #### Test Case Format:
 ```markdown
@@ -111,7 +127,7 @@ Instructions:
 2. Fallback Mechanism Validation  
 3. Integration with Existing Upgrade Flow
 
-### 5. E2E Test Focus
+### 6. E2E Test Focus
 
 **E2E COVERAGE APPROACH**: 
 - Focus on complete end-to-end workflows covering all NEW functionality

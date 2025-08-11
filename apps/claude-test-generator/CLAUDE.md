@@ -2,7 +2,30 @@
 
 ## 🎯 Framework Introduction
 
-> **Quick Start & Welcome Message**: See `.claude/greetings/framework-greetings.md`
+> **Quick Start Guide**: See `docs/quick-start.md`
+> **Welcome Message**: See `.claude/greetings/framework-greetings.md`
+
+## 📖 Table of Contents
+- [🚀 Quick Start](#quick-start)
+- [🏗️ System Architecture](#system-architecture) 
+- [🛠️ Available Tools](#available-tools)
+- [⚙️ Environment Setup](#environment-setup)
+- [📋 Workflow Overview](#workflow-overview)
+- [🎯 Core Principles](#core-principles)
+- [📁 Output Structure](#output-structure)
+- [🔧 Advanced Features](#advanced-features)
+
+---
+
+## 🚀 Quick Start
+
+> **Complete Guide**: See `docs/quick-start.md`
+
+**Most Common Usage:** Navigate to framework and ask Claude to analyze any JIRA ticket
+
+**What You Get:** 5-10 minute analysis with 3-5 comprehensive E2E test scenarios
+
+**Environment:** Default qe6 or use your own cluster
 
 ---
 
@@ -21,6 +44,7 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 - **TodoWrite**: Task tracking and progress management
 - **setup_clc**: Environment setup script (bin/setup_clc) - Configures kubeconfig for specified QE environments
 - **login_oc**: OpenShift login script (bin/login_oc) - Handles authentication with cluster credentials
+- **github-investigation**: Enhanced GitHub repository access script (bin/github-investigation.sh) - Deep repository analysis with SSH access
 
 ## Configuration Files
 This framework uses modular configuration files for maintainability:
@@ -51,11 +75,14 @@ The framework follows a structured 5-stage approach:
 - **Cluster Connectivity**: Verify access and permissions
 - **Status Reporting**: Clear execution guidance
 
-### Stage 2: Multi-Source Intelligence Gathering
-- **Smart Test Scope Analysis**: Focus ONLY on changed functionality
-- **JIRA Intelligence**: Comprehensive ticket and relationship analysis
-- **Repository Analysis**: Code changes and architectural impact
-- **Test Scope Optimization**: Skip unchanged functionality
+### Stage 2: Multi-Source Intelligence Gathering ⚠️ MANDATORY
+- **Complete Investigation Protocol**: ALWAYS perform ALL steps below - NO EXCEPTIONS
+- **PR Discovery & Analysis**: Find and analyze ALL related PRs for implementation details
+- **Internet Research**: Research relevant technology, documentation, and best practices
+- **JIRA Intelligence**: Comprehensive ticket + ALL subtasks + dependency chains + epic context
+- **Repository Analysis**: Code changes, architectural impact, and integration points
+- **Implementation Reality Validation**: Deep schema validation and actual field inspection
+- **Smart Test Scope Analysis**: Focus ONLY on changed functionality after complete understanding
 
 ### Stage 3: AI Reasoning and Strategic Test Intelligence
 - **Semantic Feature Analysis**: Understand feature intent and requirements
@@ -66,78 +93,55 @@ The framework follows a structured 5-stage approach:
 ### Stage 4: Test Strategy Generation & Quality Optimization
 - **E2E Test Coverage**: Complete end-to-end workflows covering all NEW functionality
 - **Structured Test Cases**: Description, Setup, and clear Steps/Expected Result tables
-- **Actual Expected Results**: Show real terminal output, not validation commands
+- **Actual Expected Results**: Show real terminal output, not only validation commands
+- **YAML Evidence in Expected Results**: For resources you create or validate, include a small YAML snippet (or full YAML when concise) in the Expected Result column that proves configuration/annotations are present. Prefer actual `oc get ... -o yaml` excerpts that show:
+  - Key annotations confirming feature activation
+  - Critical fields/sections proving correct resource configuration
+  - Minimal but sufficient context (use `...` to truncate unrelated sections)
 - **Simple Execution**: Keep steps straightforward and easy to follow
 - **Multiple Focused Tables**: OK to create multiple tables for clarity
 - **Terminal-Ready Commands**: Copy-pasteable commands with clear expected outputs
+- **Generic oc login**: MUST use generic format for broader team usability
 
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
-- **Organized Output Generation**: Timestamped runs with proper structure
-- **Deployment Status Analysis**: Feature availability assessment
-- **Future Readiness**: Test plans ready when feature is deployed
+- **Dual File Output**: Complete-Analysis.md + Test-Cases.md
+- **Deployment Status Analysis**: Feature availability assessment  
 - **Clear Status Reporting**: What can be tested now vs. post-deployment
-- **🔄 Intelligent Feedback Loop**: Automated quality assessment and human review integration
-- **📊 Run Comparison Analysis**: Quality progression tracking and improvement identification
-- **👥 Human Review Triggers**: Automated requests for human feedback within current execution cycle only
-- **🎯 Continuous Improvement**: Learning integration from human feedback into subsequent generations
+- **Intelligent Feedback Loop**: Quality assessment and human review integration
+- **Task-Focused Reports**: Clean outputs without framework self-references
 
-## Framework Execution
+## ⚙️ Environment Setup
 
-### Basic Usage
+> **Complete Details**: See `.claude/advanced/environment-setup-details.md`
 
-The framework supports two environment setup options:
+### Environment Options
+- **Option 1 (Recommended)**: Automatic qe6 setup with Jenkins credentials
+- **Option 2**: User-provided kubeconfig (any cluster, any auth method)
 
-#### **Option 1: Automatic QE Setup** (Recommended)
-- Uses qe6 environment (currently the only supported QE environment)
-- Automatic credential fetching from Jenkins
-- Framework calls `source setup_clc qe6` during environment setup
+### ⚠️ CRITICAL Instructions
 
-#### **Option 2: User-Provided Kubeconfig** (Maximum Flexibility)  
-- Use any cluster with any authentication method
-- Custom environments: production, staging, personal dev clusters
-- User kubeconfig takes precedence over automatic setup
+**Command Chaining**: Always chain commands after setup to maintain session state
+```bash
+# Correct: source setup_clc qe6 && oc whoami && oc get namespaces
+# Avoid: Running setup_clc separately from oc commands
+```
 
-**Detailed Examples**: See `.claude/examples/environment-setup-examples.md`
+**Report Generation**: Generated test cases MUST use generic `oc login` commands for team usability
+```bash
+# Format: oc login https://api.cluster-url.com:6443 -u username -p password --insecure-skip-tls-verify
+```
 
-### Framework Environment Setup Options
-
-#### **Automatic Setup** (Uses Framework Scripts)
-- **bin/setup_clc**: Automatically fetches latest credentials from Jenkins and configures kubeconfig
-- **bin/login_oc**: Handles OpenShift authentication with various credential formats  
-- **Supported Environment**: qe6 (default and currently only supported QE environment)
-- **Auto-Detection**: Framework calls `source setup_clc qe6` during environment setup phase
-- **Authentication Details**: See `.claude/templates/environment-config.md` for authentication persistence requirements
-
-**⚠️ CRITICAL - Command Chaining for Environment Setup**:
-- **Session Persistence Issue**: `setup_clc` modifies environment variables that don't persist across separate command executions
-- **Required Approach**: Always chain commands with `&&` after setup to maintain session state
-- **Correct Pattern**: `source setup_clc qe6 && oc whoami && oc get namespaces`
-- **Avoid**: Running `setup_clc` separately from subsequent `oc` commands
-
-**⚠️ IMPORTANT - Report Generation Guidelines**:
-- **Framework Internal Use**: The framework uses `setup_clc` and `login_oc` scripts internally for robust authentication
-- **Final Report Instructions**: All generated test cases MUST use generic `oc login` commands for broader team usability
-- **Generic Format**: `oc login https://api.cluster-url.com:6443 -u username -p password --insecure-skip-tls-verify`
-- **Rationale**: Team members may not have access to framework scripts but can use standard oc login
-
-#### **Manual Setup** (User-Provided Kubeconfig)
-- **Flexibility**: Use any cluster with any authentication method
-- **Custom Environments**: Production, staging, personal dev clusters
-- **Authentication**: Token, certificate, or any oc login method
-- **Override**: User kubeconfig takes precedence over automatic setup
-
-### What Happens
-1. Framework connects to specified environment (default: qe6)
-2. Analyzes JIRA ticket for business and technical requirements
-3. Generates comprehensive E2E test plan focused on NEW functionality
-4. Creates both detailed analysis and clean test cases
-5. Provides deployment assessment (feature available or not)
+### Framework Process
+1. Connect to environment (default: qe6)
+2. **COMPLETE INVESTIGATION PROTOCOL**: JIRA + PRs + Internet Research - REQUIRED
+3. **Deep Implementation Validation**: Schemas, architecture, actual testing
+4. **Feedback Loop Execution**: Quality assessment and iterative improvement
+5. Generate comprehensive E2E test plan based on COMPLETE understanding
+6. Create dual output with full investigation transparency
+7. Provide deployment assessment with investigation evidence
 
 ### Expected Output
-- **Execution Time**: 5-10 minutes
-- **Test Cases**: 3-5 comprehensive E2E scenarios
-- **Coverage**: All NEW functionality with realistic validation steps
-- **Format**: Ready for manual execution or Polarion import
+- **Time**: 5-10 minutes | **Cases**: 3-5 E2E scenarios | **Format**: Polarion-ready
 
 ## Output Structure
 
@@ -177,72 +181,62 @@ runs/
 - **Feedback Loop System**: Automated human review triggers with quality assessment
 - **Task-Focused Reports**: Clean outputs without framework self-references
 
-## Latest Enhancements
+## 🔧 Advanced Features
 
-### Recent Improvements
-- **Fixed Feedback Loop Logic**: Now properly tracks current execution cycle (not historical runs)
-- **Task-Focused Reports**: Removed framework references, reports focus purely on testing tasks
-- **Generic Login Instructions**: Reports use placeholder format for broader team usability
-- **Early Environment Assessment**: Clear feature availability status in report headers
-- **Enhanced Test Case Structure**: Consistent Description, Setup, and table formats
+> **Implementation Validation**: See `.claude/advanced/implementation-validation.md`
+> **Investigation Protocol**: See `.claude/workflows/investigation-protocol.md`  
+> **Framework Advantages**: See `.claude/advanced/framework-advantages.md`
 
-### Quality Features
-- **Environment Assessment**: Early determination of feature deployment status
-- **Realistic Expected Outputs**: Show actual terminal output, not commands
-- **Copy-Pasteable Commands**: Generic format that works across different environments
-- **Human Review Integration**: Smart feedback loop system with quality tracking
-- **Continuous Improvement**: Learning from feedback to enhance future generations
+### 🔍 Critical Validation Requirements ⚠️ MANDATORY
 
-## Missing Data Intelligence & Linked Ticket Investigation
+**BEFORE generating test cases**, the framework MUST ALWAYS:
+1. **Complete PR Analysis**: Find and analyze ALL implementation PRs - NO EXCEPTIONS
+2. **Conduct Internet Research**: Research technology, docs, and best practices - REQUIRED
+3. **Perform Deep Schema Validation**: Inspect actual field structures and behaviors
+4. **Discover Component Architecture**: Understand operational patterns through investigation
+5. **Assess Implementation Reality**: Validate actual deployment and feature availability
+6. **Execute Feedback Loop**: Quality assessment and iterative improvement
+7. **Document Investigation Results**: Full transparency of research and validation process
 
-### 🔍 Comprehensive Ticket Analysis Protocol
+**FAILURE TO COMPLETE INVESTIGATION = INVALID TEST GENERATION**
 
-The framework performs **thorough investigation** of all related tickets:
+### 🎯 Investigation Protocol ⚠️ MANDATORY
 
-#### **Multi-Level Ticket Investigation**
-1. **Main Ticket Analysis**: Requirements, acceptance criteria, technical specifications
-2. **All Subtasks Investigation**: Implementation status, PR links, completion state
-3. **Dependency Chain Analysis**: Blocking/blocked tickets, prerequisites
-4. **Epic Context Review**: Parent epics, strategic objectives, architectural decisions
-5. **Related Ticket Mining**: Historical context, previous implementations, lessons learned
-6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context
+**ALWAYS EXECUTE COMPLETE INVESTIGATION - NO SHORTCUTS ALLOWED**
 
-#### **PR and Implementation Deep Dive**
-- **Code Change Analysis**: Actual implementation details from attached PRs
-- **Deployment Status Assessment**: Whether changes are live in test environments
-- **Feature Availability Determination**: What can be tested now vs. future testing
-- **Integration Point Identification**: How components connect and interact
+**Step 1: Complete JIRA Hierarchy Deep Dive** (100% coverage requirement):
+1. **Main ticket + ALL nested linked tickets** (up to 3 levels deep with recursion protection)
+2. **ALL subtasks + dependency chains + epic context + related tickets**
+3. **Comments analysis across ALL discovered tickets** for additional insights and links
+4. **Cross-reference validation + consistency checking across entire ticket network**
 
-#### **Missing Data Detection & Response**
-When critical data is missing, the framework:
-- **🚨 Identifies Gaps**: Missing PRs, inaccessible designs, undefined architectures
-- **📊 Quantifies Impact**: What specific testing cannot be performed
-- **✅ Scopes Available Work**: Focus on testable components
-- **📋 Provides Future Roadmap**: Test cases ready for when missing data becomes available
+**Step 2: PR Investigation** (MANDATORY):
+1. Find ALL related PRs through GitHub search
+2. Analyze implementation details and code changes
+3. Review PR discussions and technical decisions
+4. Validate deployment status and integration points
 
-**Detailed Examples**: See `.claude/workflows/missing-data-examples.md`
+**Step 3: Internet Research** (MANDATORY):
+1. Research relevant technology and documentation
+2. Understand best practices and common patterns
+3. Learn domain-specific knowledge for accurate testing
+4. Validate assumptions against authoritative sources
 
-### 🎯 Investigation Quality Standards
+**Step 4: Implementation Reality Validation** (MANDATORY):
+1. Deep schema inspection and field validation
+2. Actual cluster testing of components and behaviors
+3. Architecture discovery and operational pattern analysis
+4. Feature availability assessment with proof
 
-- **100% Ticket Coverage**: Every linked ticket analyzed regardless of nesting level
-- **PR Verification**: All attached PRs examined for implementation details
-- **Cross-Reference Validation**: Ensuring consistency across related tickets
-- **Context Preservation**: Understanding full feature history and evolution
+**Step 5: Missing Data Handling** (MANDATORY):
+1. Detect gaps and quantify impact
+2. Document limitations and assumptions
+3. Provide future roadmap for complete testing
 
-## Framework Advantages
+### 📊 Quality Standards
 
-This framework delivers significant advancement in automated test generation:
-- **AI-Powered Analysis**: Human-level reasoning about complex software systems
-- **Smart Test Scoping**: Focus only on changed functionality for efficiency
-- **Environment Adaptability**: Work with available resources, plan for ideal conditions
-- **Comprehensive Investigation**: Deep analysis of all linked tickets and nested dependencies
-- **Missing Data Intelligence**: Automatic detection and graceful handling of incomplete information
-- **Modular Organization**: Maintainable configuration with specialized files
-- **Team Collaboration**: Clean outputs usable by any team member
-
-The modular design enables:
-- **Easy Updates**: Modify specific functionality without touching core workflow
-- **Team Collaboration**: Multiple experts can maintain different components
-- **Reusable Templates**: Share YAML samples and scoping rules across projects
-- **Flexible Configuration**: Adapt to different project types and requirements
-- **Quality Investigation**: Standardized deep-dive analysis protocols
+**Always Generate Best Possible Test Plan**:
+- Create comprehensive cases even with incomplete validation
+- Use generic inspection commands when specific validation fails
+- Provide multiple validation approaches for uncertain scenarios
+- Ensure test plans work when limitations are resolved

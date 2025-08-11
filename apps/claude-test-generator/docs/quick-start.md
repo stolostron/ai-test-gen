@@ -1,63 +1,55 @@
-# Claude Test Generator - Quick Start Guide
+# Quick Start Guide
 
-## 🚀 5-Minute Setup
+## 🚀 Most Common Usage
 
-### Step 1: Prerequisites Check
-```bash
-# Verify Claude Code CLI
-claude --version
-
-# Verify GitHub access (optional)
-git ls-remote git@github.com:stolostron/console.git HEAD
-```
-
-### Step 2: Navigate to App
+### Navigate to Framework
 ```bash
 cd apps/claude-test-generator
 ```
 
-### Step 3: Generate Your First Test Plan
-```bash
-# Use global slash command
-/generate-e2e-test-plan https://github.com/stolostron/repo/pull/123 "Your Feature Name"
+### Analyze JIRA Ticket
+Simply ask Claude:
+```
+"Please analyze ACM-12345 and generate E2E test cases"
 ```
 
-### Step 4: Review Output
+### Alternative Commands
 ```bash
-# Check generated files
-ls ../../e2e-test-generated/
+# With specific environment
+"Analyze ACM-12345 using my current kubeconfig"
 
-# View your test plan
-cat ../../e2e-test-generated/e2e-test-plan-Your-Feature-Name.md
+# With PR context
+"Analyze ACM-12345 and include PR analysis from https://github.com/org/repo/pull/123"
 ```
 
-## ✅ Success!
+## ⚡ What You Get
+- **Execution Time**: 5-10 minutes
+- **Test Cases**: 3-5 comprehensive E2E scenarios
+- **Coverage**: All NEW functionality with realistic validation steps
+- **Format**: Ready for manual execution or Polarion import
+- **Dual Output**: Both detailed analysis and clean test cases
 
-You should now have a professionally formatted test plan ready for:
-- Manual execution
-- Polarion import
-- Team review
-- Further refinement
+## 🌍 Environment Options
+- **Default**: qe6 environment (automatic setup)
+- **Custom**: Use your own kubeconfig/cluster
+- **Flexible**: Framework adapts to available resources
 
-## 🔄 Next Steps
-
-1. **Customize**: Edit the generated test plan for your environment
-2. **Iterate**: Run the command again with refined feature names
-3. **Scale**: Consider the Intelligent Test Framework for complex features
-
-## 🎯 Common Use Cases
-
-### Quick PR Analysis
-```bash
-/analyze-workflow https://github.com/repo/pull/123 "test-plan"
+## 📁 Output Location
+```
+runs/<TICKET-ID>/run-XXX-YYYYMMDD-HHMM/
+├── Complete-Analysis.md     # Comprehensive analysis
+├── Test-Cases.md           # Clean test cases only
+└── metadata.json           # Run metadata
 ```
 
-### Bug Fix Validation
+## 🎯 Alternative: Global Slash Commands
+
+### Quick E2E Test Plan from PR
 ```bash
-/generate-e2e-test-plan https://github.com/repo/pull/124 "Bug Fix Validation"
+/generate-e2e-test-plan https://github.com/repo/pull/123 "Feature Name"
 ```
 
-### Feature Documentation
+### Workflow Analysis
 ```bash
-/analyze-workflow https://github.com/repo/pull/125 "documentation" JIRA-123.txt
+/analyze-workflow https://github.com/repo/pull/123 "test-plan" ACM-123.txt
 ```
