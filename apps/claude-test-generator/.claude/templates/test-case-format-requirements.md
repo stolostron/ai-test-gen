@@ -176,9 +176,16 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
 
 ### Markdown formatting rules (strict)
 - Do NOT use HTML tags like `<br>`, `<b>`, `<i>` in generated markdown
-- In table cells, place the verbal instruction followed immediately by a fenced code block; no extra blank line
-- Use fenced code blocks with language hints inside table cells (GitHub supports this)
+- In table cells, verbal instruction and command should be on the same line, no line breaks
+- Use backticks for inline commands in table cells: `oc create namespace test-ns`
+- For multi-line commands, use fenced code blocks but avoid unnecessary line breaks
 - Prefer `grep -E` for alternations and avoid escaping `|` in shell pipelines
+
+### Test case execution requirements
+- ALL test cases MUST start with cluster login as the first step
+- Format: **Step 1: Log into ACM hub cluster**
+- Provide both automatic setup and manual login options
+- Example: `source setup_clc qe6 && oc whoami` or `oc login https://api.cluster.com:6443 -u user -p pass`
 
 ## ✅ Quality Checklist
 

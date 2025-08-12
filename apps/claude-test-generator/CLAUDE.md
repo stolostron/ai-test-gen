@@ -144,8 +144,10 @@ The framework follows a structured 5-stage approach:
 - **Multiple Focused Tables**: OK to create multiple tables for clarity
 - **Terminal-Ready Commands**: Copy-pasteable commands with clear expected outputs
 - **Generic oc login**: MUST use generic format for broader team usability
- - **Schema-Aware YAML**: ClusterCurator examples include required fields (`towerAuthSecret`, `prehook`, `posthook`, `install`)
- - **ManagedClusterView Usage**: When reading managed cluster resources (e.g., `ClusterVersion`), use `ManagedClusterView` from the hub
+- **Schema-Aware YAML**: ClusterCurator examples include required fields (`towerAuthSecret`, `prehook`, `posthook`, `install`)
+- **ManagedClusterView Usage**: When reading managed cluster resources (e.g., `ClusterVersion`), use `ManagedClusterView` from the hub
+- **Mandatory Login Step**: ALL test cases MUST start with cluster login as Step 1
+- **Clean Markdown**: No HTML tags (`<br>`, etc.), inline commands with backticks, no unnecessary line breaks in tables
 
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md

@@ -394,9 +394,7 @@ spoke-cluster-1   true           True     True        10d
 
 ### Test Steps Column
 ```markdown
-**Step N: [Action Description]**
-**Goal**: [Why this step matters for the NEW functionality]
-Instructions: Run the following command(s):
+**Step N: [Action Description]** - `[inline command if short]` or use code block for multi-line:
 ```bash
 [exact command to copy-paste]
 ```
