@@ -171,8 +171,8 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
 ### Schema-aware YAML requirement (Generic):
 - All CRD-backed resource YAML samples MUST be schema-aware for the target environment
   - Include required fields per CRD schema (use empty/default values if not used)
-  - Prefer generating skeletons via `bin/resource_schema_helper.sh`:
-    - Example: `bin/resource_schema_helper.sh --group <group> --version <v> --kind <Kind> --name <name> [--namespace <ns>]`
+  - Prefer generating skeletons via AI Schema Service and standard commands:
+    - Example: `oc explain <resource>.spec` and `oc create <resource> <name> --dry-run=client -o yaml`
 
 ### Markdown formatting rules (strict)
 - Do NOT use HTML tags like `<br>`, `<b>`, `<i>` in generated markdown
@@ -185,7 +185,8 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
 - ALL test cases MUST start with cluster login as the first step
 - Format: **Step 1: Log into ACM hub cluster**
 - Provide both automatic setup and manual login options
-- Example: `source setup_clc qe6 && oc whoami` or `oc login https://api.cluster.com:6443 -u user -p pass`
+- Example: `oc login --server=<HUB_API_URL> --username=<USERNAME> --password=<PASSWORD>`
+- Use generic login templates for broader team usability (framework uses internal scripts for setup)
 
 ## ✅ Quality Checklist
 

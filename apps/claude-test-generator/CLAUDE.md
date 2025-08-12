@@ -5,13 +5,14 @@
 > **Quick Start Guide**: See `docs/quick-start.md`
 > **Welcome Message**: See `.claude/greetings/framework-greetings.md`
 
-**Latest Version**: Enhanced format with Description + Setup + YAML outputs in Expected Results
-**Framework Status**: Production-ready with complete investigation protocol and intelligent feedback loop
+**Latest Version**: Enhanced format with Description + Setup + YAML outputs in Expected Results + Evidence-based deployment validation
+**Framework Status**: Production-ready with complete investigation protocol, intelligent feedback loop, and robust deployment status validation
 
 ## 📖 Table of Contents
 - [🚀 Quick Start](#quick-start)
 - [🏗️ System Architecture](#system-architecture) 
 - [🛠️ Available Tools](#available-tools)
+- [🔒 Framework Self-Containment Policy](#framework-self-containment-policy)
 - [⚙️ Environment Setup](#environment-setup)
 - [📋 Workflow Overview](#workflow-overview)
 - [🎯 Core Principles](#core-principles)
@@ -41,16 +42,39 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 **🎯 Smart Test Scoping Philosophy**: The framework focuses ONLY on testing what actually changed in the implementation, avoiding redundant testing of existing stable functionality. This ensures efficient, targeted test coverage that maximizes value while minimizing execution time.
 
 ## Available Tools
+- **AI Analysis Engine**: Core AI-powered analysis service for intelligent test generation and validation
 - **Jira CLI**: Installed and configured for ticket analysis
 - **WebFetch**: For accessing GitHub PR details and analysis
 - **kubectl/oc**: Kubernetes/OpenShift CLI for cluster validation
 - **TodoWrite**: Task tracking and progress management
 - **setup_clc**: Environment setup script (bin/setup_clc) - Configures kubeconfig for specified QE environments
 - **login_oc**: OpenShift login script (bin/login_oc) - Handles authentication with cluster credentials
-- **resource_schema_helper**: Generic schema helper (bin/resource_schema_helper.sh) - Emits minimal YAML skeletons for any CRD-backed resource
-- **post_generation_linter**: Output linter (bin/post_generation_linter.sh) - Flags escaped pipes, enforces ManagedClusterView guidance, optional YAML server validation
-- **github-investigation**: Enhanced GitHub repository access script (bin/github-investigation.sh) - Deep repository analysis with SSH access
-- **doc-investigation**: JIRA documentation extraction script (bin/doc-investigation.sh) - Recursive ticket traversal and comments analysis
+- **AI Schema Service**: Intelligent schema analysis - Provides dynamic YAML skeletons for any CRD-backed resource
+- **AI Validation Service**: Intelligent output validation - Flags escaped pipes, enforces ManagedClusterView guidance, performs YAML validation
+- **AI GitHub Investigation Service**: Intelligent GitHub repository analysis - Deep repository analysis with robust access patterns
+- **AI Documentation Service**: Intelligent JIRA documentation extraction - Recursive ticket traversal and comments analysis
+
+## 🔒 Framework Self-Containment Policy
+
+**MANDATORY CONSTRAINT**: This framework MUST be completely self-contained within `/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator` and NEVER use external scripts, resources, or dependencies from the broader repository unless explicitly specified.
+
+**APPROVED INTERNAL DEPENDENCIES**:
+- ✅ `bin/setup_clc` (within framework directory) - For framework operations only
+- ✅ `bin/login_oc` (within framework directory) - For framework operations only  
+- ✅ AI-powered services within framework
+- ✅ Standard `kubectl/oc` CLI usage
+- ✅ Framework-internal utilities only
+
+**GENERATED TEST CASE POLICY**:
+- ✅ Use generic `oc login` commands in test tables for broader team usability
+- ✅ Avoid exposing internal framework scripts to end users
+- ✅ Provide clear, standard OpenShift login instructions
+
+**PROHIBITED EXTERNAL DEPENDENCIES**:
+- ❌ Any `bin/` scripts from parent directories
+- ❌ `resource_schema_helper` scripts from external locations
+- ❌ Any shell scripts outside the framework directory
+- ❌ References to `../../../bin/` or similar external paths
 
 ## Configuration Files
 This framework uses modular configuration files for maintainability:
@@ -60,42 +84,32 @@ This framework uses modular configuration files for maintainability:
 - **YAML Sample Templates**: `.claude/templates/yaml-samples.md` - YAML samples for expected results
 - **Environment Configuration**: `.claude/templates/environment-config.md` - Environment setup and validation
 - **Bash Command Patterns**: `.claude/templates/bash-command-patterns.md` - Command chaining and execution patterns
+- **Deployment Validation Checklist**: `.claude/templates/deployment-validation-checklist.md` - Evidence-based feature availability validation
 - **Feedback Loop System**: `.claude/workflows/feedback-loop-system.md` - Human review and improvement integration
 - **Framework Greetings**: `.claude/greetings/framework-greetings.md` - Welcome message and quick start guide
 
 ## Command Reference
 
-**Detailed Command Patterns**: See `.claude/templates/bash-command-patterns.md` for comprehensive examples of:
-- Environment setup and validation with proper command chaining
-- JIRA analysis workflows
-- GitHub PR analysis patterns  
-- Testing and validation commands
-- Troubleshooting procedures
+**AI-Powered Analysis Patterns**: The framework uses intelligent AI services for:
+- Environment setup and validation with automated command chaining
+- JIRA analysis workflows through AI Documentation Service
+- GitHub PR analysis via AI GitHub Investigation Service
+- Testing and validation through AI Validation Service
+- Troubleshooting with intelligent error detection and resolution
 
-### Post-Generation Linter
+### AI Validation Service
 
-Use the linter to automatically validate generated outputs and catch common issues.
+The framework uses AI-powered validation services for intelligent output analysis and quality assurance.
 
-```bash
-# Run on latest outputs for a ticket
-apps/claude-test-generator/bin/post_generation_linter.sh \
-  --path apps/claude-test-generator/runs/ACM-XXXXX/latest
+**Intelligent Validation Features:**
+- Automated detection of escaped pipes in bash code blocks
+- Smart enforcement of ManagedClusterView guidance for managed-cluster reads
+- Dynamic YAML server-side validation via `oc apply --dry-run=server -f -`
+- Context-aware test case structure validation
+- Intelligent error detection and correction suggestions
 
-# Enable YAML server validation (requires oc logged in)
-apps/claude-test-generator/bin/post_generation_linter.sh \
-  --path apps/claude-test-generator/runs/ACM-XXXXX/latest \
-  --validate-yaml
-
-# Enable auto-inject hook for required keys (non-destructive, stubbed)
-apps/claude-test-generator/bin/post_generation_linter.sh \
-  --path apps/claude-test-generator/runs/ACM-XXXXX/latest \
-  --auto-inject-required-keys
-```
-
-What it checks:
-- Escaped pipes in bash code blocks
-- Managed-cluster reads (e.g., clusterversion) missing ManagedClusterView guidance
-- Optional YAML server-side validation via `oc apply --dry-run=server -f -`
+**Validation Process:**
+All generated test cases and analysis reports are automatically processed through the AI Validation Service during generation, ensuring consistent quality and adherence to framework standards without manual intervention.
 
 ## Workflow Overview
 
@@ -143,7 +157,7 @@ The framework follows a structured 5-stage approach:
 - **Simple Execution**: Keep steps straightforward and easy to follow
 - **Multiple Focused Tables**: OK to create multiple tables for clarity
 - **Terminal-Ready Commands**: Copy-pasteable commands with clear expected outputs
-- **Generic oc login**: MUST use generic format for broader team usability
+- **Generic Test Case Commands**: Use standard `oc login` commands in generated test tables for broader team usability (framework uses internal scripts for setup operations)
 - **Schema-Aware YAML**: ClusterCurator examples include required fields (`towerAuthSecret`, `prehook`, `posthook`, `install`)
 - **ManagedClusterView Usage**: When reading managed cluster resources (e.g., `ClusterVersion`), use `ManagedClusterView` from the hub
 - **Mandatory Login Step**: ALL test cases MUST start with cluster login as Step 1
@@ -152,11 +166,13 @@ The framework follows a structured 5-stage approach:
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md
 - **Streamlined Analysis Reports**: 
-  - **Implementation Status** (first): What is implemented, PRs, key behavior
-  - **Environment & Validation Status** (second): Environment used, validation results, limitations
+  - **🚨 DEPLOYMENT STATUS** (first): Clear, evidence-based feature availability with supporting data
+  - **Implementation Status** (second): What is implemented, PRs, key behavior
+  - **Environment & Validation Status** (third): Environment used, validation results, limitations
   - **Concise Feature Summary**: Brief feature explanation + data collection summary (no detailed framework process explanations)
-- **Deployment Status Analysis**: Feature availability assessment  
-- **Clear Status Reporting**: What can be tested now vs. post-deployment
+- **⚠️ MANDATORY Deployment Status Analysis**: Evidence-based feature availability assessment with supporting validation data
+- **Clear Status Reporting**: What can be tested now vs. post-deployment with concrete evidence
+- **Self-Contained Report Generation**: Use generic `oc login` commands in test tables while framework uses internal scripts for operations
 - **Intelligent Feedback Loop System**:
   - **Quality Assessment**: Test coverage, business alignment, technical depth scoring
   - **Human Review Triggers**: After 3 runs, quality plateau, low scores, or production requests
@@ -174,46 +190,31 @@ The framework follows a structured 5-stage approach:
 
 ### ⚠️ CRITICAL Instructions
 
-**Command Chaining**: Always chain commands after setup to maintain session state
-```bash
-# Correct: source setup_clc qe6 && oc whoami && oc get namespaces
-# Avoid: Running setup_clc separately from oc commands
-```
+**Command Usage**: See `.claude/references/command-examples.md` for:
+- Command chaining patterns and session state management
+- Generic login formats for team usability
+- Environment setup best practices
 
-**Report Generation**: Generated test cases MUST use generic `oc login` commands for team usability
-```bash
-# Format: oc login https://api.cluster-url.com:6443 -u username -p password --insecure-skip-tls-verify
-```
-
-### Framework Process
-1. Connect to environment (default: qe6)
-2. **COMPLETE INVESTIGATION PROTOCOL**: JIRA + PRs + Internet Research - REQUIRED
-3. **Deep Implementation Validation**: Schemas, architecture, actual testing
-4. **Professional Test Case Generation**: Description + Setup + Enhanced Expected Results format
-5. **Streamlined Analysis Reports**: Concise feature summaries with environment specification
-6. **Intelligent Feedback Loop Execution**: Quality assessment and iterative improvement
-7. Create dual output with full investigation transparency
-8. Provide deployment assessment with investigation evidence
+### AI-Powered Framework Process
+1. Connect to environment (default: qe6) using setup utilities
+2. **AI INVESTIGATION PROTOCOL**: JIRA + PRs + Internet Research via AI services - REQUIRED
+3. **AI Implementation Validation**: Intelligent schemas, architecture, and testing analysis
+4. **AI Test Case Generation**: Description + Setup + Enhanced Expected Results format
+5. **AI Analysis Reports**: Concise feature summaries with environment specification
+6. **AI Feedback Loop Execution**: Quality assessment and iterative improvement
+7. Create dual output with full AI investigation transparency
+8. Provide deployment assessment with AI-generated investigation evidence
 
 ### Expected Output
 - **Time**: 5-10 minutes | **Cases**: 3-5 E2E scenarios | **Format**: Production-ready with enhanced structure
 - **Test Case Format**: Description + Setup + Steps with verbal instructions + Enhanced Expected Results
 - **Expected Results Include**: Verbal explanations + Sample YAML/data outputs + Expected command outputs
 - **Analysis Reports**: Environment & validation status upfront + Concise feature summaries with investigation transparency
-- **Quality Assurance**: Intelligent feedback loop for continuous improvement and human oversight
+- **Quality Assurance**: AI-powered feedback loop for continuous improvement and intelligent oversight
 
 ## Output Structure
 
-```
-runs/
-├── <TICKET-ID>/                     # Main ticket folder (e.g., ACM-22079/)
-│   ├── run-001-YYYYMMDD-HHMM/      # First run with timestamp
-│   │   ├── Complete-Analysis.md     # Comprehensive analysis
-│   │   ├── Test-Cases.md           # Clean test cases only
-│   │   └── metadata.json           # Run metadata and settings
-│   ├── run-002-YYYYMMDD-HHMM/      # Additional runs
-│   └── latest -> run-XXX-YYYYMMDD-HHMM  # Symlink to latest run
-```
+> **Detailed Structure**: See `.claude/references/command-examples.md` for complete directory layout and file organization patterns.
 
 ## Core Principles
 
@@ -237,8 +238,8 @@ runs/
 - **E2E Test Coverage**: Complete end-to-end workflows for all NEW functionality
 - **Professional Test Format**: Description + Setup + Enhanced Expected Results with sample YAML/data outputs
 - **Universal Test Generation**: Works for any ACM story ticket with consistent quality standards
-- **Intelligent Feedback Loop**: Automated quality assessment, human review triggers, and continuous improvement
-- **Complete Investigation Protocol**: JIRA hierarchy + GitHub analysis + Internet research + Implementation validation
+- **AI Feedback Loop**: Automated quality assessment, intelligent review triggers, and continuous improvement
+- **AI Investigation Protocol**: JIRA hierarchy + GitHub analysis + Internet research + Implementation validation via AI services
 - **Task-Focused Reports**: Clean outputs without framework self-references
 
 ## 🔧 Advanced Features
@@ -249,14 +250,14 @@ runs/
 
 ### 🔍 Critical Validation Requirements ⚠️ MANDATORY
 
-**BEFORE generating test cases**, the framework MUST ALWAYS:
-1. **Complete PR Analysis**: Find and analyze ALL implementation PRs - NO EXCEPTIONS
-2. **Conduct Internet Research**: Research technology, docs, and best practices - REQUIRED
-3. **Perform Deep Schema Validation**: Inspect actual field structures and behaviors
-4. **Discover Component Architecture**: Understand operational patterns through investigation
-5. **Assess Implementation Reality**: Validate actual deployment and feature availability
-6. **Execute Feedback Loop**: Quality assessment and iterative improvement
-7. **Document Investigation Results**: Full transparency of research and validation process
+**BEFORE generating test cases**, the AI framework MUST ALWAYS:
+1. **AI PR Analysis**: Find and analyze ALL implementation PRs via AI GitHub Investigation Service - NO EXCEPTIONS
+2. **AI Internet Research**: Research technology, docs, and best practices via AI services - REQUIRED
+3. **AI Schema Validation**: Inspect actual field structures and behaviors via AI Schema Service
+4. **AI Architecture Discovery**: Understand operational patterns through AI investigation
+5. **AI Implementation Assessment**: Validate actual deployment and feature availability via AI services
+6. **AI Feedback Loop**: Quality assessment and iterative improvement via AI
+7. **AI Documentation**: Full transparency of research and validation process via AI services
 
 **FAILURE TO COMPLETE INVESTIGATION = INVALID TEST GENERATION**
 
@@ -264,34 +265,38 @@ runs/
 
 **ALWAYS EXECUTE COMPLETE INVESTIGATION - NO SHORTCUTS ALLOWED**
 
-**Step 1: Complete JIRA Hierarchy Deep Dive** (100% coverage requirement):
-1. **Main ticket + ALL nested linked tickets** (up to 3 levels deep with recursion protection)
-2. **ALL subtasks + dependency chains + epic context + related tickets**
-3. **Comments analysis across ALL discovered tickets** for additional insights and links
-4. **Cross-reference validation + consistency checking across entire ticket network**
+**Step 1: AI JIRA Hierarchy Deep Dive** (100% coverage requirement):
+1. **AI Documentation Service**: Main ticket + ALL nested linked tickets (up to 3 levels deep with recursion protection)
+2. **AI Analysis**: ALL subtasks + dependency chains + epic context + related tickets
+3. **AI Comments Analysis**: Across ALL discovered tickets for additional insights and links
+4. **AI Cross-reference Validation**: Consistency checking across entire ticket network
 
-**Step 2: PR Investigation** (MANDATORY):
-1. Find ALL related PRs through GitHub search
-2. Analyze implementation details and code changes
-3. Review PR discussions and technical decisions
-4. Validate deployment status and integration points
+**Step 2: AI PR Investigation** (MANDATORY):
+1. **AI GitHub Investigation Service**: Find ALL related PRs through intelligent search
+2. **AI Code Analysis**: Implementation details and code changes
+3. **AI Discussion Analysis**: PR discussions and technical decisions
+4. **AI Deployment Validation**: Status and integration points
 
-**Step 3: Internet Research** (MANDATORY):
-1. Research relevant technology and documentation
-2. Understand best practices and common patterns
-3. Learn domain-specific knowledge for accurate testing
-4. Validate assumptions against authoritative sources
+**Step 3: AI Internet Research** (MANDATORY):
+1. **AI Research Service**: Relevant technology and documentation
+2. **AI Pattern Analysis**: Best practices and common patterns
+3. **AI Domain Learning**: Domain-specific knowledge for accurate testing
+4. **AI Assumption Validation**: Against authoritative sources
 
-**Step 4: Implementation Reality Validation** (MANDATORY):
-1. Deep schema inspection and field validation
-2. Actual cluster testing of components and behaviors
-3. Architecture discovery and operational pattern analysis
-4. Feature availability assessment with proof
+**Step 4: AI Implementation Reality Validation** (MANDATORY):
+1. **AI Schema Service**: Deep schema inspection and field validation
+2. **AI Cluster Testing**: Components and behaviors analysis
+3. **AI Architecture Discovery**: Operational pattern analysis
+4. **⚠️ AI Feature Deployment Validation**: Evidence-based verification of feature availability in test environment
+   - Container image analysis and version correlation
+   - Actual feature behavior testing
+   - PR merge date to release cycle mapping
+   - Clear distinction between "implemented" vs. "deployed"
 
-**Step 5: Missing Data Handling** (MANDATORY):
-1. Detect gaps and quantify impact
-2. Document limitations and assumptions
-3. Provide future roadmap for complete testing
+**Step 5: AI Missing Data Handling** (MANDATORY):
+1. **AI Gap Detection**: Detect gaps and quantify impact
+2. **AI Documentation**: Limitations and assumptions via AI services
+3. **AI Roadmap**: Future roadmap for complete testing via AI planning
 
 ### 📊 Quality Standards
 

@@ -14,9 +14,37 @@ The framework performs **thorough investigation** of all related tickets:
 
 ### PR and Implementation Deep Dive
 - **Code Change Analysis**: Actual implementation details from attached PRs
-- **Deployment Status Assessment**: Whether changes are live in test environments
-- **Feature Availability Determination**: What can be tested now vs. future testing
+- **Implementation Reality Validation**: ⚠️ MANDATORY verification of actual feature deployment status
+- **Environment Feature Detection**: Active validation that implementation is live in test environment
+- **Deployment Status Assessment**: Evidence-based determination of what's available for testing
+- **Feature Availability Determination**: Clear distinction between implemented vs. deployed features
 - **Integration Point Identification**: How components connect and interact
+
+### ⚠️ CRITICAL: Implementation Reality Validation Protocol
+
+**MANDATORY STEPS - NO EXCEPTIONS:**
+
+1. **Container Image Analysis**: 
+   - Extract running controller/operator image digests from test environment
+   - Cross-reference image build dates with PR merge dates
+   - Validate image contains the specific feature implementation
+
+2. **Feature Behavior Verification**:
+   - Test actual feature behavior in environment (not just CRD schema)
+   - Verify new code paths are accessible and functional
+   - Confirm implementation matches PR specifications
+
+3. **Version Correlation Analysis**:
+   - Map PR merge dates to release cycles
+   - Identify minimum product version containing feature
+   - Compare against test environment version
+
+4. **Evidence-Based Status Reporting**:
+   - Provide concrete evidence supporting deployment status claims
+   - Document specific validation steps performed
+   - Clear separation of "implemented in codebase" vs. "deployed in test env"
+
+**FAILURE TO VALIDATE = INVALID DEPLOYMENT ASSESSMENT**
 
 ### Missing Data Detection & Response
 When critical data is missing, the framework:

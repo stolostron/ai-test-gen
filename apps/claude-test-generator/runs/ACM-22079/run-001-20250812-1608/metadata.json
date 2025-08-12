@@ -1,0 +1,14 @@
+{
+  "analysis_timestamp": "2025-08-12T16:08:00Z",
+  "jira_ticket": "ACM-22079",
+  "feature_name": "Support digest-based upgrades via ClusterCurator for non-recommended upgrades",
+  "environment": "qe6-vmware-ibm",
+  "openshift_version": "4.19.7",
+  "acm_namespace": "ocm",
+  "mce_namespace": "multicluster-engine",
+  "implementation_status": "completed",
+  "github_pr": "stolostron/cluster-curator-controller#468",
+  "test_cases_generated": 5,
+  "validation_status": "complete",
+  "deployment_ready": true
+}
