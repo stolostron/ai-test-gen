@@ -48,6 +48,7 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 - **setup_clc**: Environment setup script (bin/setup_clc) - Configures kubeconfig for specified QE environments
 - **login_oc**: OpenShift login script (bin/login_oc) - Handles authentication with cluster credentials
 - **resource_schema_helper**: Generic schema helper (bin/resource_schema_helper.sh) - Emits minimal YAML skeletons for any CRD-backed resource
+- **post_generation_linter**: Output linter (bin/post_generation_linter.sh) - Flags escaped pipes, enforces ManagedClusterView guidance, optional YAML server validation
 - **github-investigation**: Enhanced GitHub repository access script (bin/github-investigation.sh) - Deep repository analysis with SSH access
 - **doc-investigation**: JIRA documentation extraction script (bin/doc-investigation.sh) - Recursive ticket traversal and comments analysis
 
@@ -70,6 +71,31 @@ This framework uses modular configuration files for maintainability:
 - GitHub PR analysis patterns  
 - Testing and validation commands
 - Troubleshooting procedures
+
+### Post-Generation Linter
+
+Use the linter to automatically validate generated outputs and catch common issues.
+
+```bash
+# Run on latest outputs for a ticket
+apps/claude-test-generator/bin/post_generation_linter.sh \
+  --path apps/claude-test-generator/runs/ACM-XXXXX/latest
+
+# Enable YAML server validation (requires oc logged in)
+apps/claude-test-generator/bin/post_generation_linter.sh \
+  --path apps/claude-test-generator/runs/ACM-XXXXX/latest \
+  --validate-yaml
+
+# Enable auto-inject hook for required keys (non-destructive, stubbed)
+apps/claude-test-generator/bin/post_generation_linter.sh \
+  --path apps/claude-test-generator/runs/ACM-XXXXX/latest \
+  --auto-inject-required-keys
+```
+
+What it checks:
+- Escaped pipes in bash code blocks
+- Managed-cluster reads (e.g., clusterversion) missing ManagedClusterView guidance
+- Optional YAML server-side validation via `oc apply --dry-run=server -f -`
 
 ## Workflow Overview
 
