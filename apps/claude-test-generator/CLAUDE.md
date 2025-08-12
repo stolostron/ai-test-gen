@@ -47,6 +47,7 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 - **TodoWrite**: Task tracking and progress management
 - **setup_clc**: Environment setup script (bin/setup_clc) - Configures kubeconfig for specified QE environments
 - **login_oc**: OpenShift login script (bin/login_oc) - Handles authentication with cluster credentials
+- **resource_schema_helper**: Generic schema helper (bin/resource_schema_helper.sh) - Emits minimal YAML skeletons for any CRD-backed resource
 - **github-investigation**: Enhanced GitHub repository access script (bin/github-investigation.sh) - Deep repository analysis with SSH access
 - **doc-investigation**: JIRA documentation extraction script (bin/doc-investigation.sh) - Recursive ticket traversal and comments analysis
 
@@ -117,6 +118,8 @@ The framework follows a structured 5-stage approach:
 - **Multiple Focused Tables**: OK to create multiple tables for clarity
 - **Terminal-Ready Commands**: Copy-pasteable commands with clear expected outputs
 - **Generic oc login**: MUST use generic format for broader team usability
+ - **Schema-Aware YAML**: ClusterCurator examples include required fields (`towerAuthSecret`, `prehook`, `posthook`, `install`)
+ - **ManagedClusterView Usage**: When reading managed cluster resources (e.g., `ClusterVersion`), use `ManagedClusterView` from the hub
 
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md

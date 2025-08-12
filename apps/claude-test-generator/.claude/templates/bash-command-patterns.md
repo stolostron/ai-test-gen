@@ -89,6 +89,19 @@ source setup_clc qe6 && oc delete roleassignment test-assignment -n test-namespa
 source setup_clc qe6 && oc get roleassignments -A | grep test-
 ```
 
+### Shell piping and alternation (grep) correctness
+
+```bash
+# Correct: do not escape the pipe character in shell
+oc get clustercurator test -n ns -o yaml | grep -A1 annotations
+
+# Correct alternation with grep: use -E for extended regex
+oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -E -i "digest|conditional"
+
+# Incorrect: escaping the pipe within a normal shell pipeline will literally print '|'
+# oc get ... -o yaml \| grep -A1 annotations  # ← Avoid
+```
+
 ## Framework Internal Patterns
 
 ### Run Directory Management

@@ -163,6 +163,15 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
 - Use realistic cluster URLs and namespaces
 - Include complete command syntax
 - Add necessary flags and parameters
+- For managed-cluster resource reads, prefer ManagedClusterView from the hub context
+  - Include creation, read, and cleanup of `ManagedClusterView` in steps when validating `ClusterVersion`
+  - Example read: `oc get managedclusterview clusterversion -n <managed-cluster-namespace> -o jsonpath='{.status.result.status.conditionalUpdates[?(@.release.version=="<ver>")].release.image}'`
+  
+### Schema-aware YAML requirement (Generic):
+- All CRD-backed resource YAML samples MUST be schema-aware for the target environment
+  - Include required fields per CRD schema (use empty/default values if not used)
+  - Prefer generating skeletons via `bin/resource_schema_helper.sh`:
+    - Example: `bin/resource_schema_helper.sh --group <group> --version <v> --kind <Kind> --name <name> [--namespace <ns>]`
 
 ## ✅ Quality Checklist
 
