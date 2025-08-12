@@ -2,19 +2,19 @@
 
 ## 🎯 Test Case Structure Standards
 
-### Required Test Case Structure
+### Required Test Case Structure (Mandatory)
 Each test case MUST include:
 1. **Description:** Clear explanation of what the test case does/tests exactly
 2. **Setup:** Required setup/prerequisites needed for the test case
 3. **Test Steps Table:** Step-by-step execution with verbal instructions
 
-### Test Step Format Requirements
+### Test Step Format Requirements (Mandatory)
 All test steps MUST include:
 1. **Verbal instruction** describing what to do
 2. **CLI command** (when applicable) 
 3. **UI guidance** (when applicable)
 
-### Expected Result Format Requirements
+### Expected Result Format Requirements (Mandatory)
 Expected Results MUST contain:
 1. **Verbal explanation** of what should happen
 2. **Sample YAML/data outputs** when relevant and helpful
