@@ -5,6 +5,9 @@
 > **Quick Start Guide**: See `docs/quick-start.md`
 > **Welcome Message**: See `.claude/greetings/framework-greetings.md`
 
+**Latest Version**: Enhanced format with Description + Setup + YAML outputs in Expected Results
+**Framework Status**: Production-ready with complete investigation protocol and intelligent feedback loop
+
 ## 📖 Table of Contents
 - [🚀 Quick Start](#quick-start)
 - [🏗️ System Architecture](#system-architecture) 
@@ -45,10 +48,12 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 - **setup_clc**: Environment setup script (bin/setup_clc) - Configures kubeconfig for specified QE environments
 - **login_oc**: OpenShift login script (bin/login_oc) - Handles authentication with cluster credentials
 - **github-investigation**: Enhanced GitHub repository access script (bin/github-investigation.sh) - Deep repository analysis with SSH access
+- **doc-investigation**: JIRA documentation extraction script (bin/doc-investigation.sh) - Recursive ticket traversal and comments analysis
 
 ## Configuration Files
 This framework uses modular configuration files for maintainability:
 
+- **Test Case Format Requirements**: `.claude/templates/test-case-format-requirements.md` - Complete test case structure and format standards
 - **Test Scoping Rules**: `.claude/prompts/test-scoping-rules.md` - Smart test scoping methodology
 - **YAML Sample Templates**: `.claude/templates/yaml-samples.md` - YAML samples for expected results
 - **Environment Configuration**: `.claude/templates/environment-config.md` - Environment setup and validation
@@ -92,12 +97,16 @@ The framework follows a structured 5-stage approach:
 
 ### Stage 4: Test Strategy Generation & Quality Optimization
 - **E2E Test Coverage**: Complete end-to-end workflows covering all NEW functionality
-- **Structured Test Cases**: Description, Setup, and clear Steps/Expected Result tables
-- **Actual Expected Results**: Show real terminal output, not only validation commands
-- **YAML Evidence in Expected Results**: For resources you create or validate, include a small YAML snippet (or full YAML when concise) in the Expected Result column that proves configuration/annotations are present. Prefer actual `oc get ... -o yaml` excerpts that show:
-  - Key annotations confirming feature activation
-  - Critical fields/sections proving correct resource configuration
-  - Minimal but sufficient context (use `...` to truncate unrelated sections)
+- **Required Test Case Structure**: 
+  - **Description**: Clear explanation of what the test case does/tests exactly
+  - **Setup**: Required setup/prerequisites needed for the test case  
+  - **Test Steps Table**: Step-by-step execution with verbal instructions
+- **Enhanced Expected Results**: 
+  - **Verbal explanations** of what should happen
+  - **Sample YAML/data outputs** when relevant and helpful (actual command outputs, JSON responses, YAML snippets, error messages)
+  - **Expected command outputs** when commands/grep are used (so testers can easily see and match probable outputs)
+  - **Specific values** or output descriptions
+- **Standalone Test Cases**: Each test case must be completely self-contained with no setup dependencies
 - **Simple Execution**: Keep steps straightforward and easy to follow
 - **Multiple Focused Tables**: OK to create multiple tables for clarity
 - **Terminal-Ready Commands**: Copy-pasteable commands with clear expected outputs
@@ -105,9 +114,17 @@ The framework follows a structured 5-stage approach:
 
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md
+- **Streamlined Analysis Reports**: 
+  - **Concise Feature Summary**: Brief feature explanation + data collection summary (no detailed framework process explanations)
+  - **Environment Specification**: Clearly mention which environment was used for validation
+  - **Implementation Status**: Feature deployment status with environment context
 - **Deployment Status Analysis**: Feature availability assessment  
 - **Clear Status Reporting**: What can be tested now vs. post-deployment
-- **Intelligent Feedback Loop**: Quality assessment and human review integration
+- **Intelligent Feedback Loop System**:
+  - **Quality Assessment**: Test coverage, business alignment, technical depth scoring
+  - **Human Review Triggers**: After 3 runs, quality plateau, low scores, or production requests
+  - **Structured Feedback Collection**: Quality ratings, improvement suggestions, missing requirements
+  - **Learning Integration**: Updates generation parameters based on feedback for continuous improvement
 - **Task-Focused Reports**: Clean outputs without framework self-references
 
 ## ⚙️ Environment Setup
@@ -135,13 +152,18 @@ The framework follows a structured 5-stage approach:
 1. Connect to environment (default: qe6)
 2. **COMPLETE INVESTIGATION PROTOCOL**: JIRA + PRs + Internet Research - REQUIRED
 3. **Deep Implementation Validation**: Schemas, architecture, actual testing
-4. **Feedback Loop Execution**: Quality assessment and iterative improvement
-5. Generate comprehensive E2E test plan based on COMPLETE understanding
-6. Create dual output with full investigation transparency
-7. Provide deployment assessment with investigation evidence
+4. **Professional Test Case Generation**: Description + Setup + Enhanced Expected Results format
+5. **Streamlined Analysis Reports**: Concise feature summaries with environment specification
+6. **Intelligent Feedback Loop Execution**: Quality assessment and iterative improvement
+7. Create dual output with full investigation transparency
+8. Provide deployment assessment with investigation evidence
 
 ### Expected Output
-- **Time**: 5-10 minutes | **Cases**: 3-5 E2E scenarios | **Format**: Polarion-ready
+- **Time**: 5-10 minutes | **Cases**: 3-5 E2E scenarios | **Format**: Production-ready with enhanced structure
+- **Test Case Format**: Description + Setup + Steps with verbal instructions + Enhanced Expected Results
+- **Expected Results Include**: Verbal explanations + Sample YAML/data outputs + Expected command outputs
+- **Analysis Reports**: Concise feature summaries with environment specification and investigation transparency
+- **Quality Assurance**: Intelligent feedback loop for continuous improvement and human oversight
 
 ## Output Structure
 
@@ -176,9 +198,10 @@ runs/
 ### 🔧 Integration Features
 - **ACM/CLC Specific**: Domain expertise for cluster lifecycle testing
 - **E2E Test Coverage**: Complete end-to-end workflows for all NEW functionality
-- **Structured Test Format**: Description, Setup, Steps/Expected Result format
-- **Clear Expected Outputs**: Show actual terminal output, not validation commands
-- **Feedback Loop System**: Automated human review triggers with quality assessment
+- **Professional Test Format**: Description + Setup + Enhanced Expected Results with sample YAML/data outputs
+- **Universal Test Generation**: Works for any ACM story ticket with consistent quality standards
+- **Intelligent Feedback Loop**: Automated quality assessment, human review triggers, and continuous improvement
+- **Complete Investigation Protocol**: JIRA hierarchy + GitHub analysis + Internet research + Implementation validation
 - **Task-Focused Reports**: Clean outputs without framework self-references
 
 ## 🔧 Advanced Features
