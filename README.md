@@ -7,13 +7,21 @@ A collection of AI-powered applications designed to automate test plan generatio
 ## 🏗️ Project Structure
 
 ```
-ai-test-gen_org/
+ai-systems/
 ├── 📁 apps/                                    # Self-contained applications
-│   ├── 📁 claude-test-generator/               # Intelligent Test Analysis Engine
-│   └── 📁 z-stream-analysis/                   # Z-stream pipeline analysis
+│   ├── 📁 claude-test-generator/               # 🎯 Intelligent Test Analysis Engine
+│   │   ├── 📁 .claude/                         # Claude configuration and templates
+│   │   ├── 📁 bin/                             # Helper scripts and tools
+│   │   ├── 📁 docs/                            # Application documentation
+│   │   ├── 📁 runs/                            # Test generation outputs
+│   │   └── 📄 CLAUDE.md                        # Application Claude config
+│   └── 📁 z-stream-analysis/                   # 📊 Z-stream pipeline analysis
+│       ├── 📁 .claude/                         # Claude configuration
+│       ├── 📁 logs/                            # Analysis logs
+│       ├── 📁 runs/                            # Pipeline analysis outputs
+│       └── 📄 CLAUDE.md                        # Application Claude config
 ├── 📁 docs/                                    # Shared documentation
-├── 📁 e2e-test-generated/                     # Legacy generated tests
-├── 📁 JIRA-details/                           # JIRA ticket analysis
+├── 📁 JIRA-details/                           # JIRA ticket analysis examples
 ├── 📄 CLAUDE.md                               # Global Claude configuration
 ├── 📄 README.md                               # This file
 └── 📄 OWNERS                                  # Project maintainers
@@ -141,6 +149,7 @@ The root CLAUDE.md provides slash commands that work across the entire repositor
 2. **Shared resources** go in root-level directories (`docs/`, `JIRA-details/`)
 3. **Global configurations** in root `CLAUDE.md`
 4. **App-specific configs** in each app's directory
+5. **Clean structure** - avoid legacy files, empty directories, and redundant documentation
 
 ### Development Workflow
 ```bash
@@ -173,10 +182,11 @@ git push origin feature-branch
 
 ## 🛣️ Roadmap
 
-### Phase 1: ✅ Structure Organization (Current)
-- Separate applications into clean, self-contained modules
-- Professional project structure
-- Clear documentation hierarchy
+### Phase 1: ✅ Structure Organization (Complete)
+- ✅ Separate applications into clean, self-contained modules
+- ✅ Professional project structure with optimized file organization
+- ✅ Clear documentation hierarchy
+- ✅ Repository cleanup - removed legacy files and empty directories
 
 ### Phase 2: Integration Enhancement (Q1 2025)
 - Cross-application workflows
@@ -216,6 +226,7 @@ This suite is designed for **professional QE teams** working on complex enterpri
 **Repository Maintainers**: ACM QE Team  
 **Latest Update**: January 2025  
 **License**: Internal Use  
-**Status**: Production Ready
+**Status**: Production Ready  
+**Structure**: Optimized (58 files in 31 directories)
 
 **Get Started**: Choose an application in [`apps/`](./apps/) and follow its README.
