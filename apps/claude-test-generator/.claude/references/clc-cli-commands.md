@@ -86,8 +86,27 @@ oc get clusterimageset
 oc get clustercurator production-upgrade -o jsonpath='{.metadata.annotations.cluster\.open-cluster-management\.io/upgrade-allow-not-recommended-versions}'
 # Expected: "true" (feature activated) or empty (standard upgrade)
 
-# Verify digest usage in ClusterVersion (on managed cluster)
-oc --kubeconfig=<managed-cluster> get clusterversion -o jsonpath='{.items[0].spec.desiredUpdate.image}'
+# ManagedClusterView-based verification from the hub (recommended)
+# Discover served versions of ManagedClusterView CRD
+oc get crd managedclusterviews.view.open-cluster-management.io -o jsonpath='{.spec.versions[*].name}'
+
+# Create a view to read ClusterVersion from a managed cluster namespace
+cat <<EOF | oc apply -f -
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: clusterversion
+  namespace: <managed-cluster-namespace>
+spec:
+  scope:
+    apiGroup: config.openshift.io
+    kind: ClusterVersion
+    name: version
+EOF
+
+# Verify digest usage in ClusterVersion via the view
+oc get managedclusterview clusterversion -n <managed-cluster-namespace> \
+  -o jsonpath='{.status.result.spec.desiredUpdate.image}'
 # Expected with NEW feature: "registry.redhat.io/...@sha256:abc123..." (digest format)
 # Expected without feature: "4.16.37" or "registry.redhat.io/...:4.16.37" (tag format)
 
@@ -109,11 +128,12 @@ oc --kubeconfig=<managed-cluster> get clusterversion -o yaml
 #   - type: "Progressing"
 #     status: "True"  # or "False" when complete
 
-# Verify conditionalUpdates source (what the NEW feature uses)
-oc --kubeconfig=<managed-cluster> get clusterversion -o jsonpath='{.items[0].status.conditionalUpdates[?(@.release.version=="4.16.37")].release.image}'
+# Verify conditionalUpdates source (what the NEW feature uses) via the view
+oc get managedclusterview clusterversion -n <managed-cluster-namespace> \
+  -o jsonpath='{.status.result.status.conditionalUpdates[?(@.release.version=="4.16.37")].release.image}'
 # Expected: "registry.redhat.io/...@sha256:abc123..." (digest that gets extracted)
 
-# Sample ClusterCurator with NEW annotation:
+# Sample ClusterCurator with NEW annotation (schema-aware minimal fields included):
 oc get clustercurator production-upgrade -o yaml
 # Expected output:
 # apiVersion: cluster.open-cluster-management.io/v1beta1
@@ -126,6 +146,13 @@ oc get clustercurator production-upgrade -o yaml
 #   desiredCuration: upgrade
 #   upgrade:
 #     desiredUpdate: "4.16.37"  # Non-recommended version
+#     towerAuthSecret: ""
+#     prehook: []
+#     posthook: []
+#   install:
+#     towerAuthSecret: ""
+#     prehook: []
+#     posthook: []
 # status:
 #   conditions:
 #   - type: "clustercurator-job"

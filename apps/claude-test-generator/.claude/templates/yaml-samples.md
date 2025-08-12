@@ -106,6 +106,39 @@ oc logs -n <namespace> <pod-name>
 
 ## Complete Test Scenarios with Expected Outputs
 
+### Minimal Valid ClusterCurator (schema-aware)
+
+Use this baseline to ensure server-side validation passes even when certain fields are required by the CRD on your cluster. Include empty values for required fields to avoid failures.
+
+```yaml
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ClusterCurator
+metadata:
+  name: <name>
+  namespace: <managed-cluster-namespace>
+  annotations:
+    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: "true"
+spec:
+  desiredCuration: upgrade
+  upgrade:
+    desiredUpdate: "<target-ocp-version>"
+    monitorTimeout: 120
+    towerAuthSecret: ""   # Include when required by CRD
+    prehook: []            # Include when required by CRD
+    posthook: []           # Include when required by CRD
+  install:                 # Include when required by CRD
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
+```
+
+Tip: You can generate a minimal, schema-aware YAML using `bin/cc_schema_helper.sh`:
+
+```bash
+# Discover required fields and print a minimal YAML
+bin/cc_schema_helper.sh generate --name digest-upgrade-test --namespace <cluster-namespace> --version 4.16.37
+```
+
 ### Digest-Based Upgrade Test (NEW Functionality)
 
 **Complete ClusterCurator YAML** (`clustercurator-digest-upgrade.yaml`):
@@ -122,9 +155,16 @@ spec:
   upgrade:
     desiredUpdate: "4.16.37"  # Non-recommended version
     monitorTimeout: 120
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
+  install:
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
 ```
 
-**Expected Controller Logs** when running `oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -i "digest\|conditional"`:
+**Expected Controller Logs** when running `oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -E -i "digest|conditional"`:
 ```
 2024-08-09T19:30:15Z INFO Checking conditionalUpdates for digest information version=4.16.37
 2024-08-09T19:30:16Z INFO Found digest in conditionalUpdates digest=sha256:abc123def456...
@@ -158,6 +198,13 @@ spec:
   upgrade:
     desiredUpdate: "4.15.25"  # Version present in availableUpdates but NOT in conditionalUpdates
     monitorTimeout: 120
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
+  install:
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
 ```
 
 **Expected Controller Logs** when running `oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -i "fallback\|available"`:
@@ -183,6 +230,13 @@ spec:
   upgrade:
     desiredUpdate: "4.16.37"
     monitorTimeout: 120
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
+  install:
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
 ```
 
 **Expected Controller Logs** when running `oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -i "standard\|traditional"`:
@@ -276,6 +330,36 @@ oc get clusterversion -o jsonpath='{.items[0].status.conditionalUpdates[?(@.rele
 # Expected: "registry.redhat.io/...@sha256:abc123..."
 ```
 
+### ManagedClusterView-based Validation (ACM hub → managed cluster)
+
+Use ManagedClusterView to read resources from a managed cluster without direct kubeconfig access.
+
+```bash
+# Discover served versions of ManagedClusterView CRD
+oc get crd managedclusterviews.view.open-cluster-management.io -o jsonpath='{.spec.versions[*].name}'
+
+# Example MCV manifest (adjust apiVersion to a served version on your cluster)
+cat <<EOF | oc apply -f -
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: clusterversion
+  namespace: <managed-cluster-namespace>
+spec:
+  scope:
+    apiGroup: config.openshift.io
+    kind: ClusterVersion
+    name: version
+EOF
+
+# Read conditionalUpdates digest from the managed cluster
+oc get managedclusterview clusterversion -n <managed-cluster-namespace> \
+  -o jsonpath='{.status.result.status.conditionalUpdates[?(@.release.version=="4.16.37")].release.image}'
+
+# Cleanup
+oc delete managedclusterview clusterversion -n <managed-cluster-namespace> --ignore-not-found
+```
+
 ## Standard Setup Steps for All Test Cases
 
 ### Prerequisites (Include in every test case)
@@ -361,7 +445,7 @@ When areas are intentionally not tested due to no changes:
 ```markdown
 **Instructions**: 
 1. Go to your terminal
-2. Run the following command: `oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -i "digest\|conditional"`
+2. Run the following command: `oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -E -i "digest|conditional"`
 3. Look for digest resolution messages
 
 **Expected Output**:
