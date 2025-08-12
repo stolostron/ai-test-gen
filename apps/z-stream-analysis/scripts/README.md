@@ -2,7 +2,7 @@
 
 **DEPRECATED:** This directory has been replaced with pure AI-powered workflows.
 
-> **Migration Notice:** All shell scripts have been replaced with AI services for robust, consistent analysis. See AI-ANALYSIS-SERVICE.md for the new AI-powered interface.
+> **Migration Notice:** All shell scripts have been replaced with AI services for robust, consistent analysis. See .claude/docs/AI-ANALYSIS-SERVICE.md for the new AI-powered interface.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The Z-Stream Analysis Engine uses a **Claude-first approach** where the primary 
 **Status:** ⚠️  DEPRECATED - Replaced with AI Services  
 **Migration:** All functionality moved to pure AI workflows  
 **Location:** See `.claude/workflows/` for AI-powered implementations  
-**Interface:** Use AI-ANALYSIS-SERVICE.md for pipeline analysis
+**Interface:** Use .claude/docs/AI-ANALYSIS-SERVICE.md for pipeline analysis
 
 ## Framework Structure
 

@@ -21,7 +21,10 @@
       "Bash(export:*)",
       "WebFetch(domain:www.google.com)",
       "WebFetch(domain:access.redhat.com)",
-      "WebFetch(domain:docs.openshift.com)"
+      "WebFetch(domain:docs.openshift.com)",
+      "Bash(bin/setup_clc:*)",
+      "Bash(oc apply:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

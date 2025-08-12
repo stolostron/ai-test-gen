@@ -50,7 +50,7 @@ ls -la runs/  # View recent analysis results
 "Generate comprehensive automation fix for this failure: https://jenkins-url/"
 
 # View enhanced documentation
-cat AI-ANALYSIS-SERVICE.md  # AI service interface
+cat .claude/docs/AI-ANALYSIS-SERVICE.md  # AI service interface
 cat scripts/README.md       # Framework documentation (script migration status)
 cat templates/README.md     # Template framework documentation
 ```
@@ -104,8 +104,9 @@ cd apps/z-stream-analysis
 z-stream-analysis/                          # ← You are here
 ├── .env                                   # Environment configuration (Jenkins/cluster auth)
 ├── CLAUDE.md                              # Claude configuration (this file)
-├── AI-ANALYSIS-SERVICE.md                 # Enhanced AI service interface documentation
 ├── .claude/                               # Claude-specific configuration and workflows
+│   ├── docs/                             # AI service documentation
+│   │   └── AI-ANALYSIS-SERVICE.md        # Enhanced AI service interface documentation
 │   ├── settings.local.json               # Local Claude settings
 │   └── workflows/                         # AI-powered analysis workflows
 │       ├── ai-automation-fix-generation.md
@@ -123,17 +124,17 @@ z-stream-analysis/                          # ← You are here
 │   ├── README.md                          # Templates documentation  
 │   ├── report-templates/                  # Analysis report templates (AI-generated)
 │   └── validation-scripts/                # Validation framework (AI-powered)
-├── runs/                                  # Active analysis runs with enhanced results
-│   ├── README.md                          # Runs documentation
-│   ├── clc-e2e-pipeline-3223/            # Basic analysis example
-│   ├── clc-e2e-pipeline-3223-enhanced-test/ # Enhanced investigation example
-│   │   ├── Executive-Summary.md           # Verdict-first stakeholder report
-│   │   ├── Detailed-Analysis.md           # Systematic investigation analysis
-│   │   ├── Automation-Fix-Implementation-Guide.md # Complete automation fix guide
-│   │   ├── analysis-metadata.json         # 6-phase analysis tracking
-│   │   ├── jenkins-metadata.json          # Jenkins data extraction
-│   │   └── [additional-analysis-files]    # Comprehensive investigation results
-│   └── <PIPELINE-ID>/                     # Per-pipeline analysis results
+├── runs/                                  # Timestamped analysis runs (Framework v2.0)
+│   ├── README.md                          # Runs documentation and standards
+│   ├── <pipeline-id>_<YYYYMMDD_HHMMSS>/  # Standardized timestamped format
+│   │   ├── Detailed-Analysis.md           # Single comprehensive investigation report
+│   │   ├── analysis-metadata.json         # Analysis execution and quality metrics
+│   │   └── jenkins-metadata.json          # Jenkins data extraction results
+│   ├── clc-e2e-pipeline-3223_20250812_174948/ # Example: Production analysis run
+│   │   ├── Detailed-Analysis.md           # Complete investigation with all phases
+│   │   ├── analysis-metadata.json         # Process tracking and verdict
+│   │   └── jenkins-metadata.json          # Jenkins API extraction data
+│   └── [legacy-directories]/              # Historical analyses (Framework v1.x)
 ├── logs/                                  # Application logs and error tracking
 │   └── zstream_errors_20250812.log        # Historical error tracking (legacy scripts)
 └── examples/                              # Usage examples (AI-powered)
@@ -142,11 +143,11 @@ z-stream-analysis/                          # ← You are here
 
 ## 🎯 Current Application State
 
-**Status:** ✅ **Enhanced Production Ready** - AI-powered analysis engine with intelligent investigation capabilities  
+**Status:** ✅ **Enhanced Production Ready** - Framework v2.0 with standardized timestamped analysis runs  
 **Last Updated:** 2025-08-12  
 **Implementation Stage:** Production with enhanced AI investigation and definitive verdict generation  
 **Script Status:** ✅ **100% Script-Free** - Zero shell/Python scripts, pure AI services only  
-**Active Data:** Multiple real analysis examples including enhanced investigation results
+**Framework Version:** 2.0 - Standardized timestamped structure with comprehensive single-report format
 **Dependencies:** ✅ **Completely Self-Contained** - No external app dependencies
 
 **Enhanced Capabilities:**
@@ -155,7 +156,8 @@ z-stream-analysis/                          # ← You are here
 - **Automation Fix Generation**: Exact code changes with implementation guidance  
 - **Curl-First Data Extraction**: Reliable Jenkins access with intelligent error handling
 - **AI-Powered Analysis**: Pattern recognition, root cause analysis, and comprehensive reporting
-- **Enhanced Reporting**: Executive Summary, Detailed Analysis, Automation Fix Guide, Quality Assessment
+- **Standardized Reporting**: Single comprehensive Detailed-Analysis.md with all investigation phases
+- **Timestamped Analysis Runs**: Organized storage with YYYYMMDD_HHMMSS format for collision-free analysis
 - **Production Examples**: Real pipeline analysis results with comprehensive investigation data
 - **Unified Integration**: Seamless integration with root repository command interface
 
@@ -186,13 +188,14 @@ z-stream-analysis/                          # ← You are here
 - **Artifact Analysis**: Automated processing with focus on automation repository context
 - **Metadata Extraction**: Comprehensive build environment and configuration analysis
 
-### Enhanced Output Formats
-- **Verdict-First Executive Summary**: High-level analysis leading with definitive classification
-- **Systematic Investigation Report**: Detailed analysis with investigation methodology
-- **Automation Fix Implementation Guide**: Complete fix documentation with exact code changes
+### Enhanced Output Formats (Framework v2.0)
+- **Single Comprehensive Report**: All-in-one Detailed-Analysis.md with complete investigation
+- **Verdict-First Structure**: Executive Summary + Investigation + Fix Guide + Quality Assessment
+- **Timestamped Organization**: Collision-free directory structure with unique analysis runs
+- **Automation Fix Implementation**: Complete code changes with exact file paths and line numbers
 - **Product Bug Documentation**: Detailed product issue analysis (when applicable)
-- **Quality Assessment Metrics**: Validation scoring and actionability assessment
-- **Structured JSON Data**: Analysis metadata with confidence scoring and evidence tracking
+- **Quality Assessment Metrics**: Built-in validation scoring and actionability assessment
+- **Structured JSON Metadata**: Analysis tracking with confidence scoring and evidence compilation
 
 ## 🎯 Use Cases
 
@@ -251,9 +254,9 @@ cd apps/z-stream-analysis
 ls -la
 tree . -L 2
 
-# Check existing analysis examples
-cat runs/clc-e2e-pipeline-3223/Executive-Summary.md
-cat runs/clc-e2e-pipeline-3223/Detailed-Analysis.md
+# Check standardized analysis examples  
+cat runs/clc-e2e-pipeline-3223_20250812_182522/Detailed-Analysis.md
+ls -la runs/clc-e2e-pipeline-3223_*/
 
 # Review framework documentation
 cat scripts/README.md
@@ -322,33 +325,38 @@ curl -k -s "https://jenkins-server/job/pipeline/123/api/json" | jq '.result, .du
 5. **Report Generation**: Create executive and detailed reports
 6. **Action Items**: Generate specific remediation recommendations
 
-### Output Structure
+### Output Structure (Framework v2.0)
 
-**Enhanced Analysis Output:**
+**Standardized Analysis Output:**
 ```
-runs/<PIPELINE-ID>/
-├── Executive-Summary.md                    # Verdict-first stakeholder report
-├── Detailed-Analysis.md                    # Systematic investigation analysis
-├── Automation-Fix-Implementation-Guide.md # Complete automation fix guide (if automation bug)
-├── Product-Bug-Report.md                   # Product issue documentation (if product bug)
-├── Quality-Assessment.md                   # Enhanced quality validation metrics
-├── analysis-metadata.json                 # 6-phase analysis tracking with confidence scores
-├── jenkins-metadata.json                  # Jenkins data extraction results
-├── systematic-investigation.md             # Investigation methodology details
-├── product-functionality-analysis.md      # Product functionality assessment
-├── automation-analysis.md                 # Automation code analysis
-├── definitive-verdict-and-fixes.md        # Comprehensive verdict documentation
-└── raw-data/                              # Source data and artifacts
-    ├── metadata.json                      # Jenkins API data
-    ├── console-tail.log                   # Console output (relevant sections)
-    ├── test-results.json                  # Test results analysis
-    └── artifacts-list.txt                 # Available Jenkins artifacts
+runs/<pipeline-id>_<YYYYMMDD_HHMMSS>/
+├── Detailed-Analysis.md                   # Single comprehensive investigation report
+│                                          # Contains: Executive Summary + 6-Phase Investigation
+│                                          #          + Fix Implementation + Quality Assessment
+├── analysis-metadata.json                # Analysis execution and quality metrics tracking
+└── jenkins-metadata.json                 # Jenkins API data extraction results
 ```
 
-**Production Examples:**
-- `runs/clc-e2e-pipeline-3223-enhanced-test/` - Enhanced investigation with definitive verdict
-- `runs/clc-e2e-pipeline-3223-ai-test/` - AI-powered analysis with quality assessment
-- Multiple analysis approaches demonstrating comprehensive investigation capabilities
+**Example Production Structure:**
+```
+runs/
+├── clc-e2e-pipeline-3223_20250812_182522/    # Latest production analysis run
+│   ├── Detailed-Analysis.md                  # Complete investigation with AUTOMATION BUG verdict
+│   ├── analysis-metadata.json               # Process tracking and 98/100 quality score
+│   └── jenkins-metadata.json                # Jenkins API extraction with AKS test failure data
+├── clc-e2e-pipeline-3223_20250812_180000/    # Second analysis run (same pipeline)
+│   ├── Detailed-Analysis.md                  # Updated investigation if re-analyzed
+│   ├── analysis-metadata.json               
+│   └── jenkins-metadata.json                
+└── [legacy-directories]/                     # Historical v1.x format analyses preserved
+```
+
+**Benefits of New Structure:**
+- ✅ **Single Report**: All analysis phases in one comprehensive document
+- ✅ **Collision-Free**: Timestamp ensures unique directories for repeat analyses  
+- ✅ **Self-Contained**: Each analysis directory has complete investigation
+- ✅ **Organized Metadata**: Structured JSON for process tracking and quality metrics
+- ✅ **Historical Preservation**: Multiple analysis runs maintained with timestamps
 
 ## 🔍 Enhanced Analysis Types
 
@@ -428,14 +436,14 @@ cd apps/z-stream-analysis
 ```bash
 # Executive reporting
 /analyze-pipeline-failures pipeline-XXXX --executive-summary
-# Generates stakeholder-ready reports in runs/pipeline-XXXX/Executive-Summary.md
+# Generates comprehensive reports in runs/pipeline-XXXX_YYYYMMDD_HHMMSS/Detailed-Analysis.md
 ```
 
 ### Team Collaboration
-- **Standardized Reports**: All analysis follows consistent Executive + Detailed format
-- **Historical Context**: Each analysis links to previous similar failures
-- **Actionable Insights**: Reports include specific remediation steps
-- **Knowledge Base**: Failed patterns are automatically captured and referenced
+- **Standardized Reports**: All analysis follows consistent single comprehensive report format
+- **Timestamped History**: Multiple analysis runs preserved with unique timestamps
+- **Actionable Insights**: Reports include specific remediation steps with exact code changes
+- **Knowledge Base**: Failed patterns automatically captured and referenced across analysis runs
 
 ### Integration with Unified Commands
 
@@ -451,4 +459,4 @@ cd apps/z-stream-analysis
 
 ---
 
-**🏢 Enhanced Enterprise Platform:** The Z-Stream Analysis Engine provides definitive Jenkins pipeline failure analysis with intelligent investigation capabilities. Features AI-powered verdict generation (PRODUCT BUG | AUTOMATION BUG | AUTOMATION GAP), comprehensive automation fix implementation guides, and systematic evidence-based investigation methodology. **100% script-free and self-contained** - operates independently with zero external dependencies. Integrates seamlessly with the unified AI test generation suite for complete CI/CD quality assurance.
+**🏢 Enhanced Enterprise Platform (Framework v2.0):** The Z-Stream Analysis Engine provides definitive Jenkins pipeline failure analysis with intelligent investigation capabilities and standardized timestamped structure. Features AI-powered verdict generation (PRODUCT BUG | AUTOMATION BUG | AUTOMATION GAP), comprehensive automation fix implementation guides, and systematic evidence-based investigation methodology. **100% script-free and self-contained** with collision-free analysis runs using YYYYMMDD_HHMMSS timestamps. Integrates seamlessly with the unified AI test generation suite for complete CI/CD quality assurance.

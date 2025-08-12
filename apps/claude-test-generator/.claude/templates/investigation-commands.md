@@ -2,35 +2,41 @@
 
 ## 🔍 Complete Investigation Protocol Commands
 
-### Documentation Investigation
+### AI Documentation Service
+**Claude Command Pattern**: Use AI-powered JIRA analysis via TodoWrite and structured investigation
+
+**AI Investigation Protocol**:
+1. **Ticket Analysis**: Use `jira issue view <TICKET-ID>` for main ticket details
+2. **Hierarchical Discovery**: Recursively analyze all linked tickets, subtasks, and dependencies
+3. **Comment Analysis**: Extract URLs, GitHub links, PR references from descriptions AND comments
+4. **Quality Assessment**: Generate comprehensive investigation summary with quality metrics
+5. **Documentation Categorization**: Provide categorized documentation URLs for WebFetch investigation
+
+**Example AI Documentation Workflow**:
 ```bash
-# Comprehensive documentation discovery from JIRA tickets with complete hierarchy traversal
-bin/doc-investigation.sh <TICKET-ID>
+# Primary ticket analysis
+jira issue view ACM-22079
 
-# Example: Extract ALL documentation links from ACM-22079 + ALL nested linked tickets + comments
-bin/doc-investigation.sh ACM-22079
-
-# This will automatically:
-# 1. Analyze main ticket + all linked tickets (up to 3 levels deep)
-# 2. Extract URLs, GitHub links, PR references from descriptions AND comments
-# 3. Generate comprehensive investigation summary with quality metrics
-# 4. Provide categorized documentation URLs for WebFetch investigation
+# Linked ticket discovery and analysis via AI reasoning
+# AI will automatically identify and analyze ALL nested relationships up to 3 levels deep
 ```
 
-### GitHub Repository Investigation  
+### AI GitHub Investigation Service
+**Claude Command Pattern**: Use AI-powered GitHub analysis via WebFetch and intelligent search patterns
+
+**AI GitHub Investigation Protocol**:
+1. **PR Discovery**: Intelligent search for related PRs using GitHub API patterns
+2. **Repository Analysis**: Deep code analysis using WebFetch for GitHub PR content
+3. **Implementation Validation**: AI-powered code change analysis and impact assessment
+4. **Architecture Discovery**: Intelligent pattern recognition for system design understanding
+
+**Example AI GitHub Workflow**:
 ```bash
-# Enhanced GitHub repository access with SSH
-bin/github-investigation.sh <TICKET-ID> "search-terms"
-
-# Example: Deep repository search for implementation details
-bin/github-investigation.sh ACM-22079 "desiredUpdate,digest,upgrade"
-
-# Manual repository cloning for detailed analysis
-git clone git@github.com:stolostron/cluster-curator-controller.git /tmp/investigation/
-
-# Search within cloned repositories
-grep -r "TICKET-ID" /tmp/investigation/*/
-grep -r "implementation-keywords" /tmp/investigation/*/ --include="*.go" --include="*.yaml"
+# AI will automatically:
+# - Discover related PRs through intelligent search patterns
+# - Analyze PR content via WebFetch for implementation details
+# - Perform semantic code analysis for architectural understanding
+# - Validate feature implementation status and deployment readiness
 ```
 
 ### Internet Research Protocol
@@ -65,17 +71,17 @@ oc get <RESOURCE> -o yaml
 
 ## 🎯 Investigation Workflow
 
-### Step 1: Documentation Discovery
-```bash
-bin/doc-investigation.sh <TICKET-ID>
-# Review: /tmp/claude-doc-investigation/investigation_summary.md
-```
+### Step 1: AI Documentation Discovery
+**AI Service**: Comprehensive JIRA hierarchy analysis with intelligent link traversal
+- Automatic ticket relationship mapping
+- Comment analysis for hidden documentation links
+- Quality-scored investigation summaries
 
-### Step 2: Repository Investigation
-```bash  
-bin/github-investigation.sh <TICKET-ID> "key-terms"
-# Review: /tmp/claude-investigation-repos/
-```
+### Step 2: AI Repository Investigation
+**AI Service**: Intelligent GitHub analysis with PR discovery and code understanding
+- Semantic PR search and discovery
+- Implementation status validation
+- Architecture pattern recognition
 
 ### Step 3: Internet Research
 ```bash
