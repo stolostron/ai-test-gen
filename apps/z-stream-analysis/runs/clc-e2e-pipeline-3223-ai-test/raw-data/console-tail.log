@@ -1,0 +1,200 @@
+                    Status: 201
+[32m      cy:command ✔ [39m url	
+[31m[1m      cy:command ✘ [22m[39m assert	[object Object]: expected **https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig/overview** to include **/multicloud/infrastructure/clusters/details/clc-aks-417-3nw3y-aks-kubeconfig/clc-aks-417-3nw3y-aks-kubeconfig/overview**
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/cluster.open-cluster-management.io/v1/managedclusters
+                    Status: 201
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/authorization.k8s.io/v1/selfsubjectaccessreviews
+                    Status: 201
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/api/v1/namespaces/clc-aks-417-3nw3y-aks-kubeconfig/secrets
+                    Status: 201
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/authorization.k8s.io/v1/selfsubjectaccessreviews
+                    Status: 201
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/authorization.k8s.io/v1/selfsubjectaccessreviews
+                    Status: 201
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/authorization.k8s.io/v1/selfsubjectaccessreviews
+                    Status: 201
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/alertmanager/api/v2/silences
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/prometheus/api/v1/rules
+                    Status: 200
+[32m      cy:command ✔ [39m new url	https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig
+[32m      cy:command ✔ [39m new url	https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig/overview
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/apis/project.openshift.io/v1/projects/multicluster-engine
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/authorization.k8s.io/v1/selfsubjectaccessreviews
+                    Status: 201
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/apis/authorization.k8s.io/v1/selfsubjectaccessreviews
+                    Status: 201
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/apis/project.openshift.io/v1/projects/multicluster-engine
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/metrics/usage
+                    Status: 202
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/operatorCheck
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console.redhat.com/connections/api/v1/p
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/check-updates
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/plugins/monitoring-plugin/plugin-manifest.json
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/plugins/mce/plugin-manifest.json
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/openapi/v2
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/operatorCheck
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/operatorCheck
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/alertmanager/api/v2/silences
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/prometheus/api/v1/rules
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/openapi/v2
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/api/v1/namespaces/openshift-console-user-settings/configmaps/user-settings-kubeadmin
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/check-updates
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/operatorCheck
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/plugins/mce/plugin-manifest.json
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/plugins/monitoring-plugin/plugin-manifest.json
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/operatorCheck
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/openapi/v2
+                    Status: 200
+[32m        cy:fetch ➟ [39m GET https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/kubernetes/apis/config.openshift.io/v1/clusterversions/version
+                    Status: 200
+[32m        cy:fetch ➟ [39m POST https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/api/proxy/plugin/mce/console/multicloud/operatorCheck
+
+
+  [36m  - RHACM4K-4057: CLC: Import - Verify that user can import ROSA cluster with latest k8s version by kubeconfig[0m
+  [36m  - RHACM4K-4064: CLC: Import - Verify that user can import ROSA cluster with latest k8s version by API Token[0m
+
+
+[92m [0m[32m 0 passing[0m[90m (3m)[0m
+[36m [0m[36m 2 pending[0m
+[31m  1 failing[0m
+
+[0m  1) import clusters
+       RHACM4K-4054: CLC: Import - Verify that user can import AKS cluster with latst k8s version by kubeconfig:
+[0m[31m     AssertionError: Timed out retrying after 30000ms: [object Object]: expected 'https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig/overview' to include '/multicloud/infrastructure/clusters/details/clc-aks-417-3nw3y-aks-kubeconfig/clc-aks-417-3nw3y-aks-kubeconfig/overview'[0m[90m
+      at Object.importCluster (webpack://clc-ui-e2e-test/./cypress/views/clusters/managedCluster.js:1158:11)
+      at Context.eval (webpack://clc-ui-e2e-test/./cypress/tests/clusters/managedClusters/create/importClusters.spec.js:136:39)
+[0m
+
+
+[[90mmochawesome[39m] Report JSON saved to /home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/json/mochawesome-report_003.json
+
+
+[31m  ([4m[1mResults[22m[24m)[39m
+
+[90m  ┌[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┐[39m
+[90m  │[39m [90mTests:[39m        [31m3[39m                                                                                [90m│[39m
+[90m  │[39m [90mPassing:[39m      [31m0[39m                                                                                [90m│[39m
+[90m  │[39m [90mFailing:[39m      [31m1[39m                                                                                [90m│[39m
+[90m  │[39m [90mPending:[39m      [31m2[39m                                                                                [90m│[39m
+[90m  │[39m [90mSkipped:[39m      [31m0[39m                                                                                [90m│[39m
+[90m  │[39m [90mScreenshots:[39m  [31m3[39m                                                                                [90m│[39m
+[90m  │[39m [90mVideo:[39m        [31mtrue[39m                                                                             [90m│[39m
+[90m  │[39m [90mDuration:[39m     [31m2 minutes, 51 seconds[39m                                                            [90m│[39m
+[90m  │[39m [90mSpec Ran:[39m     [31m[31mimportClusters.spec.js[31m[39m                                                           [90m│[39m
+[90m  └[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┘[39m
+
+
+[33m  ([4m[1mScreenshots[22m[24m)[39m
+
+[90m [39m -  [0m/home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/screenshot[0m     [90m[90m(1280x581)[90m[39m
+[90m [39m    [0ms/importClusters.spec.js/import clusters -- RHACM4K-4054 CLC Import - Verify tha[0m               
+[90m [39m    [0mt user can import AKS cluster with latst k8s version by kubeconfig (failed).png[0m                
+[90m [39m -  [0m/home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/screenshot[0m     [90m[90m(1280x581)[90m[39m
+[90m [39m    [0ms/importClusters.spec.js/import clusters -- RHACM4K-4054 CLC Import - Verify tha[0m               
+[90m [39m    [0mt user can import AKS cluster with latst k8s version by kubeconfig (failed) (att[0m               
+[90m [39m    [0mempt 2).png[0m                                                                                    
+[90m [39m -  [0m/home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/screenshot[0m     [90m[90m(1280x581)[90m[39m
+[90m [39m    [0ms/importClusters.spec.js/import clusters -- RHACM4K-4054 CLC Import - Verify tha[0m               
+[90m [39m    [0mt user can import AKS cluster with latst k8s version by kubeconfig (failed) (att[0m               
+[90m [39m    [0mempt 3).png[0m                                                                                    
+
+
+[36m  ([4m[1mVideo[22m[24m)[39m
+
+  -  Video output: [36m/home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/videos/importClusters.spec.js.mp4[39m
+
+
+[90m====================================================================================================[39m
+
+[0m  ([4m[1mRun Finished[22m[24m)[0m
+
+
+[90m   [39m    [90mSpec[39m                                              [90mTests[39m  [90mPassing[39m  [90mFailing[39m  [90mPending[39m  [90mSkipped[39m [90m [39m
+[90m  ┌[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┐[39m
+[90m  │[39m [31m✖[39m  [0mimportClusters.spec.js[0m                   [90m02:51[39m        [0m3[0m        [90m-[39m        [31m1[39m        [36m2[39m        [90m-[39m [90m│[39m
+[90m  └[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m─[39m[90m┘[39m
+[90m   [39m [31m✖[39m  [31m1 of 1 failed (100%)[39m                     [90m02:51[39m        [0m3[0m        [90m-[39m        [31m1[39m        [36m2[39m        [90m-[39m [90m [39m
+
++ save_report import_clusters
++ [[ ! -d reports ]]
++ _stage=import_clusters
++ _group=
++ [[ -d reports/import_clusters/ ]]
++ mkdir -p reports/import_clusters/
++ cp -r results/junit_cypress-29987e60a25609d160b57c7dbb672115.xml results/junit_cypress-cb1ba4b3012b1618fc04d97b10a66b15.xml results/junit_cypress-d4845163c257f04c6b481075447bb1b8.xml results/junit_cypress-f0b2522fbbd93c6d852dfbc73c638c0e.xml reports/
++ cp -r results/json results/junit_cypress-29987e60a25609d160b57c7dbb672115.xml results/junit_cypress-cb1ba4b3012b1618fc04d97b10a66b15.xml results/junit_cypress-d4845163c257f04c6b481075447bb1b8.xml results/junit_cypress-f0b2522fbbd93c6d852dfbc73c638c0e.xml results/screenshots results/videos reports/import_clusters/
++ save_report postupgrade
++ [[ ! -d reports ]]
++ _stage=postupgrade
++ _group=
++ [[ -d reports/postupgrade/ ]]
++ mkdir -p reports/postupgrade/
++ cp -r results/junit_cypress-29987e60a25609d160b57c7dbb672115.xml results/junit_cypress-cb1ba4b3012b1618fc04d97b10a66b15.xml results/junit_cypress-d4845163c257f04c6b481075447bb1b8.xml results/junit_cypress-f0b2522fbbd93c6d852dfbc73c638c0e.xml reports/
++ cp -r results/json results/junit_cypress-29987e60a25609d160b57c7dbb672115.xml results/junit_cypress-cb1ba4b3012b1618fc04d97b10a66b15.xml results/junit_cypress-d4845163c257f04c6b481075447bb1b8.xml results/junit_cypress-f0b2522fbbd93c6d852dfbc73c638c0e.xml results/screenshots results/videos reports/postupgrade/
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Destroy Import Clusters)
+Stage "Destroy Import Clusters" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] build
+Scheduling project: CI-Jobs » ClusterLifecycle » clc_post_config
+Starting building: CI-Jobs » ClusterLifecycle » clc_post_config #1524
+Build CI-Jobs » ClusterLifecycle » clc_post_config #1524 completed: SUCCESS
+[Pipeline] archiveArtifacts
+Archiving artifacts
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+$ docker stop --time=1 a2ed9fe7474725293ce64cd611f98b4116ad96b31e489df235ef1d9e47243f90
+$ docker rm -f --volumes a2ed9fe7474725293ce64cd611f98b4116ad96b31e489df235ef1d9e47243f90
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: UNSTABLE
