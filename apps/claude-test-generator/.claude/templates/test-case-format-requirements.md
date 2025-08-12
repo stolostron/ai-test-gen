@@ -17,8 +17,9 @@ All test steps MUST include:
 ### Expected Result Format Requirements
 Expected Results MUST contain:
 1. **Verbal explanation** of what should happen
-2. **Specific values** or output descriptions
-3. **NO commands or grep statements**
+2. **Sample YAML/data outputs** when relevant and helpful
+3. **Expected command outputs** when commands/grep are used (so testers can easily see and match probable outputs)
+4. **Specific values** or output descriptions
 
 **Example:**
 ```markdown
@@ -35,6 +36,7 @@ Expected Results MUST contain:
 |------|-----------------|
 | **Log into ACM hub cluster**<br>`oc login https://api.cluster-url.com:6443 -u username -p password --insecure-skip-tls-verify` | Login successful with access confirmed. |
 | **Verify annotation is stored correctly**<br>`oc get clustercurator digest-upgrade-test -o jsonpath='{.metadata.annotations.cluster\.open-cluster-management\.io/upgrade-allow-not-recommended-versions}'` | Annotation value shows 'true' confirming feature is enabled. |
+| **Check resource YAML configuration**<br>`oc get clustercurator digest-upgrade-test -o yaml` | YAML output shows annotation in metadata confirming feature activation:<br><br>```yaml<br>metadata:<br>  annotations:<br>    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: 'true'<br>  name: digest-upgrade-test<br>spec:<br>  desiredCuration: upgrade<br>  upgrade:<br>    desiredUpdate: "4.16.37"<br>``` |
 ```
 
 **NOT:**
