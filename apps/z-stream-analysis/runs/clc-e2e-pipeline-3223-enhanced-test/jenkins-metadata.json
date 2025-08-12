@@ -1,0 +1,23 @@
+{
+  "pipeline_id": "clc-e2e-pipeline-3223-enhanced-test",
+  "jenkins_url": "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/qe-acm-automation-poc/job/clc-e2e-pipeline/3223/",
+  "build_result": "UNSTABLE",
+  "build_duration": 4287710,
+  "build_timestamp": 1752798718845,
+  "full_display_name": "qe-acm-automation-poc » clc-e2e-pipeline #3223",
+  "git_branch": "release-2.12",
+  "test_stage": "postupgrade",
+  "framework": "Cypress",
+  "repository": "stolostron/clc-ui-e2e",
+  "cloud_provider": "azure",
+  "import_type": "AKS",
+  "import_method": "kubeconfig",
+  "primary_failure": {
+    "test_name": "RHACM4K-4054: CLC: Import - Verify that user can import AKS cluster with latest k8s version by kubeconfig",
+    "error_type": "AssertionError",
+    "error_message": "Timed out retrying after 30000ms: [object Object]: expected 'https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig/overview' to include '/multicloud/infrastructure/clusters/details/clc-aks-417-3nw3y-aks-kubeconfig/clc-aks-417-3nw3y-aks-kubeconfig/overview'",
+    "location": "managedCluster.js:1158:11",
+    "test_file": "importClusters.spec.js:136:39"
+  },
+  "analysis_timestamp": "2025-08-12T17:30:00Z"
+}
