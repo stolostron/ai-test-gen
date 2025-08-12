@@ -6,29 +6,29 @@
 
 These commands work from anywhere in the repository and provide streamlined access to all applications while maintaining their independence. Each command intelligently routes to the appropriate application based on your needs.
 
-### /generate-test-plan
-**Application:** Claude Test Generator  
+### /generate-e2e-test-plan
+**Application:** Intelligent Test Analysis Engine  
 **Description:** Generate comprehensive E2E test plans with AI-powered analysis and smart scoping.
 
 **Usage:** 
 ```
-/generate-test-plan {JIRA_TICKET} [OPTIONS]
-/generate-test-plan {PR_URL} {FEATURE_NAME} [JIRA_SOURCE]
+/generate-e2e-test-plan {JIRA_TICKET} [OPTIONS]
+/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_SOURCE]
 ```
 
 **Examples:**
 ```bash
 # JIRA-based generation
-/generate-test-plan ACM-22079
+/generate-e2e-test-plan ACM-22079
 
 # PR-based generation with JIRA context
-/generate-test-plan https://github.com/stolostron/cluster-curator-controller/pull/203 "Implement pushing custom labels to pods" ACM-10659.txt
+/generate-e2e-test-plan https://github.com/stolostron/cluster-curator-controller/pull/203 "Implement pushing custom labels to pods" ACM-10659.txt
 
 # With custom kubeconfig
-/generate-test-plan ACM-22079 --kubeconfig /path/to/your/kubeconfig
+/generate-e2e-test-plan ACM-22079 --kubeconfig /path/to/your/kubeconfig
 
 # With specific QE environment
-/generate-test-plan ACM-22079 --env qe6
+/generate-e2e-test-plan ACM-22079 --env qe6
 ```
 
 **Features:**
@@ -100,9 +100,9 @@ These commands work from anywhere in the repository and provide streamlined acce
 ```
 
 **Task Routing:**
-- **test-plan, e2e-test, validation** → Claude Test Generator
+- **test-plan, e2e-test, validation** → Intelligent Test Analysis Engine
 - **pipeline-failure, ci-debug, jenkins** → Z-Stream Analysis Engine
-- **research, documentation, comprehensive** → Legacy Framework (archived)
+- **research, documentation, comprehensive** → Intelligent Test Analysis Engine
 - **pr-review, code-analysis** → Auto-detect best application
 
 ---
@@ -118,7 +118,7 @@ These commands work from anywhere in the repository and provide streamlined acce
 
 **Examples:**
 ```bash
-# Launch Claude Test Generator
+# Launch Intelligent Test Analysis Engine
 /quick-start claude-test-generator
 
 # Start pipeline analysis
@@ -135,7 +135,7 @@ These commands work from anywhere in the repository and provide streamlined acce
 
 Each application is fully independent and can be used standalone or via the unified commands above.
 
-### 🎯 Claude Test Generator (Production)
+### 🎯 Intelligent Test Analysis Engine (Production)
 **Location:** `apps/claude-test-generator/`  
 **Status:** ✅ Active - Production Ready  
 **Claude Config:** `apps/claude-test-generator/CLAUDE.md`
@@ -177,13 +177,6 @@ cd apps/z-stream-analysis
 
 ---
 
-### 🧠 Legacy Test Framework (Archived)
-**Location:** `apps/intelligent-test-framework [old]/`  
-**Status:** 📚 Archived - Reference Only  
-**Documentation:** `apps/intelligent-test-framework [old]/README.md`
-
-**Purpose:** Historical comprehensive AI framework (no longer actively maintained)  
-**Note:** For new projects, use Claude Test Generator instead. This is kept for historical reference and contains extensive research capabilities.
 
 ## 🚀 Unified Command Interface
 
@@ -192,19 +185,19 @@ Commands automatically route to the appropriate application:
 
 | Command Pattern | Routes To | Purpose |
 |----------------|-----------|---------|
-| `/generate-test-plan` | Claude Test Generator | E2E test generation with smart scoping |
+| `/generate-e2e-test-plan` | Intelligent Test Analysis Engine | E2E test generation with smart scoping |
 | `/analyze-pipeline-failures` | Z-Stream Analysis | Jenkins pipeline debugging |
-| `/analyze-workflow test-plan` | Claude Test Generator | Intelligent task routing |
+| `/analyze-workflow test-plan` | Intelligent Test Analysis Engine | Intelligent task routing |
 | `/analyze-workflow pipeline-failure` | Z-Stream Analysis | Intelligent task routing |
 | `/quick-start {app}` | Specified Application | Direct application launch |
 
 ### Quick Commands Reference
 
 ```bash
-# 🎯 TEST GENERATION (Claude Test Generator)
-/generate-test-plan ACM-22079                              # JIRA-based test plan (always deep analysis)
-/generate-test-plan ACM-22079 --env qe6                   # With QE environment
-/generate-test-plan ACM-22079 --kubeconfig /path/to/config # With custom kubeconfig
+# 🎯 TEST GENERATION (Intelligent Test Analysis Engine)
+/generate-e2e-test-plan ACM-22079                              # JIRA-based test plan (always deep analysis)
+/generate-e2e-test-plan ACM-22079 --env qe6                   # With QE environment
+/generate-e2e-test-plan ACM-22079 --kubeconfig /path/to/config # With custom kubeconfig
 /analyze-workflow test-plan ACM-22079                     # Via routing
 
 # 📊 PIPELINE ANALYSIS (Z-Stream Analysis Engine)  
@@ -230,7 +223,7 @@ cd apps/z-stream-analysis                       # Advanced pipeline analysis
 - ✅ **Basic CLI tools** (curl, jq, git)
 
 ### Application-Specific Requirements
-**Claude Test Generator:**
+**Intelligent Test Analysis Engine:**
 - OpenShift/ACM cluster access (qe6, qe8, qe9, qe10, or custom kubeconfig)
 - JIRA CLI access (optional)
 - Intelligent environment detection and kubeconfig handling
@@ -265,13 +258,13 @@ Each application maintains full independence:
 **Pattern 1: Quick Analysis**
 ```bash
 # Single command for immediate results
-/generate-test-plan ACM-22079
+/generate-e2e-test-plan ACM-22079
 ```
 
 **Pattern 2: Deep Dive**
 ```bash
 # Use global command, then switch to app for advanced features
-/generate-test-plan ACM-22079
+/generate-e2e-test-plan ACM-22079
 cd apps/claude-test-generator
 # Access advanced Claude config and specialized tools
 ```
@@ -279,7 +272,7 @@ cd apps/claude-test-generator
 **Pattern 3: Multi-Application Workflow**
 ```bash
 # Generate test plan
-/generate-test-plan ACM-22079
+/generate-e2e-test-plan ACM-22079
 
 # Analyze related pipeline failures
 /analyze-pipeline-failures clc-e2e-pipeline-3223
@@ -306,16 +299,14 @@ cd apps/claude-test-generator
 ├── 📁 docs/                                    # Shared documentation
 ├── 📁 e2e-test-generated/                      # Generated test outputs
 ├── 📁 apps/
-│   ├── 📁 claude-test-generator/               # 🎯 Production: AI Test Generation
+│   ├── 📁 claude-test-generator/               # 🎯 Production: Intelligent Test Analysis Engine
 │   │   ├── 📄 CLAUDE.md                        # Specialized Claude config
 │   │   ├── 📄 README.md                        # Application guide
 │   │   └── 📁 runs/                            # Test generation runs
-│   ├── 📁 z-stream-analysis/                   # 📊 Production: Pipeline Analysis
-│   │   ├── 📄 CLAUDE.md                        # Specialized Claude config
-│   │   ├── 📄 README.md                        # Application guide
-│   │   └── 📁 runs/                            # Analysis runs
-│   └── 📁 intelligent-test-framework [old]/    # 📚 Archived: Reference
-│       └── 📄 README.md                        # Historical documentation
+│   └── 📁 z-stream-analysis/                   # 📊 Production: Pipeline Analysis
+│       ├── 📄 CLAUDE.md                        # Specialized Claude config
+│       ├── 📄 README.md                        # Application guide
+│       └── 📁 runs/                            # Analysis runs
 ```
 
 ## 🎯 Getting Started
@@ -323,13 +314,13 @@ cd apps/claude-test-generator
 ### For Test Generation
 ```bash
 # Quick start (always includes deep analysis)
-/generate-test-plan ACM-22079
+/generate-e2e-test-plan ACM-22079
 
 # With QE environment
-/generate-test-plan ACM-22079 --env qe6
+/generate-e2e-test-plan ACM-22079 --env qe6
 
 # With custom kubeconfig (framework handles gracefully)
-/generate-test-plan ACM-22079 --kubeconfig /path/to/your/cluster/kubeconfig
+/generate-e2e-test-plan ACM-22079 --kubeconfig /path/to/your/cluster/kubeconfig
 ```
 
 ### For Pipeline Analysis

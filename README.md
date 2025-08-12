@@ -9,9 +9,8 @@ A collection of AI-powered applications designed to automate test plan generatio
 ```
 ai-test-gen_org/
 ├── 📁 apps/                                    # Self-contained applications
-│   ├── 📁 claude-test-generator/               # AI-powered test analysis engine
-│   ├── 📁 z-stream-analysis/                   # Z-stream pipeline analysis
-│   └── 📁 intelligent-test-framework [old]/    # Legacy test framework (archived)
+│   ├── 📁 claude-test-generator/               # Intelligent Test Analysis Engine
+│   └── 📁 z-stream-analysis/                   # Z-stream pipeline analysis
 ├── 📁 docs/                                    # Shared documentation
 ├── 📁 e2e-test-generated/                     # Legacy generated tests
 ├── 📁 JIRA-details/                           # JIRA ticket analysis
@@ -56,25 +55,18 @@ cd apps/z-stream-analysis
 ./quick-start.sh
 ```
 
-### 3. Legacy Test Framework (Archived) 📚
-**Location**: [`apps/intelligent-test-framework [old]/`](./apps/intelligent-test-framework%20[old]/)
-
-**Status**: Archived - moved to legacy status. For new projects, use the Intelligent Test Analysis Engine instead.
-
-**Purpose**: Historical comprehensive AI framework (no longer actively maintained).
-
 ## 🎯 Choosing the Right Application
 
-| Feature | Intelligent Test Analysis Engine | Z-Stream Analysis Engine | Legacy Test Framework |
-|---------|----------------------------------|--------------------------|----------------------|
-| **Approach** | AI-powered test intelligence | Pipeline failure analysis | Multi-repository automation (archived) |
-| **Setup Time** | Minutes | < 10 minutes | ~30 minutes |
-| **Input Required** | JIRA ticket ID | Jenkins pipeline URL | JIRA ticket ID + codebase |
-| **AI Integration** | Claude-based analysis | AI failure classification | Shell-script workflows |
-| **Focus** | E2E test generation | CI/CD troubleshooting | Multi-component analysis |
-| **Learning** | Feedback loops | Pattern recognition | Adaptive patterns |
-| **Validation** | Environment assessment | Pipeline diagnostics | Automated validation |
-| **Best For** | Production test plans | Pipeline debugging | Historical reference only |
+| Feature | Intelligent Test Analysis Engine | Z-Stream Analysis Engine |
+|---------|----------------------------------|--------------------------|
+| **Approach** | AI-powered test intelligence | Pipeline failure analysis |
+| **Setup Time** | Minutes | < 10 minutes |
+| **Input Required** | JIRA ticket ID | Jenkins pipeline URL |
+| **AI Integration** | Claude-based analysis | AI failure classification |
+| **Focus** | E2E test generation | CI/CD troubleshooting |
+| **Learning** | Feedback loops | Pattern recognition |
+| **Validation** | Environment assessment | Pipeline diagnostics |
+| **Best For** | Production test plans | Pipeline debugging |
 
 ## 🔧 Global Configuration
 
@@ -107,7 +99,6 @@ cd apps/z-stream-analysis          # For pipeline failure analysis
 ### Application-Specific
 - **Intelligent Test Analysis Engine**: Claude Code CLI and ACM cluster access
 - **Z-Stream Analysis Engine**: Jenkins API access, Python 3.8+, optional Claude CLI
-- **Legacy Test Framework**: OpenShift/Kubernetes access, additional CLI tools (archived)
 
 ## 🚀 Quick Start Guide
 
@@ -118,16 +109,12 @@ cd apps/claude-test-generator
 
 # For Jenkins pipeline failure analysis and CI/CD troubleshooting
 cd apps/z-stream-analysis
-
-# For legacy framework reference (archived)
-cd apps/intelligent-test-framework\ [old]
 ```
 
 ### 2. Follow Application README
 Each application has its own comprehensive setup and usage guide:
 - [Intelligent Test Analysis Engine README](./apps/claude-test-generator/README.md)
 - [Z-Stream Analysis Engine README](./apps/z-stream-analysis/README.md)
-- [Legacy Test Framework README](./apps/intelligent-test-framework%20[old]/README.md) (archived)
 
 ### 3. Use Global Commands
 The root CLAUDE.md provides slash commands that work across the entire repository for common workflows.
@@ -146,11 +133,6 @@ The root CLAUDE.md provides slash commands that work across the entire repositor
 - **Failure Classification**: Hours → Minutes with AI insights
 - **Best For**: CI/CD troubleshooting, Jenkins pipeline optimization, test failure patterns
 
-### Legacy Test Framework (Archived)
-- **Setup Time**: ~30 minutes (one-time)
-- **Test Planning**: 2 hours → 15 minutes (87% reduction)
-- **Implementation**: 1 day → 2 hours (75% reduction)
-- **Status**: No longer actively maintained - use Claude Test Generator instead
 
 ## 🤝 Contributing
 
@@ -188,7 +170,6 @@ git push origin feature-branch
 ### Application Documentation
 - **[Intelligent Test Analysis Engine](./apps/claude-test-generator/)**: AI-powered test intelligence docs
 - **[Z-Stream Analysis Engine](./apps/z-stream-analysis/)**: Jenkins pipeline analysis and CI/CD troubleshooting docs
-- **[Legacy Test Framework](./apps/intelligent-test-framework%20[old]/)**: Multi-repository automation docs (archived)
 
 ## 🛣️ Roadmap
 
@@ -228,7 +209,6 @@ This suite is designed for **professional QE teams** working on complex enterpri
 **Choose your path**:
 - 🎯 **AI-Powered Test Intelligence**: Use Intelligent Test Analysis Engine
 - 📊 **Pipeline Failure Analysis**: Use Z-Stream Analysis Engine  
-- 🧠 **Legacy Reference**: Use archived Intelligent Test Framework (historical)
 - 🔄 **Multiple Tools**: Use applications together for comprehensive coverage
 
 ---
