@@ -1,6 +1,0 @@
-# Feature-Specific Overrides: Governance Policy
-
-- Focus on policy creation, placement, compliance, remediation
-- Include RBAC checks and compliance verification commands
-- Provide UI path: Governance → Policies, plus CLI equivalents
-- Explicit jsonpath for compliance status and violation details
