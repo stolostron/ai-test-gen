@@ -1,0 +1,54 @@
+{
+  "analysisExecution": {
+    "analysisPipeline": "clc-e2e-pipeline-3223",
+    "analysisTimestamp": "2025-08-12T18:25:22Z",
+    "frameworkVersion": "2.0",
+    "analysisDirectory": "clc-e2e-pipeline-3223_20250812_182522",
+    "dataExtractionMethod": "curl-first with WebFetch fallback",
+    "investigationPhases": 6,
+    "totalAnalysisTime": "completed"
+  },
+  "verdict": {
+    "classification": "AUTOMATION BUG",
+    "confidence": 95,
+    "evidence": {
+      "productFunctionality": "working correctly",
+      "automationCode": "contains bug at managedCluster.js:1158:11",
+      "urlValidation": "incorrect expected pattern",
+      "impactLevel": "test infrastructure only"
+    }
+  },
+  "qualityMetrics": {
+    "completeness": 95,
+    "evidenceQuality": 100,
+    "actionability": 100,
+    "technicalAccuracy": 98,
+    "overallScore": 98
+  },
+  "keyFindings": {
+    "primaryIssue": "URL validation mismatch in automation code",
+    "rootCause": "Test expects duplicate cluster name pattern, product uses ~managed-cluster prefix",
+    "fixLocation": "cypress/views/clusters/managedCluster.js:1158:11",
+    "businessImpact": "False negative test results blocking CI/CD pipeline",
+    "productImpact": "None - product functionality working correctly"
+  },
+  "recommendedActions": {
+    "immediate": [
+      "Fix URL validation pattern in managedCluster.js:1158:11",
+      "Update expected pattern to use ~managed-cluster prefix",
+      "Test fix against AKS, EKS, and GKE import scenarios"
+    ],
+    "followUp": [
+      "Review other URL validation patterns in same file",
+      "Update test documentation with correct URL patterns",
+      "Add URL pattern validation to test framework standards"
+    ]
+  },
+  "relatedFiles": {
+    "primaryFix": "cypress/views/clusters/managedCluster.js",
+    "testSpec": "cypress/tests/clusters/managedClusters/create/importClusters.spec.js",
+    "testResults": "/results/json/mochawesome-report_003.json",
+    "screenshots": "/results/screenshots/importClusters.spec.js/",
+    "video": "/results/videos/importClusters.spec.js.mp4"
+  }
+}

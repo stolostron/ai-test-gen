@@ -2,17 +2,28 @@
 
 > **AI-powered test analysis and generation system for ACM/OCM components**
 
-An intelligent system that analyzes software features and generates comprehensive E2E test plans. Designed specifically for Red Hat Advanced Cluster Management (ACM) and Open Cluster Management (OCM) testing scenarios.
+**Latest Version**: AI-powered framework with integrated investigation, validation, and generation services
+**Framework Status**: Production-ready with complete AI service integration and intelligent quality assurance
+
+An intelligent system that uses integrated AI services to analyze software features and generate comprehensive E2E test plans. Designed specifically for Red Hat Advanced Cluster Management (ACM) and Open Cluster Management (OCM) testing scenarios.
+
+## 🚨 CRITICAL FRAMEWORK POLICY
+
+**⚠️ MANDATORY INTERNAL vs EXTERNAL USAGE**:
+- **Framework Internal**: Uses `setup_clc` and `login_oc` scripts for robust environment operations
+- **Generated Test Cases**: ALWAYS show generic `oc login <cluster-url>` commands for team usability
+- **Final Reports**: NEVER mention setup_clc or login_oc scripts - use standard OpenShift patterns
+- **End User Experience**: Clean, professional test cases without internal framework details
 
 ## What This Framework Does
 
-The Intelligent Test Analysis Engine automatically:
+The AI-powered Test Analysis Engine automatically:
 
-1. **Analyzes JIRA tickets** - Extracts business requirements and technical specifications
-2. **Processes GitHub PRs** - Understands code changes and implementation details  
-3. **Generates E2E test plans** - Creates comprehensive test cases with realistic expected outputs
-4. **Assesses deployment readiness** - Determines if features are available in test environments
-5. **Provides structured output** - Delivers both detailed analysis and clean test cases
+1. **🔍 AI Documentation Service** - JIRA hierarchy analysis with recursive link traversal
+2. **📊 AI GitHub Investigation Service** - PR discovery and implementation validation  
+3. **⚙️ AI Schema Service** - Dynamic CRD analysis and intelligent YAML generation
+4. **✅ AI Validation Service** - Automated quality assurance and compliance verification
+5. **📝 Structured Output** - Delivers both detailed analysis and clean test cases with AI-generated examples
 
 ### Key Capabilities
 
@@ -54,19 +65,19 @@ runs/ACM-XXXXX/run-###-YYYYMMDD-HHMM/
 # Navigate to the framework
 cd apps/claude-test-generator
 
-# Run analysis on any ACM JIRA ticket
-analyze_ticket ACM-22079
-
-# Or with custom environment  
-USER_ENVIRONMENT=qe7 analyze_ticket ACM-22079
+# Ask Claude to analyze any ACM JIRA ticket
+# Claude will automatically use AI services for complete analysis
+# Example: "Analyze ACM-22079"
 ```
 
-### What Happens
-1. Framework connects to your specified environment (default: qe6)
-2. Analyzes the JIRA ticket for business and technical requirements
-3. Generates comprehensive E2E test plan focused on NEW functionality
-4. Creates both detailed analysis and clean test cases
-5. Provides deployment assessment (feature available or not)
+**🚨 CRITICAL**: Framework uses internal setup_clc/login_oc scripts but generated test cases show generic `oc login <cluster-url>` commands for team usability.
+
+### AI-Powered Process
+1. **Environment Setup**: Framework connects to specified environment (default: qe6) using internal utilities
+2. **AI Investigation**: Automatic JIRA + GitHub + Internet research via AI Documentation and GitHub Investigation Services
+3. **AI Validation**: Real-time schema and deployment validation via AI Schema Service
+4. **AI Generation**: Enhanced test cases with AI-generated YAML samples and Expected Results
+5. **AI Quality Assurance**: Automated validation via AI Validation Service (escaped pipes, ManagedClusterView guidance, server-side YAML validation)
 
 ### Expected Output
 - **Execution Time**: 5-10 minutes
@@ -79,14 +90,12 @@ USER_ENVIRONMENT=qe7 analyze_ticket ACM-22079
 The framework can be configured in several ways:
 
 ### 1. Environment Selection
-```bash
-# Use default environment (qe6)
-analyze_ticket ACM-22079
+**Ask Claude to analyze with environment specification:**
+- "Analyze ACM-22079" (uses default qe6)
+- "Analyze ACM-22079 using qe7 environment"
+- "Analyze ACM-22079 using qe8 environment"
 
-# Specify different environment
-USER_ENVIRONMENT=qe7 analyze_ticket ACM-22079
-USER_ENVIRONMENT=qe8 analyze_ticket ACM-22079
-```
+**Internal Operations**: Framework uses setup_clc/login_oc scripts internally but shows generic `oc login <cluster-url>` in test cases.
 
 **Why Configure Environment?**
 - Different environments may have different feature deployment status
@@ -150,8 +159,8 @@ Both frameworks exist in the same repository but serve different purposes:
 - Both support multiple environment configurations
 
 **Different Approaches:**
-- **claude-test-generator**: Claude-based, fast, focused on immediate test generation
-- **intelligent-test-framework**: Shell-script based, comprehensive, includes research and automation
+- **claude-test-generator**: AI-service based, fast, focused on immediate test generation with integrated quality assurance
+- **intelligent-test-framework**: Comprehensive analysis framework with advanced automation capabilities
 
 **When to Use Which:**
 - **Daily QE Work**: Use claude-test-generator for quick, reliable test plan generation
@@ -171,23 +180,30 @@ There's no technical dependency - they're separate tools that can be used indepe
 
 ```
 claude-test-generator/
-├── README.md                    # This file
-├── CLAUDE.md                    # Claude configuration
-├── .claude/                     # Framework configuration
-│   ├── prompts/                 # Test scoping and generation rules
-│   ├── templates/               # Output format templates
-│   ├── workflows/               # Feedback loop and process definitions
-│   └── docs/                    # Implementation guidance
+├── README.md                    # This file - Project overview and usage
+├── CLAUDE.md                    # Claude AI configuration and services
+├── bin/                         # Internal utilities (setup_clc, login_oc only)
+├── .claude/                     # AI service configuration
+│   ├── prompts/                 # AI reasoning and scoping rules
+│   ├── templates/               # AI-generated output formats
+│   ├── workflows/               # AI feedback loop and processes
+│   ├── advanced/                # Advanced AI service features
+│   └── greetings/               # Framework welcome messages
 ├── runs/                        # Generated test runs by ticket
 │   └── <TICKET-ID>/             # Organized by JIRA ticket
 │       ├── run-XXX-YYYYMMDD-HHMM/ # Timestamped executions
-│       │   ├── Test-Cases.md    # Clean test cases
-│       │   ├── Complete-Analysis.md # Full analysis
+│       │   ├── Test-Cases.md    # Clean test cases (generic oc login)
+│       │   ├── Complete-Analysis.md # Full AI analysis
 │       │   └── metadata.json    # Run metadata
 │       └── latest -> run-XXX    # Symlink to latest run
-├── examples/                    # Example outputs
+├── examples/                    # Example AI-generated outputs
 └── docs/                        # Additional documentation
 ```
+
+**Key Components**:
+- **AI Services**: 4 integrated services (Documentation, GitHub Investigation, Schema, Validation)
+- **Internal Scripts**: Only setup_clc/login_oc (never exposed to users)
+- **Generated Outputs**: Professional test cases with standard OpenShift commands
 
 ## Best Practices
 
@@ -220,6 +236,8 @@ claude-test-generator/
 
 ---
 
-**Framework Version**: 1.0  
+**Framework Version**: 2.0 (AI Services Integration)  
 **Maintained by**: ACM QE Team  
-**Integrations**: Claude Code AI, GitHub, JIRA, OpenShift CLI
+**Core Technology**: Claude AI with integrated Documentation, GitHub Investigation, Schema, and Validation services  
+**Environment Management**: Internal setup_clc/login_oc utilities (hidden from end users)  
+**Output Format**: Professional test cases with generic OpenShift commands

@@ -1,0 +1,63 @@
+{
+  "buildInfo": {
+    "buildNumber": 3223,
+    "pipeline": "qe-acm-automation-poc/clc-e2e-pipeline",
+    "result": "UNSTABLE",
+    "duration": 4287710,
+    "timestamp": 1752798718845,
+    "displayName": "#3223",
+    "upstreamTrigger": {
+      "project": "CI-Jobs/pre_post_upgrade_pipeline",
+      "buildNumber": 399
+    }
+  },
+  "environment": {
+    "gitBranch": "release-2.12",
+    "testStage": "postupgrade",
+    "cloudProvider": "azure",
+    "importMethod": "kubeconfig",
+    "browser": "chrome",
+    "hubApiUrl": "https://api.cqu-m275-yup.dev09.red-chesterfield.com:6443",
+    "ocpImageVersion": "4.16.43",
+    "networkType": "OVNKubernetes",
+    "importKubernetesClusters": "AKS"
+  },
+  "testResults": {
+    "specFile": "importClusters.spec.js",
+    "duration": "2 minutes, 51 seconds",
+    "totalTests": 3,
+    "passing": 0,
+    "failing": 1,
+    "pending": 2,
+    "skipped": 0,
+    "screenshots": 3,
+    "videoRecorded": true
+  },
+  "failureDetails": {
+    "testCase": "RHACM4K-4054: CLC Import - Verify that user can import AKS cluster with latest k8s version by kubeconfig",
+    "errorType": "AssertionError",
+    "timeoutDuration": "30000ms",
+    "errorLocation": {
+      "file": "cypress/views/clusters/managedCluster.js",
+      "line": "1158:11",
+      "function": "importCluster"
+    },
+    "calledFrom": {
+      "file": "cypress/tests/clusters/managedClusters/create/importClusters.spec.js",
+      "line": "136:39"
+    }
+  },
+  "urlAnalysis": {
+    "expectedUrl": "/multicloud/infrastructure/clusters/details/clc-aks-417-3nw3y-aks-kubeconfig/clc-aks-417-3nw3y-aks-kubeconfig/overview",
+    "actualUrl": "https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig/overview",
+    "clusterName": "clc-aks-417-3nw3y-aks-kubeconfig",
+    "urlPattern": "~managed-cluster prefix vs duplicate cluster name",
+    "consoleHost": "console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com"
+  },
+  "extractionMethod": {
+    "primary": "curl -k -s (Jenkins API)",
+    "fallback": "WebFetch (certificate issues encountered)",
+    "dataQuality": "complete",
+    "timestamp": "2025-08-12T18:25:22Z"
+  }
+}

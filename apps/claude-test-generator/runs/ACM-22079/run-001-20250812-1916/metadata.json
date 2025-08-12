@@ -1,0 +1,34 @@
+{
+  "jira_ticket": "ACM-22079",
+  "feature": "Support digest-based upgrades via ClusterCurator for non-recommended upgrades",
+  "priority": "Critical",
+  "customer": "Amadeus",
+  "generated_timestamp": "2025-08-12T19:16:00Z",
+  "framework_version": "AI-powered test analysis engine",
+  "test_environment": "qe6-vmware-ibm",
+  "openshift_version": "4.19.7",
+  "acm_namespace": "ocm",
+  "mce_namespace": "multicluster-engine",
+  "managed_clusters": [
+    "clc-aws-1754999178646",
+    "staging-cluster-01", 
+    "local-cluster",
+    "clc-clusterset-4240"
+  ],
+  "deployment_status": "DEPLOYED_AND_AVAILABLE",
+  "test_cases_generated": 4,
+  "ai_investigation_completed": true,
+  "schema_validation_completed": true,
+  "quality_score": "HIGH",
+  "linked_issues": [
+    "ACM-22080",
+    "ACM-22081", 
+    "ACM-22457"
+  ],
+  "key_components": [
+    "ClusterCurator CRD",
+    "Non-recommended upgrade annotation",
+    "Image digest resolution",
+    "Conditional updates validation"
+  ]
+}
