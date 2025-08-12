@@ -12,15 +12,10 @@ These commands work from anywhere in the repository and provide quick access to 
 
 **Usage:** `/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_SOURCE]`
 
-**Example (either form):**
- - Local file: `/generate-e2e-test-plan https://github.com/stolostron/cluster-curator-controller/pull/203 "Implement pushing custom labels to pods" ACM-10659.txt`
- - JIRA key: `/generate-e2e-test-plan https://github.com/org/repo/pull/123 "Feature Name" ACM-10659`
+**Example:**
+`/generate-e2e-test-plan https://github.com/org/repo/pull/123 "Feature Name" ACM-10659`
 
-**Note:** `JIRA_SOURCE` is optional and can be either:
- - A local file stored under `JIRA-details/` (e.g., `ACM-10659.txt`)
- - A JIRA issue key (e.g., `ACM-10659`), if your environment supports live JIRA fetch
-
-If live JIRA access isn't available, place a plain-text/markdown export in `JIRA-details/` and reference the filename.
+**Note:** `JIRA_SOURCE` is optional and should be a JIRA issue key (e.g., `ACM-10659`) when your environment supports live JIRA fetch.
 
 **Workflow:**
 ```
@@ -30,9 +25,7 @@ User: Your mission is to generate a formal E2E test plan for the feature: "{FEAT
 
 CONTEXT GATHERING:
 1. Fetch PR at {PR_URL} details and associated test specifications
-2. If {JIRA_SOURCE} is provided:
-   - If it matches a file in JIRA-details/, read details from that file
-   - Otherwise, treat it as a JIRA key and fetch details (when supported)
+2. If {JIRA_SOURCE} is provided, treat it as a JIRA key and fetch details (when supported)
 3. Review architectural documentation and related files if provided
 4. Use E2E Acceptance Criteria in JIRA to create the test plan
 
@@ -57,8 +50,7 @@ Your generated test plan MUST satisfy all scenarios defined in the E2E Acceptanc
 Execute this workflow systematically, ensuring all context is gathered before generating the final test plan table.
 
 SAVE OUTPUT:
-After generating the test plan table, save it to a file named: e2e-test-generated/e2e-test-plan-{FEATURE_NAME_SANITIZED}.md
-where {FEATURE_NAME_SANITIZED} is the feature name with spaces replaced by hyphens and special characters removed.
+Generated test plans are saved within the application-specific runs directories for organized tracking and version control.
 ```
 
 ### /analyze-workflow
@@ -67,19 +59,17 @@ where {FEATURE_NAME_SANITIZED} is the feature name with spaces replaced by hyphe
 
 **Usage:** `/analyze-workflow {PR_URL} {ACTION_TYPE} [JIRA_SOURCE]`
 
-**Example:** `/analyze-workflow https://github.com/repo/pull/203 "test-plan" ACM-10659.txt`
+**Example:** `/analyze-workflow https://github.com/repo/pull/203 "test-plan" ACM-10659`
 
 **Parameters:**
  - `{PR_URL}`: Full GitHub PR URL
  - `{ACTION_TYPE}`: Type of analysis needed (test-plan, review, validation, etc.)
- - `{JIRA_SOURCE}`: Optional JIRA input. Either a local file from `JIRA-details/` or a JIRA key (e.g., `ACM-10659`)
+ - `{JIRA_SOURCE}`: Optional JIRA key (e.g., `ACM-10659`)
 
 **Workflow:**
 ```
 1. Analyze PR at {PR_URL} for technical specifications
-2. If `{JIRA_SOURCE}` is provided:
-   - If it matches a file in `JIRA-details/`, read details from that file
-   - Otherwise, treat it as a JIRA key and fetch details (when supported)
+2. If `{JIRA_SOURCE}` is provided, treat it as a JIRA key and fetch details (when supported)
 3. Gather related documentation and context files
 4. Perform {ACTION_TYPE} analysis based on gathered information
 5. Generate appropriate output format for the requested action type

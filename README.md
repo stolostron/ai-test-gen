@@ -7,13 +7,11 @@ A collection of AI-powered applications designed to automate test plan generatio
 ## 🏗️ Project Structure
 
 ```
-ai-test-gen_org/
+ai_systems/
 ├── 📁 apps/                           # Self-contained applications
 │   ├── 📁 claude-test-generator/      # AI-powered test analysis engine
-│   └── 📁 intelligent-test-framework/ # Research-focused AI framework
-├── 📁 docs/                           # Shared documentation
-├── 📁 e2e-test-generated/            # Legacy generated tests
-├── 📁 JIRA-details/                  # JIRA ticket analysis
+│   └── 📁 z-stream-analysis/          # Z-stream pipeline failure analysis engine
+├── 📁 docs/                           # Shared documentation and guides
 ├── 📄 CLAUDE.md                      # Global Claude configuration
 ├── 📄 README.md                      # This file
 └── 📄 OWNERS                         # Project maintainers
@@ -38,35 +36,35 @@ cd apps/claude-test-generator
 # Use Claude slash commands: /generate-e2e-test-plan
 ```
 
-### 2. Intelligent Test Framework 🧠
-**Location**: [`apps/intelligent-test-framework/`](./apps/intelligent-test-framework/)
+### 2. Z-Stream Analysis Engine 🔍
+**Location**: [`apps/z-stream-analysis/`](./apps/z-stream-analysis/)
 
-**Purpose**: Comprehensive AI framework with multi-repository analysis and automation workflows.
+**Purpose**: AI-powered Jenkins pipeline failure analysis with intelligent root cause detection and automation fix generation.
 
 **Best For**:
-- Multi-repository codebase analysis
-- Complex automation workflows with shell scripting
-- Cross-component integration testing
-- Comprehensive research and analysis projects
+- Jenkins pipeline failure analysis
+- CI/CD debugging and troubleshooting
+- Automated root cause identification
+- Infrastructure and automation issue resolution
 
 **Quick Start**:
 ```bash
-cd apps/intelligent-test-framework
-./create-test-case.sh ACM-22079 --test-plan-only
+cd apps/z-stream-analysis
+# Use Claude slash commands for pipeline analysis
 ```
 
 ## 🎯 Choosing the Right Application
 
-| Feature | Intelligent Test Analysis Engine | Intelligent Test Framework |
-|---------|----------------------------------|----------------------------|
-| **Approach** | AI-powered test intelligence | Multi-repository automation |
-| **Setup Time** | Minutes | ~30 minutes |
-| **Input Required** | JIRA ticket ID | JIRA ticket ID + codebase |
-| **AI Integration** | Claude-based analysis | Shell-script workflows |
-| **Focus** | E2E test generation | Multi-component analysis |
-| **Learning** | Feedback loops | Adaptive patterns |
-| **Validation** | Environment assessment | Automated validation |
-| **Best For** | Production test plans | Research & automation |
+| Feature | Intelligent Test Analysis Engine | Z-Stream Analysis Engine |
+|---------|----------------------------------|--------------------------|
+| **Approach** | AI-powered test intelligence | AI-powered failure analysis |
+| **Setup Time** | Minutes | Minutes |
+| **Input Required** | JIRA ticket ID | Jenkins pipeline URL |
+| **AI Integration** | Claude-based analysis | Claude-based analysis |
+| **Focus** | E2E test generation | Pipeline failure diagnosis |
+| **Learning** | Feedback loops | Pattern recognition |
+| **Validation** | Environment assessment | Root cause validation |
+| **Best For** | Production test plans | CI/CD troubleshooting |
 
 ## 🔧 Global Configuration
 
@@ -81,11 +79,11 @@ The repository provides **global Claude slash commands** via the root `CLAUDE.md
 #### Usage:
 ```bash
 # Global slash command (works anywhere in the repo)
-/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_FILE]
+/generate-e2e-test-plan {PR_URL} {FEATURE_NAME} [JIRA_KEY]
 
 # Application-specific workflows
-cd apps/claude-test-generator      # For AI-powered test intelligence
-cd apps/intelligent-test-framework # For multi-repository automation
+cd apps/claude-test-generator # For AI-powered test intelligence
+cd apps/z-stream-analysis     # For pipeline failure analysis
 ```
 
 ## 📋 Prerequisites
@@ -98,7 +96,7 @@ cd apps/intelligent-test-framework # For multi-repository automation
 
 ### Application-Specific
 - **Intelligent Test Analysis Engine**: Claude Code CLI and ACM cluster access
-- **Intelligent Test Framework**: OpenShift/Kubernetes access, additional CLI tools
+- **Z-Stream Analysis Engine**: Jenkins access and pipeline URLs
 
 ## 🚀 Quick Start Guide
 
@@ -107,14 +105,14 @@ cd apps/intelligent-test-framework # For multi-repository automation
 # For AI-powered test intelligence and E2E generation
 cd apps/claude-test-generator
 
-# For multi-repository automation and comprehensive analysis
-cd apps/intelligent-test-framework
+# For pipeline failure analysis and CI/CD troubleshooting
+cd apps/z-stream-analysis
 ```
 
 ### 2. Follow Application README
 Each application has its own comprehensive setup and usage guide:
 - [Intelligent Test Analysis Engine README](./apps/claude-test-generator/README.md)
-- [Intelligent Test Framework README](./apps/intelligent-test-framework/README.md)
+- [Z-Stream Analysis Engine README](./apps/z-stream-analysis/README.md)
 
 ### 3. Use Global Commands
 The root CLAUDE.md provides slash commands that work across the entire repository for common workflows.
@@ -127,17 +125,17 @@ The root CLAUDE.md provides slash commands that work across the entire repositor
 - **Quality**: Production-ready E2E test plans with environment assessment
 - **Best For**: AI-powered test intelligence, smart scoping, continuous improvement
 
-### Intelligent Test Framework  
-- **Setup Time**: ~30 minutes (one-time)
-- **Test Planning**: 2 hours → 15 minutes (87% reduction)
-- **Implementation**: 1 day → 2 hours (75% reduction)
-- **Best For**: Multi-repository automation, complex integration workflows
+### Z-Stream Analysis Engine
+- **Setup Time**: < 5 minutes
+- **Failure Analysis**: 1-2 hours → 10 minutes (90% reduction)
+- **Quality**: Intelligent root cause detection with automated fix recommendations
+- **Best For**: Jenkins pipeline troubleshooting, CI/CD failure resolution
 
 ## 🤝 Contributing
 
 ### Project Structure Guidelines
 1. **Applications are self-contained** - each app should work independently
-2. **Shared resources** go in root-level directories (`docs/`, `JIRA-details/`)
+2. **Shared resources** go in root-level directories (`docs/`)
 3. **Global configurations** in root `CLAUDE.md`
 4. **App-specific configs** in each app's directory
 
@@ -164,11 +162,10 @@ git push origin feature-branch
 ### Global Documentation
 - **[Root CLAUDE.md](./CLAUDE.md)**: Global slash commands and workflows
 - **[Project docs/](./docs/)**: Shared documentation and guides
-- **[JIRA Details](./JIRA-details/)**: Ticket analysis examples
 
 ### Application Documentation
 - **[Intelligent Test Analysis Engine](./apps/claude-test-generator/)**: AI-powered test intelligence docs
-- **[Intelligent Test Framework](./apps/intelligent-test-framework/)**: Multi-repository automation docs
+- **[Z-Stream Analysis Engine](./apps/z-stream-analysis/)**: Pipeline failure analysis docs
 
 ## 🛣️ Roadmap
 
@@ -207,8 +204,8 @@ This suite is designed for **professional QE teams** working on complex enterpri
 
 **Choose your path**:
 - 🎯 **AI-Powered Test Intelligence**: Use Intelligent Test Analysis Engine
-- 🧠 **Multi-Repository Automation**: Use Intelligent Test Framework
-- 🔄 **Both**: Use applications together for comprehensive coverage
+- 🔍 **Pipeline Failure Analysis**: Use Z-Stream Analysis Engine
+- 🔄 **Both**: Use applications together for comprehensive QE coverage
 
 ---
 
