@@ -97,15 +97,21 @@ The framework follows a structured 5-stage approach:
 
 ### Stage 4: Test Strategy Generation & Quality Optimization
 - **E2E Test Coverage**: Complete end-to-end workflows covering all NEW functionality
-- **Required Test Case Structure**: 
+- **Required Test Case Structure** ⚠️ MANDATORY: 
   - **Description**: Clear explanation of what the test case does/tests exactly
   - **Setup**: Required setup/prerequisites needed for the test case  
-  - **Test Steps Table**: Step-by-step execution with verbal instructions
-- **Enhanced Expected Results**: 
-  - **Verbal explanations** of what should happen
-  - **Sample YAML/data outputs** when relevant and helpful (actual command outputs, JSON responses, YAML snippets, error messages)
-  - **Expected command outputs** when commands/grep are used (so testers can easily see and match probable outputs)
-  - **Specific values** or output descriptions
+  - **Test Steps Table**: Step-by-step execution with enhanced format requirements
+- **Test Step Format Requirements** ⚠️ MANDATORY:
+  All test steps MUST include:
+  1. **Verbal instruction** describing what to do
+  2. **CLI command** (when applicable) 
+  3. **UI guidance** (when applicable)
+- **Expected Result Format Requirements** ⚠️ MANDATORY:
+  Expected Results MUST contain:
+  1. **Verbal explanation** of what should happen
+  2. **Sample YAML/data outputs** when relevant and helpful
+  3. **Expected command outputs** when commands/grep are used (so testers can easily see and match probable outputs)
+  4. **Specific values** or output descriptions
 - **Standalone Test Cases**: Each test case must be completely self-contained with no setup dependencies
 - **Simple Execution**: Keep steps straightforward and easy to follow
 - **Multiple Focused Tables**: OK to create multiple tables for clarity
@@ -115,8 +121,11 @@ The framework follows a structured 5-stage approach:
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md
 - **Streamlined Analysis Reports**: 
+  - **Environment & Validation Status Section** ⚠️ MANDATORY at report beginning:
+    - **Environment Used**: Full environment details (cluster URL, versions, namespaces)
+    - **Validation Status**: Clear success/failure with evidence
+    - **Potential Failure Causes**: Document possible issues (test build delays, feature flags, CRD mismatches, connectivity)
   - **Concise Feature Summary**: Brief feature explanation + data collection summary (no detailed framework process explanations)
-  - **Environment Specification**: Clearly mention which environment was used for validation
   - **Implementation Status**: Feature deployment status with environment context
 - **Deployment Status Analysis**: Feature availability assessment  
 - **Clear Status Reporting**: What can be tested now vs. post-deployment
@@ -162,7 +171,7 @@ The framework follows a structured 5-stage approach:
 - **Time**: 5-10 minutes | **Cases**: 3-5 E2E scenarios | **Format**: Production-ready with enhanced structure
 - **Test Case Format**: Description + Setup + Steps with verbal instructions + Enhanced Expected Results
 - **Expected Results Include**: Verbal explanations + Sample YAML/data outputs + Expected command outputs
-- **Analysis Reports**: Concise feature summaries with environment specification and investigation transparency
+- **Analysis Reports**: Environment & validation status upfront + Concise feature summaries with investigation transparency
 - **Quality Assurance**: Intelligent feedback loop for continuous improvement and human oversight
 
 ## Output Structure
