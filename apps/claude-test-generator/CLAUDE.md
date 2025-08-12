@@ -150,12 +150,9 @@ The framework follows a structured 5-stage approach:
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md
 - **Streamlined Analysis Reports**: 
-  - **Environment & Validation Status Section** ⚠️ MANDATORY at report beginning:
-    - **Environment Used**: Full environment details (cluster URL, versions, namespaces)
-    - **Validation Status**: Clear success/failure with evidence
-    - **Potential Failure Causes**: Document possible issues (test build delays, feature flags, CRD mismatches, connectivity)
+  - **Implementation Status** (first): What is implemented, PRs, key behavior
+  - **Environment & Validation Status** (second): Environment used, validation results, limitations
   - **Concise Feature Summary**: Brief feature explanation + data collection summary (no detailed framework process explanations)
-  - **Implementation Status**: Feature deployment status with environment context
 - **Deployment Status Analysis**: Feature availability assessment  
 - **Clear Status Reporting**: What can be tested now vs. post-deployment
 - **Intelligent Feedback Loop System**:

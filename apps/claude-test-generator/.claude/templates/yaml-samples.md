@@ -396,27 +396,24 @@ spoke-cluster-1   true           True     True        10d
 ```markdown
 **Step N: [Action Description]**
 **Goal**: [Why this step matters for the NEW functionality]
-**Instructions**: 
-1. Go to your terminal
-2. Run the following command: `[command]`
-3. [Additional context or setup if needed]
-
-**Command**: `[exact command to copy-paste]`
+Instructions: Run the following command(s):
+```bash
+[exact command to copy-paste]
+```
 ```
 
 ### Expected Results Column
 ```markdown
 **Success Criteria**: [Specific, measurable outcome]
-**Validation Instructions**:
-1. In your terminal, run: `[validation command]`
-2. Look for: [specific text or pattern]
-
-**Expected Command Output**:
+Validation Instructions: Run:
+```bash
+[validation command]
+```
+Expected Output:
 ```
 [exact expected output with explanations]
 ```
-
-**Sample YAML Result** (when applicable):
+Sample YAML Result (when applicable):
 ```yaml
 [relevant YAML sections with comments]
 ```

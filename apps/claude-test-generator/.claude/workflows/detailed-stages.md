@@ -464,12 +464,12 @@ data:
 
 ### Final Analysis Report Format
 **Required Components:**
-1. **Feature Implementation Status**
+1. **Feature Implementation Status** (first)
    - PR merge status and commit information
-   - Current environment capability analysis  
-   - Feature availability timeline
+   - Key behaviors introduced and scope
+   - Backwards compatibility and risk notes
 
-2. **Test Plan Validation Results**
+2. **Environment & Validation Status** (second)
    - Which test cases can be executed immediately
    - Which require newer environment deployment
    - Specific validation failures and their root causes

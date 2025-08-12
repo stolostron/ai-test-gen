@@ -96,8 +96,9 @@ Expected Results MUST contain:
 ### Required Structure:
 1. **Title and metadata** (Run ID, Analysis Date)
 2. **Understanding Feature Summary** (concise feature explanation + brief data collection summary)
-3. **Implementation Status & Feature Validation Assessment** (include specific environment used)
-4. **Investigation Quality Assessment** (if needed)
+3. **Implementation Status** (what is implemented, PRs, key behavior)
+4. **Environment & Validation Status** (environment used, validation results, limitations)
+5. **Investigation Quality Assessment** (if needed)
 
 ### UNDERSTANDING FEATURE SUMMARY Requirements:
 - **Brief feature explanation:** 2-3 sentences on what the story/feature adds
@@ -172,6 +173,12 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
   - Include required fields per CRD schema (use empty/default values if not used)
   - Prefer generating skeletons via `bin/resource_schema_helper.sh`:
     - Example: `bin/resource_schema_helper.sh --group <group> --version <v> --kind <Kind> --name <name> [--namespace <ns>]`
+
+### Markdown formatting rules (strict)
+- Do NOT use HTML tags like `<br>`, `<b>`, `<i>` in generated markdown
+- In table cells, place the verbal instruction followed immediately by a fenced code block; no extra blank line
+- Use fenced code blocks with language hints inside table cells (GitHub supports this)
+- Prefer `grep -E` for alternations and avoid escaping `|` in shell pipelines
 
 ## ✅ Quality Checklist
 
