@@ -1,0 +1,45 @@
+{
+  "ticket_id": "ACM-20640",
+  "feature_name": "RBAC UI Implementation",
+  "run_number": "001",
+  "timestamp": "20250810-0303",
+  "environment": "qe6-vmware-ibm",
+  "cluster_info": {
+    "api_url": "https://api.qe6-vmware-ibm.install.dev09.red-chesterfield.com:6443",
+    "console_url": "https://console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com",
+    "ocp_version": "4.19.6",
+    "acm_namespace": "ocm",
+    "mce_namespace": "multicluster-engine"
+  },
+  "feature_status": {
+    "overall": "partially_deployed",
+    "navigation": "complete",
+    "users_page": "in_progress", 
+    "groups_page": "not_started",
+    "serviceaccounts_page": "not_started",
+    "role_assignments": "in_progress",
+    "role_assignment_crd": "in_progress"
+  },
+  "test_coverage": {
+    "total_test_cases": 5,
+    "immediately_executable": 5,
+    "requires_future_implementation": 2,
+    "estimated_execution_time": "45-60 minutes"
+  },
+  "linked_tickets": [
+    "ACM-22799",
+    "ACM-22800", 
+    "ACM-22925",
+    "ACM-22730",
+    "ACM-22613",
+    "HPUX-790"
+  ],
+  "priority_areas": [
+    "navigation_structure",
+    "users_identity_management",
+    "role_assignment_operations",
+    "roleassignment_crd_interface"
+  ],
+  "framework_version": "intelligent-test-analysis-engine-v2.0",
+  "generated_by": "claude-test-generator"
+}
