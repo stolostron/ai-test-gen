@@ -1,0 +1,35 @@
+TEST FAILURE ANALYSIS - clc-e2e-pipeline-3223
+======================================================
+
+FAILING TEST:
+RHACM4K-4054: CLC: Import - Verify that user can import AKS cluster with latest k8s version by kubeconfig
+
+FAILURE TYPE:
+AssertionError: Timed out retrying after 30000ms
+
+SPECIFIC ERROR:
+Expected URL: 'https://console-openshift-console.apps.cqu-m275-yup.dev09.red-chesterfield.com/multicloud/infrastructure/clusters/details/~managed-cluster/clc-aks-417-3nw3y-aks-kubeconfig/overview'
+To include: '/multicloud/infrastructure/clusters/details/clc-aks-417-3nw3y-aks-kubeconfig/clc-aks-417-3nw3y-aks-kubeconfig/overview'
+
+FAILURE LOCATION:
+File: cypress/views/clusters/managedCluster.js:1158:11
+Test: cypress/tests/clusters/managedClusters/create/importClusters.spec.js:136:39
+
+TEST RESULTS SUMMARY:
+- Total Tests: 3
+- Passing: 0  
+- Failing: 1
+- Pending: 2 (RHACM4K-4057, RHACM4K-4064)
+- Duration: 2 minutes, 51 seconds
+
+CLUSTER DETAILS:
+- Cluster Name: clc-aks-417-3nw3y-aks-kubeconfig
+- Cloud Provider: Azure (AKS)
+- Import Method: kubeconfig
+- Expected Navigation Path: URL path mismatch during cluster import verification
+
+SYMPTOMS:
+1. URL routing/navigation issue after cluster import
+2. Timeout waiting for expected URL pattern
+3. URL contains "~managed-cluster" prefix instead of expected direct path
+4. Test automation expecting specific URL format not matching actual console behavior
