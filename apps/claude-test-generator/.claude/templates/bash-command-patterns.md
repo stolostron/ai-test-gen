@@ -99,7 +99,7 @@ oc get clustercurator test -n ns -o yaml | grep -A1 annotations
 oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -E -i "digest|conditional"
 
 # Incorrect: escaping the pipe within a normal shell pipeline will literally print '|'
-# oc get ... -o yaml \| grep -A1 annotations  # ← Avoid
+# Avoid patterns like: oc get ... -o yaml \| grep -A1 annotations
 ```
 
 ## Framework Internal Patterns
