@@ -1,0 +1,1338 @@
+#!/bin/bash
+
+# ==============================================================================
+# CLC Cypress Environment Setup Script
+# ==============================================================================
+# Streamlines local environment configuration for CLC Cypress test runs
+# 
+# Usage Examples:
+#   source ./setup_env.sh Console: https://console-openshift-console.apps.aro-tn-1.az.dev09.red-chesterfield.com kubeadmin password: XCJCw-J5dAJ-yceXy-8rYuu
+#   source ./setup_env.sh Console: https://console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com Creds: kubeadmin/utHrZ-argJp-vTSq5-F3Eaz
+#   source ./setup_env.sh --jenkins-api  # Future: Auto-fetch from Jenkins API
+# ==============================================================================
+
+# set -e  # Commented out to prevent terminal exit on error
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Robust PATH management - ensure essential system paths are always available
+# Store original PATH and build a robust one
+ORIGINAL_PATH="$PATH"
+ESSENTIAL_PATHS="/opt/homebrew/bin:/Users/ashafi/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Function to ensure PATH contains essential directories
+ensure_robust_path() {
+    # Start with essential paths and append original PATH if it has additional entries
+    local NEW_PATH="$ESSENTIAL_PATHS"
+    if [[ -n "$ORIGINAL_PATH" ]]; then
+        # Add any additional paths from original PATH that aren't already included
+        # Use a more portable approach for array handling
+        local OLD_IFS="$IFS"
+        IFS=':'
+        for path_entry in $ORIGINAL_PATH; do
+            if [[ -n "$path_entry" && ":$NEW_PATH:" != *":$path_entry:"* ]]; then
+                NEW_PATH="$NEW_PATH:$path_entry"
+            fi
+        done
+        IFS="$OLD_IFS"
+    fi
+    export PATH="$NEW_PATH"
+}
+
+# Apply robust PATH immediately
+ensure_robust_path
+
+# Logging functions
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+log_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+# Portable trim (no external tools)
+trim_string() {
+    # usage: trim_string "  text  "
+    local s="$1"
+    # Remove leading whitespace
+    s="${s#${s%%[!$'\t\r\n ']*}}"
+    # Remove trailing whitespace
+    s="${s%${s##*[!$'\t\r\n ']} }"
+    printf '%s' "$s"
+}
+
+# JSON helpers (prefer jq, else Python3; avoid grep/sed/head)
+json_first_value() {
+    # stdin: JSON; args: list of candidate keys (case-insensitive)
+    # prints first non-empty value or empty string
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$@" <<'PY'
+import sys, json
+data = json.load(sys.stdin)
+# flattens one level, case-insensitive key lookup
+def get_val(d, k):
+    if isinstance(d, dict):
+        m = {str(kk).lower(): vv for kk, vv in d.items()}
+        return m.get(k.lower())
+    return None
+for k in sys.argv[1:]:
+    v = get_val(data, k)
+    if v not in (None, ""):
+        if isinstance(v, (dict, list)):
+            print(json.dumps(v))
+        else:
+            print(v)
+        sys.exit(0)
+print("")
+PY
+        return 0
+    fi
+    if command -v jq >/dev/null 2>&1; then
+        local jq_expr=""
+        local key
+        for key in "$@"; do
+            # try exact and upper-case variants
+            jq_expr+=".${key} // .${key^^} // "
+        done
+        jq_expr+="empty"
+        jq -r "$jq_expr" 2>/dev/null
+        return 0
+    fi
+    # Last-resort: empty (we purposefully avoid brittle regex parsing)
+    printf ''
+}
+
+# Function to display help
+show_help() {
+    cat << EOF
+🚀 CLC Cypress Environment Setup Script
+
+Usage: 
+  Run the setup script from any directory:
+     source setup_clc 'Console: <console-url>' 'Creds: <creds>' [options]
+     source setup_clc <environment-name> [options]
+  
+  The script will automatically find your CLC repository in common locations:
+  - ~/Documents/work/automation/clc-ui
+  - ~/Documents/work/automation/clc-non-ui  
+  - ~/Documents/work/automation/alc-ui
+  - ./clc-ui, ../clc-ui (relative paths)
+  
+  If no CLC repository is found, the script will still configure your environment
+  variables for manual testing.
+
+Arguments:
+  'Console: <console-url>'       OpenShift console URL (copy from Slack)
+  'Creds: <user/password>'       Credentials in user/password format
+  '<username> password: <pass>'  Alternative credential format
+  'Token: <token>'               Authentication token for token-based login
+  <environment-name>             Environment name (currently: qe6)
+
+Options:
+  --browser <browser>           Browser for testing (default: chrome)
+  --idp <idp>                  Identity provider (default: kube:admin)  
+  --user <user>                Hub user override (default: auto-detect)
+  --skip-npm                   Skip npm dependency installation
+  --jenkins-api <url>          Fetch deployment info from Jenkins API (job URL or build URL)
+  --jenkins-user <user>        Jenkins username for API access (optional)
+  --jenkins-token <token>      Jenkins API token (recommended over password)
+  --jenkins-cookie <file>      Path to cookie jar file for authenticated Jenkins session
+  --help                       Show this help message
+
+Examples:
+  # Manual mode (copy/paste from Slack) - works from any directory
+  source setup_clc Console: https://console-openshift-console.apps.aro-tn-1.az.dev09.red-chesterfield.com kubeadmin password: XCJCw-J5dAJ-yceXy-8rYuu
+  
+  source setup_clc Console: https://console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com Creds: kubeadmin/utHrZ-argJp-vTSq5-F3Eaz --browser firefox
+
+  # Jenkins API mode (automatic fetch) - works from any directory
+  source setup_clc --jenkins-api https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/CI-Jobs/job/deploy-qe6-vmware-ibm/636/
+
+  # Environment name mode (latest successful deployment) - works from any directory
+  source setup_clc qe6
+
+  # Token-based authentication - works from any directory
+  source setup_clc Console: https://console-openshift-console.apps.o4-ibmvm-02.qe.red-chesterfield.com Token: sha256~XoTmwb3nrmAFG56tkLnCI1SwFX_K7yYEwfcpRiqbCb0
+
+After running this script, simply run:
+  npx cypress open
+EOF
+}
+
+# Function to check prerequisites (non-fatal where possible)
+check_prerequisites() {
+    log_info "Checking prerequisites..."
+
+    local missing_warnings=()
+
+    # Git is only needed for repo introspection; warn if missing
+    command -v git &> /dev/null || missing_warnings+=("git (used to detect repo)")
+
+    # curl is needed for Jenkins mode (ENV or explicit URL)
+    if [[ -n "$JENKINS_URL" || -n "$ENV_NAME" ]]; then
+        if ! command -v curl &> /dev/null; then
+            log_warning "curl not found. Jenkins fetch will be skipped/failed."
+        fi
+    fi
+
+    # oc is used for cluster login; warn if missing and continue (we'll skip login)
+    command -v oc &> /dev/null || missing_warnings+=("oc (OpenShift CLI) - login will be skipped")
+
+    # jq improves JSON parsing but has fallbacks
+    command -v jq &> /dev/null || missing_warnings+=("jq (optional; using fallback parsing)")
+
+    # npm/node only needed if we actually install deps; defer checks to setup_npm_dependencies
+
+    # Custom login helper is optional
+    if ! command -v login_oc &> /dev/null; then
+        log_warning "login_oc script not found in PATH. Will use standard 'oc login'"
+    fi
+
+    if [[ ${#missing_warnings[@]} -gt 0 ]]; then
+        log_warning "Some optional tools are missing:"
+        printf '  - %s\n' "${missing_warnings[@]}"
+        log_warning "Proceeding without them. Certain features may be limited."
+    else
+        log_success "All prerequisites satisfied"
+    fi
+}
+
+# Build curl auth/options from environment variables
+build_curl_opts() {
+    CURL_AUTH_OPTS=()
+    CURL_AUTH_STR=""
+    # Basic auth
+    if [[ -n "$JENKINS_USER" && -n "$JENKINS_TOKEN" ]]; then
+        CURL_AUTH_OPTS+=("-u" "${JENKINS_USER}:${JENKINS_TOKEN}")
+        CURL_AUTH_STR+=" -u ${JENKINS_USER}:${JENKINS_TOKEN}"
+    fi
+    # Cookie jar
+    if [[ -n "$JENKINS_COOKIE_FILE" && -f "$JENKINS_COOKIE_FILE" ]]; then
+        CURL_AUTH_OPTS+=("--cookie" "$JENKINS_COOKIE_FILE")
+        CURL_AUTH_STR+=" --cookie $JENKINS_COOKIE_FILE"
+    fi
+    # Insecure TLS toggle
+    if [[ "$JENKINS_INSECURE" == "true" ]]; then
+        CURL_AUTH_OPTS+=("-k")
+        CURL_AUTH_STR+=" -k"
+    fi
+}
+
+# Function to fetch deployment info from Jenkins API using JSON artifact
+fetch_jenkins_deployment_info() {
+    local JENKINS_URL="$1"
+    
+    log_info "Fetching deployment information from Jenkins..."
+    log_info "Jenkins URL: $JENKINS_URL"
+    build_curl_opts
+
+    # Resolve to a build URL if a job URL was provided
+    local BUILD_URL=""
+    local URL_NO_TRAIL="${JENKINS_URL%/}"
+    if [[ "$URL_NO_TRAIL" == *"/artifact/ocp_credentials/output.json"* ]]; then
+        # Already an artifact URL
+        BUILD_URL="$URL_NO_TRAIL"
+    elif [[ "$URL_NO_TRAIL" =~ /lastSuccessfulBuild($|/) ]]; then
+        BUILD_URL="$URL_NO_TRAIL"
+    elif [[ "$URL_NO_TRAIL" =~ /[0-9]+($|/) ]]; then
+        BUILD_URL="$URL_NO_TRAIL"
+    else
+        # Treat as a job URL; use Jenkins lastSuccessfulBuild shortcut for robustness
+        BUILD_URL="${URL_NO_TRAIL}/lastSuccessfulBuild"
+    fi
+
+    # Construct JSON artifact URL from build URL (prefer no-view for application/json)
+    local ARTIFACT_URL
+    if [[ "$BUILD_URL" == *"/artifact/ocp_credentials/output.json"* ]]; then
+        ARTIFACT_URL="$BUILD_URL"
+    else
+        ARTIFACT_URL="${BUILD_URL%/}/artifact/ocp_credentials/output.json"
+    fi
+    
+    log_info "Fetching deployment JSON from: $ARTIFACT_URL"
+    
+    # Fetch JSON artifact (simple and robust: unauthenticated first)
+    local JSON_OUTPUT
+    JSON_OUTPUT=$(/usr/bin/curl -sS -L "$ARTIFACT_URL" 2>/dev/null)
+    # Fallbacks if empty
+    if [[ -z "$JSON_OUTPUT" ]]; then
+        JSON_OUTPUT=$(/usr/bin/curl -sS -L -k "$ARTIFACT_URL" 2>/dev/null)
+    fi
+    if [[ -z "$JSON_OUTPUT" && "$ARTIFACT_URL" != *"/*view*/"* ]]; then
+        JSON_OUTPUT=$(/usr/bin/curl -sS -L "${ARTIFACT_URL}/*view*/" 2>/dev/null)
+    fi
+    
+    if [[ -z "$JSON_OUTPUT" ]]; then
+        log_error "Failed to fetch deployment JSON from Jenkins"
+        log_error "URL: $ARTIFACT_URL"
+        log_error "This might be due to:"
+        log_error "  - Network connectivity issues"
+        log_error "  - Jenkins authentication requirements"
+        log_error "  - Invalid or private Jenkins URL"
+        log_error "  - Artifact not available (deployment may still be in progress)"
+        return 1
+    fi
+    
+    # Check if we got a valid JSON response
+    if [[ "$JSON_OUTPUT" == *"<html>"* ]] || [[ "$JSON_OUTPUT" == *"Not Found"* ]] || [[ "$JSON_OUTPUT" == *"404"* ]]; then
+        log_error "Artifact not found or not accessible"
+        log_error "URL: $ARTIFACT_URL"
+        log_error "This might indicate:"
+        log_error "  - Deployment is still in progress"
+        log_error "  - Deployment failed"
+        log_error "  - Artifact path has changed"
+        log_error "  - Build number doesn't have this artifact"
+        return 1
+    fi
+    
+    log_info "Successfully fetched deployment JSON"
+
+    # Write JSON to a temp file to avoid any shell substitution quirks
+    local __json_tmp
+    __json_tmp=$(mktemp 2>/dev/null || echo "/tmp/setup_clc_json_$$")
+    printf '%s' "$JSON_OUTPUT" > "$__json_tmp"
+
+    # Parse JSON using jq if available; else python3
+    local DEPLOY_CONSOLE_URL DEPLOY_USERNAME DEPLOY_PASSWORD DEPLOY_API_URL
+    if command -v /usr/bin/jq >/dev/null 2>&1; then
+        DEPLOY_CONSOLE_URL=$(/usr/bin/jq -r '.CONSOLE_URL // .console_url // empty' "$__json_tmp" 2>/dev/null)
+        DEPLOY_API_URL=$(/usr/bin/jq -r '.API_URL // .api_url // .server // empty' "$__json_tmp" 2>/dev/null)
+        DEPLOY_USERNAME=$(/usr/bin/jq -r '.USERNAME // .username // .USER // empty' "$__json_tmp" 2>/dev/null)
+        DEPLOY_PASSWORD=$(/usr/bin/jq -r '.PASSWORD // .password // empty' "$__json_tmp" 2>/dev/null)
+    elif command -v /usr/bin/python3 >/dev/null 2>&1; then
+        DEPLOY_CONSOLE_URL=$(/usr/bin/python3 -c 'import sys,json; 
+try: 
+    with open(sys.argv[1]) as f: j=json.load(f); print(j.get("CONSOLE_URL") or j.get("console_url") or "")
+except: print("")' "$__json_tmp" 2>/dev/null)
+        DEPLOY_API_URL=$(/usr/bin/python3 -c 'import sys,json; 
+try: 
+    with open(sys.argv[1]) as f: j=json.load(f); print(j.get("API_URL") or j.get("api_url") or j.get("server") or "")
+except: print("")' "$__json_tmp" 2>/dev/null)
+        DEPLOY_USERNAME=$(/usr/bin/python3 -c 'import sys,json; 
+try: 
+    with open(sys.argv[1]) as f: j=json.load(f); print(j.get("USERNAME") or j.get("username") or j.get("USER") or "")
+except: print("")' "$__json_tmp" 2>/dev/null)
+        DEPLOY_PASSWORD=$(/usr/bin/python3 -c 'import sys,json; 
+try: 
+    with open(sys.argv[1]) as f: j=json.load(f); print(j.get("PASSWORD") or j.get("password") or "")
+except: print("")' "$__json_tmp" 2>/dev/null)
+    else
+        DEPLOY_CONSOLE_URL=$(printf '%s' "$JSON_OUTPUT" | json_first_value console_url CONSOLE_URL)
+        DEPLOY_API_URL=$(printf '%s' "$JSON_OUTPUT" | json_first_value api_url API_URL server SERVER)
+        DEPLOY_USERNAME=$(printf '%s' "$JSON_OUTPUT" | json_first_value username USERNAME user USER)
+        DEPLOY_PASSWORD=$(printf '%s' "$JSON_OUTPUT" | json_first_value password PASSWORD)
+    fi
+    rm -f "$__json_tmp" >/dev/null 2>&1 || true
+    
+    # Validate that all required values were extracted
+    if [[ -z "$DEPLOY_CONSOLE_URL" ]] || [[ -z "$DEPLOY_PASSWORD" ]] || [[ -z "$DEPLOY_API_URL" ]]; then
+        log_error "Failed to parse deployment information from JSON"
+        log_error "Extracted values:"
+        log_error "  Console URL: '$DEPLOY_CONSOLE_URL'"
+        log_error "  Username: '${DEPLOY_USERNAME:-}'"
+        log_error "  Password: '$DEPLOY_PASSWORD'"
+        log_error "  API URL: '$DEPLOY_API_URL'"
+        log_error ""
+        log_error "JSON content preview (truncated):"
+        if command -v python3 >/dev/null 2>&1; then
+            printf '%s' "$JSON_OUTPUT" | python3 - <<'PY'
+import sys
+data=sys.stdin.read()
+print(data[:800])
+PY
+        else
+            printf '%s' "${JSON_OUTPUT:0:800}"
+        fi
+        return 1
+    fi
+    
+    # For OpenShift clusters, the standard admin user is typically kubeadmin
+    # Override extracted username to use the standard cluster admin
+    local CLUSTER_USERNAME="kubeadmin"
+    
+    log_success "Successfully extracted deployment information:"
+    echo "  Console URL: $DEPLOY_CONSOLE_URL"
+    echo "  API URL: $DEPLOY_API_URL"
+    echo "  Username: kubeadmin"
+    echo "  Password: $DEPLOY_PASSWORD"
+    
+    # Export the extracted information in the format expected by the rest of the script
+    export JENKINS_CONSOLE_URL="$DEPLOY_CONSOLE_URL"
+    export JENKINS_USERNAME="kubeadmin"
+    export JENKINS_PASSWORD="$DEPLOY_PASSWORD"
+    export JENKINS_API_URL="$DEPLOY_API_URL"
+    # Persist the resolved build URL
+    if [[ "$JENKINS_URL" =~ /lastSuccessfulBuild$ ]]; then
+        export JENKINS_BUILD_URL="$JENKINS_URL"
+    else
+        export JENKINS_BUILD_URL="${JENKINS_URL%/}/lastSuccessfulBuild"
+    fi
+    
+    return 0
+}
+
+# Function to map environment names to Jenkins job URLs
+# To add new environments, simply add a new case entry below
+get_jenkins_job_url() {
+    local ENV_NAME="$1"
+    
+    case "$ENV_NAME" in
+        qe6)
+            echo "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/CI-Jobs/job/deploy-qe6-vmware-ibm"
+            ;;
+        qe7)
+            echo "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/CI-Jobs/job/deploy-qe7-vmware-ibm"
+            ;;
+        qe8)
+            echo "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/CI-Jobs/job/deploy-qe8-vmware-ibm"
+            ;;
+        qe9)
+            echo "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/CI-Jobs/job/deploy-qe9-vmware-ibm"
+            ;;
+        qe10)
+            echo "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/CI-Jobs/job/deploy-qe10-vmware-ibm"
+            ;;
+        *)
+            log_error "Unknown environment: $ENV_NAME" >&2
+            log_error "Supported environments: qe6, qe7, qe8, qe9, qe10" >&2
+            return 1
+            ;;
+    esac
+}
+
+# Function to get the latest build (any result) from a Jenkins job
+get_latest_build() {
+    local JOB_URL="$1"
+    
+    # Get the latest build number (regardless of result)
+    local API_URL="${JOB_URL}/lastBuild/api/json?tree=number"
+    local BUILD_INFO
+    
+    BUILD_INFO=$(curl -sS -L "$API_URL" 2>/dev/null)
+    
+    if [[ -z "$BUILD_INFO" ]] || [[ "$BUILD_INFO" == *"\"error\""* ]]; then
+        return 1
+    fi
+    
+    local BUILD_NUMBER
+    BUILD_NUMBER=$(printf '%s' "$BUILD_INFO" | json_first_value number NUMBER)
+    
+    if [[ -z "$BUILD_NUMBER" ]] || [[ "$BUILD_NUMBER" == "null" ]]; then
+        return 1
+    fi
+    
+    echo "$BUILD_NUMBER"
+}
+
+# Function to get the latest successful build from a Jenkins job
+get_latest_successful_build() {
+    # Keep it simple and robust: always use Jenkins lastSuccessfulBuild shortcut
+    local JOB_URL="$1"
+    log_info "Finding latest successful build for environment..." >&2
+    log_info "Jenkins job: $JOB_URL" >&2
+    echo "${JOB_URL%/}/lastSuccessfulBuild"
+    return 0
+}
+
+# Function to handle environment name and fetch latest successful deployment
+fetch_environment_deployment_info() {
+    local ENV_NAME="$1"
+    
+
+    log_info "Setting up environment: $ENV_NAME"
+    
+    # Get the Jenkins job URL for this environment
+    local JOB_URL
+    JOB_URL=$(get_jenkins_job_url "$ENV_NAME")
+    if [[ $? -ne 0 ]]; then
+        return 1
+    fi
+    
+    # Get the latest successful build
+    LATEST_SUCCESSFUL_BUILD=$(get_latest_successful_build "$JOB_URL")
+    if [[ $? -ne 0 ]]; then
+        return 1
+    fi
+    
+    # Extract just the build number from the URL for comparison
+    # Extract last path segment without sed (portable)
+    local SUCCESSFUL_BUILD_NUMBER
+    SUCCESSFUL_BUILD_NUMBER=${LATEST_SUCCESSFUL_BUILD##*/}
+    
+    # Get the latest build (any result) for comparison
+    local LATEST_BUILD_API="${JOB_URL}/lastBuild/api/json?tree=number"
+    local LATEST_BUILD_INFO
+    LATEST_BUILD_INFO=$(curl -sS -L "$LATEST_BUILD_API" 2>/dev/null)
+    local LATEST_BUILD=""
+    if [[ -n "$LATEST_BUILD_INFO" ]] && [[ "$LATEST_BUILD_INFO" != *"\"error\""* ]]; then
+        LATEST_BUILD=$(printf '%s' "$LATEST_BUILD_INFO" | json_first_value number NUMBER)
+    fi
+    
+    # Warn user if latest successful build is not the latest attempted build
+    if [[ -n "$LATEST_BUILD" ]] && [[ "$LATEST_BUILD" != "$SUCCESSFUL_BUILD_NUMBER" ]]; then
+        log_warning ""
+        log_warning "⚠️  BUILD STATUS ALERT:"
+        log_warning "  📋 Latest successful build: #${SUCCESSFUL_BUILD_NUMBER}"
+        log_warning "  🔄 Latest attempted build:  #${LATEST_BUILD}"
+        log_warning ""
+        log_warning "The latest deployment attempt (#${LATEST_BUILD}) may have failed."
+        log_warning "Using credentials from last successful build (#${SUCCESSFUL_BUILD_NUMBER}) instead."
+        log_warning "This means the current deployment state may differ from fetched credentials."
+        log_warning ""
+    fi
+    
+    # Fetch deployment info from the successful build
+    if ! fetch_jenkins_deployment_info "$LATEST_SUCCESSFUL_BUILD"; then
+        log_error "Failed to fetch deployment information from latest successful build"
+        log_error "This might indicate that the deployment info is not available or in an unexpected format"
+        return 1
+    fi
+    
+    return 0
+}
+
+# Function to handle environment name and fetch deployment info
+fetch_environment_deployment_info() {
+    local ENV_NAME="$1"
+    
+    log_info "Setting up environment: $ENV_NAME"
+    
+    # Get the Jenkins job URL for this environment
+    local JOB_URL
+    JOB_URL=$(get_jenkins_job_url "$ENV_NAME")
+    if [[ $? -ne 0 ]]; then
+        return 1
+    fi
+    
+    # Get the latest successful build (fallback to lastSuccessfulBuild URL if API call fails)
+    local LATEST_SUCCESSFUL_BUILD
+    LATEST_SUCCESSFUL_BUILD=$(get_latest_successful_build "$JOB_URL")
+    if [[ $? -ne 0 || -z "$LATEST_SUCCESSFUL_BUILD" ]]; then
+        log_warning "Could not resolve latest successful build via API; using lastSuccessfulBuild shortcut"
+        LATEST_SUCCESSFUL_BUILD="${JOB_URL%/}/lastSuccessfulBuild"
+    fi
+    
+    # Extract just the build number from the URL for comparison
+    local SUCCESSFUL_BUILD_NUMBER
+    SUCCESSFUL_BUILD_NUMBER=${LATEST_SUCCESSFUL_BUILD##*/}
+    
+    # Get the latest build (any result) for comparison
+    local LATEST_BUILD_API="${JOB_URL}/lastBuild/api/json?tree=number"
+    local LATEST_BUILD_INFO
+    LATEST_BUILD_INFO=$(curl -sS -L "$LATEST_BUILD_API" 2>/dev/null)
+    local LATEST_BUILD=""
+    if [[ -n "$LATEST_BUILD_INFO" ]] && [[ "$LATEST_BUILD_INFO" != *"\"error\""* ]]; then
+        LATEST_BUILD=$(printf '%s' "$LATEST_BUILD_INFO" | json_first_value number NUMBER)
+    fi
+    
+    # Warn user if latest successful build is not the latest attempted build
+    if [[ -n "$LATEST_BUILD" ]] && [[ "$LATEST_BUILD" != "$SUCCESSFUL_BUILD_NUMBER" ]]; then
+        log_warning ""
+        log_warning "⚠️  BUILD STATUS ALERT:"
+        log_warning "  📋 Latest successful build: #${SUCCESSFUL_BUILD_NUMBER}"
+        log_warning "  🔄 Latest attempted build:  #${LATEST_BUILD}"
+        log_warning ""
+        log_warning "The latest deployment attempt (#${LATEST_BUILD}) may have failed."
+        log_warning "Using credentials from last successful build (#${SUCCESSFUL_BUILD_NUMBER}) instead."
+        log_warning "This means the current deployment state may differ from fetched credentials."
+        log_warning ""
+    fi
+    
+    # Fetch deployment info from the successful build (artifact JSON)
+    if ! fetch_jenkins_deployment_info "$LATEST_SUCCESSFUL_BUILD"; then
+        log_error "Failed to fetch deployment information from latest successful build"
+        return 1
+    fi
+    
+    return 0
+}
+
+# Function to find and optionally change to a CLC repository
+find_and_setup_clc_repository() {
+    log_info "Looking for CLC repository..."
+    
+    # First check if we're already in a CLC repository
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+        local REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
+        if [[ -n "$REMOTE_URL" ]]; then
+            # Check if this is a recognized CLC repository
+            if [[ "$REMOTE_URL" =~ stolostron/clc.*e2e ]] || \
+               [[ "$REMOTE_URL" =~ stolostron/.*clc.* ]] || \
+               [[ "$REMOTE_URL" =~ stolostron/alc.* ]] || \
+               [[ "$REMOTE_URL" =~ clc.*ui.*e2e ]] || \
+               [[ "$REMOTE_URL" =~ clc.*non.*ui ]] || \
+               [[ "$REMOTE_URL" =~ alc.*ui ]]; then
+                local DISPLAY_URL="$REMOTE_URL"
+                DISPLAY_URL="${DISPLAY_URL//ghp_*:*@/}"
+                DISPLAY_URL="${DISPLAY_URL//*:*@/}"
+                log_success "Found CLC repository: $DISPLAY_URL"
+                export CLC_REPO_PATH="$(pwd)"
+                return 0
+            fi
+        fi
+    fi
+    
+    # Look for CLC repositories in common locations
+    local SEARCH_PATHS=(
+        "$HOME/Documents/work/automation/clc-ui"
+        "$HOME/Documents/work/automation/clc-non-ui"
+        "$HOME/Documents/work/automation/alc-ui"
+        "./clc-ui"
+        "./clc-non-ui"
+        "./alc-ui"
+        "../clc-ui"
+        "../clc-non-ui"
+        "../alc-ui"
+    )
+    
+    log_info "Searching for CLC repositories in common locations..."
+    
+    for path in "${SEARCH_PATHS[@]}"; do
+        if [[ -d "$path" ]] && [[ -d "$path/.git" ]]; then
+            local REMOTE_URL=$(cd "$path" && git remote get-url origin 2>/dev/null || echo "")
+            if [[ -n "$REMOTE_URL" ]]; then
+                # Check if this is a recognized CLC repository
+                if [[ "$REMOTE_URL" =~ stolostron/clc.*e2e ]] || \
+                   [[ "$REMOTE_URL" =~ stolostron/.*clc.* ]] || \
+                   [[ "$REMOTE_URL" =~ stolostron/alc.* ]] || \
+                   [[ "$REMOTE_URL" =~ clc.*ui.*e2e ]] || \
+                   [[ "$REMOTE_URL" =~ clc.*non.*ui ]] || \
+                   [[ "$REMOTE_URL" =~ alc.*ui ]]; then
+                    local DISPLAY_URL="$REMOTE_URL"
+                    DISPLAY_URL="${DISPLAY_URL//ghp_*:*@/}"
+                    DISPLAY_URL="${DISPLAY_URL//*:*@/}"
+                    log_success "Found CLC repository at: $path"
+                    log_info "Repository: $DISPLAY_URL"
+                    
+                    # Change to the repository directory
+                    cd "$path" || {
+                        log_error "Failed to change to directory: $path"
+                        return 1
+                    }
+                    log_info "Changed to directory: $(pwd)"
+                    export CLC_REPO_PATH="$(pwd)"
+                    return 0
+                fi
+            fi
+        fi
+    done
+    
+    # If no repository found, check if we can run without one
+    log_warning "No CLC repository found in common locations."
+    log_warning "This script works best when run from a CLC repository directory, but can continue without one."
+    log_warning "Note: npm dependency installation will be skipped."
+    log_warning ""
+    log_warning "If you have a CLC repository, you can:"
+    log_warning "  1. Navigate to your CLC project directory first:"
+    log_warning "     cd /path/to/your/clc-ui-e2e (or clc-non-ui, alc-ui, etc.)"
+    log_warning "  2. Run the setup script again"
+    log_warning ""
+    log_warning "Continuing with environment setup..."
+    
+    export CLC_REPO_PATH=""
+    return 0
+}
+
+# Function to setup npm dependencies  
+setup_npm_dependencies() {
+    if [[ "$SKIP_NPM" == "true" ]]; then
+        log_info "Skipping npm setup (--skip-npm specified)"
+        return 0
+    fi
+    
+    # Skip npm setup if we're not in a CLC repository
+    if [[ -z "$CLC_REPO_PATH" ]]; then
+        log_info "Skipping npm setup (not in a CLC repository directory)"
+        return 0
+    fi
+    
+    log_info "Setting up npm dependencies..."
+    
+    # Check if package.json exists in the current directory
+    if [[ ! -f "package.json" ]]; then
+        log_warning "package.json not found in current directory: $(pwd)"
+        log_warning "Skipping npm dependency installation."
+        log_warning "If you need to run tests, ensure you're in the correct project directory."
+        return 0
+    fi
+    
+    # Install dependencies if node_modules doesn't exist or is outdated
+    if [[ ! -d "node_modules" ]] || [[ "package.json" -nt "node_modules" ]]; then
+        log_info "Installing npm dependencies..."
+        npm install || {
+            log_warning "npm install failed, but continuing with environment setup"
+            return 0
+        }
+    else
+        log_info "npm dependencies are up to date"
+    fi
+    
+    # Update browserslist db
+    log_info "Updating browserslist database..."
+    npx update-browserslist-db@latest || log_warning "Failed to update browserslist database"
+    
+    log_success "npm setup complete"
+}
+
+# Function to parse credentials and login
+login_and_export_vars() {
+    local CONSOLE_INPUT="$1"
+    local CREDS_INPUT="$2"
+    local BROWSER="$3"
+    local IDP="$4"
+    local HUB_USER="$5"
+    local ENV_NAME="$6"
+
+    log_info "Parsing console URL and credentials..."
+
+    # Ensure PATH is correct before checking for oc (may have been corrupted by cd operations)
+    ensure_robust_path
+
+# Persist a kubeconfig file into the user's default kubeconfig location (~/.kube/config)
+# by merging (if an existing config is present) and setting the current-context.
+persist_kubeconfig_to_default() {
+    local src_kubeconfig="$1"
+    local kube_dir="$HOME/.kube"
+    local default_cfg="$kube_dir/config"
+
+    [[ -f "$src_kubeconfig" ]] || return 0
+
+    mkdir -p "$kube_dir"
+
+    # Determine the current context in the source kubeconfig
+    local src_ctx
+    src_ctx=$(oc config current-context --kubeconfig="$src_kubeconfig" 2>/dev/null || echo "")
+
+    if [[ -f "$default_cfg" ]]; then
+        # Merge source and default, preferring explicit KUBECONFIG order
+        local tmp_cfg
+        tmp_cfg=$(mktemp 2>/dev/null || echo "$kube_dir/config.$$.")
+        KUBECONFIG="$src_kubeconfig:$default_cfg" oc config view --flatten > "$tmp_cfg" 2>/dev/null || cp "$src_kubeconfig" "$tmp_cfg"
+        mv "$tmp_cfg" "$default_cfg"
+    else
+        cp "$src_kubeconfig" "$default_cfg"
+    fi
+
+    chmod 600 "$default_cfg" 2>/dev/null || true
+
+    # Set the context from the source config if we detected one
+    if [[ -n "$src_ctx" ]]; then
+        oc config use-context "$src_ctx" >/dev/null 2>&1 || true
+    fi
+
+    # Ensure the default path is used going forward
+    unset KUBECONFIG
+}
+
+    # Determine if oc CLI is available
+    HAS_OC="true"
+    if ! command -v oc &>/dev/null; then
+        HAS_OC="false"
+        log_warning "oc (OpenShift CLI) not found. Skipping cluster login and info collection."
+    fi
+
+    # Parse console URL - handle various formats
+    local CONSOLE_URL
+    
+    # More robust parsing - handle "Console: URL" format
+    if [[ "$CONSOLE_INPUT" == *"Console:"* ]]; then
+        CONSOLE_URL=${CONSOLE_INPUT#*Console:}
+        CONSOLE_URL=$(trim_string "$CONSOLE_URL")
+    elif [[ "$CONSOLE_INPUT" =~ ^https?:// ]]; then
+        CONSOLE_URL="$CONSOLE_INPUT"
+    else
+        CONSOLE_URL="$CONSOLE_INPUT"
+    fi
+    
+    # Remove any trailing whitespace and validate
+    CONSOLE_URL=$(trim_string "$CONSOLE_URL")
+    
+    # Validate we have a URL
+    if [[ -z "$CONSOLE_URL" ]]; then
+        log_error "Console URL is empty after parsing"
+        log_error "Original input: '$CONSOLE_INPUT'"
+        return 1
+    fi
+    
+    log_info "Console URL: $CONSOLE_URL"
+
+    # Parse credentials - handle multiple formats (token or username/password)
+    local LOGIN_USER PASSWORD AUTH_TOKEN
+    
+    if [[ "$CREDS_INPUT" == *"Token:"* ]]; then
+        # Format: "Token: <token>"
+        AUTH_TOKEN=${CREDS_INPUT#*Token:}
+        AUTH_TOKEN=$(trim_string "$AUTH_TOKEN")
+        if [[ -z "$AUTH_TOKEN" ]]; then
+            log_error "Failed to extract token from credentials"
+            log_error "Received: '$CREDS_INPUT'"
+            return 1
+        fi
+        log_info "Using token authentication"
+        log_info "Token: [REDACTED]"
+    elif [[ "$CREDS_INPUT" == *"Creds:"* ]]; then
+        # Format: "Creds: user/password"
+        local CREDS=${CREDS_INPUT#*Creds:}
+        CREDS=$(trim_string "$CREDS")
+        LOGIN_USER="${CREDS%%/*}"
+        PASSWORD="${CREDS#*/}"
+        if [[ -z "$LOGIN_USER" ]] || [[ -z "$PASSWORD" ]]; then
+            log_error "Failed to extract username or password from credentials"
+            return 1
+        fi
+        log_info "Login User: $LOGIN_USER"
+        log_info "Password: $PASSWORD"
+    elif [[ "$CREDS_INPUT" == *"password:"* ]]; then
+        # Format: "username password: password"
+        LOGIN_USER="${CREDS_INPUT%% *}"
+        PASSWORD="${CREDS_INPUT#*password: }"
+        PASSWORD=$(trim_string "$PASSWORD")
+        if [[ -z "$LOGIN_USER" ]] || [[ -z "$PASSWORD" ]]; then
+            log_error "Failed to extract username or password from credentials"
+            return 1
+        fi
+        log_info "Login User: $LOGIN_USER"
+        log_info "Password: $PASSWORD"
+    else
+        log_error "Could not parse credentials format. Expected one of:"
+        log_error "  - 'Creds: user/password'"
+        log_error "  - 'user password: password'"
+        log_error "  - 'Token: <token>'"
+        log_error "Received: '$CREDS_INPUT'"
+        return 1
+    fi
+
+    # Extract cluster information from console URL
+    local CLUSTER_STRING API_URL
+    
+    # Extract cluster string and domain - simple, reliable approach
+    # Handle different domain patterns: dev09.red-chesterfield.com, qe.red-chesterfield.com, etc.
+    
+    # Extract everything after "apps." and before any trailing slash
+    local FULL_DOMAIN
+    FULL_DOMAIN="$CONSOLE_URL"
+    FULL_DOMAIN="${FULL_DOMAIN#https://console-openshift-console.apps.}"
+    FULL_DOMAIN="${FULL_DOMAIN%%/*}"
+    
+    if [[ -z "$FULL_DOMAIN" ]] || [[ ! "$FULL_DOMAIN" == *"."* ]]; then
+        log_error "Could not extract cluster information from console URL: $CONSOLE_URL"
+        log_error "Expected format: https://console-openshift-console.apps.<cluster>.<domain>"
+        log_error "Examples:"
+        log_error "  - https://console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com"
+        log_error "  - https://console-openshift-console.apps.o4-ibmvm-02.qe.red-chesterfield.com"
+        log_error "  - https://console-openshift-console.apps.aro-tn-1.az.dev09.red-chesterfield.com"
+        return 1
+    fi
+    
+    # Split the domain into cluster name and domain suffix (no external tools)
+    CLUSTER_STRING="${FULL_DOMAIN%%.*}"
+    local DOMAIN_SUFFIX="${FULL_DOMAIN#*.}"
+    API_URL="https://api.${CLUSTER_STRING}.${DOMAIN_SUFFIX}:6443"
+
+    log_info "Cluster: $CLUSTER_STRING"
+    log_info "API URL: $API_URL"
+
+    # Always attempt login with provided/fetched credentials to validate them
+    # This ensures we test the actual deployment credentials, not just rely on existing sessions
+    local CURRENT_SERVER=""
+    local CURRENT_USER=""
+    if [[ "$HAS_OC" == "true" ]]; then
+        CURRENT_SERVER=$(oc whoami --show-server 2>/dev/null || echo "")
+        CURRENT_USER=$(oc whoami 2>/dev/null || echo "")
+    fi
+    
+    if [[ "$CURRENT_SERVER" == "$API_URL" ]] && [[ -n "$CURRENT_USER" ]]; then
+        log_info "Currently logged into target cluster as '$CURRENT_USER'"
+        log_info "Server: $CURRENT_SERVER"
+        log_info "However, testing login with fetched/provided credentials to validate deployment state..."
+    else
+        log_info "Not currently logged into target cluster"
+    fi
+    
+    if [[ "$HAS_OC" == "true" ]]; then
+        log_info "Logging into OpenShift cluster..."
+        # Logout first to ensure we test the provided credentials
+        log_info "Logging out of existing session to test provided credentials..."
+        oc logout &>/dev/null || true
+    else
+        log_info "Skipping OpenShift login (oc not installed)"
+    fi
+    
+    # Track login success across this function
+    LOGIN_SUCCESS=false
+    
+    if [[ "$HAS_OC" == "true" ]] && command -v login_oc &> /dev/null; then
+        log_info "Using login_oc script..."
+        # Run login_oc and keep kubeconfig; capture its output
+        local LOGIN_OC_OUT
+        LOGIN_OC_OUT=$(login_oc "$CONSOLE_INPUT" "$CREDS_INPUT" --no-shell --keep-kubeconfig 2>&1)
+        echo "$LOGIN_OC_OUT"
+        local LOGIN_OC_STATUS=$?
+        # Parse KUBECONFIG_PATH from output and export it so oc uses the same session
+        local LOGIN_OC_KCFG
+        LOGIN_OC_KCFG=""
+        # Extract KUBECONFIG_PATH using simple shell parsing (more robust than Python)
+        while IFS= read -r line; do
+            case "$line" in
+                KUBECONFIG_PATH=*) 
+                    LOGIN_OC_KCFG="${line#KUBECONFIG_PATH=}"
+                    break
+                    ;;
+            esac
+        done <<< "$LOGIN_OC_OUT"
+        if [[ -n "$LOGIN_OC_KCFG" && -f "$LOGIN_OC_KCFG" ]]; then
+            log_info "Persisting kubeconfig to default location (~/.kube/config)"
+            persist_kubeconfig_to_default "$LOGIN_OC_KCFG"
+            log_success "Kubeconfig saved to ~/.kube/config"
+        fi
+        if [[ $LOGIN_OC_STATUS -eq 0 ]]; then
+            LOGIN_SUCCESS=true
+            log_success "Successfully logged into OpenShift cluster with provided credentials"
+        else
+            log_warning "login_oc failed with provided credentials."
+            log_warning "Continuing with environment setup anyway..."
+        fi
+    elif [[ "$HAS_OC" == "true" ]]; then
+        log_warning "login_oc script not found in PATH."
+        log_warning "Please ensure login_oc is installed and accessible."
+        log_warning ""
+        log_warning "Falling back to standard oc login..."
+        
+        if [[ -n "$AUTH_TOKEN" ]]; then
+            # Token fallback
+            if timeout 30 oc login --insecure-skip-tls-verify --token="$AUTH_TOKEN" "$API_URL"; then
+                LOGIN_SUCCESS=true
+                log_success "Successfully logged into OpenShift cluster with provided token"
+                # Persist the active kubeconfig context to default config
+                local active_kcfg
+                active_kcfg=$(mktemp 2>/dev/null || echo "/tmp/kubeconfig.$$.")
+                # Export the current environment kubeconfig if set, else try to locate it via oc
+                if [[ -n "${KUBECONFIG:-}" && -f "$KUBECONFIG" ]]; then
+                    cp "$KUBECONFIG" "$active_kcfg" 2>/dev/null || true
+                else
+                    # Fallback: export current config as seen by oc
+                    oc config view --raw > "$active_kcfg" 2>/dev/null || true
+                fi
+                persist_kubeconfig_to_default "$active_kcfg"
+                rm -f "$active_kcfg" >/dev/null 2>&1 || true
+            else
+                log_warning "Token-based login failed. The provided token may be invalid or expired."
+                log_warning "Continuing with environment setup anyway..."
+            fi
+        else
+            # Username/password fallback
+            if timeout 30 oc login --insecure-skip-tls-verify -u "$LOGIN_USER" -p "$PASSWORD" "$API_URL"; then
+                LOGIN_SUCCESS=true
+                log_success "Successfully logged into OpenShift cluster with provided credentials"
+                # Persist the active kubeconfig context to default config
+                local active_kcfg
+                active_kcfg=$(mktemp 2>/dev/null || echo "/tmp/kubeconfig.$$.")
+                if [[ -n "${KUBECONFIG:-}" && -f "$KUBECONFIG" ]]; then
+                    cp "$KUBECONFIG" "$active_kcfg" 2>/dev/null || true
+                else
+                    oc config view --raw > "$active_kcfg" 2>/dev/null || true
+                fi
+                persist_kubeconfig_to_default "$active_kcfg"
+                rm -f "$active_kcfg" >/dev/null 2>&1 || true
+            else
+                log_warning "Username/password login failed with provided credentials."
+                log_warning ""
+                log_warning "This cluster may require token-based authentication or credentials are invalid."
+                log_warning "Try using token format:"
+                log_warning "  source setup_clc Console: $CONSOLE_URL Token: <your-token>"
+                log_warning ""
+                log_warning "Continuing with environment setup anyway..."
+            fi
+        fi
+    else
+        # No oc available
+        LOGIN_SUCCESS=false
+    fi
+
+    # Check if we can access the cluster (either from current or previous login)
+    local CLUSTER_ACCESS=false
+    if [[ "$HAS_OC" == "true" ]] && oc whoami &>/dev/null; then
+        CLUSTER_ACCESS=true
+    else
+        log_warning "Cannot access OpenShift cluster - no valid login session"
+        log_warning "Some cluster-specific variables (OCP version, namespaces) may not be available"
+        log_warning "Core Cypress environment variables will still be exported for manual login later"
+    fi
+
+    # Only log success if the current login attempt succeeded
+    if [[ "$LOGIN_SUCCESS" == "true" ]]; then
+        log_success "Successfully logged into OpenShift cluster"
+    else
+        if [[ "$CLUSTER_ACCESS" == "true" ]]; then
+            log_info "Using existing OpenShift session to gather cluster information"
+        fi
+    fi
+
+    # Get cluster information (only if we have cluster access)
+    local OCP_VERSION MCE_NS ACM_NS
+    if [[ "$CLUSTER_ACCESS" == "true" ]] && [[ "$HAS_OC" == "true" ]]; then
+        log_info "Gathering cluster information..."
+        
+        OCP_VERSION=$(oc get clusterversion version -o json 2>/dev/null | jq -r '.status.desired.version' 2>/dev/null || echo "unknown")
+        
+        # Auto-detect ACM/MCE namespaces
+        MCE_NS=$(oc get mce -ojsonpath="{.items[0].spec.targetNamespace}" 2>/dev/null || echo "")
+        ACM_NS=$(oc get subscriptions.operators.coreos.com -A -o json 2>/dev/null | jq -r '.items[] | select(.spec.name=="advanced-cluster-management").metadata.namespace' 2>/dev/null | head -n1 || echo "")
+
+        log_info "OpenShift Version: $OCP_VERSION"
+        [[ -n "$MCE_NS" ]] && log_info "MCE Namespace: $MCE_NS"
+        [[ -n "$ACM_NS" ]] && log_info "ACM Namespace: $ACM_NS"
+    else
+        log_info "Skipping cluster information gathering (no valid login session)"
+        OCP_VERSION="unknown"
+        MCE_NS=""
+        ACM_NS=""
+    fi
+    
+    local CONSOLE_BASE_URL
+    # Use the console URL from input, not from previous oc session
+    CONSOLE_BASE_URL="$CONSOLE_URL"
+
+    # Export all environment variables
+    log_info "Exporting CLC environment variables..."
+    
+    # Core Cypress variables
+    export CYPRESS_HUB_API_URL="$API_URL"
+    export CYPRESS_BASE_URL="$CONSOLE_BASE_URL"
+    export CYPRESS_OC_IDP="${IDP:-kube:admin}"
+    
+    # Set user and password based on authentication method
+    if [[ -n "$AUTH_TOKEN" ]]; then
+        # For token auth, use current logged-in user or default
+        local CURRENT_USER
+        if [[ "$CLUSTER_ACCESS" == "true" ]]; then
+            CURRENT_USER=$(oc whoami 2>/dev/null || echo "system:admin")
+        else
+            CURRENT_USER="kubeadmin"  # Default when no cluster access
+        fi
+        export CYPRESS_OPTIONS_HUB_USER="${HUB_USER:-$CURRENT_USER}"
+        export CYPRESS_OPTIONS_HUB_PASSWORD="${AUTH_TOKEN}"  # Store token as password for Cypress
+    else
+        # For username/password auth - always use kubeadmin for OpenShift clusters
+        export CYPRESS_OPTIONS_HUB_USER="${HUB_USER:-kubeadmin}"
+        export CYPRESS_OPTIONS_HUB_PASSWORD="$PASSWORD"
+    fi
+    
+    export CYPRESS_HUB_OCP_VERSION="$OCP_VERSION"
+    
+    # Browser and test configuration
+    export BROWSER="${BROWSER:-chrome}"
+    export TEST_STAGE="${TEST_STAGE:-OCPInterop-create}"
+    export OPTIONS_FILE="${OPTIONS_FILE:-options.yaml}"
+    
+    # CLC specific variables
+    export CYPRESS_CLC_OC_IDP="${CYPRESS_CLC_OC_IDP:-clc-e2e-htpasswd}"
+    export CYPRESS_CLC_RBAC_PASS="${CYPRESS_CLC_RBAC_PASS:-test-RBAC-4-e2e}"
+    export CYPRESS_CLC_OCP_IMAGE_VERSION="${CYPRESS_CLC_OCP_IMAGE_VERSION:-4.17.1}"
+    export CYPRESS_CLC_OCP_IMAGE_REGISTRY="${CYPRESS_CLC_OCP_IMAGE_REGISTRY:-quay.io/openshift-release-dev/ocp-release}"
+    
+    # Namespace configuration
+    export CYPRESS_ACM_NAMESPACE="${ACM_NS}"
+    export CYPRESS_MCE_NAMESPACE="${MCE_NS}"
+    
+    # Optional test configuration
+    export CYPRESS_SPOKE_CLUSTER="${CYPRESS_SPOKE_CLUSTER:-}"
+    export CUSTOMER_TAGS="${CUSTOMER_TAGS:-}"
+    export IMPORT_KUBERNETES_CLUSTERS="${IMPORT_KUBERNETES_CLUSTERS:-}"
+    export CLOUD_PROVIDERS="${CLOUD_PROVIDERS:-}"
+    export NETWORK_TYPE="${NETWORK_TYPE:-}"
+    export FIPS="${FIPS:-}"
+
+    # Print summary of exported variables
+    log_success "Environment variables exported successfully:"
+    echo "  CYPRESS_HUB_API_URL=$CYPRESS_HUB_API_URL"
+    echo "  CYPRESS_BASE_URL=$CYPRESS_BASE_URL"
+    echo "  CYPRESS_OC_IDP=$CYPRESS_OC_IDP"
+    echo "  CYPRESS_OPTIONS_HUB_USER=$CYPRESS_OPTIONS_HUB_USER"
+    echo "  CYPRESS_OPTIONS_HUB_PASSWORD=$CYPRESS_OPTIONS_HUB_PASSWORD"
+    echo "  CYPRESS_HUB_OCP_VERSION=$CYPRESS_HUB_OCP_VERSION"
+    echo "  BROWSER=$BROWSER"
+    echo "  TEST_STAGE=$TEST_STAGE"
+    [[ -n "$CYPRESS_ACM_NAMESPACE" ]] && echo "  CYPRESS_ACM_NAMESPACE=$CYPRESS_ACM_NAMESPACE"
+    [[ -n "$CYPRESS_MCE_NAMESPACE" ]] && echo "  CYPRESS_MCE_NAMESPACE=$CYPRESS_MCE_NAMESPACE"
+    
+    # Return success
+    return 0
+}
+
+
+
+# Main execution function
+main() {
+    # FIRST: Check for help flag before any other operations
+    for arg in "$@"; do
+        if [[ "$arg" == "--help" ]] || [[ "$arg" == "-h" ]]; then
+            show_help
+            return 0
+        fi
+    done
+
+    echo "🚀 CLC Cypress Environment Setup"
+    echo "=================================="
+
+    # Initialize variables
+    local CONSOLE_INPUT="" CREDS_INPUT="" BROWSER="chrome" IDP="kube:admin" HUB_USER="" SKIP_NPM="false" JENKINS_URL="" ENV_NAME=""
+
+    # Parse arguments (case-insensitive patterns; avoid using 'tr')
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            [Cc]onsole:*)
+                # Handle both "Console: URL" (single arg) and "Console:" "URL" (two args)
+                if [[ "$1" == *" "* ]]; then
+                    CONSOLE_INPUT="$1"
+                    shift 1
+                else
+                    CONSOLE_INPUT="$1 $2"
+                    shift 2
+                fi
+                ;;
+            [Cc]reds:*)
+                # Handle both "Creds: user/pass" (single arg) and "Creds:" "user/pass" (two args)
+                if [[ "$1" == *" "* ]]; then
+                    CREDS_INPUT="$1"
+                    shift 1
+                else
+                    CREDS_INPUT="$1 $2"
+                    shift 2
+                fi
+                ;;
+            [Tt]oken:*)
+                # Handle both "Token: token" (single arg) and "Token:" "token" (two args)
+                if [[ "$1" == *" "* ]]; then
+                    CREDS_INPUT="$1"
+                    shift 1
+                else
+                    CREDS_INPUT="$1 $2"
+                    shift 2
+                fi
+                ;;
+            *"password:"*)
+                # Handle "username password: password" format
+                CREDS_INPUT="$1 $2 $3"
+                shift 3
+                ;;
+            --browser=*)
+                BROWSER="${1#*=}"
+                shift
+                ;;
+            --idp=*)
+                IDP="${1#*=}"
+                shift
+                ;;
+            --user=*)
+                HUB_USER="${1#*=}"
+                shift
+                ;;
+            --skip-npm)
+                SKIP_NPM="true"
+                shift
+                ;;
+            --jenkins-api=*)
+                JENKINS_URL="${1#*=}"
+                shift
+                ;;
+            --jenkins-api)
+                JENKINS_URL="$2"
+                shift 2
+                ;;
+            --jenkins-user=*)
+                JENKINS_USER="${1#*=}"
+                shift
+                ;;
+            --jenkins-user)
+                JENKINS_USER="$2"
+                shift 2
+                ;;
+            --jenkins-token=*)
+                JENKINS_TOKEN="${1#*=}"
+                shift
+                ;;
+            --jenkins-token)
+                JENKINS_TOKEN="$2"
+                shift 2
+                ;;
+            --jenkins-cookie=*)
+                JENKINS_COOKIE_FILE="${1#*=}"
+                shift
+                ;;
+            --jenkins-cookie)
+                JENKINS_COOKIE_FILE="$2"
+                shift 2
+                ;;
+            --jenkins-insecure)
+                JENKINS_INSECURE="true"
+                shift
+                ;;
+            --help|-h)
+                show_help
+                return 0
+                ;;
+            *)
+                # Check if this is an environment name (qe6, mist10, etc.)
+                if [[ -z "$ENV_NAME" ]] && [[ "$1" =~ ^[a-z][a-z0-9]*[0-9]+$ ]]; then
+                    ENV_NAME="$1"
+                    shift
+                # If we haven't set CONSOLE_INPUT yet and this looks like a URL, it might be the console URL
+                elif [[ -z "$CONSOLE_INPUT" ]] && [[ "$1" == *"console"* ]] && [[ "$1" == *"http"* ]]; then
+                    CONSOLE_INPUT="Console: $1"
+                    shift
+                # If this looks like credentials
+                elif [[ -z "$CREDS_INPUT" ]] && [[ "$1" == *"/"* ]]; then
+                    CREDS_INPUT="Creds: $1"
+                    shift
+                else
+                    log_error "Unknown parameter: $1"
+                    show_help
+                    return 1
+                fi
+                ;;
+        esac
+    done
+
+    # Now that we know the mode/flags, check prerequisites
+    check_prerequisites || true
+
+    # Find and setup CLC repository (best-effort)
+    find_and_setup_clc_repository || true
+    
+    # Validate required arguments and determine mode
+    if [[ -n "$JENKINS_URL" ]]; then
+        # Jenkins API mode - fetch deployment info automatically
+        if ! fetch_jenkins_deployment_info "$JENKINS_URL"; then
+            log_error "Failed to fetch deployment information from Jenkins"
+            return 1
+        fi
+        
+        # Set up inputs from Jenkins data
+        CONSOLE_INPUT="Console: $JENKINS_CONSOLE_URL"
+        CREDS_INPUT="Creds: $JENKINS_USERNAME/$JENKINS_PASSWORD"
+        
+        # Extract build number from Jenkins URL for display
+        local BUILD_NUMBER
+        BUILD_NUMBER=${JENKINS_BUILD_URL##*/}
+        
+        # Display organized Jenkins information
+        echo ""
+        log_success "📋 Jenkins Deployment Information Collected:"
+        echo "  🔗 Source: Manual Jenkins API"
+        echo "  🏗️  Build: #$BUILD_NUMBER"
+        echo "      📋 Jenkins: $JENKINS_BUILD_URL"
+        echo "  🌐 Console URL: $JENKINS_CONSOLE_URL"
+        echo "  👤 Username: $JENKINS_USERNAME"
+        echo "  🔐 Password: $JENKINS_PASSWORD"
+        echo "  🖥️  API Server: $JENKINS_API_URL"
+        echo ""
+        
+        log_info "Using deployment information from Jenkins API"
+    elif [[ -n "$ENV_NAME" ]]; then
+        # Environment name mode - fetch latest successful deployment
+        if ! fetch_environment_deployment_info "$ENV_NAME"; then
+            log_error "Failed to fetch deployment information for environment: $ENV_NAME"
+            log_error ""
+            log_error "This might indicate:"
+            log_error "  - No successful deployments available"
+            log_error "  - Environment is currently down or being rebuilt"
+            log_error "  - Network connectivity issues"
+            log_error ""
+            log_error "Try again later or use manual mode if you have specific deployment credentials."
+            return 1
+        fi
+        
+        # Set up inputs from Jenkins data
+        CONSOLE_INPUT="Console: $JENKINS_CONSOLE_URL"
+        CREDS_INPUT="Creds: $JENKINS_USERNAME/$JENKINS_PASSWORD"
+        
+        # Extract build number from Jenkins URL for display
+        local BUILD_NUMBER
+        BUILD_NUMBER=${JENKINS_BUILD_URL##*/}
+        
+        # Display organized Jenkins information
+        echo ""
+        log_success "📋 Jenkins Deployment Information Collected:"
+        echo "  🔗 Environment: $ENV_NAME"
+        echo "  🏗️  Build: #$BUILD_NUMBER"
+        echo "      📋 Jenkins: $JENKINS_BUILD_URL"
+        echo "  🌐 Console URL: $JENKINS_CONSOLE_URL"
+        echo "  👤 Username: $JENKINS_USERNAME"
+        echo "  🔐 Password: $JENKINS_PASSWORD"
+        echo "  🖥️  API Server: $JENKINS_API_URL"
+        echo ""
+        
+        log_info "Using latest successful deployment for environment: $ENV_NAME"
+    else
+        # Manual mode - require console and creds input
+
+        if [[ -z "$CONSOLE_INPUT" ]] || [[ -z "$CREDS_INPUT" ]]; then
+            log_error "Missing required arguments"
+            log_error "Provide either:"
+            log_error "  - Console URL and credentials manually"
+            log_error "  - Environment name (currently supported: qe6)"
+            log_error "  - Jenkins API URL with --jenkins-api option"
+            show_help
+            return 1
+        fi
+    fi
+    
+    # Setup npm dependencies
+    if [[ -n "$CLC_REPO_PATH" ]]; then
+        if ! setup_npm_dependencies; then
+            log_error "npm setup failed"
+            return 1
+        fi
+    else
+        log_info "Skipping npm install (no CLC repo detected)"
+    fi
+    
+    # Login and export variables
+    if ! login_and_export_vars "$CONSOLE_INPUT" "$CREDS_INPUT" "$BROWSER" "$IDP" "$HUB_USER" "$ENV_NAME"; then
+        log_error "Environment setup failed"
+        return 1
+    fi
+    
+    # Final success message
+    echo ""
+    log_success "🎉 CLC Environment setup complete!"
+    
+    # Login status summary
+    if [[ "$LOGIN_SUCCESS" == "true" ]]; then
+        log_success "✅ OpenShift login: SUCCESSFUL"
+    elif [[ "$HAS_OC" == "true" ]]; then
+        log_warning "⚠️  OpenShift login: FAILED - but environment variables are set"
+        log_warning "   You may need to login manually before running tests"
+    else
+        log_info "ℹ️  OpenShift login: SKIPPED (oc CLI not available)"
+        log_info "   Environment variables are ready for manual login or testing"
+    fi
+    
+    echo ""
+    echo "You can now run:"
+    if [[ -n "$CLC_REPO_PATH" ]]; then
+        echo "  ${GREEN}npx cypress open${NC}           # Open Cypress Test Runner"
+        echo "  ${GREEN}bash start-tests.sh${NC}         # Run test suite"
+        echo "  ${GREEN}bash execute_clc_interop_commands.sh${NC}  # Run interop tests"
+    else
+        echo "  ${GREEN}oc login${NC}                   # Manually login to cluster"
+        echo "  ${GREEN}oc whoami${NC}                  # Verify login status"
+        echo ""
+        echo "To run tests, first navigate to a CLC repository directory:"
+        echo "  ${GREEN}cd /path/to/your/clc-ui${NC}    # Change to CLC project"
+        echo "  ${GREEN}npx cypress open${NC}           # Open Cypress Test Runner"
+    fi
+    echo ""
+}
+
+# Only run main if script is being sourced with arguments
+if [[ $# -gt 0 ]]; then
+    main "$@"
+else
+    log_warning "No arguments provided. Use --help for usage information."
+    show_help
+fi
