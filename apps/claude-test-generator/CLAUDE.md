@@ -5,8 +5,8 @@
 > **Quick Start Guide**: See `docs/quick-start.md`
 > **Welcome Message**: See `.claude/greetings/framework-greetings.md`
 
-**Latest Version**: 2.0 - Enhanced Investigation & Quality with Unified Command Interface  
-**Framework Status**: Production-ready with complete investigation protocol, intelligent feedback loop, and enterprise-grade quality assurance  
+**Latest Version**: 2.2 - Advanced AI Service Integration & Intelligent Quality Assurance  
+**Framework Status**: Production-ready with AI-powered investigation, comprehensive quality assurance, and enterprise-grade test generation using intelligent service orchestration  
 **Integration**: Part of AI Test Generation Suite with global `/generate-e2e-test-plan` commands
 
 ## 📖 Table of Contents
@@ -46,23 +46,25 @@ This AI-powered analysis engine performs human-level reasoning about complex sof
 - **Cross-Application Routing**: Intelligent command routing to appropriate engines based on task type
 - **Professional Grade**: Enterprise-ready with quality assurance and feedback loops
 
-### 🧠 Core Intelligence Features
-- **Always Deep Analysis**: Comprehensive investigation is the default behavior - no shortcuts or surface-level analysis
-- **Multi-Source Analysis**: JIRA hierarchy + GitHub PR + Internet research + Implementation validation
+### 🧠 Advanced AI Intelligence Features
+- **Always Deep Analysis**: Comprehensive AI-powered investigation is the default behavior - no shortcuts or surface-level analysis
+- **AI Service Orchestration**: JIRA hierarchy + GitHub PR + Internet research + Implementation validation using Task tool and AI services
 - **Intelligent Environment Handling**: Auto-detects QE environments or uses custom kubeconfig with graceful degradation
-- **Smart Test Scoping**: Focus ONLY on NEW/CHANGED functionality for maximum efficiency
-- **Adaptive Learning**: Intelligent feedback loop with quality assessment and human review triggers
-- **Predictive Modeling**: Risk-based prioritization and architectural impact assessment
-- **Continuous Optimization**: Learning integration for iterative improvement
+- **Smart Test Scoping**: AI-driven focus ONLY on NEW/CHANGED functionality for maximum efficiency
+- **AI Quality Assurance**: Comprehensive validation replacing script-based approaches with intelligent analysis
+- **Predictive Modeling**: AI-powered risk-based prioritization and architectural impact assessment
+- **Continuous AI Learning**: Learning integration for iterative improvement with intelligent quality scoring
 
 ### 🎯 Smart Test Scoping Philosophy
 The framework focuses ONLY on testing what actually changed in the implementation, avoiding redundant testing of existing stable functionality. This ensures efficient, targeted test coverage that maximizes value while minimizing execution time.
 
-### 🔧 Quality Assurance Architecture
-- **Complete Investigation Protocol**: Mandatory deep analysis across multiple data sources
-- **Automated Validation**: Post-generation linting, YAML validation, and schema compliance
-- **Evidence-Based Assessment**: Implementation validation with deployment proof
+### 🔧 AI-Powered Quality Assurance Architecture
+- **Complete AI Investigation Protocol**: Mandatory deep analysis across multiple data sources using AI services
+- **Intelligent Feature Availability Analysis**: AI-powered version compatibility validation with root cause assessment
+- **AI Quality Validation**: Post-generation AI assessment replacing script-based validation with intelligent analysis
+- **Evidence-Based Assessment**: Implementation validation with deployment proof and supporting data via AI analysis
 - **Professional Output Standards**: Enhanced test case format with copy-paste commands and expected outputs
+- **Robust AI Test Generation**: Complete test plans generated regardless of current feature availability using AI orchestration
 
 ## 🛠️ Available Tools & Scripts
 
@@ -78,13 +80,14 @@ The framework focuses ONLY on testing what actually changed in the implementatio
 - **kubectl/oc**: Kubernetes/OpenShift CLI for cluster validation and testing
 
 ### Investigation & Research Tools
-- **github-investigation** (`bin/github-investigation.sh`): Deep repository analysis with SSH access and comprehensive PR discovery
-- **doc-investigation** (`bin/doc-investigation.sh`): Recursive JIRA ticket traversal with comments analysis and link extraction
+- **AI-Powered Investigation**: Advanced JIRA hierarchy analysis with comprehensive ticket traversal and comment analysis
+- **GitHub PR Analysis**: Intelligent repository analysis with SSH access and comprehensive PR discovery  
 - **cc_schema_helper** (`bin/cc_schema_helper.sh`): ClusterCurator-specific schema validation and field inspection
 - **resource_schema_helper** (`bin/resource_schema_helper.sh`): Generic CRD schema helper for YAML skeleton generation
 
 ### Quality Assurance & Validation Tools
-- **post_generation_linter** (`bin/post_generation_linter.sh`): Automated output validation, escaped pipe detection, ManagedClusterView guidance
+- **AI Quality Assurance**: Comprehensive validation replacing script-based approaches with intelligent analysis
+- **Schema Validation**: Automated CRD compliance checking and YAML validation
 - **inject_required_keys** (`bin/inject_required_keys.sh`): Automatic YAML field injection for required keys (non-destructive)
 - **YAML Server Validation**: Optional `oc apply --dry-run=server` validation for schema compliance
 
@@ -132,12 +135,12 @@ The framework follows a structured 5-stage approach:
 - **Cluster Connectivity**: Verify access and permissions
 - **Status Reporting**: Clear execution guidance
 
-### Stage 2: Multi-Source Intelligence Gathering ⚠️ MANDATORY
-- **Complete Investigation Protocol**: ALWAYS perform ALL steps below - NO EXCEPTIONS
-- **PR Discovery & Analysis**: Find and analyze ALL related PRs for implementation details
-- **Internet Research**: Research relevant technology, documentation, and best practices
-- **JIRA Intelligence**: Comprehensive ticket + ALL subtasks + dependency chains + epic context
-- **Repository Analysis**: Code changes, architectural impact, and integration points
+### Stage 2: AI-Powered Multi-Source Intelligence Gathering ⚠️ MANDATORY
+- **Complete Investigation Protocol**: ALWAYS perform ALL steps below using AI services - NO EXCEPTIONS
+- **AI-Powered JIRA Analysis**: Advanced ticket hierarchy analysis with comprehensive subtask traversal
+- **Intelligent PR Discovery**: AI-driven GitHub repository analysis for implementation details
+- **AI Internet Research**: Research relevant technology, documentation, and best practices using AI services
+- **Repository Intelligence**: Code changes, architectural impact, and integration points via AI analysis
 - **Implementation Reality Validation**: Deep schema validation and actual field inspection
 - **Smart Test Scope Analysis**: Focus ONLY on changed functionality after complete understanding
 
@@ -176,12 +179,13 @@ The framework follows a structured 5-stage approach:
 
 ### Stage 5: Analysis Report & Intelligent Feedback Loop
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md
-- **Streamlined Analysis Reports**: 
-  - **Implementation Status** (first): What is implemented, PRs, key behavior
-  - **Environment & Validation Status** (second): Environment used, validation results, limitations
+- **Enhanced Analysis Reports**: 
+  - **Implementation Status** (first): What is implemented, PRs, key behavior, version targeting
+  - **Environment & Validation Status** (second): Environment used, validation results, feature availability testing with supporting evidence
+  - **Root Cause Assessment**: AI analysis determining if missing features are expected (version mismatch) or indicate potential bugs
   - **Concise Feature Summary**: Brief feature explanation + data collection summary (no detailed framework process explanations)
-- **Deployment Status Analysis**: Feature availability assessment  
-- **Clear Status Reporting**: What can be tested now vs. post-deployment
+- **Intelligent Deployment Analysis**: Feature availability assessment with evidence-based reasoning
+- **Comprehensive Status Reporting**: Current testing capability, missing feature diagnosis, future testing roadmap
 - **Intelligent Feedback Loop System**:
   - **Quality Assessment**: Test coverage, business alignment, technical depth scoring
   - **Human Review Triggers**: After 3 runs, quality plateau, low scores, or production requests
@@ -292,14 +296,16 @@ runs/
 - **Skip Unchanged**: Avoid redundant testing of existing stable functionality
 - **Efficient Coverage**: Maximize value while minimizing execution time
 
-### 🌍 Environment Flexibility
+### 🌍 Environment Flexibility & Intelligence
 - **Default Gracefully**: Use qe6 if no environment specified
 - **Adapt to Availability**: Work with whatever environment is accessible
-- **Future Ready**: Generate complete test plans regardless of current limitations
+- **Version Intelligence**: AI-powered analysis of feature availability vs environment capability
+- **Future Ready**: Generate complete test plans regardless of current limitations with intelligent deployment assessment
 
-### 📋 Comprehensive Output
+### 📋 Comprehensive & Intelligent Output
 - **Dual File Generation**: Both complete analysis and clean test cases
-- **Clear Status Reporting**: What can be tested now vs. later
+- **Intelligent Status Reporting**: Root cause analysis for missing features - expected vs potential bugs
+- **Evidence-Based Assessment**: Supporting data from actual environment validation
 - **Organized Structure**: Timestamped runs with proper file organization
 
 ### 🔧 Enterprise Integration Features
@@ -309,7 +315,9 @@ runs/
 - **Universal Test Generation**: Works for any ACM story ticket with consistent enterprise-grade quality
 - **Intelligent Feedback Loop**: Automated quality assessment, human review triggers, and continuous learning
 - **Complete Investigation Protocol**: Mandatory deep analysis across JIRA + GitHub + Internet + Implementation validation
+- **Intelligent Feature Availability Analysis**: AI-powered version compatibility validation with root cause assessment
 - **Quality Assurance Pipeline**: Post-generation linting, YAML validation, and schema compliance
+- **Robust Test Generation**: Complete test plans generated regardless of current feature availability
 - **Professional Standards**: Clean outputs without framework self-references, optimized for team collaboration
 - **Cross-Application Compatibility**: Seamless integration with Z-Stream Analysis Engine and other suite applications
 
@@ -336,23 +344,23 @@ runs/
 
 **ALWAYS EXECUTE COMPLETE INVESTIGATION - NO SHORTCUTS ALLOWED**
 
-**Step 1: Complete JIRA Hierarchy Deep Dive** (100% coverage requirement):
-1. **Main ticket + ALL nested linked tickets** (up to 3 levels deep with recursion protection)
-2. **ALL subtasks + dependency chains + epic context + related tickets**
-3. **Comments analysis across ALL discovered tickets** for additional insights and links
-4. **Cross-reference validation + consistency checking across entire ticket network**
+**Step 1: AI-Powered JIRA Hierarchy Analysis** (100% coverage requirement):
+1. **AI Service JIRA Investigation**: Use Task tool with general-purpose agent for comprehensive ticket analysis
+2. **Ticket Network Discovery**: Main ticket + ALL nested linked tickets (up to 3 levels deep with recursion protection)
+3. **Intelligent Comment Analysis**: AI-powered analysis across ALL discovered tickets for additional insights
+4. **Cross-reference Validation**: AI-driven consistency checking across entire ticket network
 
-**Step 2: PR Investigation** (MANDATORY):
-1. Find ALL related PRs through GitHub search
-2. Analyze implementation details and code changes
-3. Review PR discussions and technical decisions
-4. Validate deployment status and integration points
+**Step 2: AI-Driven PR Investigation** (MANDATORY):
+1. **Task Tool PR Analysis**: Use AI services to find ALL related PRs through intelligent GitHub search
+2. **Implementation Deep Dive**: AI analysis of implementation details and code changes
+3. **Technical Decision Analysis**: AI-powered review of PR discussions and technical decisions
+4. **Deployment Status Validation**: AI assessment of deployment status and integration points
 
-**Step 3: Internet Research** (MANDATORY):
-1. Research relevant technology and documentation
-2. Understand best practices and common patterns
-3. Learn domain-specific knowledge for accurate testing
-4. Validate assumptions against authoritative sources
+**Step 3: AI Internet Research** (MANDATORY):
+1. **WebFetch Intelligence**: Use AI services to research relevant technology and documentation
+2. **Best Practices Discovery**: AI-powered understanding of best practices and common patterns
+3. **Domain Knowledge Acquisition**: AI learning of domain-specific knowledge for accurate testing
+4. **Assumption Validation**: AI validation of assumptions against authoritative sources
 
 **Step 4: Implementation Reality Validation** (MANDATORY):
 1. Deep schema inspection and field validation
@@ -360,43 +368,46 @@ runs/
 3. Architecture discovery and operational pattern analysis
 4. Feature availability assessment with proof
 
-**Step 5: Missing Data Handling** (MANDATORY):
+**Step 5: Intelligent Feature Availability Analysis** (MANDATORY):
+1. **Version Intelligence Gathering**: Extract JIRA Fix Version and environment ACM version
+2. **Environment Validation**: Perform actual feature testing during cluster validation
+3. **Root Cause Analysis**: AI determines if missing features are expected (version mismatch) or indicate potential bugs
+4. **Evidence Collection**: Document validation commands executed and their outputs
+5. **Comprehensive Assessment**: Report deployment status with supporting data regardless of current availability
+
+**Framework ALWAYS generates complete test plans - maximum value regardless of current feature availability**
+
+**Step 6: Missing Data Handling** (MANDATORY):
 1. Detect gaps and quantify impact
 2. Document limitations and assumptions
 3. Provide future roadmap for complete testing
 
-### 🔍 Post-Generation Quality Assurance
+### 🔍 AI-Powered Post-Generation Quality Assurance
 
-**Automated Validation & Linting:**
+**AI-Driven Validation & Quality Assessment:**
 
-```bash
-# Run comprehensive validation on latest outputs
-apps/claude-test-generator/bin/post_generation_linter.sh \
-  --path apps/claude-test-generator/runs/ACM-XXXXX/latest
+Replace script-based validation with comprehensive AI-powered quality assurance using Task tool and AI services for:
 
-# Enable YAML server validation (requires oc logged in)
-apps/claude-test-generator/bin/post_generation_linter.sh \
-  --path apps/claude-test-generator/runs/ACM-XXXXX/latest \
-  --validate-yaml
+- **Test Case Format Compliance**: AI validation of Description + Setup + Steps + Expected Results format
+- **Technical Accuracy Assessment**: AI review of ClusterCurator YAML schema compliance and command syntax
+- **Content Quality Analysis**: AI assessment of copy-paste commands, expected outputs, and YAML samples
+- **Implementation Readiness**: AI evaluation of test case execution readiness and self-containment
 
-# Enable auto-inject hook for required keys (non-destructive)
-apps/claude-test-generator/bin/post_generation_linter.sh \
-  --path apps/claude-test-generator/runs/ACM-XXXXX/latest \
-  --auto-inject-required-keys
-```
+**AI Quality Checks Performed:**
+- ✅ **Enhanced Format Validation**: AI-powered test case structure and content quality assessment  
+- ✅ **Technical Accuracy**: AI validation of bash commands, YAML syntax, and expected outputs
+- ✅ **Schema Compliance**: AI-driven validation of generated YAML against CRD schemas
+- ✅ **Best Practices**: AI enforcement of ManagedClusterView usage and team usability standards
+- ✅ **Command Syntax**: AI validation of bash commands for proper quoting and execution
+- ✅ **Expected Results Quality**: AI assessment of sample YAML outputs and expected command results
+- ✅ **Version Compatibility**: AI-powered analysis of feature availability vs environment capability
+- ✅ **Root Cause Analysis**: AI diagnosis of missing features - expected vs potential bugs
 
-**Quality Checks Performed:**
-- ✅ **Escaped Pipes Detection**: Flags problematic bash code blocks in test cases
-- ✅ **ManagedClusterView Guidance**: Enforces best practices for managed cluster resource reads
-- ✅ **YAML Schema Validation**: Optional server-side validation via `oc apply --dry-run=server`
-- ✅ **Required Fields Validation**: Ensures ClusterCurator YAML includes mandatory fields
-- ✅ **Command Syntax**: Validates bash commands for proper quoting and execution
-- ✅ **Expected Results Quality**: Checks for sample YAML outputs and expected command results
-
-**Enhanced Features:**
-- **Non-Destructive Field Injection**: Automatically adds required YAML keys without overwriting existing content
-- **Schema Compliance**: Validates generated YAML against actual cluster CRD schemas
-- **Best Practice Enforcement**: Ensures test cases follow established patterns and guidelines
+**AI-Enhanced Features:**
+- **Intelligent Quality Scoring**: Comprehensive quality metrics with 0-100 scoring system
+- **Evidence-Based Assessment**: AI analysis with supporting data and deployment evidence
+- **Continuous Learning**: Quality assessment feeds back into framework improvement
+- **Professional Standards**: AI enforcement of enterprise-grade documentation and test case quality
 
 ### 📊 Quality Standards
 

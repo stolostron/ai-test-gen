@@ -1,0 +1,98 @@
+{
+  "run_details": {
+    "ticket_id": "ACM-22079",
+    "run_id": "run-001-20250812-1458",
+    "timestamp": "2025-08-12T14:58:00Z",
+    "framework_version": "2.1",
+    "execution_time_minutes": 8,
+    "investigation_complete": true
+  },
+  "environment_info": {
+    "cluster_name": "qe6-vmware-ibm",
+    "hub_api_url": "https://api.qe6-vmware-ibm.install.dev09.red-chesterfield.com:6443",
+    "acm_version": "2.14.0-62",
+    "mce_version": "2.9.0-212",
+    "openshift_version": "4.20.0-ec.4",
+    "managed_clusters": ["local-cluster"],
+    "cluster_access": "successful"
+  },
+  "feature_analysis": {
+    "feature_name": "Digest-based upgrades via ClusterCurator",
+    "target_acm_version": "2.15.0",
+    "current_availability": false,
+    "implementation_status": "completed",
+    "pr_status": "merged",
+    "github_pr": "https://github.com/stolostron/cluster-curator-controller/pull/468"
+  },
+  "investigation_sources": {
+    "jira_analysis": {
+      "main_ticket": "ACM-22079",
+      "related_tickets": ["ACM-21514", "ACM-21980", "ACM-22457", "ACM-16984", "ACM-8618"],
+      "hierarchy_depth": 3,
+      "completeness": "comprehensive"
+    },
+    "github_analysis": {
+      "primary_pr": "#468",
+      "foundation_pr": "#195", 
+      "code_review_comments": 33,
+      "implementation_files": ["pkg/jobs/hive/hive.go", "pkg/jobs/utils/helpers.go"]
+    },
+    "internet_research": {
+      "openshift_apis": "researched",
+      "clustercurator_patterns": "researched",
+      "disconnected_environments": "researched",
+      "security_considerations": "researched"
+    },
+    "schema_validation": {
+      "clustercurator_crd": "validated",
+      "required_annotation": "supported",
+      "dry_run_validation": "successful"
+    }
+  },
+  "test_cases": {
+    "total_cases": 5,
+    "coverage_areas": [
+      "core_digest_resolution",
+      "fallback_mechanisms", 
+      "backward_compatibility",
+      "annotation_dependency",
+      "error_handling"
+    ],
+    "format_compliance": {
+      "description_present": true,
+      "setup_defined": true,
+      "enhanced_expected_results": true,
+      "copy_paste_commands": true,
+      "sample_yaml": true,
+      "generic_authentication": true
+    }
+  },
+  "quality_metrics": {
+    "investigation_depth_score": 95,
+    "test_coverage_score": 90,
+    "business_alignment_score": 95,
+    "technical_accuracy_score": 95,
+    "implementation_readiness_score": 85,
+    "overall_quality_score": 92
+  },
+  "validation_results": {
+    "schema_compliance": "passed",
+    "yaml_validation": "passed", 
+    "command_syntax": "passed",
+    "expected_results_quality": "passed",
+    "version_compatibility": "analyzed"
+  },
+  "deployment_assessment": {
+    "current_environment_ready": true,
+    "feature_available": false,
+    "root_cause": "Feature targets ACM 2.15.0, current environment ACM 2.14.0-62",
+    "evidence_based": true,
+    "future_testing_ready": true
+  },
+  "feedback_loop": {
+    "quality_assessment_complete": true,
+    "human_review_triggered": false,
+    "improvement_areas": ["Feature availability testing when ACM 2.15.0 available"],
+    "learning_integration": "quality metrics recorded for continuous improvement"
+  }
+}
