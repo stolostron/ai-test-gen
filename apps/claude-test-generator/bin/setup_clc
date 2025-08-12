@@ -691,6 +691,42 @@ login_and_export_vars() {
     # Ensure PATH is correct before checking for oc (may have been corrupted by cd operations)
     ensure_robust_path
 
+# Persist a kubeconfig file into the user's default kubeconfig location (~/.kube/config)
+# by merging (if an existing config is present) and setting the current-context.
+persist_kubeconfig_to_default() {
+    local src_kubeconfig="$1"
+    local kube_dir="$HOME/.kube"
+    local default_cfg="$kube_dir/config"
+
+    [[ -f "$src_kubeconfig" ]] || return 0
+
+    mkdir -p "$kube_dir"
+
+    # Determine the current context in the source kubeconfig
+    local src_ctx
+    src_ctx=$(oc config current-context --kubeconfig="$src_kubeconfig" 2>/dev/null || echo "")
+
+    if [[ -f "$default_cfg" ]]; then
+        # Merge source and default, preferring explicit KUBECONFIG order
+        local tmp_cfg
+        tmp_cfg=$(mktemp 2>/dev/null || echo "$kube_dir/config.$$.")
+        KUBECONFIG="$src_kubeconfig:$default_cfg" oc config view --flatten > "$tmp_cfg" 2>/dev/null || cp "$src_kubeconfig" "$tmp_cfg"
+        mv "$tmp_cfg" "$default_cfg"
+    else
+        cp "$src_kubeconfig" "$default_cfg"
+    fi
+
+    chmod 600 "$default_cfg" 2>/dev/null || true
+
+    # Set the context from the source config if we detected one
+    if [[ -n "$src_ctx" ]]; then
+        oc config use-context "$src_ctx" >/dev/null 2>&1 || true
+    fi
+
+    # Ensure the default path is used going forward
+    unset KUBECONFIG
+}
+
     # Determine if oc CLI is available
     HAS_OC="true"
     if ! command -v oc &>/dev/null; then
@@ -848,7 +884,9 @@ login_and_export_vars() {
             esac
         done <<< "$LOGIN_OC_OUT"
         if [[ -n "$LOGIN_OC_KCFG" && -f "$LOGIN_OC_KCFG" ]]; then
-            export KUBECONFIG="$LOGIN_OC_KCFG"
+            log_info "Persisting kubeconfig to default location (~/.kube/config)"
+            persist_kubeconfig_to_default "$LOGIN_OC_KCFG"
+            log_success "Kubeconfig saved to ~/.kube/config"
         fi
         if [[ $LOGIN_OC_STATUS -eq 0 ]]; then
             LOGIN_SUCCESS=true
@@ -868,6 +906,18 @@ login_and_export_vars() {
             if timeout 30 oc login --insecure-skip-tls-verify --token="$AUTH_TOKEN" "$API_URL"; then
                 LOGIN_SUCCESS=true
                 log_success "Successfully logged into OpenShift cluster with provided token"
+                # Persist the active kubeconfig context to default config
+                local active_kcfg
+                active_kcfg=$(mktemp 2>/dev/null || echo "/tmp/kubeconfig.$$.")
+                # Export the current environment kubeconfig if set, else try to locate it via oc
+                if [[ -n "${KUBECONFIG:-}" && -f "$KUBECONFIG" ]]; then
+                    cp "$KUBECONFIG" "$active_kcfg" 2>/dev/null || true
+                else
+                    # Fallback: export current config as seen by oc
+                    oc config view --raw > "$active_kcfg" 2>/dev/null || true
+                fi
+                persist_kubeconfig_to_default "$active_kcfg"
+                rm -f "$active_kcfg" >/dev/null 2>&1 || true
             else
                 log_warning "Token-based login failed. The provided token may be invalid or expired."
                 log_warning "Continuing with environment setup anyway..."
@@ -877,6 +927,16 @@ login_and_export_vars() {
             if timeout 30 oc login --insecure-skip-tls-verify -u "$LOGIN_USER" -p "$PASSWORD" "$API_URL"; then
                 LOGIN_SUCCESS=true
                 log_success "Successfully logged into OpenShift cluster with provided credentials"
+                # Persist the active kubeconfig context to default config
+                local active_kcfg
+                active_kcfg=$(mktemp 2>/dev/null || echo "/tmp/kubeconfig.$$.")
+                if [[ -n "${KUBECONFIG:-}" && -f "$KUBECONFIG" ]]; then
+                    cp "$KUBECONFIG" "$active_kcfg" 2>/dev/null || true
+                else
+                    oc config view --raw > "$active_kcfg" 2>/dev/null || true
+                fi
+                persist_kubeconfig_to_default "$active_kcfg"
+                rm -f "$active_kcfg" >/dev/null 2>&1 || true
             else
                 log_warning "Username/password login failed with provided credentials."
                 log_warning ""
