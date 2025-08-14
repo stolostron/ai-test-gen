@@ -1,0 +1,36 @@
+{
+  "pipeline_id": "clc-e2e-pipeline-3313",
+  "jenkins_url": "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/qe-acm-automation-poc/job/clc-e2e-pipeline/3313/",
+  "build_result": "UNSTABLE",
+  "duration_ms": 249109,
+  "timestamp": 1755211301645,
+  "environment": {
+    "cluster_api_url": "https://api.ci-vb-268pp.dev09.red-chesterfield.com:6443",
+    "console_url": "https://console-openshift-console.apps.ci-vb-268pp.dev09.red-chesterfield.com",
+    "cluster_name": "ci-vb-268pp.dev09.red-chesterfield.com",
+    "namespace": "open-cluster-management",
+    "user": "kubeadmin"
+  },
+  "failed_tests": [
+    {
+      "file": "credentials/addCredentials.spec.js",
+      "test_name": "RHACM4K-567: CLC: Create AWS provider connections",
+      "error": "Error: Timed out retrying - Context.check",
+      "error_location": "cypress/support/index.js:27309:13",
+      "failure_type": "before all hook timeout"
+    },
+    {
+      "file": "clusters/managedClusters/create/createClusters.spec.js", 
+      "test_name": "RHACM4K-7473: CLC: Create an AWS managed cluster via the UI",
+      "error": "Error: Timed out retrying - Context.check",
+      "error_location": "cypress/support/index.js:27309:13",
+      "failure_type": "before all hook timeout"
+    }
+  ],
+  "repository": {
+    "name": "stolostron/clc-ui-e2e",
+    "branch": "release-2.11",
+    "commit": "21fbb81929b25d3f39900d54da73168e18247bfc",
+    "framework": "cypress"
+  }
+}

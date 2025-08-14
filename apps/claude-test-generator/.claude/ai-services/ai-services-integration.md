@@ -13,6 +13,8 @@ AI_Services_Ecosystem:
     - ai_authentication: "Multi-method secure authentication with fallback"
     - ai_environment_validation: "Comprehensive environment health assessment"
     - ai_deployment_detection: "Evidence-based feature deployment validation"
+    - ai_documentation_intelligence: "Red Hat ACM official documentation analysis"
+    - ai_github_investigation: "Enhanced GitHub analysis with CLI priority and WebFetch fallback"
   
   integration_layer:
     - service_orchestration: "Coordinated AI service execution"
@@ -107,7 +109,9 @@ class AIServicesOrchestrator:
             "connectivity": AIClusterConnectivityService(),
             "authentication": AIAuthenticationService(),
             "validation": AIEnvironmentValidationService(),
-            "deployment": AIDeploymentDetectionService()
+            "deployment": AIDeploymentDetectionService(),
+            "documentation": AIDocumentationIntelligenceService(),
+            "github_investigation": AIGitHubInvestigationService()
         }
         self.orchestration_ai = OrchestrationIntelligence()
     
@@ -240,22 +244,26 @@ def enhanced_ai_test_generation(ticket_id):
     # 1. AI Ticket Analysis
     ticket_analysis = ai_analyze_ticket_comprehensive(ticket_id)
     
-    # 2. AI Environment Preparation (replaces all scripts)
+    # 2. AI Documentation Intelligence (NEW - MANDATORY)
+    documentation_analysis = ai_analyze_official_documentation(ticket_analysis.feature_info)
+    
+    # 3. AI Environment Preparation (replaces all scripts)
     environment_result = ai_powered_environment_setup()
     
-    # 3. AI Deployment Validation (evidence-based)
-    deployment_status = ai_detect_deployment_status(ticket_analysis.feature_info)
+    # 4. AI Deployment Validation (evidence-based with documentation correlation)
+    deployment_status = ai_detect_deployment_status(ticket_analysis.feature_info, documentation_analysis)
     
-    # 4. AI Test Generation (category-aware)
+    # 5. AI Test Generation (category-aware with documentation insights)
     test_plan = ai_generate_category_aware_test_plan(
-        ticket_analysis, environment_result, deployment_status
+        ticket_analysis, documentation_analysis, environment_result, deployment_status
     )
     
-    # 5. AI Quality Validation (95+ points)
+    # 6. AI Quality Validation (95+ points)
     quality_result = ai_validate_test_quality(test_plan)
     
     return {
         "ticket_analysis": ticket_analysis,
+        "documentation": documentation_analysis,
         "environment": environment_result,
         "deployment": deployment_status,
         "test_plan": test_plan,
@@ -263,7 +271,8 @@ def enhanced_ai_test_generation(ticket_id):
         "execution_ready": all([
             environment_result.ready_for_testing,
             quality_result.score >= 95,
-            deployment_status.confidence >= 0.90
+            deployment_status.confidence >= 0.90,
+            documentation_analysis.authoritative_source_validated
         ])
     }
 ```

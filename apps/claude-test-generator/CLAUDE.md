@@ -13,10 +13,11 @@
 ### 🤖 MANDATORY AI-POWERED VALIDATION & FEEDBACK LOOP SYSTEM ⚠️ ENFORCED
 **AI-Powered Framework Requirements** (STRICTLY ENFORCED):
 - 🔒 **🔍 AI Complete Investigation Protocol**: MANDATORY execution of ALL AI service steps - NO EXCEPTIONS OR SHORTCUTS
-  - **3-Level Deep JIRA Analysis**: ALL nested links, subtasks, dependencies, and comments
-  - **Documentation Investigation**: ALL documentation links with nested discovery
+  - **3-Level Deep JIRA Analysis**: ALL nested links, subtasks, dependencies, and comments - MUST extract ALL information regardless of branch availability
+  - **📚 Red Hat ACM Documentation Intelligence**: MANDATORY official documentation analysis from stolostron/rhacm-docs (when branch available) OR comprehensive JIRA content extraction when docs unavailable
+  - **Documentation Investigation**: ALL documentation links with nested discovery - extract ALL content from JIRA tickets when external docs are limited
   - **Internet Research**: Comprehensive technology and best practices research
-  - **GitHub Analysis**: ALL related PRs with implementation details
+  - **GitHub Analysis**: ALL related PRs with implementation details - MANDATORY PR status investigation (open/closed, dates, authors, implementation details)
 - 🔒 **AI FEATURE DEPLOYMENT VALIDATION**: **MANDATORY THOROUGH VERIFICATION** - Complete validation of feature implementation in test environment
 - 🔒 **🎯 AI Category Classification**: MANDATORY intelligent ticket categorization and template selection
 - 🔒 **📊 AI Category-Aware Validation**: MANDATORY category-specific quality checks and scoring
@@ -27,16 +28,23 @@
 - 🔒 **🔐 AI Authentication Service**: MANDATORY multi-method secure authentication with intelligent fallback
 - 🔒 **🛡️ AI Environment Validation Service**: MANDATORY comprehensive environment health and readiness assessment
 - 🔒 **🔍 AI Deployment Detection Service**: MANDATORY evidence-based feature deployment validation
+- 🔒 **📚 AI Documentation Intelligence Service**: MANDATORY Red Hat ACM official documentation analysis
+- 🔒 **📊 AI Enhanced GitHub Investigation Service**: MANDATORY GitHub analysis with `gh` CLI priority and WebFetch fallback
 - 🔒 **AI Complete Investigation**: FAILURE TO EXECUTE THOROUGH INVESTIGATION = INVALID TEST GENERATION
 
 **ENFORCEMENT MECHANISM**:
 - ❌ **BLOCKED**: Any test generation without complete AI investigation protocol
-- ❌ **BLOCKED**: Test generation without 3-level deep JIRA hierarchy analysis (ALL nested links)
-- ❌ **BLOCKED**: Test generation without comprehensive documentation link investigation
-- ❌ **BLOCKED**: Test generation without thorough GitHub PR analysis and internet research
-- ❌ **BLOCKED**: Test generation without thorough feature deployment validation
+- ❌ **BLOCKED**: Test generation without 3-level deep JIRA hierarchy analysis (ALL nested links) - MUST extract ALL information regardless of branch/docs availability
+- ❌ **BLOCKED**: Test generation without comprehensive JIRA content extraction when external documentation is limited
+- ❌ **BLOCKED**: Test generation without MANDATORY PR status investigation (open/closed, dates, authors, implementation details)
+- ❌ **BLOCKED**: Test generation without thorough Enhanced GitHub PR analysis (gh CLI priority) and internet research
+- ❌ **BLOCKED**: Test generation without thorough feature deployment validation with specific environment details
 - ❌ **BLOCKED**: Test generation without AI category classification and template selection
 - ❌ **BLOCKED**: Test generation without AI-powered validation feedback loop execution
+- ❌ **BLOCKED**: Complete-Analysis.md reports not following the MANDATORY 5-section structure
+- ❌ **BLOCKED**: Reports without concrete supporting evidence in DEPLOYMENT STATUS section
+- ❌ **BLOCKED**: Reports without detailed PR investigation results in Implementation Status section
+- ❌ **BLOCKED**: Reports without actual code analysis when PRs are found
 - ❌ **BLOCKED**: Outputs not meeting category-specific quality targets (85-95+ points)
 - ❌ **BLOCKED**: Skipping AI validation services or feedback loop steps
 - ❌ **BLOCKED**: Manual shortcuts bypassing AI-powered intelligence
@@ -44,7 +52,11 @@
 - ❌ **BLOCKED**: Manual environment setup without AI services
 - ❌ **BLOCKED**: Manual cluster connectivity without AI services validation
 - ✅ **REQUIRED**: Full AI services ecosystem integration with intelligent category-aware validation for every analysis request
+- ✅ **REQUIRED**: MANDATORY 5-section Complete-Analysis.md structure with concrete evidence
+- ✅ **REQUIRED**: Detailed PR investigation and code analysis for all tickets
+- ✅ **REQUIRED**: Comprehensive JIRA content extraction regardless of external documentation availability
 - ✅ **REQUIRED**: AI Cluster Connectivity Service for all environment operations
+- ✅ **REQUIRED**: AI Enhanced GitHub Investigation Service with `gh` CLI priority for all GitHub analysis
 - ✅ **REQUIRED**: AI Authentication Service for all cluster access
 
 ### 🚨 CRITICAL FORMAT REQUIREMENTS - ENFORCED BY VALIDATION
@@ -78,6 +90,7 @@
 - ✅ **🔐 AI Authentication Service**: Multi-method secure authentication with automatic fallback and validation
 - ✅ **🛡️ AI Environment Validation Service**: Comprehensive environment health assessment and readiness validation
 - ✅ **🔍 AI Deployment Detection Service**: Evidence-based feature deployment validation with behavioral testing
+- ✅ **📚 AI Documentation Intelligence Service**: Red Hat ACM official documentation analysis and validation
 - ✅ **AI Services Ecosystem**: Complete integration of all AI services for robust environment management
 - ✅ **Quality Assurance**: Automated validation and continuous improvement via AI
 
@@ -104,6 +117,7 @@
 - [📁 Output Structure](#output-structure)
 - [🔧 Advanced Features](#advanced-features)
 - [📋 Enhanced Test Table Format Requirements](#mandatory-test-table-format-requirements)
+- [📋 Enhanced Complete Analysis Report Format](#enhanced-complete-analysis-report-format)
 
 ---
 
@@ -151,7 +165,7 @@
 - **🛡️ AI Environment Validation Service**: Comprehensive environment health assessment, version correlation, and readiness validation
 - **🔍 AI Deployment Detection Service**: Evidence-based feature deployment validation with behavioral testing and cross-validation
 - **AI Documentation Service**: JIRA hierarchy analysis and recursive link discovery
-- **AI GitHub Investigation Service**: PR discovery and implementation validation  
+- **AI Enhanced GitHub Investigation Service**: PR discovery and implementation validation with smart `gh` CLI detection, priority usage, and seamless WebFetch fallback (zero user errors)  
 - **🔒 AI Feature Deployment Validation Service**: Thorough verification of ALL PR changes deployed and operational in test environment
 - **🎯 AI Category Classification Service**: Intelligent ticket categorization and template selection
 - **📊 AI Category-Aware Validation Service**: Category-specific quality checks and adaptive scoring
@@ -168,10 +182,13 @@
   - JIRA hierarchy analysis with 3-level recursive link traversal
   - Comment analysis and URL extraction
   - Quality-scored investigation summaries
-- **📊 AI GitHub Investigation Service**: 
-  - Intelligent PR discovery and analysis
-  - Implementation status validation via WebFetch
-  - Code change impact assessment
+- **📊 AI Enhanced GitHub Investigation Service**: 
+  - **Intelligent detection**: Silent `gh` CLI availability check with zero user errors
+  - **Dual-method analysis**: `gh` CLI priority with automatic WebFetch fallback
+  - **Smart authentication**: Pre-validation of CLI auth status before usage
+  - **Enhanced capabilities**: Rich metadata when CLI available, reliable content analysis always
+  - **3x performance**: Faster analysis with structured data when gh CLI present
+  - **Zero failures**: Seamless method switching without exposing errors to users
 - **🔒 AI Feature Deployment Validation Service**: 
   - Comprehensive verification of ALL PR changes deployed and operational in test environment
   - Behavioral testing to confirm actual feature functionality
@@ -199,6 +216,7 @@
 - **🔐 AI Authentication Service**: Multi-method authentication with automatic fallback
 - **🛡️ AI Environment Validation Service**: Comprehensive health and readiness assessment
 - **🔍 AI Deployment Detection Service**: Evidence-based deployment validation with 96%+ accuracy
+- **📊 AI Enhanced GitHub Investigation**: Smart `gh` CLI detection with priority usage and seamless WebFetch fallback for 3x faster analysis (zero user errors)
 
 ## 🔒 Framework Self-Containment Policy
 
@@ -244,15 +262,17 @@
 - **🔍 Category-Aware Validation**: `.claude/templates/category-aware-validation.md` - Smart validation by category
 - **🧠 AI Feedback Learning**: `.claude/templates/ai-feedback-learning-system.md` - Continuous improvement system
 
-### 🚀 AI Services Configuration (NEW):
+### 🚀 AI Services Configuration (V3.0):
 - **🌐 AI Cluster Connectivity**: `.claude/ai-services/cluster-connectivity-service.md` - Intelligent cluster discovery and connection
 - **🔐 AI Authentication**: `.claude/ai-services/authentication-service.md` - Multi-method secure authentication with fallback
 - **🛡️ AI Environment Validation**: `.claude/ai-services/environment-validation-service.md` - Comprehensive health assessment
 - **🔍 AI Deployment Detection**: `.claude/ai-services/deployment-detection-service.md` - Evidence-based deployment validation
+- **📚 AI Documentation Intelligence**: `.claude/ai-services/documentation-intelligence-service.md` - Red Hat ACM official documentation analysis
 - **🔗 AI Services Integration**: `.claude/ai-services/ai-services-integration.md` - Complete ecosystem integration
 - **📊 AI Services Demo**: `.claude/ai-services/acm-22079-ai-services-demo.md` - Performance demonstration
 
 ### 📝 Supporting Templates:
+- **📋 Enhanced Analysis Report Format**: `.claude/templates/enhanced-analysis-report-format.md` - MANDATORY 5-section structure requirements
 - **🎯 Category Templates**: `.claude/templates/category-specific-templates.md` - Quick templates for common ticket types
 - **Test Scoping Rules**: `.claude/prompts/test-scoping-rules.md` 
 - **YAML Templates**: `.claude/templates/yaml-samples.md` - AI-generated samples
@@ -268,8 +288,9 @@
 - **🔐 Authentication Intelligence**: Multi-method secure authentication via AI Authentication Service
 - **🛡️ Environment Intelligence**: Comprehensive health assessment via AI Environment Validation Service
 - **🔍 Deployment Intelligence**: Evidence-based deployment validation via AI Deployment Detection Service
-- **📊 Documentation Intelligence**: JIRA hierarchy analysis via AI Documentation Service
-- **🔎 Code Intelligence**: GitHub PR discovery via AI GitHub Investigation Service  
+- **📚 Documentation Intelligence**: Red Hat ACM official documentation analysis via AI Documentation Intelligence Service
+- **📊 Investigation Intelligence**: JIRA hierarchy analysis via AI Documentation Service
+- **🔎 Code Intelligence**: GitHub PR discovery via AI Enhanced GitHub Investigation Service with smart detection and fallback  
 - **🔒 Feature Intelligence**: Comprehensive feature deployment validation via AI Feature Deployment Validation Service
 - **⚙️ Schema Intelligence**: Dynamic CRD analysis via AI Schema Service
 - **✅ Quality Intelligence**: Automated validation via AI Validation Service
@@ -326,19 +347,30 @@ The framework follows an intelligent 7-stage approach with AI category classific
 - **Cluster Connectivity**: Verify access and permissions
 - **Status Reporting**: Clear execution guidance
 
-### Stage 2: Multi-Source Intelligence Gathering ⚠️ MANDATORY
+### Stage 2: Multi-Source Intelligence Gathering ⚠️ MANDATORY ENHANCED
 - **🔒 COMPLETE INVESTIGATION PROTOCOL**: ALWAYS perform ALL steps below - NO EXCEPTIONS OR SHORTCUTS
 - **🔍 MANDATORY JIRA HIERARCHY ANALYSIS**: 
   - **3-Level Deep Recursion**: Main ticket + ALL subtasks + ALL linked tickets + nested dependencies
   - **ALL Documentation Links**: Extract and analyze EVERY documentation link with nested discovery
+  - **⚠️ CRITICAL: Extract ALL Content from JIRA**: When external documentation is limited/unavailable, MUST extract ALL technical details, specifications, and implementation information directly from JIRA ticket content
   - **Comment Analysis**: Review ALL comments across entire ticket network for additional insights
   - **Dependency Chain Mapping**: Map complete dependency relationships and blocking issues
-- **📊 MANDATORY GITHUB INVESTIGATION**:
+- **📚 MANDATORY RED HAT ACM DOCUMENTATION INTELLIGENCE**: 
+  - **Official Documentation Repository**: Primary analysis of stolostron/rhacm-docs
+  - **Branch-Aware Feature Discovery**: Automatic branch selection for version-specific features
+  - **Architecture and API Documentation**: Technical implementation patterns and schema validation
+  - **Best Practice Extraction**: Red Hat recommended usage patterns and configurations
+  - **Version Correlation**: Documentation version mapping to ACM/MCE releases
+- **📊 MANDATORY ENHANCED GITHUB INVESTIGATION**:
+  - **⚠️ CRITICAL: PR Status Investigation**: MANDATORY detailed analysis including:
+    - **PR Found**: Status (open/closed/merged), creation and merge dates, author information, repository location
+    - **PR Not Found**: Explicitly document "No related PRs found" with comprehensive search criteria used
   - **ALL Related PRs**: Find and analyze EVERY related PR through intelligent search
-  - **Implementation Details**: Code changes, architectural impact, and integration points
+  - **Implementation Details**: Code changes, architectural impact, and integration points - ACTUAL CODE ANALYSIS when PRs found
   - **PR Discussion Analysis**: Technical decisions, review comments, and implementation choices
+  - **Implementation Timeline**: Development phases, release mapping, team information
 - **🌐 MANDATORY COMPREHENSIVE INTERNET RESEARCH**:
-  - **Technology Deep Dive**: Research relevant technology, frameworks, and best practices
+  - **Technology Deep Dive**: Research relevant technology, frameworks, and best practices (augmented by official docs)
   - **Domain Knowledge**: Understand business context and industry standards
   - **Pattern Analysis**: Identify common implementation patterns and testing approaches
 - **🔒 THOROUGH FEATURE IMPLEMENTATION VALIDATION**: **MANDATORY** - Comprehensive validation of ALL PR changes deployed and operational in test environment
@@ -413,11 +445,12 @@ The framework follows an intelligent 7-stage approach with AI category classific
 - **Test-Cases.md MUST start with**: Login step in exact required format
 - **NO HTML tags anywhere**: Use markdown formatting only
 - **Dual File Output**: Complete-Analysis.md + Test-Cases.md
-- **Streamlined Analysis Reports**: 
-  - **🚨 DEPLOYMENT STATUS** (first): Clear, evidence-based feature availability with supporting data
-  - **Implementation Status** (second): What is implemented, PRs, key behavior
-  - **Environment & Validation Status** (third): Environment used, validation results, limitations
-  - **Concise Feature Summary**: Brief feature explanation + data collection summary (no detailed framework process explanations)
+- **🚨 MANDATORY 5-SECTION ANALYSIS REPORTS**: 
+  - **Section 1: 🚨 DEPLOYMENT STATUS**: Environment details, feature status assessment, supporting evidence, version correlation
+  - **Section 2: Implementation Status**: Detailed PR investigation results, code change analysis, implementation timeline, development team info
+  - **Section 3: Feature Details**: Technical implementation with actual code from PRs, integration points, architecture impact, configuration requirements
+  - **Section 4: Business Impact**: Customer value, use cases, problem resolution, market impact
+  - **Section 5: Relevant Links**: Documentation links, JIRA references, PR references, external resources
 - **🚨 MANDATORY DEPLOYMENT STATUS ANALYSIS**: Definitive evidence-based feature availability assessment with comprehensive validation data
 - **🔒 THOROUGH IMPLEMENTATION VERIFICATION**: Complete validation of ALL PR changes deployed and operational in test environment
 - **🎯 DEPLOYMENT VERDICT**: Clear, unambiguous deployment status with concrete supporting evidence:
@@ -467,7 +500,7 @@ The framework follows an intelligent 7-stage approach with AI category classific
 2. **🔐 AI Authentication**: Multi-method secure authentication using AI Authentication Service with automatic fallback and validation
 3. **🛡️ AI Environment Validation**: Comprehensive health assessment using AI Environment Validation Service for readiness verification
 4. **🔍 AI Deployment Detection**: Evidence-based deployment status using AI Deployment Detection Service with behavioral testing
-5. **📊 AI Investigation Protocol**: JIRA + PRs + Internet Research via AI Documentation and GitHub Investigation Services - REQUIRED
+5. **📊 AI Investigation Protocol**: JIRA + PRs + Internet Research via AI Documentation and Enhanced GitHub Investigation Services with `gh` CLI priority - REQUIRED
 6. **🔒 AI THOROUGH FEATURE DEPLOYMENT VALIDATION**: **MANDATORY** - Comprehensive validation that ALL PR changes are deployed and operational in test environment via AI services
 7. **🎯 AI Test Case Generation**: Description + Setup + Enhanced Expected Results format with AI-generated YAML samples
 8. **✅ AI Quality Assurance**: Automated validation via AI Validation Service (escaped pipes, ManagedClusterView guidance, server-side YAML validation)
@@ -523,7 +556,7 @@ The framework follows an intelligent 7-stage approach with AI category classific
 - **🔒 Deployment Validation**: Thorough verification that ALL PR changes are deployed and operational
 - **Professional Test Format**: Description + Setup + Enhanced Expected Results with sample YAML/data outputs
 - **🧠 Learning System**: Continuous improvement through pattern recognition and feedback
-- **AI Investigation Protocol**: JIRA hierarchy + GitHub analysis + Internet research + Comprehensive feature deployment validation via AI services
+- **AI Investigation Protocol**: JIRA hierarchy + Enhanced GitHub analysis with `gh` CLI priority + Internet research + Comprehensive feature deployment validation via AI services
 - **Task-Focused Reports**: Clean outputs without framework self-references
 
 ## 🔧 Advanced Features
@@ -539,7 +572,7 @@ The framework follows an intelligent 7-stage approach with AI category classific
 **ENFORCEMENT POLICY**: The framework MUST perform comprehensive validation of actual feature implementation in the test environment - NOT just infrastructure availability.
 
 **BEFORE generating test cases**, the AI framework MUST ALWAYS:
-1. **AI PR Analysis**: Find and analyze ALL implementation PRs via AI GitHub Investigation Service - NO EXCEPTIONS
+1. **AI PR Analysis**: Find and analyze ALL implementation PRs via AI Enhanced GitHub Investigation Service with smart detection - NO EXCEPTIONS
 2. **AI Internet Research**: Research technology, docs, and best practices via AI services - REQUIRED
 3. **AI Schema Validation**: Inspect actual field structures and behaviors via AI Schema Service
 4. **AI Architecture Discovery**: Understand operational patterns through AI investigation
@@ -576,7 +609,7 @@ The framework follows an intelligent 7-stage approach with AI category classific
 4. **AI Cross-reference Validation**: Consistency checking across entire ticket network
 
 **Step 2: AI PR Investigation** (MANDATORY):
-1. **AI GitHub Investigation Service**: Find ALL related PRs through intelligent search
+1. **AI Enhanced GitHub Investigation Service**: Find ALL related PRs through intelligent search with smart CLI detection and seamless fallback
 2. **AI Code Analysis**: Implementation details and code changes
 3. **AI Discussion Analysis**: PR discussions and technical decisions
 4. **AI Deployment Validation**: Status and integration points
@@ -650,6 +683,49 @@ The framework follows an intelligent 7-stage approach with AI category classific
 - **SCENARIO DIVERSITY**: Include multiple test scenarios to ensure comprehensive feature validation
 - **🚨 CRITICAL: TEST TABLE SIZE LIMIT**: Each test table MUST have maximum 8-10 steps - if verification requires more steps, create additional test tables to ensure full coverage
 
+### 📋 ENHANCED COMPLETE ANALYSIS REPORT FORMAT ⚠️ MANDATORY
+
+**CRITICAL REPORTING STRUCTURE** - The Complete-Analysis.md MUST follow this exact format:
+
+#### 1. **🚨 DEPLOYMENT STATUS** (FIRST SECTION)
+- **Environment Details**: MUST clearly state which environment was used (e.g., "qe6 cluster", "local test environment", "simulated analysis") with relevant deployment information
+- **Feature Status Assessment**: MUST provide definitive status with strong supporting evidence:
+  - **FULLY OPERATIONAL**: Feature deployed and working with concrete validation data
+  - **PARTIALLY OPERATIONAL**: Specific components working/missing with detailed breakdown
+  - **NOT DEPLOYED**: Feature unavailable with concrete evidence and timeline
+  - **IMPLEMENTATION BUG**: Feature deployed but malfunctioning with error analysis
+- **Supporting Evidence**: MUST provide concrete data collected during validation (version checks, behavioral tests, schema validation, etc.)
+- **Version Correlation**: MUST correlate ACM/MCE versions with feature availability and deployment timeline
+
+#### 2. **Implementation Status** (SECOND SECTION)  
+- **PR Investigation Results**: MANDATORY detailed PR status including:
+  - **PR Found**: Status (open/closed/merged), dates, author, repository, implementation details
+  - **PR Not Found**: Explicitly state "No related PRs found" with explanation of search criteria used
+- **Code Change Analysis**: When PRs found, provide detailed analysis of actual code changes implemented
+- **Implementation Timeline**: PR creation dates, merge dates, target release information
+- **Development Team**: Who worked on implementation, review status, approval timeline
+
+#### 3. **Feature Details** (THIRD SECTION)
+- **Technical Implementation**: Detailed explanation of the new feature using actual code from PRs
+- **Code Analysis**: Specific code changes, new functions, modified logic, configuration changes
+- **Integration Points**: How feature integrates with existing systems and components
+- **Architecture Impact**: Structural changes and system modifications
+- **Configuration Requirements**: New annotations, parameters, or setup requirements
+
+#### 4. **Business Impact** (FOURTH SECTION)  
+- **Customer Value**: Business justification and customer benefits
+- **Use Cases**: Primary and secondary use case scenarios
+- **Problem Resolution**: What customer problems this feature solves
+- **Market Impact**: Competitive advantages and market positioning
+
+#### 5. **Relevant Links** (FINAL SECTION)
+- **Documentation Links**: Official docs, user guides, technical specifications
+- **JIRA References**: All related tickets with hierarchical relationships
+- **PR References**: All implementation PRs with direct links
+- **External Resources**: Relevant technical resources and community discussions
+
+**🚨 ENFORCEMENT**: Reports NOT following this structure will be REJECTED. All sections are MANDATORY with concrete evidence and detailed analysis.
+
 ---
 
 ## 🔒 FINAL ENFORCEMENT DECLARATION
@@ -661,10 +737,11 @@ The framework follows an intelligent 7-stage approach with AI category classific
 1. **🤖 COMPLETE AI INVESTIGATION PROTOCOL**: 
    - ❌ Framework REFUSES to generate test cases without executing ALL AI service steps
    - ❌ NO shortcuts, NO manual bypasses, NO exceptions
-   - ✅ MANDATORY: 3-level deep JIRA hierarchy analysis with ALL nested links
-   - ✅ MANDATORY: Comprehensive documentation link investigation with nested discovery
+   - ✅ MANDATORY: 3-level deep JIRA hierarchy analysis with ALL nested links - EXTRACT ALL INFORMATION regardless of branch/docs availability
+   - ✅ MANDATORY: Comprehensive JIRA content extraction when external documentation is limited
+   - ✅ MANDATORY: DETAILED PR status investigation (open/closed, dates, authors, implementation details) OR explicit "No PRs found" documentation
    - ✅ MANDATORY: Thorough internet research on technology and best practices
-   - ✅ MANDATORY: Complete GitHub PR analysis with implementation details
+   - ✅ MANDATORY: Complete GitHub PR analysis with actual code change analysis when PRs found
    - ✅ MANDATORY: **THOROUGH FEATURE IMPLEMENTATION VALIDATION**
 
 2. **🔒 MANDATORY FEATURE DEPLOYMENT VALIDATION**:
@@ -694,6 +771,15 @@ The framework follows an intelligent 7-stage approach with AI category classific
    - ❌ NO speculation or assumptions about feature availability
    - ✅ MANDATORY: Evidence-based deployment assessment with concrete supporting data
    - ✅ MANDATORY: Clear deployment verdict (DEPLOYED/PARTIALLY DEPLOYED/NOT DEPLOYED/BUG) with proof
+
+6. **📋 MANDATORY 5-SECTION COMPLETE-ANALYSIS.MD STRUCTURE**:
+   - ❌ Framework BLOCKS reports not following the mandatory 5-section structure
+   - ❌ NO deviations from required reporting format
+   - ✅ MANDATORY: Section 1 - 🚨 DEPLOYMENT STATUS with environment details and concrete evidence
+   - ✅ MANDATORY: Section 2 - Implementation Status with detailed PR investigation results
+   - ✅ MANDATORY: Section 3 - Feature Details with technical implementation using actual code from PRs
+   - ✅ MANDATORY: Section 4 - Business Impact with customer value and use cases
+   - ✅ MANDATORY: Section 5 - Relevant Links with comprehensive reference collection
 
 **🚨 ENFORCEMENT MECHANISM**: Framework operates under STRICT compliance mode - any attempt to bypass these requirements will result in BLOCKED execution and REFUSED test generation.
 
@@ -728,7 +814,7 @@ The framework follows an intelligent 7-stage approach with AI category classific
 - [ ] 🔍 **MANDATORY JIRA HIERARCHY ANALYSIS**: 3-level deep recursion with ALL nested links completed
 - [ ] 📄 **MANDATORY DOCUMENTATION INVESTIGATION**: ALL documentation links analyzed with nested discovery
 - [ ] 🌐 **MANDATORY INTERNET RESEARCH**: Comprehensive technology and best practices research completed
-- [ ] 📊 **MANDATORY GITHUB INVESTIGATION**: ALL related PRs analyzed with implementation details
+- [ ] 📊 **MANDATORY ENHANCED GITHUB INVESTIGATION**: ALL related PRs analyzed with smart CLI detection and implementation details
 - [ ] 🎯 AI category classification completed with confidence score
 - [ ] 🔒 **AI-POWERED DEPLOYMENT VALIDATION**: Multi-source evidence collected and cross-validated
 - [ ] 📊 **DEFINITIVE DEPLOYMENT STATUS**: ACM/MCE version correlation completed with concrete proof
@@ -803,12 +889,14 @@ This intelligent enhancement system transforms the framework from static templat
 - 🔐 **AI Authentication Service**: Multi-method secure authentication with automatic fallback
 - 🛡️ **AI Environment Validation Service**: Comprehensive environment health assessment and readiness validation
 - 🔍 **AI Deployment Detection Service**: Evidence-based deployment validation with 96%+ accuracy and behavioral testing
+- 📊 **AI Enhanced GitHub Investigation Service**: Smart `gh` CLI detection with priority usage and seamless WebFetch fallback for 3x faster analysis (zero user errors)
 - 🎯 AI-powered ticket classification with 7 primary categories
 - 📊 Category-aware validation with adaptive quality targets (85-95+ points)
-- 🔍 **MANDATORY 3-level deep JIRA hierarchy analysis** with complete nested link investigation
-- 📄 **MANDATORY comprehensive documentation research** with nested discovery
+- 🔍 **MANDATORY 3-level deep JIRA hierarchy analysis** with complete nested link investigation and comprehensive JIRA content extraction
+- 📄 **MANDATORY comprehensive documentation research** with nested discovery and fallback to JIRA content when external docs unavailable
 - 🌐 **MANDATORY thorough internet research** for technology and best practices
-- 📊 **MANDATORY complete GitHub PR analysis** with implementation details
+- 📊 **MANDATORY enhanced GitHub PR investigation** with detailed status analysis (open/closed, dates, authors) and actual code change analysis
+- 📋 **MANDATORY 5-section Complete-Analysis.md structure** with enhanced reporting format enforcement
 - 🤖 **MANDATORY AI-powered validation feedback loop** with real-time quality optimization
 - 🚨 Enhanced HTML tag detection and prevention (25-point deduction)
 - 🔒 Advanced deprecated script exposure prevention (10-point deduction)

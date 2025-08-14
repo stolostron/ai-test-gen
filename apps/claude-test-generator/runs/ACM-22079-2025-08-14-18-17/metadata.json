@@ -1,0 +1,46 @@
+{
+  "ticket": "ACM-22079",
+  "title": "Support digest-based upgrades via ClusterCurator for non-recommended upgrades",
+  "analysis_date": "2025-08-14T18:17:00Z",
+  "framework_version": "3.0",
+  "ai_services_used": [
+    "AI Investigation Protocol",
+    "AI Documentation Service", 
+    "AI Enhanced GitHub Investigation Service",
+    "AI Category Classification Service",
+    "AI Deployment Detection Service",
+    "AI Validation Service"
+  ],
+  "category_classification": {
+    "primary": "Upgrade",
+    "secondary": "Resource Management",
+    "confidence": 0.95,
+    "quality_target": 95
+  },
+  "deployment_status": {
+    "status": "NOT_DEPLOYED",
+    "target_version": "ACM 2.15+",
+    "evidence": "Feature in development phase, documentation ticket in backlog",
+    "validation_method": "AI-powered analysis"
+  },
+  "investigation_summary": {
+    "jira_tickets_analyzed": ["ACM-22079", "ACM-22080", "ACM-22081", "ACM-22457"],
+    "github_repositories": ["stolostron/cluster-curator-controller", "stolostron/acmqe-clc-test"],
+    "documentation_sources": ["Red Hat ACM docs", "OpenShift conditional updates"],
+    "customer_context": "Amadeus urgent requirement for disconnected environment"
+  },
+  "test_case_summary": {
+    "total_scenarios": 3,
+    "coverage_areas": ["digest_resolution", "fallback_mechanism", "disconnected_environment"],
+    "complexity": "E2E comprehensive"
+  },
+  "quality_score": 96,
+  "ai_validation_passed": true,
+  "compliance_checks": {
+    "html_tags": "PASS - No HTML tags detected",
+    "login_format": "PASS - Correct Step 1 format",
+    "deployment_header": "PASS - Correct deployment status header",
+    "sample_outputs": "PASS - Realistic sample outputs provided",
+    "table_format": "PASS - 2-column format maintained"
+  }
+}
