@@ -27,7 +27,12 @@
       "Bash(grep:*)",
       "Bash(oc adm upgrade:*)",
       "Bash(oc create:*)",
-      "WebFetch(domain:kubernetes.io)"
+      "WebFetch(domain:kubernetes.io)",
+      "Bash(gh search repos:*)",
+      "Bash(gh search prs:*)",
+      "Bash(gh repo list:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh search code:*)"
     ],
     "deny": []
   }

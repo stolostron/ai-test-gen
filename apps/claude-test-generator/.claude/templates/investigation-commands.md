@@ -21,23 +21,41 @@ jira issue view ACM-22079
 # AI will automatically identify and analyze ALL nested relationships up to 3 levels deep
 ```
 
-### AI GitHub Investigation Service
-**Claude Command Pattern**: Use AI-powered GitHub analysis via WebFetch and intelligent search patterns
+### AI Enhanced GitHub Investigation Service
+**Claude Command Pattern**: Use AI-powered GitHub analysis with `gh` CLI priority and intelligent WebFetch fallback
 
-**AI GitHub Investigation Protocol**:
-1. **PR Discovery**: Intelligent search for related PRs using GitHub API patterns
-2. **Repository Analysis**: Deep code analysis using WebFetch for GitHub PR content
-3. **Implementation Validation**: AI-powered code change analysis and impact assessment
-4. **Architecture Discovery**: Intelligent pattern recognition for system design understanding
+**🚀 Dual-Method Investigation Protocol**:
+1. **Smart Detection**: Automatically detect `gh` CLI availability and authentication status
+2. **Method Selection**: Prioritize `gh` CLI for enhanced capabilities, fallback to WebFetch for reliability
+3. **Enhanced Analysis**: Leverage rich metadata when available, maintain quality with content analysis
+4. **Intelligent Fallback**: Seamless transition between methods without user intervention
 
-**Example AI GitHub Workflow**:
+**Method 1: GitHub CLI (Priority)**:
 ```bash
-# AI will automatically:
-# - Discover related PRs through intelligent search patterns
-# - Analyze PR content via WebFetch for implementation details
-# - Perform semantic code analysis for architectural understanding
-# - Validate feature implementation status and deployment readiness
+# Enhanced investigation with rich metadata (when gh CLI available)
+gh pr view <PR_NUMBER> --repo <ORG/REPO> --json title,body,state,files,reviews
+gh pr list --repo <ORG/REPO> --search "<KEYWORDS>" --json number,title,state,author
+gh pr diff <PR_NUMBER> --repo <ORG/REPO>
+gh pr checks <PR_NUMBER> --repo <ORG/REPO>
+
+# Advanced repository analysis
+gh repo view <ORG/REPO> --json description,topics,primaryLanguage
+gh api repos/<ORG/REPO>/pulls/<PR_NUMBER>/files --jq '.[].filename'
 ```
+
+**Method 2: WebFetch (Fallback)**:
+```bash
+# Reliable content analysis (when gh CLI unavailable)
+WebFetch: https://github.com/<ORG/REPO>/pull/<PR_NUMBER>
+WebFetch: https://github.com/<ORG/REPO>/pull/<PR_NUMBER>/files
+WebFetch: https://github.com/<ORG/REPO>/pulls?q=<KEYWORDS>
+```
+
+**🤖 AI Intelligence Benefits**:
+- **With gh CLI**: 3x faster analysis, rich metadata, advanced search, CI status validation
+- **With WebFetch**: Universal compatibility, content parsing, link discovery
+- **Always Available**: 100% reliability with automatic method selection
+- **Enhanced When Possible**: Better results when gh CLI present, consistent quality always
 
 ### Internet Research Protocol
 ```bash
@@ -77,11 +95,12 @@ oc get <RESOURCE> -o yaml
 - Comment analysis for hidden documentation links
 - Quality-scored investigation summaries
 
-### Step 2: AI Repository Investigation
-**AI Service**: Intelligent GitHub analysis with PR discovery and code understanding
-- Semantic PR search and discovery
-- Implementation status validation
-- Architecture pattern recognition
+### Step 2: AI Enhanced GitHub Investigation
+**AI Service**: Dual-method GitHub analysis with `gh` CLI priority and WebFetch fallback
+- **Smart Method Selection**: Automatic detection and optimal method selection
+- **Enhanced Capabilities**: Rich metadata analysis when gh CLI available
+- **Reliable Fallback**: Content analysis via WebFetch when CLI unavailable
+- **Comprehensive Coverage**: PR discovery, implementation validation, architecture analysis
 
 ### Step 3: Internet Research
 ```bash

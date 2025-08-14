@@ -4,16 +4,39 @@
 
 The framework performs **thorough investigation** of all related tickets:
 
-### Multi-Level Ticket Investigation
-1. **Main Ticket Analysis**: Requirements, acceptance criteria, technical specifications
-2. **All Subtasks Investigation**: Implementation status, PR links, completion state
-3. **Dependency Chain Analysis**: Blocking/blocked tickets, prerequisites
-4. **Epic Context Review**: Parent epics, strategic objectives, architectural decisions
-5. **Related Ticket Mining**: Historical context, previous implementations, lessons learned
-6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context
+### Multi-Level Ticket Investigation ⚠️ ENHANCED REQUIREMENTS
+1. **Main Ticket Analysis**: Requirements, acceptance criteria, technical specifications - EXTRACT ALL INFORMATION
+2. **All Subtasks Investigation**: Implementation status, PR links, completion state - MANDATORY deep content extraction
+3. **Dependency Chain Analysis**: Blocking/blocked tickets, prerequisites - COMPLETE dependency mapping
+4. **Epic Context Review**: Parent epics, strategic objectives, architectural decisions - FULL context extraction
+5. **Related Ticket Mining**: Historical context, previous implementations, lessons learned - COMPREHENSIVE analysis
+6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context - REGARDLESS OF BRANCH AVAILABILITY
+7. **⚠️ CRITICAL: Extract ALL Content from JIRA**: When external documentation is limited/unavailable, MUST extract ALL technical details, specifications, and implementation information directly from JIRA ticket content
+8. **Documentation Fallback Protocol**: When docs.redhat.com or stolostron/rhacm-docs branches are unavailable, use comprehensive JIRA content extraction as primary information source
 
-### PR and Implementation Deep Dive
-- **Code Change Analysis**: Actual implementation details from attached PRs
+### 📚 AI Documentation Intelligence Service (NEW - MANDATORY)
+**Primary Source**: Red Hat ACM Official Documentation Repository
+- **Repository Analysis**: https://github.com/stolostron/rhacm-docs (branch-aware feature discovery)
+- **Architecture Documentation**: Technical implementation patterns and design decisions
+- **User Guide Analysis**: Feature usage patterns and expected behaviors
+- **API Reference Validation**: CRD schemas and field specification verification
+- **Version Correlation**: Documentation version mapping to ACM/MCE releases
+- **Best Practice Extraction**: Official Red Hat recommended usage patterns
+- **Configuration Intelligence**: Validated YAML examples and schema compliance
+
+### PR and Implementation Deep Dive ⚠️ MANDATORY ENHANCED INVESTIGATION
+- **⚠️ CRITICAL: PR Status Investigation**: MANDATORY detailed analysis including:
+  - **PR Found**: Status (open/closed/merged), creation and merge dates, author information, repository location
+  - **PR Not Found**: Explicitly document "No related PRs found" with comprehensive search criteria used
+  - **Search Methodology**: Document all repositories searched, search terms used, and why PRs might not exist
+- **Code Change Analysis**: When PRs found, provide actual implementation details:
+  - **Specific Code Changes**: New functions, modified classes, configuration updates
+  - **Implementation Details**: How the feature is technically implemented
+  - **Integration Logic**: How new code integrates with existing systems
+- **Implementation Timeline Analysis**: 
+  - **Development Phases**: PR creation, review, merge dates
+  - **Release Mapping**: Target ACM/MCE version, release cycle information
+  - **Team Information**: Developer names, reviewer approvals, project ownership
 - **Implementation Reality Validation**: ⚠️ MANDATORY verification of actual feature deployment status
 - **Environment Feature Detection**: Active validation that implementation is live in test environment
 - **Deployment Status Assessment**: Evidence-based determination of what's available for testing
