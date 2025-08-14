@@ -138,8 +138,34 @@ Located in `.claude/workflows/feedback-loop-system.md`:
 - Integrates human expertise with AI generation
 - Prevents quality regression over time
 
-## Integration with Intelligent Framework
+## Polarion Integration
 
+> **Setup Guide**: [Polarion Setup Documentation](docs/polarion-setup-guide.md)  
+> **CLI Reference**: [Complete CLI Command Reference](docs/polarion-cli-reference.md)  
+> **Workflow Integration**: [Polarion Integration Workflow](.claude/workflows/polarion-integration.md)
+
+The framework includes optional Polarion integration for enterprise test case management:
+
+### Key Features
+- **Learning from Existing Test Cases**: Analyze patterns from existing Polarion test cases
+- **Direct Test Case Posting**: Post generated test cases directly to Polarion
+- **Metadata Enhancement**: Automatically add relevant metadata and links
+- **Pattern Recognition**: Learn validation approaches and naming conventions
+
+### Quick Start
+```bash
+# Setup Polarion integration (optional)
+python3 -m polarion.cli setup-config
+export POLARION_PAT_TOKEN='your-token'
+export POLARION_URL='https://polarion.company.com'
+
+# Use in workflow (when needed)
+python3 -m polarion.cli fetch-learning --search-terms "ACM" "upgrade"
+# ... run normal test generation ...
+python3 -m polarion.cli post-test-cases Test-Cases.md
+```
+
+## Integration with Intelligent Framework
 
 ### Current Relationship
 
@@ -226,6 +252,8 @@ claude-test-generator/
 
 ### Documentation
 - **Quick Start**: See `docs/quick-start.md` for detailed setup guidance
+- **Polarion Setup**: See `docs/polarion-setup-guide.md` for Polarion integration setup
+- **CLI Reference**: See `docs/polarion-cli-reference.md` for complete command documentation
 - **Configuration**: Check `.claude/` directory for customization options
 - **Examples**: Review `examples/` for sample outputs and patterns
 

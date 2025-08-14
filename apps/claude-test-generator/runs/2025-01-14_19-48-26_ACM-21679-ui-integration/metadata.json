@@ -1,0 +1,102 @@
+{
+  "analysis_metadata": {
+    "timestamp": "2025-01-14T19:48:26Z",
+    "framework_version": "V2.0",
+    "jira_ticket": "ACM-21679",
+    "feature_name": "Live Migration ACM Console UI Integration",
+    "category": "UI/Console Integration",
+    "environment": "qe6-vmware-ibm.install.dev09.red-chesterfield.com",
+    "deployment_status": "PARTIALLY DEPLOYED",
+    "quality_score": 94,
+    "test_cases_count": 6,
+    "corrected_scope": "ACM UI Integration Focus"
+  },
+  "acm_qe_scope": {
+    "primary_focus": "UI Integration and Console Workflows",
+    "key_areas": [
+      "MTV Integration: ACM console ↔ Migration Toolkit for Virtualization workflows",
+      "UI Testing: Complete user journeys from ACM console to successful migration",
+      "Cross-cluster Actions: Ensuring migration requests route correctly from ACM to MTV",
+      "Status Monitoring: Real-time progress tracking through ACM interface",
+      "Simple VM Migration: Functional (focusing on UI) validation using BM hub → RHOV spoke setup"
+    ],
+    "not_in_scope": [
+      "Actual migration mechanics testing",
+      "Complex migration scenarios",
+      "MTV operator installation/deployment",
+      "Virtualization-specific migration testing on individual clusters"
+    ]
+  },
+  "ui_implementation_status": {
+    "feature_flag_system": {
+      "status": "FULLY DEPLOYED",
+      "pr": "#4677",
+      "test_coverage": "100%",
+      "quality_gate": "PASSED"
+    },
+    "vm_table_integration": {
+      "status": "FULLY DEPLOYED", 
+      "pr": "#4643",
+      "test_coverage": "89.7%",
+      "components": ["MigrateVirtualMachinePage.tsx", "utils.tsx"]
+    },
+    "migration_wizard": {
+      "status": "IN DEVELOPMENT",
+      "pr": "#4797",
+      "status_detail": "Open PR with failed unit test",
+      "components": ["wizard", "modal", "target placement selection"]
+    },
+    "console_plugins": {
+      "status": "FULLY DEPLOYED",
+      "active_plugins": ["networking-console-plugin", "monitoring-plugin", "mce", "acm", "kubevirt-plugin"],
+      "integration": "Operational"
+    }
+  },
+  "environment_validation": {
+    "openshift_version": "4.19.7",
+    "cnv_operator_version": "4.19.3",
+    "console_plugins_active": 5,
+    "managed_clusters_count": 4,
+    "active_vms_count": 2,
+    "virtualization_pods_running": 19,
+    "acm_console_route": "Available"
+  },
+  "test_coverage": {
+    "feature_flag_configuration": "Covered",
+    "vm_table_integration": "Covered",
+    "migration_wizard_ui": "Covered",
+    "cross_cluster_routing": "Covered", 
+    "status_monitoring": "Covered",
+    "error_handling": "Covered",
+    "total_scenarios": 6,
+    "total_test_steps": 30,
+    "focus": "UI Integration and Console Workflows"
+  },
+  "test_infrastructure": {
+    "framework": "CLC-UI with kubeVirtUtils.js",
+    "environment_detection": "Bare metal validation for nested virtualization avoidance",
+    "test_patterns": "cypress/fixtures/clusters/addons/virtualizationTestConfig.js",
+    "browser_testing": "Cross-browser validation supported",
+    "console_testing": "Direct ACM console UI interaction"
+  },
+  "collaboration_boundaries": {
+    "acm_qe_responsibility": [
+      "UI feature flag validation",
+      "Console navigation and workflow testing", 
+      "ACM to MTV integration testing",
+      "Status monitoring interface testing",
+      "Error handling through console interface"
+    ],
+    "installer_qe_responsibility": [
+      "MTV addon installation/uninstallation",
+      "Operator health validation",
+      "Upgrade scenarios",
+      "Template deployment"
+    ],
+    "cnv_qe_responsibility": [
+      "Virtualization-specific migration testing",
+      "Individual cluster virtualization UI testing",
+      "Complex migration scenario validation"
+    ]
+  }
+}

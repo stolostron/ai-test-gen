@@ -1,0 +1,8 @@
+# AI Polarion Service Dependencies
+requests>=2.28.0
+
+# Optional: Environment variable support (alternative to AI credential storage)
+python-dotenv>=0.19.0
+
+# HTTP connection optimization
+urllib3>=1.26.0

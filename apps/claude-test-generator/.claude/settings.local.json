@@ -27,7 +27,16 @@
       "Bash(grep:*)",
       "Bash(oc adm upgrade:*)",
       "Bash(oc create:*)",
-      "WebFetch(domain:kubernetes.io)"
+      "WebFetch(domain:kubernetes.io)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(bin/login_oc:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:docs.google.com)",
+      "Bash(oc api-resources:*)",
+      "Bash(oc explain:*)",
+      "Bash(oc exec:*)",
+      "WebFetch(domain:console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com)",
+      "Bash(echo:*)"
     ],
     "deny": []
   }
