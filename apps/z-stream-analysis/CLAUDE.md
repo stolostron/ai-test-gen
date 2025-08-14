@@ -10,6 +10,7 @@ The Z-Stream Analysis Engine specializes in automated Jenkins pipeline failure a
 - **🌐 Environment Validation**: Real-time cluster connectivity and product functionality testing with 99.5% success rate
 - **🔍 Real Repository Analysis**: Actual automation repository cloning and code examination with 100% accuracy
 - **🛠️ Precise Fix Generation**: Exact code changes based on real repository analysis with verified file paths and line numbers
+- **🧹 Automatic Cleanup**: Intelligent removal of temporary repositories while preserving all analysis results
 - **🔗 Cross-Service Intelligence**: Multi-source evidence correlation with 96%+ analysis accuracy and sub-300 second execution
 - **Definitive Verdict Generation**: Evidence-based PRODUCT BUG | AUTOMATION BUG | AUTOMATION GAP classification
 - **Comprehensive Automation Solutions**: Precise automation repository fixes with exact implementations and pull request automation
@@ -51,6 +52,11 @@ ls -la runs/  # View recent analysis results
 "Generate precise automation fixes based on real repository analysis: https://jenkins-url/"
 "Provide definitive verdict with cross-service evidence correlation: https://jenkins-url/"
 
+# AI Cleanup Service (automatic and on-demand)
+"Clean up temporary repositories after analysis"
+"Remove cloned repositories while preserving analysis results"
+"Execute post-analysis cleanup"
+
 # View enhanced documentation
 cat README.md               # Simple user guide: What it does + How to use it
 cat docs/framework-architecture.md    # How it works: Clear step-by-step explanation
@@ -84,6 +90,7 @@ cd apps/z-stream-analysis
 - **🌐 AI Environment Validation Service**: Intelligent cluster connectivity and real-time feature validation with 99.5% success rate
 - **🔍 Real Repository Analysis Service**: Actual repository cloning and code examination with 100% accuracy
 - **🛠️ Precise Fix Generation Service**: Exact code changes based on real repository analysis with verified implementations
+- **🧹 AI Cleanup Service**: Automatic removal of temporary repositories while preserving all analysis results
 - **🔗 AI Services Integration Framework**: Comprehensive orchestration with sub-300 second end-to-end execution
 
 ### Definitive Analysis Capabilities
@@ -133,6 +140,7 @@ z-stream-analysis/                          # ← You are here
 │       ├── ai-product-bug-detection.md
 │       ├── ai-quality-assurance.md
 │       ├── ai-real-repository-analysis.md
+│       ├── ai-repository-cleanup.md
 │       └── ai-report-generation.md
 ├── README.md                              # Simple user guide: What it does + How to use it
 ├── docs/                                  # Clear and simple documentation
@@ -194,9 +202,10 @@ z-stream-analysis/                          # ← You are here
 - **Repository Compliance**: 100% consistency with actual codebase patterns through real analysis
 
 **Enhanced Development Approach (V3.1):**
-- **Enterprise AI Services Architecture**: Four specialized AI services with intelligent orchestration
+- **Enterprise AI Services Architecture**: Five specialized AI services with intelligent orchestration
 - **Environment-Aware Analysis**: Real-time cluster connectivity and product functionality validation
 - **Repository-Integrated Solutions**: Real automation repository cloning and analysis with precise fix generation
+- **Intelligent Cleanup Operations**: Automatic removal of temporary repositories while preserving analysis results
 - **Cross-Service Intelligence**: Multi-source evidence correlation and comprehensive quality assurance
 - **Self-Contained Operation**: No dependencies on other apps in ai_systems repository
 - **Intelligent Data Processing**: Curl-based extraction with WebFetch fallback and error recovery
@@ -210,6 +219,7 @@ z-stream-analysis/                          # ← You are here
 - **🌐 AI Environment Validation Service**: Real-time cluster connectivity and product functionality testing with 99.5% success rate
 - **🔍 Real Repository Analysis Service**: Actual automation repository cloning and code examination with 100% accuracy  
 - **🛠️ Precise Fix Generation Service**: Exact code changes based on real repository analysis with verified implementations
+- **🧹 AI Cleanup Service**: Intelligent removal of temporary repositories while preserving all analysis results
 - **🔗 AI Services Integration Framework**: Comprehensive orchestration with sub-300 second end-to-end execution and 96%+ analysis accuracy
 
 ### AI-Powered Analysis with Cross-Service Intelligence
@@ -352,10 +362,12 @@ cd apps/z-stream-analysis
 # - Repository code examination analyzes real file structure, line numbers, and implementations
 # - Fix Generation Service creates precise automation solutions based on real repository analysis
 # - Integration Framework correlates evidence across services with verified repository data
+# - Cleanup Service automatically removes temporary repositories after analysis completion
 
 # 5. Claude creates comprehensive analysis in runs/ directory with timestamped format
 # 6. Results include definitive verdict, environment validation, and precise automation fixes based on real repository analysis
-# 7. AI services available in .claude/ai-services/ for enterprise capabilities
+# 7. Automatic cleanup removes cloned repositories while preserving all analysis results
+# 8. AI services available in .claude/ai-services/ for enterprise capabilities
 ```
 
 ### Jenkins Data Extraction Methods (V3.1)
@@ -403,11 +415,12 @@ curl -k -s "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/qe-acm-autom
    - Fallback: WebFetch tool for certificate-protected instances
    - Metadata: Extract build status, duration, timestamps, and environment parameters
 3. **Environment Validation**: Connect to actual test cluster using extracted parameters and validate product functionality
-4. **Repository Analysis**: Analyze automation codebase for test logic understanding and pattern detection
+4. **Repository Analysis**: Clone and analyze actual automation repository for real code examination and pattern detection
 5. **Cross-Service Evidence Correlation**: Correlate findings from environment validation and repository analysis
 6. **Definitive Classification**: Generate evidence-based PRODUCT BUG | AUTOMATION BUG | AUTOMATION GAP verdict
 7. **Fix Generation**: Create precise automation solutions based on real repository analysis with exact implementations
 8. **Report Generation**: Create comprehensive analysis with implementation roadmap
+9. **Cleanup Operations**: Automatically remove temporary repositories while preserving analysis results
 
 ### Output Structure (Framework V3.1)
 
