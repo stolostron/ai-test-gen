@@ -33,8 +33,7 @@ else
 fi
 
 # Create timestamped run directory
-TIMESTAMP=$(date +%Y%m%d-%H%M)
-CURRENT_RUN_DIR="$RUN_DIR/run-$(printf "%03d" $NEXT_RUN)-$TIMESTAMP"
+CURRENT_RUN_DIR="$RUN_DIR/run-$(printf "%03d" $NEXT_RUN)-$(date +%Y%m%d-%H%M)"
 mkdir -p "$CURRENT_RUN_DIR"
 
 # 2. Environment setup (flexible)

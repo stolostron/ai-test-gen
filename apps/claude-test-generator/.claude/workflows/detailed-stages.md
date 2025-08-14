@@ -439,14 +439,16 @@ analyze_implementation_scope() {
 
 || Test Steps (Max 8-10 for cognitive efficiency) | Expected Results (with YAML samples & validation details) |
 ||------------|------------------|
-|| **Step 1**: [Action with business context]<br/>**Goal**: [Why this step matters]<br/>**Command**: `oc apply -f -` (stdin)<br/>Example YAML:<br/>```yaml
+|| **Step 1**: [Action with business context] - **Goal**: [Why this step matters] - **Command**: `oc apply -f -` (stdin) - Example YAML:
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
 data:
   featureFlag: "enabled"
-``` | **Success Criteria**: Specific, measurable outcome<br/>**Validation**: `oc get configmap app-config -o jsonpath='{.data.featureFlag}'`<br/>**Expected Output**: `enabled`<br/>**Sample YAML Result** (if environment accessible):<br/>```yaml
+``` | **Success Criteria**: Specific, measurable outcome - **Validation**: `oc get configmap app-config -o jsonpath='{.data.featureFlag}'` - **Expected Output**: `enabled` - **Sample YAML Result** (if environment accessible):
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

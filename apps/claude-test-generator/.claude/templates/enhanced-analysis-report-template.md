@@ -1,7 +1,10 @@
 # Enhanced Analysis Report Template
 
-## Implementation Status
-**Feature Implementation:** ✅ COMPLETED / 🚧 IN PROGRESS / ⏳ PENDING  
+## 🚨 DEPLOYMENT STATUS
+
+**Feature Deployment:** ✅ DEPLOYED / 🟡 PARTIALLY DEPLOYED / ❌ NOT DEPLOYED / ❓ UNKNOWN
+**Environment Used:** [qe6/qe7/custom]
+**Implementation Status:** ✅ COMPLETED / 🚧 IN PROGRESS / ⏳ PENDING  
 **Primary PR:** [Link and description]  
 **Version Target:** [Fix Version from JIRA]  
 **Key Behavior:** [Core functionality description]
