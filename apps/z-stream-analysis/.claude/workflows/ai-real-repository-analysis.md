@@ -323,6 +323,7 @@ Validate fixes work with actual repository:
 8. ai_cross_reference_findings()           # Correlate investigation results
 9. ai_generate_definitive_verdict()        # Final classification with evidence
 10. ai_generate_enhanced_reports()         # Reports with precise fixes and real analysis
+11. ai_execute_post_analysis_cleanup()     # AUTOMATIC CLEANUP of temporary repositories
 ```
 
 ## Repository Analysis Storage
