@@ -1,5 +1,16 @@
 # Test Case Format Requirements
 
+## 🚨 CRITICAL FORMAT REQUIREMENTS - ENFORCED BY VALIDATION
+
+**Quality Target: 85+ points** (Current average: 60/100)
+
+### ❌ ZERO TOLERANCE FAILURES
+1. **NO HTML TAGS**: Never use `<br/>`, `<b>`, `<i>` - causes 10-point deduction
+2. **EXACT LOGIN FORMAT**: Must use exact Step 1 format - causes 15-point deduction if wrong
+3. **DEPLOYMENT STATUS HEADER**: Must use `## 🚨 DEPLOYMENT STATUS` exactly - causes 15-point deduction if wrong
+4. **SAMPLE OUTPUTS**: Must include realistic outputs in code blocks - causes 10-point deduction if missing
+5. **NO INTERNAL SCRIPTS**: Never mention `setup_clc` or `login_oc` - causes 10-point deduction
+
 ## 🎯 Test Case Structure Standards
 
 ### Required Test Case Structure (Mandatory)
@@ -7,21 +18,48 @@ Each test case MUST include:
 1. **Description:** Clear explanation of what the test case does/tests exactly
 2. **Setup:** Required setup/prerequisites needed for the test case
 3. **Test Steps Table:** Step-by-step execution with verbal instructions
+4. **EXACT LOGIN FORMAT:** Must start with: `**Step 1: Log into the ACM hub cluster** - Access the hub cluster using credentials: oc login...`
 
-### Test Step Format Requirements (Mandatory)
+### ❌ MANDATORY TEST STEP FORMAT REQUIREMENTS
 All test steps MUST include:
-1. **Verbal instruction** describing what to do
+1. **Verbal instruction** describing what to do (NEVER start with only a command)
 2. **CLI command** (when applicable) 
 3. **UI guidance** (when applicable)
 
-### Expected Result Format Requirements (Mandatory)
+**✅ CORRECT (verbal instruction first):**
+```markdown
+| **Step 2: Create test namespace** - Run: `oc create namespace test-ns` | Namespace created successfully |
+```
+
+**❌ WRONG (command only):**
+```markdown
+| `oc create namespace test-ns` | Namespace created |
+```
+
+**CRITICAL:** Never start a step with only a CLI command - always include verbal explanation first.
+
+### ❌ MANDATORY EXPECTED RESULT REQUIREMENTS (10-point deduction)
 Expected Results MUST contain:
 1. **Verbal explanation** of what should happen
-2. **Sample YAML/data outputs** when relevant and helpful
+2. **Sample YAML/data outputs** in triple backticks when fetching/updating data (MANDATORY)
 3. **Expected command outputs** when commands/grep are used (so testers can easily see and match probable outputs)
-4. **Specific values** or output descriptions
+4. **Specific values** or realistic sample data (NOT placeholders)
 
-**Example:**
+**✅ CORRECT (includes sample output):**
+```markdown
+| **Step 2: Check status** - Run: `oc get pods` | Pods are running:
+```
+NAME                    READY   STATUS
+controller-abc123       1/1     Running
+``` |
+```
+
+**❌ WRONG (missing sample output):**
+```markdown
+| **Step 2: Check status** - Run: `oc get pods` | Pods should be running |
+```
+
+**✅ PERFECT EXAMPLE (85+ points):**
 ```markdown
 ## Test Case 1: Environment Setup and Resource Creation
 
@@ -33,15 +71,60 @@ Expected Results MUST contain:
 - Cluster admin permissions
 
 | Step | Expected Result |
-|------|-----------------|
-| **Log into ACM hub cluster**<br>`oc login https://api.cluster-url.com:6443 -u username -p password --insecure-skip-tls-verify` | Login successful with access confirmed. |
-| **Verify annotation is stored correctly**<br>`oc get clustercurator digest-upgrade-test -o jsonpath='{.metadata.annotations.cluster\.open-cluster-management\.io/upgrade-allow-not-recommended-versions}'` | Annotation value shows 'true' confirming feature is enabled. |
-| **Check resource YAML configuration**<br>`oc get clustercurator digest-upgrade-test -o yaml` | YAML output shows annotation in metadata confirming feature activation:<br><br>```yaml<br>metadata:<br>  annotations:<br>    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: 'true'<br>  name: digest-upgrade-test<br>spec:<br>  desiredCuration: upgrade<br>  upgrade:<br>    desiredUpdate: "4.16.37"<br>``` |
+|------|------------------|
+| **Step 1: Log into the ACM hub cluster** - Access the hub cluster using credentials: `oc login https://api.cluster-url.com:6443 -u admin -p password --insecure-skip-tls-verify` | Login successful with access confirmed:
+```
+Login successful.
+You have access to 67 projects, the list has been suppressed.
+Using project "default".
+``` |
+| **Step 2: Verify annotation is stored correctly** - Check the annotation value: `oc get clustercurator digest-upgrade-test -o jsonpath='{.metadata.annotations.cluster\.open-cluster-management\.io/upgrade-allow-not-recommended-versions}'` | Annotation value shows 'true' confirming feature is enabled:
+```
+true
+``` |
+| **Step 3: Check resource YAML configuration** - Retrieve full resource details: `oc get clustercurator digest-upgrade-test -o yaml` | YAML output shows annotation in metadata confirming feature activation:
+```yaml
+metadata:
+  annotations:
+    cluster.open-cluster-management.io/upgrade-allow-not-recommended-versions: 'true'
+  name: digest-upgrade-test
+spec:
+  desiredCuration: upgrade
+  upgrade:
+    desiredUpdate: "4.16.37"
+``` |
 ```
 
-**NOT:**
+**KEY SUCCESS FACTORS:**
+- ✅ No HTML tags anywhere
+- ✅ Exact Step 1 format with "Log into the ACM hub cluster"
+- ✅ Realistic sample outputs in code blocks
+- ✅ Verbal instructions before commands
+- ✅ No internal script references
+
+## ❌ CRITICAL FORMAT VIOLATIONS (CAUSES VALIDATION FAILURE):
+
+### ❌ HTML Tags (10-point deduction):
 ```markdown
-| **Verify annotation is stored correctly**<br>`oc get clustercurator digest-upgrade-test -o jsonpath='{.metadata.annotations}'` | Shows upgrade-allow-not-recommended-versions: true |
+| **Verify annotation is stored correctly**<br/>`oc get clustercurator` | Shows result |
+```
+
+### ✅ CORRECT Format (Use ` - ` instead):
+```markdown
+| **Verify annotation is stored correctly** - Run: `oc get clustercurator` | Shows result:
+```
+upgrade-allow-not-recommended-versions: true
+``` |
+```
+
+### ❌ Wrong Login Format (15-point deduction):
+```markdown
+| **Step 1: Access cluster** - Login: `oc login` | Success |
+```
+
+### ✅ REQUIRED Login Format:
+```markdown
+| **Step 1: Log into the ACM hub cluster** - Access the hub cluster using credentials: `oc login https://api.cluster-url.com:6443 -u admin -p password --insecure-skip-tls-verify` | Login successful... |
 ```
 
 ### Standalone Test Case Requirements
@@ -58,10 +141,23 @@ Expected Results MUST contain:
 
 | Step | Expected Result |
 |------|----------------|
-| **Log into cluster**<br>`oc login...` | Login successful. |
-| **Create test namespace**<br>`oc create namespace...` | namespace created |
-| **Apply test resource**<br>`oc apply -f...` | resource created |
-| **Validate feature**<br>`oc get...` | Shows expected behavior |
+| **Step 1: Log into the ACM hub cluster** - Access the hub cluster using credentials: `oc login...` | Login successful with access confirmed:
+```
+Login successful.
+``` |
+| **Step 2: Create test namespace** - Run: `oc create namespace test-ns` | Namespace created successfully:
+```
+namespace/test-ns created
+``` |
+| **Step 3: Apply test resource** - Apply configuration: `oc apply -f test-resource.yaml` | Resource created successfully:
+```
+clustercurator.cluster.open-cluster-management.io/test-curator created
+``` |
+| **Step 4: Validate feature** - Check status: `oc get clustercurator test-curator` | Shows expected behavior:
+```
+NAME           STATUS   AGE
+test-curator   Ready    30s
+``` |
 ```
 
 **AVOID:**
@@ -88,17 +184,38 @@ Expected Results MUST contain:
 
 #### Combined approach example:
 ```markdown
-| **Create ClusterCurator through ACM Console or CLI**<br>*UI:* ACM Console → Infrastructure → Clusters → Create ClusterCurator<br>*CLI:* `oc apply -f clustercurator.yaml` | ClusterCurator resource created successfully |
+| **Create ClusterCurator through ACM Console or CLI** - *UI:* ACM Console → Infrastructure → Clusters → Create ClusterCurator - *CLI:* `oc apply -f clustercurator.yaml` | ClusterCurator resource created successfully:
+```
+clustercurator.cluster.open-cluster-management.io/my-curator created
+``` |
 ```
 
 ## 📋 Complete Analysis Report Structure
 
+### ❌ MANDATORY DEPLOYMENT STATUS HEADER (15-point deduction)
+**EXACT HEADER REQUIRED in Complete-Analysis.md:**
+
+✅ **REQUIRED FORMAT:**
+```markdown
+## 🚨 DEPLOYMENT STATUS
+
+**Feature Deployment:** ✅ DEPLOYED / 🟡 PARTIALLY DEPLOYED / ❌ NOT DEPLOYED
+```
+
+❌ **WRONG (causes validation failure):**
+```markdown
+## 🚀 Implementation Status & Feature Validation Assessment
+## Implementation Status
+## Deployment Assessment
+```
+
 ### Required Structure:
 1. **Title and metadata** (Run ID, Analysis Date)
-2. **Understanding Feature Summary** (concise feature explanation + brief data collection summary)
-3. **Implementation Status** (what is implemented, PRs, key behavior)
-4. **Environment & Validation Status** (environment used, validation results, limitations)
-5. **Investigation Quality Assessment** (if needed)
+2. **🚨 DEPLOYMENT STATUS** (EXACT header text - mandatory)
+3. **Understanding Feature Summary** (concise feature explanation + brief data collection summary)
+4. **Implementation Status** (what is implemented, PRs, key behavior)
+5. **Environment & Validation Status** (environment used, validation results, limitations)
+6. **Investigation Quality Assessment** (if needed)
 
 ### UNDERSTANDING FEATURE SUMMARY Requirements:
 - **Brief feature explanation:** 2-3 sentences on what the story/feature adds
@@ -106,12 +223,20 @@ Expected Results MUST contain:
 - **Key discoveries:** Technical implementation details and business context
 - **NO detailed step-by-step framework process explanations**
 
-### Example structure:
+### ✅ CORRECT Analysis Structure (85+ points):
 ```markdown
 # TICKET-ID: Feature Name - COMPLETE INVESTIGATION ANALYSIS
 
 **Run ID:** run-XXX-YYYYMMDD-HHMM  
 **Analysis Date:** Date
+
+---
+
+## 🚨 DEPLOYMENT STATUS
+
+**Feature Deployment:** ✅ DEPLOYED / 🟡 PARTIALLY DEPLOYED / ❌ NOT DEPLOYED
+
+[Evidence-based assessment with concrete validation data]
 
 ---
 
@@ -142,6 +267,8 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
 
 [Quality metrics and confidence levels]
 ```
+
+**CRITICAL:** The `## 🚨 DEPLOYMENT STATUS` header MUST be the exact text - validation will fail otherwise.
 
 ## 🔧 Implementation Guidelines
 
@@ -174,28 +301,72 @@ Investigation gathered data from JIRA ticket hierarchy, GitHub repository analys
   - Prefer generating skeletons via AI Schema Service and standard commands:
     - Example: `oc explain <resource>.spec` and `oc create <resource> <name> --dry-run=client -o yaml`
 
-### Markdown formatting rules (strict)
-- Do NOT use HTML tags like `<br>`, `<b>`, `<i>` in generated markdown
-- In table cells, verbal instruction and command should be on the same line, no line breaks
-- Use backticks for inline commands in table cells: `oc create namespace test-ns`
-- For multi-line commands, use fenced code blocks but avoid unnecessary line breaks
+### ❌ MANDATORY HTML TAGS PROHIBITION (10-point deduction)
+**NEVER USE HTML TAGS** - causes immediate validation failure:
+- ❌ `<br/>` or `<br>` - Use ` - ` instead
+- ❌ `<b>` or `<i>` - Use **bold** or *italic* markdown instead
+- ❌ `<div>`, `<span>`, etc. - Use proper markdown formatting
+
+**✅ CORRECT Formatting:**
+- Use ` - ` for inline separation: `**Step 1: Action** - Command: \`oc login\``
+- Use `\n` for line breaks in expected results
+- Use backticks for inline commands: `oc create namespace test-ns`
+- Use fenced code blocks for sample outputs
 - Prefer `grep -E` for alternations and avoid escaping `|` in shell pipelines
 
-### Test case execution requirements
-- ALL test cases MUST start with cluster login as the first step
-- Format: **Step 1: Log into ACM hub cluster**
-- Provide both automatic setup and manual login options
-- Example: `oc login --server=<HUB_API_URL> --username=<USERNAME> --password=<PASSWORD>`
-- Use generic login templates for broader team usability (framework uses internal scripts for setup)
+### ❌ MANDATORY LOGIN STEP FORMAT (15-point deduction)
+**ALL test cases MUST start with this EXACT format:**
 
-## ✅ Quality Checklist
+✅ **REQUIRED FORMAT (EXACT TEXT):**
+```markdown
+| **Step 1: Log into the ACM hub cluster** - Access the hub cluster using credentials: `oc login https://api.cluster-url.com:6443 -u admin -p password --insecure-skip-tls-verify` | Login successful with access confirmed:
+```
+Login successful.
+You have access to 67 projects, the list has been suppressed.
+Using project "default".
+``` |
+```
 
-Before finalizing test cases, verify:
+**Validation looks for this exact text pattern:** `Log into the ACM hub cluster: \`oc login`
+
+❌ **WRONG (causes validation failure):**
+- `Step 1: Access cluster`
+- `Step 1: Login to hub`
+- `Step 1: Connect to cluster`
+
+✅ **MUST USE EXACT TEXT:** `Step 1: Log into the ACM hub cluster`
+
+❌ **NEVER expose internal scripts (10-point deduction):**
+- Never mention `setup_clc` or `login_oc` in test cases
+- Always use generic `oc login <cluster-url>` format
+
+## ✅ VALIDATION CHECKLIST (85+ POINTS TARGET)
+
+**BEFORE GENERATING ANY OUTPUT, VERIFY:**
+- [ ] ❌ NO HTML tags (`<br/>`, `<b>`, `<i>`) anywhere (10 points)
+- [ ] ✅ First step EXACTLY: "**Step 1: Log into the ACM hub cluster**" (15 points)
+- [ ] ✅ Header EXACTLY: "## 🚨 DEPLOYMENT STATUS" (15 points)
+- [ ] ✅ Sample outputs in triple backticks (10 points)
+- [ ] ❌ No `setup_clc` or `login_oc` mentioned (10 points)
+- [ ] ✅ Files exist (Complete-Analysis.md, Test-Cases.md, metadata.json) (30 points)
+- [ ] ✅ Other formatting requirements (10 points)
+
+**QUALITY SCORING WEIGHTS:**
+- Files exist: 30 points
+- No HTML tags: 10 points  
+- Correct login step: 15 points
+- Deployment status header: 15 points
+- Sample outputs: 10 points
+- No internal scripts: 10 points
+- Other formatting: 10 points
+
+**TOTAL POSSIBLE: 100 points | TARGET: 85+ points**
+
+### ✅ Additional Quality Checks:
 - [ ] All steps have verbal instructions
 - [ ] CLI commands are complete and realistic
-- [ ] UI guidance provided where applicable
+- [ ] UI guidance provided where applicable  
 - [ ] Test cases are standalone (no setup dependencies)
 - [ ] Related scenarios merged appropriately
-- [ ] Expected results are specific and realistic
+- [ ] Expected results are specific with realistic sample outputs
 - [ ] Complete Analysis follows required structure
-- [ ] Removed deprecated sections

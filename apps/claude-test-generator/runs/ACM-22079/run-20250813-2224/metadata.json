@@ -1,0 +1,17 @@
+{
+  "ticket": "ACM-22079",
+  "title": "Support digest-based upgrades via ClusterCurator for non-recommended upgrades",
+  "analysis_date": "2025-08-13T22:24:00Z",
+  "environment": "qe6-vmware-ibm.install.dev09.red-chesterfield.com",
+  "acm_version": "2.14.0",
+  "mce_version": "2.9.0",
+  "openshift_version": "4.19.7",
+  "deployment_status": "FULLY_DEPLOYED",
+  "feature_category": "Upgrade/Cluster Lifecycle",
+  "quality_score": 95,
+  "test_cases_generated": 4,
+  "investigation_depth": "COMPLETE",
+  "pr_analyzed": "PR-468",
+  "validation_method": "AI_POWERED_DEPLOYMENT_VALIDATION",
+  "evidence_level": "COMPREHENSIVE"
+}

@@ -24,7 +24,10 @@
       "WebFetch(domain:docs.openshift.com)",
       "Bash(bin/setup_clc:*)",
       "Bash(oc apply:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(oc adm upgrade:*)",
+      "Bash(oc create:*)",
+      "WebFetch(domain:kubernetes.io)"
     ],
     "deny": []
   }

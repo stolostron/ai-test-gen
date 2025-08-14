@@ -1,5 +1,16 @@
 # Deployment Validation Checklist
 
+## 🚨 CRITICAL FORMAT ENFORCEMENT
+
+**VALIDATION CHECKLIST FOR 85+ QUALITY SCORE**
+
+### ❌ ZERO TOLERANCE VALIDATION FAILURES
+1. **DEPLOYMENT STATUS HEADER**: Must use exact `## 🚨 DEPLOYMENT STATUS` format (15-point deduction)
+2. **NO HTML TAGS**: Forbidden in all outputs (10-point deduction)
+3. **LOGIN STEP FORMAT**: Must be exact `**Step 1: Log into the ACM hub cluster**` (15-point deduction)
+4. **SAMPLE OUTPUTS**: Must include realistic outputs in code blocks (10-point deduction)
+5. **NO INTERNAL SCRIPTS**: Never mention setup_clc or login_oc (10-point deduction)
+
 ## ⚠️ MANDATORY Feature Deployment Validation
 
 **CRITICAL:** This checklist MUST be completed before making any claims about feature availability in test environments.
@@ -49,7 +60,9 @@
 ### 📝 Evidence-Based Reporting Template
 
 ```markdown
-## 🚨 DEPLOYMENT STATUS: [STATUS]
+## 🚨 DEPLOYMENT STATUS
+
+**Feature Deployment:** ✅ DEPLOYED / 🟡 PARTIALLY DEPLOYED / ❌ NOT DEPLOYED
 
 **Evidence Summary:**
 - Container Image: [digest and correlation analysis]
