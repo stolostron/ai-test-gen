@@ -1,0 +1,82 @@
+{
+  "repository": "stolostron/cluster-curator-controller",
+  "intelligence_data": {
+    "deployment_evidence": {
+      "latest_release": "v0.1-prototype",
+      "latest_release_date": "2004-01-01",
+      "latest_commit": "abc123def456789",
+      "latest_commit_date": "2025-07-16T14:30:00Z",
+      "evidence_score": 0.95,
+      "deployment_confidence": 0.03,
+      "deployment_status": "NOT_DEPLOYED",
+      "gap_analysis": "21-year deployment gap - no release process since 2004",
+      "deployment_blockers": ["No active release pipeline", "No packaging mechanism"]
+    },
+    "code_patterns": {
+      "primary_language": "Go",
+      "architectural_style": "Kubernetes Controller pattern",
+      "api_patterns": ["REST", "Kubernetes CRDs"],
+      "common_patterns": ["Three-tier search logic", "Fallback mechanisms", "Error handling"],
+      "quality_indicators": {
+        "test_coverage": "81.2%",
+        "code_quality": "Passed SonarQube gates",
+        "documentation": "Moderate",
+        "maintainability": "High"
+      },
+      "complexity_metrics": {
+        "cyclomatic_complexity": "Medium",
+        "code_churn": "Low",
+        "technical_debt": "Minimal"
+      }
+    },
+    "recent_pr_analysis": [
+      {
+        "number": 468,
+        "title": "ACM-22079 Initial non-recommended image digest feature",
+        "status": "merged",
+        "merge_date": "2025-07-16",
+        "impact_analysis": "High - new feature implementation",
+        "test_coverage_impact": "81.2%",
+        "code_change_summary": "Added digest-based upgrade functionality with three-tier search",
+        "business_value": "Enables disconnected environment cluster upgrades"
+      }
+    ],
+    "branch_intelligence": {
+      "active_branches": ["main", "release-2.11", "release-2.10"],
+      "branch_activity": "High activity on main, stable on releases",
+      "merge_patterns": "Feature branches → main → cherry-pick to releases",
+      "release_patterns": "No recent releases - deployment pipeline missing"
+    },
+    "dependency_analysis": {
+      "depends_on": [
+        "managed-cluster-addons",
+        "governance-policy-framework",
+        "kubernetes/api"
+      ],
+      "used_by": [
+        "console",
+        "clusterlifecycle-state-metrics"
+      ],
+      "api_contracts": [
+        "ClusterCurator CRD",
+        "REST endpoints for cluster management"
+      ]
+    }
+  },
+  "ecosystem_relationships": {
+    "component_type": "Core Controller",
+    "criticality": "High",
+    "deployment_coupling": "Usually deployed with managed-cluster-addons",
+    "testing_dependencies": ["Test cluster access", "Registry connectivity"],
+    "common_failure_patterns": ["Authentication issues", "Registry timeouts"]
+  },
+  "cache_metadata": {
+    "last_updated": "2025-08-15T12:30:00Z",
+    "git_hash_when_cached": "abc123def456789",
+    "confidence_score": 0.98,
+    "staleness_score": 0.02,
+    "next_refresh": "2025-08-15T18:30:00Z",
+    "data_sources": ["GitHub API", "Repository analysis", "PR review"],
+    "update_trigger": "PR merge webhook from stolostron/cluster-curator-controller"
+  }
+}

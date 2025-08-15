@@ -1,0 +1,50 @@
+{
+  "name": "stolostron-intelligence-service",
+  "type": "intelligence_infrastructure",
+  "version": "1.0",
+  "description": "Centralized AI-powered stolostron ecosystem intelligence and data processing service",
+  "working_directory": "intelligence/stolostron-service/",
+  "ai_services_prefix": "si",
+  "service_type": "intelligence_infrastructure",
+  "capabilities": [
+    "ecosystem_intelligence_engine",
+    "repository_deep_analysis",
+    "code_pattern_recognition", 
+    "ecosystem_relationship_mapping",
+    "change_impact_prediction",
+    "historical_pattern_analysis",
+    "intelligent_caching_system",
+    "natural_language_intelligence_api"
+  ],
+  "service_interfaces": [
+    "natural_language_queries",
+    "structured_intelligence_api", 
+    "pattern_recognition_api",
+    "ecosystem_analysis_api",
+    "change_impact_api",
+    "repository_intelligence_api"
+  ],
+  "target_ecosystem": {
+    "primary": "stolostron",
+    "repositories": "334+",
+    "scope": "complete_red_hat_acm_ecosystem"
+  },
+  "consumer_applications": [
+    "claude-test-generator",
+    "z-stream-analysis", 
+    "catch-bug-acm"
+  ],
+  "isolation_rules": {
+    "service_level": "infrastructure",
+    "cross_app_access": true,
+    "api_interface_only": true,
+    "self_contained_intelligence": true
+  },
+  "performance_targets": {
+    "api_response_time": "<2s",
+    "cache_hit_ratio": ">90%",
+    "ecosystem_coverage": ">95%",
+    "pattern_accuracy": ">85%",
+    "intelligence_freshness": "<24h"
+  }
+}

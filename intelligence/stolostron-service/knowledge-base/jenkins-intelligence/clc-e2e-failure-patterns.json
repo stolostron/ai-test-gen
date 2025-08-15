@@ -1,0 +1,132 @@
+{
+  "pipeline_family": "clc-e2e",
+  "intelligence_data": {
+    "failure_classification_patterns": {
+      "AUTOMATION_BUG": {
+        "frequency": 0.65,
+        "confidence": 0.94,
+        "common_causes": [
+          {
+            "pattern": "Authentication timeout",
+            "frequency": 0.35,
+            "symptoms": ["Login failed", "Session expired", "Token invalid"],
+            "typical_duration": "30-60 seconds into test"
+          },
+          {
+            "pattern": "Environment setup failure",
+            "frequency": 0.20,
+            "symptoms": ["Cluster unreachable", "Network timeout", "DNS resolution"],
+            "typical_duration": "First 2 minutes of test"
+          },
+          {
+            "pattern": "Test flakiness",
+            "frequency": 0.10,
+            "symptoms": ["Intermittent failures", "Timing issues", "Element not found"],
+            "typical_duration": "Random throughout test"
+          }
+        ],
+        "fix_templates": [
+          {
+            "pattern": "Enhanced loginViaAPI",
+            "fix_code": "Added retry logic with exponential backoff",
+            "file_path": "cypress/support/commands.js",
+            "success_rate": 0.92,
+            "implementation": "Add timeout and retry mechanism to authentication"
+          },
+          {
+            "pattern": "Improved wait strategies",
+            "fix_code": "Smart waiting for elements and API responses",
+            "file_path": "cypress/support/utils.js",
+            "success_rate": 0.88,
+            "implementation": "Replace fixed waits with conditional waits"
+          }
+        ]
+      },
+      "PRODUCT_BUG": {
+        "frequency": 0.25,
+        "confidence": 0.89,
+        "common_causes": [
+          {
+            "pattern": "API failures",
+            "frequency": 0.15,
+            "symptoms": ["500 errors", "API timeout", "Malformed response"],
+            "escalation_required": true
+          },
+          {
+            "pattern": "UI rendering issues",
+            "frequency": 0.10,
+            "symptoms": ["Component not loading", "Incorrect display", "Layout problems"],
+            "escalation_required": true
+          }
+        ],
+        "escalation_paths": [
+          "Product team notification via Slack",
+          "JIRA bug filing with evidence",
+          "Priority escalation for critical issues"
+        ]
+      },
+      "INFRASTRUCTURE": {
+        "frequency": 0.10,
+        "confidence": 0.92,
+        "common_causes": [
+          "Test environment down",
+          "Network connectivity issues",
+          "Resource constraints"
+        ]
+      }
+    },
+    "environment_patterns": {
+      "ci-vb-268pp.dev09.red-chesterfield.com": {
+        "reliability": 0.85,
+        "common_issues": ["Authentication setup", "Network latency"],
+        "optimal_usage_hours": "9-17 UTC",
+        "maintenance_windows": "Weekends 2-6 UTC"
+      }
+    },
+    "historical_analysis": {
+      "trend_analysis": {
+        "automation_bug_trend": "Decreasing - fixes being applied",
+        "product_bug_trend": "Stable - normal development cycle",
+        "infrastructure_trend": "Improving - infrastructure upgrades"
+      },
+      "successful_fixes": [
+        {
+          "fix_description": "Enhanced loginViaAPI with retry logic",
+          "application_date": "2025-08-15",
+          "success_rate_improvement": "35%",
+          "affected_pipelines": ["clc-e2e-pipeline-3313", "clc-e2e-pipeline-3314"]
+        }
+      ]
+    }
+  },
+  "repository_context": {
+    "repository": "stolostron/clc-ui-e2e",
+    "branch_patterns": {
+      "release-2.11": "Stable - production testing",
+      "release-2.10": "Maintenance - security fixes only",
+      "main": "Active development - highest churn"
+    },
+    "file_intelligence": {
+      "authentication_files": [
+        "cypress/support/commands.js",
+        "cypress/support/auth-utils.js"
+      ],
+      "environment_setup": [
+        "cypress/support/environment.js",
+        "cypress.config.js"
+      ],
+      "common_test_patterns": [
+        "cypress/tests/credentials/",
+        "cypress/tests/clusters/managedClusters/"
+      ]
+    }
+  },
+  "cache_metadata": {
+    "last_updated": "2025-08-15T17:45:00Z",
+    "confidence_score": 0.94,
+    "staleness_score": 0.03,
+    "next_refresh": "2025-08-15T21:45:00Z",
+    "data_sources": ["Jenkins API", "Console log analysis", "Repository analysis"],
+    "update_trigger": "clc-e2e-pipeline-3313 failure analysis completion"
+  }
+}

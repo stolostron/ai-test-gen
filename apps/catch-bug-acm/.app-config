@@ -1,0 +1,24 @@
+{
+  "name": "catch-bug-acm",
+  "version": "1.0",
+  "description": "Campaign-based intelligent ACM bug prediction engine with deep system understanding",
+  "isolation": true,
+  "working_directory": "apps/catch-bug-acm/",
+  "ai_services_prefix": "cb",
+  "dependencies": ["shared/docs/jira-setup.md"],
+  "isolation_rules": {
+    "no_external_references": true,
+    "no_cross_app_access": true,
+    "self_contained_config": true
+  },
+  "capabilities": [
+    "system_understanding_engine",
+    "behavioral_pattern_recognition",
+    "intelligent_test_generation",
+    "knowledge_accumulation",
+    "campaign_execution",
+    "bug_prediction",
+    "repository_analysis",
+    "environment_validation"
+  ]
+}

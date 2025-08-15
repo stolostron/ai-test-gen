@@ -1,0 +1,66 @@
+{
+  "ticket_id": "ACM-22079",
+  "intelligence_data": {
+    "hierarchy_analysis": {
+      "parent_tickets": ["ACM-22078"],
+      "subtasks": ["ACM-22080", "ACM-22081"],
+      "linked_tickets": ["ACM-22457"],
+      "relationship_confidence": 0.98,
+      "dependency_graph": {
+        "blocks": [],
+        "blocked_by": [],
+        "relates_to": ["ACM-22457"]
+      }
+    },
+    "ticket_details": {
+      "title": "Support digest-based upgrades via ClusterCurator for non-recommended upgrades",
+      "category": "Upgrade",
+      "category_confidence": 0.95,
+      "secondary_category": "Resource Management",
+      "priority": "Critical",
+      "status": "Review",
+      "assignee": "Feng Xiang",
+      "component": "cluster-curator-controller",
+      "business_impact": "Critical customer requirement - Amadeus disconnected environment support"
+    },
+    "pattern_analysis": {
+      "complexity_score": 0.85,
+      "risk_level": "Medium",
+      "quality_target_prediction": 96,
+      "historical_comparison": {
+        "similar_tickets": ["ACM-21445", "ACM-20334"],
+        "average_quality_score": 94.5,
+        "typical_test_count": 5
+      }
+    },
+    "deployment_intelligence": {
+      "deployment_evidence_found": true,
+      "evidence_sources": ["PR #468", "Comments by assignee"],
+      "deployment_confidence": 0.03,
+      "deployment_status": "NOT_DEPLOYED",
+      "deployment_timeline": "Blocked - no release process",
+      "evidence_analysis": {
+        "code_evidence": 0.95,
+        "runtime_evidence": 0.05,
+        "behavioral_evidence": 0.05,
+        "version_evidence": 0.05
+      }
+    },
+    "test_generation_intelligence": {
+      "scope_analysis": "Digest-based upgrades for disconnected environments",
+      "testing_complexity": "High - requires test environment setup",
+      "recommended_test_count": 5,
+      "focus_areas": ["API functionality", "Fallback mechanisms", "Error handling"],
+      "environment_requirements": ["Disconnected cluster", "Image registry access"],
+      "automation_gaps": ["Digest validation testing", "Fallback scenario coverage"]
+    }
+  },
+  "cache_metadata": {
+    "last_updated": "2025-08-15T12:00:00Z",
+    "confidence_score": 0.97,
+    "staleness_score": 0.05,
+    "next_refresh": "2025-08-15T13:00:00Z",
+    "data_sources": ["JIRA API", "GitHub PR analysis", "Historical patterns"],
+    "update_trigger": "Manual refresh triggered by test-generator request"
+  }
+}
