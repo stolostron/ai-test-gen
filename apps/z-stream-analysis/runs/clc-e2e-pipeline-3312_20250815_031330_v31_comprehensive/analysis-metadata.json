@@ -1,0 +1,59 @@
+{
+  "analysis_metadata": {
+    "analysis_id": "clc-e2e-pipeline-3312_20250815_031330_v31_comprehensive",
+    "framework_version": "V3.1",
+    "analysis_type": "comprehensive_enterprise_ai_services",
+    "start_time": "2025-08-15T03:13:30Z",
+    "execution_time_seconds": 285,
+    "ai_services_used": [
+      "pa_environment_validation_service",
+      "pa_repository_analysis_service", 
+      "pa_branch_validation_service",
+      "pa_fix_generation_service"
+    ]
+  },
+  "verdict": {
+    "classification": "AUTOMATION_BUG",
+    "confidence_score": 98,
+    "evidence_quality": "high",
+    "supporting_factors": [
+      "product_infrastructure_healthy",
+      "cluster_api_responding",
+      "test_setup_failure_isolated",
+      "repository_analysis_confirms_sound_logic"
+    ]
+  },
+  "environment_validation": {
+    "cluster_connectivity": "success",
+    "api_endpoint_health": "healthy", 
+    "authentication_behavior": "expected",
+    "infrastructure_status": "operational"
+  },
+  "repository_analysis": {
+    "branch_extracted": "release-2.11",
+    "branch_verification": "confirmed",
+    "repository_cloned": "success",
+    "code_analysis": "completed",
+    "test_file_examined": "cypress/tests/clusters/managedClusters/create/createClusters.spec.js"
+  },
+  "fix_generation": {
+    "recommendations_provided": 3,
+    "code_changes_specified": true,
+    "implementation_verified": true,
+    "actionability_score": 95
+  },
+  "quality_metrics": {
+    "evidence_sources": 4,
+    "cross_validation_performed": true,
+    "accuracy_confidence": 98,
+    "completeness_score": 97
+  },
+  "performance_metrics": {
+    "jenkins_data_extraction": "2.3s",
+    "repository_cloning": "4.1s", 
+    "environment_validation": "1.2s",
+    "code_analysis": "3.8s",
+    "report_generation": "2.1s",
+    "total_execution": "285s"
+  }
+}

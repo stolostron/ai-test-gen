@@ -56,6 +56,12 @@ curl -k -s "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/qe-acm-autom
 
 ## 🔧 **Environment Configuration**
 
+### **Prerequisites**
+- **Claude Code CLI** configured and authenticated
+- **Jenkins API Access** to target instances (optional - can analyze public URLs)  
+- **Network Access** to Jenkins instances and artifact storage
+- **Self-Contained Operation** - No external dependencies or script requirements
+
 ### **Intelligent Discovery Process**
 
 The AI Environment Validation Service uses a 4-tier discovery approach:

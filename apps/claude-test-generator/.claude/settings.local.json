@@ -32,7 +32,8 @@
       "Bash(gh search prs:*)",
       "Bash(gh repo list:*)",
       "Bash(gh repo view:*)",
-      "Bash(gh search code:*)"
+      "Bash(gh search code:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

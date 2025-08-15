@@ -1,10 +1,10 @@
-# AI Test Generator for ACM
+# Test Generator V3.1
 
-> **Generate comprehensive E2E test plans for ACM features in 5-10 minutes**
+> **ACM feature test plan generation with AI Ultrathink deep reasoning**
 
-**What it does:** Automatically creates production-ready test cases by analyzing JIRA tickets, GitHub code, and deployment status using AI.
+**What it does:** Generates comprehensive E2E test plans with JIRA analysis, GitHub investigation, Red Hat ACM docs intelligence, and deployment validation.
 
-**Who it's for:** QE engineers who need reliable, comprehensive test plans for ACM features.
+**Who it's for:** QE engineers who need reliable, comprehensive test plans for ACM features with advanced AI-powered analysis.
 
 ---
 
@@ -46,7 +46,7 @@ cd apps/claude-test-generator
 
 ### Two File Output
 ```
-runs/ACM-22079-V3.0-20250814_141514/
+runs/ACM-22079-V3.1-20250814_141514/
 ├── Test-Cases.md           # Clean test cases (ready to execute)
 ├── Complete-Analysis.md    # Full analysis + deployment status
 └── metadata.json          # Quality scores and metrics
@@ -140,18 +140,21 @@ For deeper technical details:
 
 ## 🔧 Framework Details
 
-**Version**: V3.0 Enterprise AI Services Integration  
+**Version**: V3.1 Enterprise AI Services Integration with AI Ultrathink Deep Reasoning  
 **Success Rate**: 98.7% (vs 40% with previous script-based approach)  
-**Core Technology**: Claude AI with 4 integrated AI services  
+**Core Technology**: Claude AI with advanced AI services ecosystem  
 **Test Focus**: End-to-end workflows for NEW functionality only  
 
-### AI Services (Internal)
-- 🌐 **Cluster Connectivity**: Intelligent environment setup
-- 🔐 **Authentication**: Multi-method secure access  
-- 🔍 **Deployment Detection**: Evidence-based feature validation
-- ✅ **Quality Validation**: Real-time test case optimization
+### AI Services (V3.1)
+- 🧠 **AI Ultrathink Analysis**: Advanced deep reasoning and cognitive analysis
+- 🔍 **AI Complete Investigation Protocol**: 3-level deep JIRA + GitHub + internet research
+- 🔄 **AI Cross-Repository Analysis**: Development-automation alignment intelligence
+- 🎯 **AI Smart Test Scoping**: Intelligent test optimization and resource allocation
+- 📚 **AI Documentation Intelligence**: Red Hat ACM official documentation analysis
+- 📊 **AI Enhanced GitHub Investigation**: GitHub CLI priority + WebFetch fallback
+- 🛡️ **AI Environment Services**: Cluster connectivity, authentication, validation
 
-**Note**: Framework uses AI services internally but generates standard `oc login` commands for team usability.
+**Note**: Complete isolation architecture ensures no cross-app contamination while maintaining full enterprise functionality.
 
 ---
 
