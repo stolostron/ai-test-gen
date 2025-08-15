@@ -74,7 +74,7 @@ def discover_automation_repository(jenkins_metadata):
             "GIT_URL", "REPO_URL", "SCM_URL", "AUTOMATION_REPO"
         ),
         "branch": extract_from_build_params(
-            "GIT_BRANCH", "BRANCH_NAME", "SCM_BRANCH"
+            "GIT_BRANCH", "BRANCH_NAME", "SCM_BRANCH", "TARGET_BRANCH", "BRANCH"
         ),
         "commit": extract_from_build_params(
             "GIT_COMMIT", "COMMIT_SHA", "SCM_REVISION"
@@ -94,16 +94,37 @@ def discover_automation_repository(jenkins_metadata):
         "analysis_scope": ai_determine_analysis_scope(failed_tests, repository_context)
     }
     
+    # CRITICAL VALIDATION: Ensure branch is correctly extracted and validated
+    if not repository_context.get("branch") or repository_context["branch"] in ["main", "master"]:
+        # Log warning if no branch found or defaulting to main/master
+        log_critical_warning(f"Branch parameter missing or defaulting: {repository_context.get('branch')}")
+        log_jenkins_parameters_debug(jenkins_metadata)
+        
+        # Force re-extraction with enhanced parameter detection
+        enhanced_branch = extract_branch_with_enhanced_detection(jenkins_metadata)
+        if enhanced_branch:
+            repository_context["branch"] = enhanced_branch
+            log_info(f"Enhanced branch detection found: {enhanced_branch}")
+        else:
+            log_error("CRITICAL: Cannot determine target branch - analysis accuracy compromised")
+    
     return establish_repository_access(repository_context)
 
 def establish_repository_access(repository_context):
     """Establish access to automation repository with intelligent fallback"""
     
+    # CRITICAL: Validate branch before any cloning operations
+    if not repository_context.get("branch"):
+        raise RepositoryAnalysisError("CRITICAL: Branch information required for accurate analysis")
+    
     access_attempts = [
         {
             "method": "public_clone",
             "confidence": 0.9,
-            "execution": lambda: git_clone_public_repository(repository_context.url)
+            "execution": lambda: git_clone_public_repository_with_branch(
+                repository_context["url"], 
+                repository_context["branch"]
+            )
         },
         {
             "method": "jenkins_credentials",
@@ -136,6 +157,66 @@ def establish_repository_access(repository_context):
             continue
     
     raise RepositoryAccessError("Unable to access automation repository")
+
+## 🚨 CRITICAL: AI-Powered Branch Validation Service
+
+### AI Branch Detection and Validation
+The AI Repository Analysis Service MUST use intelligent branch detection to ensure analysis accuracy:
+
+**AI-Powered Branch Extraction Protocol:**
+```yaml
+AI_Branch_Detection_Service:
+  primary_extraction:
+    - jenkins_parameters_analysis: "AI analysis of all Jenkins build parameters for branch information"
+    - parameter_patterns: ["GIT_BRANCH", "BRANCH_NAME", "SCM_BRANCH", "TARGET_BRANCH", "BRANCH"]
+    - ai_validation: "Verify extracted branch is not defaulting to main/master incorrectly"
+  
+  secondary_validation:
+    - console_log_analysis: "AI parsing of git checkout commands and branch references"
+    - scm_configuration_analysis: "AI analysis of Jenkins SCM settings and job configuration"
+    - intelligent_pattern_matching: "AI detection of branch indicators across multiple data sources"
+  
+  critical_validation:
+    - branch_existence_verification: "AI validation that extracted branch exists in repository"
+    - accuracy_enforcement: "FAIL analysis if branch cannot be determined with confidence"
+    - analysis_integrity: "Ensure code analysis matches actual pipeline execution branch"
+```
+
+**AI Service Instructions for Claude:**
+When analyzing Jenkins pipeline failures, you MUST:
+
+1. **Extract Branch Information via AI Analysis:**
+   - Use WebFetch/curl to access Jenkins parameters endpoint: `{jenkins_url}/parameters/`
+   - AI-analyze ALL parameters for branch indicators (GIT_BRANCH, BRANCH_NAME, SCM_BRANCH, etc.)
+   - Cross-validate branch information from console logs and SCM configuration
+
+2. **Validate Branch Accuracy:**
+   - If branch is missing or defaults to "main"/"master", investigate further
+   - Use AI to parse console logs for actual git checkout commands
+   - Verify branch exists in target repository before cloning
+
+3. **Enforce Repository Analysis Accuracy:**
+   - Clone repository using the EXACT branch from Jenkins parameters
+   - Validate that cloned code matches the branch that was tested in the pipeline
+   - Document branch information prominently in analysis results
+
+4. **Error Handling:**
+   - If branch cannot be determined, clearly flag this as analysis limitation
+   - Provide degraded analysis with explicit warnings about potential inaccuracy
+   - Never assume "main" branch when pipeline may have run on different branch
+
+**Example AI Branch Detection Workflow:**
+```
+1. Access Jenkins parameters: curl -k -s "{jenkins_url}/parameters/"
+2. AI parse response for: GIT_BRANCH, BRANCH_NAME, SCM_BRANCH, TARGET_BRANCH
+3. If found: Use that branch for repository cloning
+4. If not found: AI analyze console logs for git checkout patterns
+5. If still not found: Flag as critical analysis limitation
+6. Clone repository: git clone -b {detected_branch} {repository_url}
+7. Document branch used prominently in analysis report
+```
+
+This ensures the AI service analyzes the correct branch that was actually tested in the pipeline, preventing critical errors like the release-2.11 vs main branch mismatch.
 ```
 
 ### 2. Deep Test Code Analysis

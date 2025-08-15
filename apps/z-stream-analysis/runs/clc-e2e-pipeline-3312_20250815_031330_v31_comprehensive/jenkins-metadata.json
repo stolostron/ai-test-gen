@@ -1,0 +1,51 @@
+{
+  "pipeline_id": "clc-e2e-pipeline-3312",
+  "build_url": "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/qe-acm-automation-poc/job/clc-e2e-pipeline/3312/",
+  "status": "UNSTABLE",
+  "extraction_timestamp": "2025-08-15T03:13:30Z",
+  "git_information": {
+    "repository": "https://github.com/stolostron/clc-ui-e2e.git",
+    "branch": "release-2.11",
+    "commit": "21fbb81929b25d3f39900d54da73168e18247bfc",
+    "commit_message": "[release 2.11]Deployment and attach hosts test should stop in case a host in Error status (#892)"
+  },
+  "environment_parameters": {
+    "CYPRESS_HUB_API_URL": "https://api.ci-vb-268pp.dev09.red-chesterfield.com:6443",
+    "CYPRESS_OPTIONS_HUB_USER": "kubeadmin",
+    "CYPRESS_OPTIONS_HUB_PASSWORD": "mQk5d-NFXxv-PpfJM-ckrQP",
+    "CYPRESS_OC_IDP": "kube:admin",
+    "GIT_BRANCH": "release-2.11",
+    "TEST_STAGE": "postrelease-create",
+    "FIPS": "false",
+    "BROWSER": "chrome",
+    "CUSTOMER_TAGS": "",
+    "CLOUD_PROVIDERS": "aws",
+    "CYPRESS_CLC_OCP_IMAGE_VERSION": "4.17.37",
+    "LOCAL_CLUSTER_NAME": "local-cluster"
+  },
+  "failure_details": {
+    "failing_tests": [
+      "RHACM4K-7473: CLC: Create an AWS managed cluster via the UI"
+    ],
+    "error_location": "before all hook",
+    "test_file": "clusters/managedClusters/create/createClusters.spec.js",
+    "duration": "32 seconds",
+    "error_type": "setup_failure"
+  },
+  "trigger_information": {
+    "upstream_project": "CI-Jobs/e2e_ui_test_pipeline",
+    "upstream_build": 526,
+    "triggered_by": "Vincent Boulos"
+  },
+  "artifacts": {
+    "screenshots": [
+      "/home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/screenshots/clusters/managedClusters/create/createClusters.spec.js/create clusters -- RHACM4K-7473 CLC Create an AWS managed cluster via the UI -- before all hook (failed).png"
+    ],
+    "videos": [
+      "/home/ubuntu/workspace/qe-acm-automation-poc/clc-e2e-pipeline/results/videos/clusters/managedClusters/create/createClusters.spec.js.mp4"
+    ],
+    "reports": [
+      "results/junit_cypress-6d2e7b628b211bbcf0e17ae65e95cb9c.xml"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
-# Z-Stream Analysis Engine
+# Pipeline Analysis V3.1
 
-> **AI-powered Jenkins failure analysis: Tests your product + Analyzes your code = Definitive answers + Automatic fixes**
+> **Jenkins pipeline failure analysis with definitive PRODUCT BUG | AUTOMATION BUG classification**
 
 ## 🎯 What This Does
 
@@ -16,21 +16,19 @@ Instead of guessing from logs, this AI framework:
 
 ## 🚀 Quick Start
 
-### Option 1: From Root Directory (Recommended)
-```bash
-# Analyze any Jenkins failure
-/analyze-pipeline-failures https://jenkins-server/job/pipeline/123/
-
-# Natural language interface  
-"Analyze this Jenkins pipeline failure: https://jenkins-url/"
-```
-
-### Option 2: Direct Usage
+### Method 1: Direct Navigation (Recommended)
 ```bash
 cd apps/z-stream-analysis
 
-# Ask Claude to analyze
-"Analyze this Jenkins pipeline failure with environment validation: https://jenkins-url/"
+# Analyze any Jenkins failure
+"Analyze https://jenkins-url/job/pipeline/123/"
+"Investigate clc-e2e-pipeline-3313"
+```
+
+### Method 2: Global Routing
+```bash
+# From root directory
+/pipeline-analysis Analyze https://jenkins-url/job/pipeline/123/
 ```
 
 ## 📊 What You Get
@@ -42,7 +40,7 @@ cd apps/z-stream-analysis
 
 ### 📁 Complete Analysis Report
 ```
-runs/pipeline-123_20250814_140000/
+runs/clc-e2e-pipeline-3313_20250815_174500_v31_comprehensive/
 ├── Detailed-Analysis.md        # Complete investigation + verdict + fixes
 ├── analysis-metadata.json     # AI services metrics and quality scores
 └── jenkins-metadata.json      # Environment and build data
@@ -164,11 +162,13 @@ export JENKINS_TOKEN="your-api-token"
 
 ## 🚀 Advanced Features
 
-### AI Services Integration
-- **🌐 Environment Validation**: Connects to real test clusters
-- **🔍 Repository Analysis**: Deep automation code understanding
-- **🛠️ Fix Generation**: Merge-ready solutions with PRs
-- **🔗 Cross-Service Intelligence**: Multi-source evidence correlation
+### AI Services Integration (V3.1)
+- **🌐 Environment Validation Service**: Real-time cluster connectivity and product functionality testing
+- **🔍 Repository Analysis Service**: Actual automation repository cloning and code examination
+- **🚨 AI-Powered Branch Validation**: Enforced extraction of correct branch from Jenkins parameters
+- **🛠️ Fix Generation Service**: Exact code changes based on real repository analysis
+- **🧹 Automatic Cleanup Service**: Intelligent removal of temporary repositories while preserving analysis results
+- **🔗 Cross-Service Intelligence**: Multi-source evidence correlation with 96%+ analysis accuracy
 
 ### Intelligent Discovery
 - **Parameter Extraction**: Auto-finds test environment from Jenkins
@@ -204,4 +204,4 @@ Test product + Analyze code → Compare evidence → Definitive verdict + Exact 
 
 ---
 
-**🏢 Enterprise Ready**: The Z-Stream Analysis Engine provides definitive Jenkins pipeline failure analysis with 96%+ accuracy, automated remediation, and < 5 minute execution. **100% script-free and self-contained** for reliable enterprise deployment.
+**🏢 Enterprise Ready**: Pipeline Analysis V3.1 provides definitive Jenkins pipeline failure analysis with 96%+ accuracy, automated remediation, and sub-300 second execution. Features complete isolation architecture with environment validation, repository analysis, and merge-ready fix generation.

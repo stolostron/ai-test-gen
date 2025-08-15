@@ -79,6 +79,14 @@ def extract_environment_context(jenkins_metadata):
         "credentials": extract_jenkins_credentials(jenkins_parameters,
             "KUBECONFIG", "CLUSTER_KUBECONFIG", "OCP_TOKEN", "CLUSTER_TOKEN"),
         
+        # CRITICAL: Repository and branch information for accurate code analysis
+        "repository_url": extract_from_build_params(jenkins_parameters,
+            "GIT_URL", "REPO_URL", "SCM_URL", "AUTOMATION_REPO", "REPOSITORY_URL"),
+        "git_branch": extract_from_build_params(jenkins_parameters,
+            "GIT_BRANCH", "BRANCH_NAME", "SCM_BRANCH", "TARGET_BRANCH", "BRANCH"),
+        "git_commit": extract_from_build_params(jenkins_parameters,
+            "GIT_COMMIT", "COMMIT_SHA", "SCM_REVISION", "COMMIT_ID"),
+        
         # Secondary sources - console logs
         "environment_vars": parse_console_env_setup(jenkins_metadata.console_log),
         "test_context": extract_test_environment_info(jenkins_metadata.console_log),
