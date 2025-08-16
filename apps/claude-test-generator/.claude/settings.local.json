@@ -33,7 +33,14 @@
       "Bash(gh repo list:*)",
       "Bash(gh repo view:*)",
       "Bash(gh search code:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(jira issue list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "WebFetch(domain:issues.redhat.com)",
+      "Bash(gh:*)",
+      "Bash(kubectl config:*)",
+      "Bash(kubectl auth can-i:*)"
     ],
     "deny": []
   }
