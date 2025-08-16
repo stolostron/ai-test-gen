@@ -48,6 +48,15 @@ Clone and analyze the actual automation repository:
    ls -la
    ```
 
+4. **Automatic Post-Analysis Cleanup:**
+   ```bash
+   # After analysis completion, automatically remove temp repositories
+   cd ../../
+   rm -rf temp-repos/[repository_name]
+   # Remove empty temp-repos directory if no other repos
+   rmdir temp-repos 2>/dev/null || true
+   ```
+
 **Repository Analysis Requirements:**
 - Confirm actual file structure matches Jenkins references
 - Identify actual test framework and version
