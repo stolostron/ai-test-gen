@@ -2,6 +2,17 @@
 
 This workflow updates report generation to lead with definitive verdicts and includes comprehensive automation fix guidance.
 
+## 🚨 MANDATORY CITATION REQUIREMENTS
+
+**CRITICAL ENFORCEMENT**: All technical claims in analysis reports MUST include verified citations using standardized formats:
+- **Jenkins**: [Jenkins:job_name:build_number:result:timestamp]
+- **Repository**: [Repo:branch:file_path:lines:commit_sha]
+- **Environment**: [Env:cluster_url:connectivity:timestamp]
+- **Fix**: [Fix:file_path:operation:lines_affected:verification]
+- **JIRA**: [JIRA:ticket_id:status:last_updated]
+
+**AUDIT REQUIREMENT**: All citations must be real-time validated before report delivery
+
 ## Overview
 
 **Enhanced Report Structure:** Reports now begin with clear verdicts and supporting evidence, followed by detailed analysis and specific automation fixes when applicable.
@@ -18,10 +29,10 @@ This workflow updates report generation to lead with definitive verdicts and inc
 Create executive summary leading with definitive classification verdict:
 
 **Investigation Results:**
-- Systematic Investigation: [investigation_verdict]
-- Code Analysis: [automation_analysis]
-- Product Analysis: [product_analysis]
-- Supporting Evidence: [evidence_compilation]
+- Systematic Investigation: [investigation_verdict] [Jenkins:job_name:build_number:result:timestamp]
+- Code Analysis: [automation_analysis] [Repo:branch:file_path:lines:commit_sha]
+- Product Analysis: [product_analysis] [Env:cluster_url:connectivity:timestamp]
+- Supporting Evidence: [evidence_compilation] [JIRA:ticket_id:status:last_updated]
 
 **Report Requirements:**
 
@@ -30,14 +41,14 @@ Create executive summary leading with definitive classification verdict:
 **Section 1: DEFINITIVE VERDICT (Lead Section)**
 ```markdown
 # Executive Summary: Pipeline Failure Analysis
-**Pipeline:** [pipeline-name] Build #[build-number]  
+**Pipeline:** [pipeline-name] Build #[build-number] [Jenkins:job_name:build_number:result:timestamp]  
 **Date:** [date]  
 **Status:** [build-status]  
 **Duration:** [human-readable-duration]  
 
 ## 🎯 DEFINITIVE VERDICT
-**Classification:** **[PRODUCT BUG | AUTOMATION BUG | AUTOMATION GAP]**  
-**Confidence Level:** **[HIGH | MEDIUM | LOW]**  
+**Classification:** **[PRODUCT BUG | AUTOMATION BUG | AUTOMATION GAP]** [Jenkins:job_name:build_number:result:timestamp]  
+**Confidence Level:** **[HIGH | MEDIUM | LOW]** [Repo:branch:file_path:lines:commit_sha]  
 **Verdict Summary:** [One-sentence definitive statement of the root cause]
 
 ## 📊 SUPPORTING EVIDENCE

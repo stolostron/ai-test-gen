@@ -9,7 +9,7 @@ This document provides practical examples and best practices for using the Z-Str
 When working directly in this application directory:
 
 ```bash
-# Enterprise AI Services Integration (V3.1)
+# Enterprise AI Services Integration (V4.0)
 # Pure AI workflow with comprehensive services - 100% script-free, self-contained operation
 
 # Quick status check
@@ -62,7 +62,7 @@ cd apps/z-stream-analysis
 
 ## Team-Specific Workflows
 
-### For QE Teams (V3.1 AI Services)
+### For QE Teams (V4.0 AI Services)
 ```bash
 # Daily failure triage with environment validation
 /analyze-pipeline-failures pipeline-XXXX --comprehensive-ai-analysis
@@ -75,7 +75,7 @@ cd apps/z-stream-analysis
 "Generate precise automation fixes based on real repository analysis for this failure: <jenkins-url>"
 ```
 
-### For DevOps Teams (V3.1 AI Services)
+### For DevOps Teams (V4.0 AI Services)
 ```bash
 # Infrastructure failure analysis with environment validation
 /analyze-workflow ci-debug <jenkins-url> --ai-environment-validation
@@ -87,7 +87,7 @@ cd apps/z-stream-analysis
 /analyze-pipeline-failures pipeline-XXXX --real-repository-analysis --precise-fixes
 ```
 
-### For Management (V3.1 AI Services)
+### For Management (V4.0 AI Services)
 ```bash
 # Executive reporting with definitive verdicts
 /analyze-pipeline-failures pipeline-XXXX --ai-executive-summary
@@ -141,7 +141,7 @@ cat .env
 - Access to AI-powered templates and enhanced analysis
 - Custom analysis configurations and debugging
 
-### Team Collaboration (V3.1 AI Services)
+### Team Collaboration (V4.0 AI Services)
 - **Standardized Reports**: All analysis follows consistent single comprehensive report format with real repository analysis integration
 - **Timestamped History**: Multiple analysis runs preserved with unique timestamps and real repository analysis metrics
 - **Actionable Insights**: Reports include precise automation fixes with exact file paths and line numbers

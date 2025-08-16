@@ -28,16 +28,16 @@ cd apps/z-stream-analysis/
 
 ## 🎯 Available Applications
 
-### Test Generator V3.1
+### Test Generator V4.0
 **Location:** `apps/claude-test-generator/`  
 **Purpose:** ACM feature test plan generation with AI Ultrathink deep reasoning  
-**Features:** JIRA analysis, GitHub investigation, Red Hat ACM docs intelligence, deployment validation  
+**Features:** JIRA analysis, GitHub investigation, Red Hat ACM docs intelligence, deployment validation, citation enforcement  
 **Usage:** `cd apps/claude-test-generator/` → "Generate test plan for ACM-22079"
 
-### Pipeline Analysis V3.1  
+### Pipeline Analysis V4.0  
 **Location:** `apps/z-stream-analysis/`  
 **Purpose:** Jenkins pipeline failure analysis with definitive PRODUCT BUG | AUTOMATION BUG classification  
-**Features:** Environment validation, repository analysis, merge-ready fix generation, branch validation  
+**Features:** Environment validation, repository analysis, merge-ready fix generation, branch validation, citation enforcement  
 **Usage:** `cd apps/z-stream-analysis/` → "Analyze https://jenkins-url/job/pipeline/123/"
 
 ## 🎯 Which App Should I Use?
@@ -183,25 +183,27 @@ apps/multi-cloud-testing/
 
 ## 🎯 Success Metrics
 
-### Test Generator V3.1
+### Test Generator V4.0
 - 98.7% success rate with 83% time reduction (4hrs → 40min)
 - 4x more detailed reasoning with AI Ultrathink analysis
 - 85% accuracy in automation gap detection
 - 3x faster GitHub analysis with CLI priority + WebFetch fallback
+- **Citation enforcement**: Real-time validation of all factual claims
 
-### Pipeline Analysis V3.1
+### Pipeline Analysis V4.0
 - 95% time reduction (2hrs → 5min) with 99.5% environment connectivity
 - 95%+ fix accuracy with automated PR creation
 - 96%+ analysis accuracy with sub-300 second execution
 - 100% real repository analysis accuracy with branch validation
+- **Citation enforcement**: Real-time validation of all technical claims
 
 ### Isolation Architecture
 - **Zero context contamination** between apps
 - **Complete independence** enabling infinite scalability
-- **Preserved functionality** of all V3.1 enterprise AI services
+- **Preserved functionality** of all V4.0 enterprise AI services
 - **Future-proof extensibility** with standard patterns
 - **Clean repository** with ~50MB+ cleanup and redundant file removal
 
 ---
 
-**Enterprise QE Automation Suite V3.1** delivering modular, isolated applications with advanced AI services for comprehensive test automation workflows. Featuring complete app independence, zero contamination, and infinite extensibility while maintaining full enterprise-grade functionality.
+**Enterprise QE Automation Suite V4.0** delivering modular, isolated applications with advanced AI services for comprehensive test automation workflows. Featuring complete app independence, zero contamination, infinite extensibility, and enterprise-grade citation enforcement for audit-compliant reporting while maintaining full functionality.

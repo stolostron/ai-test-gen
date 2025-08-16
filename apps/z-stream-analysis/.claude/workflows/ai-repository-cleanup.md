@@ -230,7 +230,7 @@ echo "Storage freed: $(du -sh . 2>/dev/null)"
 
 ### Enhanced Workflow with Automatic Cleanup
 ```markdown
-# Complete AI Analysis Workflow with Cleanup (V3.1)
+# Complete AI Analysis Workflow with Cleanup (V4.0)
 1. ai_systematic_investigation()           # Determine verdict: product vs automation
 2. ai_clone_real_repository()              # Clone actual automation repository  
 3. ai_analyze_real_file_structure()        # Understand actual repository organization
