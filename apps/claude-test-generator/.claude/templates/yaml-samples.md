@@ -132,11 +132,33 @@ spec:
     posthook: []
 ```
 
-Tip: You can generate a minimal, schema-aware YAML using `bin/cc_schema_helper.sh`:
+**AI Schema Service**: Claude can generate minimal, schema-aware YAML through intelligent CRD analysis:
 
-```bash
-# Discover required fields and print a minimal YAML
-bin/cc_schema_helper.sh generate --name digest-upgrade-test --namespace <cluster-namespace> --version 4.16.37
+**AI Schema Generation Process**:
+1. **CRD Discovery**: `oc get crd <resource-type> -o yaml` for schema analysis
+2. **Required Field Detection**: AI identifies mandatory fields from OpenAPI schema
+3. **Smart YAML Generation**: AI creates minimal valid YAML with required fields
+4. **Server-side Validation**: AI validates YAML via `oc apply --dry-run=server -f -`
+
+**Example AI-Generated ClusterCurator** (with required fields auto-detected):
+```yaml
+# AI-generated minimal YAML with all required fields
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ClusterCurator
+metadata:
+  name: digest-upgrade-test
+  namespace: <cluster-namespace>
+spec:
+  desiredCuration: upgrade
+  upgrade:
+    desiredUpdate: "4.16.37"
+    towerAuthSecret: ""   # AI-detected required field
+    prehook: []           # AI-detected required field  
+    posthook: []          # AI-detected required field
+  install:                # AI-detected required field
+    towerAuthSecret: ""
+    prehook: []
+    posthook: []
 ```
 
 ### Digest-Based Upgrade Test (NEW Functionality)

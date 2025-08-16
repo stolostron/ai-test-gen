@@ -108,7 +108,7 @@ oc logs -n multicluster-engine deployment/cluster-curator-controller | grep -E -
 
 ```bash
 # Create timestamped run directory
-TIMESTAMP=$(date +%Y%m%d-%H%M) && mkdir -p runs/<TICKET-ID>/run-001-$TIMESTAMP
+mkdir -p runs/<TICKET-ID>/run-$(date +%Y%m%d-%H%M)
 
 # Create latest symlink
 cd runs/<TICKET-ID> && ln -sfn run-001-<TIMESTAMP> latest
