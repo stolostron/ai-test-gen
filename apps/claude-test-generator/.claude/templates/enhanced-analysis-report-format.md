@@ -1,5 +1,15 @@
 # Enhanced Complete Analysis Report Format Requirements
 
+## 🚨 MANDATORY CITATION ENFORCEMENT
+
+**CRITICAL REQUIREMENT**: All factual claims in complete reports MUST include verified citations using standardized formats:
+- **JIRA**: [JIRA:ACM-XXXXX:status:last_updated]
+- **GitHub**: [GitHub:org/repo#PR/issue:state:commit_sha]  
+- **Documentation**: [Docs:URL#section:last_verified]
+- **Code**: [Code:file_path:lines:commit_sha]
+
+**SCOPE**: Complete reports only - test summary tables maintain clean format without citations
+
 ## 🚨 MANDATORY STRUCTURE ENFORCEMENT
 
 All Complete-Analysis.md files MUST follow this exact 5-section structure. Reports deviating from this format will be REJECTED.
@@ -9,28 +19,28 @@ All Complete-Analysis.md files MUST follow this exact 5-section structure. Repor
 **Purpose**: Provide definitive deployment assessment with concrete evidence
 
 **Required Elements**:
-- **Environment Specification**: MUST clearly state which environment was used for validation
-  - Examples: "qe6 cluster (OpenShift 4.16.37, ACM 2.13.2)", "local test environment", "simulated AI analysis due to cluster unavailability"
-- **Feature Status Assessment**: MUST provide one of four definitive statuses:
-  - ✅ **FULLY OPERATIONAL**: Feature deployed and working with concrete validation data
-  - 🔄 **PARTIALLY OPERATIONAL**: Specific components working/missing with detailed breakdown  
-  - ❌ **NOT DEPLOYED**: Feature unavailable with concrete evidence and timeline
-  - 🐛 **IMPLEMENTATION BUG**: Feature deployed but malfunctioning with error analysis
-- **Supporting Evidence**: MUST provide concrete data collected during validation:
-  - Version checks and correlation results
-  - Behavioral testing outcomes
-  - Schema validation results
-  - Error logs or success confirmations
-- **Version Correlation**: MUST correlate ACM/MCE versions with feature availability and deployment timeline
+- **Environment Specification**: MUST clearly state which environment was used for validation [Env:cluster_url:connectivity:timestamp]
+  - Examples: "qe6 cluster (OpenShift 4.16.37, ACM 2.13.2) [Env:https://api.qe6.example.com:200:2024-01-15T10:30:00Z]", "local test environment", "simulated AI analysis due to cluster unavailability"
+- **Feature Status Assessment**: MUST provide one of four definitive statuses with citations:
+  - ✅ **FULLY OPERATIONAL**: Feature deployed and working with concrete validation data [JIRA:ACM-XXXXX:status:last_updated] [Docs:URL#section:last_verified]
+  - 🔄 **PARTIALLY OPERATIONAL**: Specific components working/missing with detailed breakdown [Code:file_path:lines:commit_sha]  
+  - ❌ **NOT DEPLOYED**: Feature unavailable with concrete evidence and timeline [GitHub:org/repo#PR:state:commit_sha]
+  - 🐛 **IMPLEMENTATION BUG**: Feature deployed but malfunctioning with error analysis [JIRA:ticket_id:status:last_updated]
+- **Supporting Evidence**: MUST provide concrete data collected during validation with citations:
+  - Version checks and correlation results [Env:cluster_url:connectivity:timestamp]
+  - Behavioral testing outcomes [Code:test_file_path:lines:commit_sha]
+  - Schema validation results [Docs:URL#schema-section:last_verified]
+  - Error logs or success confirmations [Code:log_file_path:lines:commit_sha]
+- **Version Correlation**: MUST correlate ACM/MCE versions with feature availability and deployment timeline [JIRA:ACM-XXXXX:status:last_updated] [Docs:URL#version-matrix:last_verified]
 
 **Format Example**:
 ```markdown
 ## 🚨 DEPLOYMENT STATUS
 
-**Environment**: qe6 cluster (OpenShift 4.16.37, ACM 2.13.2)
-**Status**: ❌ NOT DEPLOYED
-**Evidence**: [Concrete evidence from validation]
-**Version Correlation**: [ACM/MCE version analysis]
+**Environment**: qe6 cluster (OpenShift 4.16.37, ACM 2.13.2) [Env:https://api.qe6.example.com:200:2024-01-15T10:30:00Z]
+**Status**: ❌ NOT DEPLOYED [JIRA:ACM-22079:Open:2024-01-15]
+**Evidence**: Feature API endpoint not accessible, version mismatch detected [Code:pkg/api/routes.go:45-52:a1b2c3d4]
+**Version Correlation**: Target version 2.14 not yet available in cluster running 2.13.2 [Docs:https://access.redhat.com/documentation/acm#version-matrix:2024-01-15]
 ```
 
 ### Section 2: Implementation Status (SECOND SECTION - MANDATORY)

@@ -103,7 +103,7 @@ post {
 # 1. Simply provide Jenkins URL - NO configuration needed:
 "https://jenkins-server/job/pipeline/123/"
 
-# 2. Claude AUTOMATICALLY executes full V3.1 workflow:
+# 2. Claude AUTOMATICALLY executes full V4.0 workflow:
 # - Extract Jenkins metadata: curl -k -s "${JENKINS_URL}/api/json"
 # - Extract console logs: curl -k -s "${JENKINS_URL}/consoleText" 
 # - Extract parameters: curl -k -s "${JENKINS_URL}/parameters/"
