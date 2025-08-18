@@ -16,7 +16,7 @@ A modular enterprise automation suite featuring completely isolated AI applicati
 1. **Clone the repo** 
 2. **Ask Claude** by - 
 
-### Method 1: Just say for it!
+### Method 1: Just say it!
 ```bash
 # Just speak naturally - AI router understands and routes automatically:
 "Generate test plan for ACM-22079"
