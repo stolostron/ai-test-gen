@@ -6,13 +6,13 @@
 
 ### Choose Your Application
 
-#### Test Generator (ACM Test Plans)
+#### Test Generator (ACM Test Plans with Real Data)
 ```bash
 cd apps/claude-test-generator/
 "Generate test plan for ACM-22079"
 ```
 
-#### Pipeline Analysis (Jenkins Failures)
+#### Z-Stream Analysis (Jenkins Failures)
 ```bash
 cd apps/z-stream-analysis/
 "Analyze https://jenkins-url/job/pipeline/123/"
@@ -33,9 +33,12 @@ cd apps/claude-test-generator/
 # Direct commands
 /analyze ACM-22079
 /generate https://github.com/org/repo/pull/123 "Feature Name" ACM-10659
+
+# Output includes real environment data in Expected Results
+# Works with any component (ClusterCurator, Policy, Application, etc.)
 ```
 
-### Pipeline Analysis App
+### Z-Stream Analysis App
 ```bash
 # Navigate to app
 cd apps/z-stream-analysis/
@@ -57,8 +60,8 @@ From the root directory, you can route requests to specific apps:
 # Test generation
 /test-generator Generate test plan for ACM-22079
 
-# Pipeline analysis
-/pipeline-analysis Analyze https://jenkins-url/job/pipeline/123/
+# Z-stream analysis
+/z-stream-analysis Analyze https://jenkins-url/job/pipeline/123/
 ```
 
 ## 📁 Results and Output
@@ -66,19 +69,19 @@ From the root directory, you can route requests to specific apps:
 ### Test Generator Results
 ```
 apps/claude-test-generator/runs/
-├── ACM-22079-2025-08-14-18-17/
-│   ├── Complete-Analysis.md
-│   ├── Test-Cases.md
-│   └── metadata.json
+├── ACM-22079_August_18_2025/
+│   ├── complete_analysis_report.md
+│   ├── test_cases_only.md
+│   └── run_metadata.json
 ```
 
-### Pipeline Analysis Results
+### Z-Stream Analysis Results
 ```
 apps/z-stream-analysis/runs/
-├── clc-e2e-pipeline-3313_20250815_174500_v31_comprehensive/
-│   ├── Detailed-Analysis.md
-│   ├── analysis-metadata.json
-│   └── jenkins-metadata.json
+├── clc-e2e-pipeline-3313_20250815_174500/
+│   ├── detailed_analysis.md
+│   ├── analysis_metadata.json
+│   └── jenkins_metadata.json
 ```
 
 ## 🔧 Setup Requirements
@@ -91,26 +94,26 @@ apps/z-stream-analysis/runs/
 ### App-Specific Requirements
 
 **Test Generator:**
-- JIRA access (see `shared/docs/jira-setup.md`)
-- kubectl/oc for ACM clusters
+- JIRA access (see `shared/docs/JIRA_API_SETUP.md`)
+- kubectl/oc for ACM clusters and real data collection
 - Optional: GitHub CLI (`gh`) for enhanced analysis
+- Cluster access for real environment data integration
 
-**Pipeline Analysis:**
+**Z-Stream Analysis:**
 - Jenkins URL access
 - Optional: Jenkins credentials for private instances
 - Optional: Cluster access for environment validation
 
 ## 🛡️ Isolation Benefits
 
-### What Changed
-- **Before**: One huge configuration file with cross-app contamination
-- **After**: Clean, isolated apps that never interfere with each other
-
-### Why It's Better
+### Architecture Benefits
+- **Clean Design**: Isolated apps that never interfere with each other
 - **No Context Mixing**: Claude never confuses which app you're using
 - **Independent Operation**: Each app works without the other
 - **Clear Boundaries**: Know exactly which app handles your task
 - **Easy Extension**: Add new apps without breaking existing ones
+- **Real Data Integration**: Apps collect actual environment data during execution
+- **Universal Support**: Framework adapts to any component automatically
 
 ## 🔍 Troubleshooting
 
@@ -120,11 +123,11 @@ apps/z-stream-analysis/runs/
 3. **Check Dependencies**: Review app-specific requirements above
 
 ### If Results Aren't Saved
-- **Test Generator**: Results save to `apps/claude-test-generator/runs/`
-- **Pipeline Analysis**: Results save to `apps/z-stream-analysis/runs/`
+- **Test Generator**: Results save to `apps/claude-test-generator/runs/` with real environment data
+- **Z-Stream Analysis**: Results save to `apps/z-stream-analysis/runs/`
 
 ### If Apps Seem to Interfere
-This shouldn't happen with the new isolation! If it does:
+This shouldn't happen with the isolation architecture! If it does:
 1. Check that you're in the correct app directory
 2. Verify the app's CLAUDE.md starts with isolation headers
 3. Report as a configuration issue
@@ -137,8 +140,8 @@ This shouldn't happen with the new isolation! If it does:
 - **Extension Guide**: `shared/templates/app-extension-guide.md` - Adding new apps
 
 ### App-Specific Documentation
-- **Test Generator**: `apps/claude-test-generator/README.md` and `docs/`
-- **Pipeline Analysis**: `apps/z-stream-analysis/README.md` and `docs/`
+- **Test Generator**: `apps/claude-test-generator/README.md` and `docs/` - Includes real data integration and phase-based architecture
+- **Z-Stream Analysis**: `apps/z-stream-analysis/README.md` and `docs/` - Jenkins pipeline analysis and automation
 
 ## 💡 Pro Tips
 
@@ -154,9 +157,10 @@ This shouldn't happen with the new isolation! If it does:
 
 ### Development
 - **App Independence**: Each app works completely on its own
-- **Clean Configs**: No more giant configuration files to navigate
+- **Clean Configs**: Focused configuration files for each app
 - **Easy Extension**: Follow patterns in existing apps to add new ones
+- **Modern Capabilities**: Real data integration, universal component support, professional formatting
 
 ---
 
-**The isolated architecture provides clean, predictable, and powerful AI-powered QE automation without complexity or conflicts.**
+**The isolated architecture provides clean, predictable, and powerful AI-powered QE automation with real environment data integration, without complexity or conflicts.**

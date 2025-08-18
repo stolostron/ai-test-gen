@@ -40,7 +40,24 @@
       "WebFetch(domain:issues.redhat.com)",
       "Bash(gh:*)",
       "Bash(kubectl config:*)",
-      "Bash(kubectl auth can-i:*)"
+      "Bash(kubectl auth can-i:*)",
+      "Bash(oc cluster-info:*)",
+      "Bash(oc explain:*)",
+      "Bash(oc image info:*)",
+      "Bash(oc exec:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(oc auth can-i:*)",
+      "Bash(oc api-resources:*)",
+      "WebFetch(domain:open-cluster-management.io)",
+      "Bash(curl:*)",
+      "Bash(git clone:*)",
+      "Bash(rm:*)",
+      "Bash(find:*)",
+      "Bash(timeout:*)",
+      "Bash(oc delete:*)",
+      "WebFetch(domain:www.redhat.com)",
+      "Bash(echo:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }

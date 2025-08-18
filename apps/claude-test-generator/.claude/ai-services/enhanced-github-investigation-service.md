@@ -277,41 +277,119 @@ fi
 export GITHUB_INVESTIGATION_MODE
 ```
 
-### Investigation Workflow Enhancement
+### Enhanced AI GitHub Investigation Service Interface
 ```python
-def enhanced_github_investigation_workflow(ticket_analysis):
+def generate_investigation_strategy(jira_context, deployment_context, target_method, investigation_scope="comprehensive", e2e_focus_required=True):
     """
-    Complete GitHub investigation with intelligent method selection
+    AI-powered investigation strategy generation for ALL PRs with intelligent prioritization
+    
+    Args:
+        jira_context: Complete JIRA analysis from Phase 1a
+        deployment_context: Deployment status from Phase 1b  
+        target_method: "gh_cli" or "webfetch" (script-determined)
+        investigation_scope: Overall investigation depth
+        e2e_focus_required: True (enforces E2E testing focus)
+    
+    Returns:
+        {
+            "strategy_summary": "Investigating 3 PRs: 1 deep, 1 moderate, 1 summary based on impact analysis",
+            "pr_analysis_plans": [
+                {
+                    "pr_reference": "stolostron/cluster-curator-controller#468",
+                    "investigation_depth": "deep",  # AI determines: High impact PR
+                    "focus_areas": ["implementation", "testing_hooks", "e2e_integration"],
+                    "code_analysis_scope": "full_diff",  # AI determines: Full code analysis needed
+                    "analyze_related_work": true,
+                    "related_search_terms": ["digest upgrade", "conditional updates"],
+                    "impact_score": 0.95,  # AI calculates impact
+                    "testing_priority": "critical"  # AI determines priority for test generation
+                },
+                {
+                    "pr_reference": "stolostron/console#4858", 
+                    "investigation_depth": "moderate",  # AI determines: Medium impact
+                    "focus_areas": ["ui_changes", "e2e_workflow"],
+                    "code_analysis_scope": "key_files",
+                    "analyze_related_work": false,
+                    "impact_score": 0.60,
+                    "testing_priority": "secondary"
+                }
+            ],
+            "repository_analysis_plans": [
+                {
+                    "repository": "stolostron/cluster-curator-controller",
+                    "search_scope": "comprehensive",  # AI determines: Primary repo needs deep analysis
+                    "search_terms": ["ClusterCurator upgrade digest", "validateUpgradeVersion", "conditionalUpdates"],
+                    "search_limit": 20,
+                    "analysis_focus": ["controller_patterns", "testing_hooks", "e2e_integration_points"]
+                },
+                {
+                    "repository": "stolostron/console",
+                    "search_scope": "focused",  # AI determines: Secondary repo needs targeted analysis
+                    "search_terms": ["cluster upgrade UI", "ClusterCurator console"],
+                    "search_limit": 10,
+                    "analysis_focus": ["ui_patterns", "console_workflows", "e2e_user_journeys"]
+                }
+            ]
+        }
     """
-    github_service = AIGitHubInvestigationService()
+
+def synthesize_results(investigation_data, strategy, e2e_requirements=True):
+    """
+    AI-powered synthesis of ALL investigation results with E2E focus
     
-    # Extract GitHub references from ticket
-    github_refs = ai_extract_github_references(ticket_analysis)
-    
-    investigation_results = []
-    for ref in github_refs:
-        if ref.type == "pull_request":
-            result = github_service.investigate_pr(
-                repo=ref.repo,
-                pr_number=ref.number,
-                investigation_depth="comprehensive"
-            )
-            
-            # AI analysis of investigation data
-            analysis = ai_analyze_github_investigation_results(result)
-            
-            investigation_results.append({
-                "reference": ref,
-                "investigation": result,
-                "analysis": analysis
-            })
-    
-    return {
-        "method_used": github_service.available_methods,
-        "investigations": investigation_results,
-        "overall_confidence": ai_calculate_overall_confidence(investigation_results),
-        "implementation_status": ai_determine_implementation_status(investigation_results)
-    }
+    Returns:
+        {
+            "implementation_understanding": {
+                "primary_changes": [...],  # AI identifies most important changes
+                "testing_implications": [...],  # AI maps changes to E2E testing needs
+                "e2e_integration_points": [...],  # AI identifies Console workflow impacts
+                "code_complexity_assessment": "moderate|high|low"  # AI evaluates complexity
+            },
+            "testing_strategy_recommendations": {
+                "critical_e2e_scenarios": [...],  # AI recommends highest-priority E2E tests
+                "console_workflow_focus": [...],  # AI identifies key Console workflows
+                "cli_alternative_approaches": [...],  # AI suggests CLI alternatives
+                "testing_sequence_optimization": [...]  # AI optimizes test execution order
+            },
+            "deployment_correlation": {
+                "implementation_vs_deployment": "analysis_result",  # AI correlates with Phase 1b
+                "feature_readiness": "complete|partial|pending",  # AI assesses readiness
+                "testing_readiness": "immediate|post_deployment|conditional"  # AI determines when testable
+            },
+            "confidence_metrics": {
+                "overall_confidence": 0.94,  # AI calculates overall confidence
+                "implementation_confidence": 0.98,  # AI assesses implementation completeness
+                "testing_strategy_confidence": 0.89  # AI evaluates testing approach certainty
+            }
+        }
+    """
+```
+
+### AI-Powered Strategic Investigation Process
+```markdown
+## AI GitHub Investigation Service Workflow:
+
+### 1. AI Strategic Analysis (REPLACES Script Decision Logic)
+**AI analyzes ALL PRs and determines:**
+- **Impact Assessment**: Which PRs have highest testing impact
+- **Investigation Depth**: How deeply to analyze each PR based on importance
+- **Focus Area Selection**: What aspects to examine per PR (implementation vs testing vs integration)
+- **Code Analysis Scope**: How much code to review per PR (full diff vs key files vs summary)
+- **Related Work Priority**: Whether to investigate related PRs for each main PR
+
+### 2. AI Repository Intelligence (REPLACES Script Pattern Logic)  
+**AI analyzes ALL repositories and determines:**
+- **Search Strategy**: What terms to search for in each repository
+- **Investigation Scope**: How comprehensively to investigate each repository
+- **Analysis Focus**: What patterns to look for (controller vs UI vs API)
+- **E2E Integration Mapping**: How repository changes affect E2E testing approaches
+
+### 3. Script Execution Engine (KEEPS Reliable Command Execution)
+**Scripts handle deterministic execution:**
+- **Method Fallback**: gh CLI → WebFetch sequence control
+- **Command Execution**: Reliable execution of AI-determined commands
+- **Error Handling**: Deterministic retry and fallback mechanisms
+- **Data Collection**: Systematic execution of investigation plan
 ```
 
 ## 📊 Expected Performance Improvements

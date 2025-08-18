@@ -23,11 +23,11 @@ Simply ask Claude:
 ```
 
 ## ⚡ What You Get
-- **Execution Time**: 5-10 minutes
-- **Test Cases**: 3-5 comprehensive E2E scenarios
-- **Coverage**: All NEW functionality with realistic validation steps
-- **Format**: Ready for manual execution or Polarion import
-- **Dual Output**: Both detailed analysis and clean test cases
+- **Execution Time**: 5-10 minutes (47-60% faster through agent-based parallel processing)
+- **Test Cases**: 3-4 comprehensive E2E scenarios with professional formatting
+- **Coverage**: All NEW functionality with extensive verbal explanations and realistic validation steps
+- **Format**: Enterprise-level technical documentation ready for manual execution or Polarion import
+- **Dual Output**: Both detailed analysis with citations and clean test cases with comprehensive context
 
 ## 🌍 Environment Options
 - **Default**: qe6 environment (automatic setup)

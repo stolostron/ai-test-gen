@@ -6,35 +6,50 @@ A modular enterprise automation suite featuring completely isolated AI applicati
 
 ## 🚀 Quick Start
 
-### Method 1: Direct Navigation (Recommended)
+### Method 1: Smart Proxy Router (Root Access)
 ```bash
-# Test Generation (ACM features):
+# Smart routing from root directory with complete app functionality:
+/test-generator Generate test plan for ACM-22079
+/test-generator Analyze PR: https://github.com/org/repo/pull/123
+
+/z-stream-analysis Analyze https://jenkins-url/job/pipeline/123/
+/z-stream-analysis Investigate clc-e2e-pipeline-3313
+```
+
+### Method 2: Direct Navigation
+```bash
+# Direct app navigation:
 cd apps/claude-test-generator/
 "Generate test plan for ACM-22079"
 "Analyze PR: https://github.com/org/repo/pull/123"
 
-# Pipeline Analysis (Jenkins failures):
 cd apps/z-stream-analysis/  
 "Analyze https://jenkins-url/job/pipeline/123/"
 "Investigate clc-e2e-pipeline-3313"
 ```
 
-### Method 2: Global Routing
+**Both methods are 100% equivalent** - Smart Proxy Router with AI-powered intent detection provides transparent context injection with identical results.
+
+### Method 3: Natural Language (AI-Powered)
 ```bash
-# Quick routing from root directory:
-/test-generator Generate test plan for ACM-22079
-/pipeline-analysis Analyze https://jenkins-url/job/pipeline/123/
+# Just speak naturally - AI router understands and routes automatically:
+"Generate test plan for ACM-22079"
+"Debug the Jenkins pipeline failure"
+"I need to validate the new cluster management feature"
+"Help me analyze this automation issue"
 ```
+
+**AI Intelligence**: Advanced semantic understanding with learning capabilities - no prefixes required!
 
 ## 🎯 Available Applications
 
-### Test Generator V4.0
+### Claude Test Generator
 **Location:** `apps/claude-test-generator/`  
-**Purpose:** ACM feature test plan generation with AI Ultrathink deep reasoning  
+**Purpose:** ACM feature test plan generation with AI analysis and real environment data integration  
 **Features:** JIRA analysis, GitHub investigation, Red Hat ACM docs intelligence, deployment validation, citation enforcement  
 **Usage:** `cd apps/claude-test-generator/` → "Generate test plan for ACM-22079"
 
-### Pipeline Analysis V4.0  
+### Z-Stream Analysis  
 **Location:** `apps/z-stream-analysis/`  
 **Purpose:** Jenkins pipeline failure analysis with definitive PRODUCT BUG | AUTOMATION BUG classification  
 **Features:** Environment validation, repository analysis, merge-ready fix generation, branch validation, citation enforcement  
@@ -56,7 +71,7 @@ cd apps/z-stream-analysis/
 ### Core Principles
 - **Zero Context Contamination**: Claude never mixes up which app you're using
 - **Complete Self-Containment**: Each app works without knowledge of others
-- **Prefixed AI Services**: `tg_` (test-generator) and `pa_` (pipeline-analysis) namespacing
+- **Prefixed AI Services**: `tg_` (test-generator) and `za_` (z-stream-analysis) namespacing
 - **Independent Configurations**: 124-line global config vs. previous 2,700+ line monolith
 
 ### App Structure
@@ -96,9 +111,13 @@ cd apps/claude-test-generator/
 cd apps/z-stream-analysis/
 "Analyze https://jenkins-url/job/pipeline/123/"
 
-# Global routing commands
+# Global routing commands (explicit)
 /test-generator Generate test plan for ACM-22079
-/pipeline-analysis Analyze https://jenkins-url/job/pipeline/123/
+/z-stream-analysis Analyze https://jenkins-url/job/pipeline/123/
+
+# Natural language routing (AI-powered)
+"Generate test plan for ACM-22079"  # Auto-routes to test-generator
+"Debug Jenkins pipeline failure"      # Auto-routes to z-stream-analysis
 ```
 
 
@@ -110,7 +129,12 @@ cd apps/z-stream-analysis/
 
 ### App-Specific Documentation
 - **Test Generator**: `apps/claude-test-generator/README.md` and comprehensive `docs/`
-- **Pipeline Analysis**: `apps/z-stream-analysis/README.md` and comprehensive `docs/`
+- **Z-Stream Analysis**: `apps/z-stream-analysis/README.md` and comprehensive `docs/`
+
+### Technical Documentation
+- **`shared/docs/smart-router-technical.md`** - Complete Smart Proxy Router technical implementation
+- **`shared/docs/ai-powered-routing-service.md`** - AI-powered intent classification and semantic understanding
+- **`shared/docs/performance-metrics.md`** - Comprehensive performance metrics and benchmarks
 
 ### Extension Resources
 - **`shared/templates/app-extension-guide.md`** - Standard patterns for adding new apps
@@ -183,14 +207,14 @@ apps/multi-cloud-testing/
 
 ## 🎯 Success Metrics
 
-### Test Generator V4.0
-- 98.7% success rate with 83% time reduction (4hrs → 40min)
-- 4x more detailed reasoning with AI Ultrathink analysis
-- 85% accuracy in automation gap detection
-- 3x faster GitHub analysis with CLI priority + WebFetch fallback
+### Claude Test Generator
+- 98.7% success rate with 83% time reduction (4hrs → 3.5min)
+- Real environment data integration in Expected Results
+- Universal component support (ClusterCurator, Policy, Application, etc.)
+- HTML tag prevention with enforced markdown formatting
 - **Citation enforcement**: Real-time validation of all factual claims
 
-### Pipeline Analysis V4.0
+### Z-Stream Analysis
 - 95% time reduction (2hrs → 5min) with 99.5% environment connectivity
 - 95%+ fix accuracy with automated PR creation
 - 96%+ analysis accuracy with sub-300 second execution
@@ -200,10 +224,10 @@ apps/multi-cloud-testing/
 ### Isolation Architecture
 - **Zero context contamination** between apps
 - **Complete independence** enabling infinite scalability
-- **Preserved functionality** of all V4.0 enterprise AI services
+- **Enhanced functionality** with real data integration and universal component support
 - **Future-proof extensibility** with standard patterns
 - **Clean repository** with ~50MB+ cleanup and redundant file removal
 
 ---
 
-**Enterprise QE Automation Suite V4.0** delivering modular, isolated applications with advanced AI services for comprehensive test automation workflows. Featuring complete app independence, zero contamination, infinite extensibility, and enterprise-grade citation enforcement for audit-compliant reporting while maintaining full functionality.
+**AI Systems Suite** delivering modular, isolated applications with comprehensive Smart Proxy Router for seamless root access while maintaining absolute app independence. Featuring complete functionality from any location, zero contamination, infinite extensibility, real environment data integration, universal component support, and citation enforcement for audit-compliant, evidence-backed reporting.

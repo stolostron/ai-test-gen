@@ -1,28 +1,58 @@
-# AI Ultrathink Investigation Protocol
+# Advanced Deep Reasoning Investigation Protocol
 
-## 🧠 Comprehensive AI-Powered Analysis with Deep Reasoning
+## 🧠 Comprehensive AI-Powered Analysis with Advanced Cognitive Processing
 
-The framework performs **thorough investigation** with **AI Ultrathink deep analysis** of all related tickets and code changes:
+The framework performs **thorough investigation** with **advanced deep reasoning analysis** of all related tickets and code changes:
 
-### Multi-Level Ticket Investigation ⚠️ ULTRATHINK-ENHANCED REQUIREMENTS
+### Optimized Investigation Workflow with Phase 1a/1b Dependencies
+
+#### **Phase 1a: Independent Parallel Investigation**
+**Agent A (JIRA Analysis) - Comprehensive Ticket Investigation:**
 1. **Main Ticket Analysis**: Requirements, acceptance criteria, technical specifications - EXTRACT ALL INFORMATION
 2. **All Subtasks Investigation**: Implementation status, PR links, completion state - MANDATORY deep content extraction
 3. **Dependency Chain Analysis**: Blocking/blocked tickets, prerequisites - COMPLETE dependency mapping
 4. **Epic Context Review**: Parent epics, strategic objectives, architectural decisions - FULL context extraction
 5. **Related Ticket Mining**: Historical context, previous implementations, lessons learned - COMPREHENSIVE analysis
-6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context - REGARDLESS OF BRANCH AVAILABILITY
-7. **⚠️ CRITICAL: Extract ALL Content from JIRA**: When external documentation is limited/unavailable, MUST extract ALL technical details, specifications, and implementation information directly from JIRA ticket content
-8. **Documentation Fallback Protocol**: When docs.redhat.com or stolostron/rhacm-docs branches are unavailable, use comprehensive JIRA content extraction as primary information source
+6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context
+7. **PR Reference Extraction**: Extract all GitHub PR links and component references for Agent E
+8. **Component Identification**: Identify specific components and repositories for targeted analysis
 
-### 📚 AI Documentation Intelligence Service (NEW - MANDATORY)
+**Agent D (Environment Validation) - Parallel Independent Task:**
+- Environment authentication and cluster connectivity validation
+- ACM/MCE version detection and component health assessment
+- Infrastructure readiness determination
+
+#### **Phase 1b: Context-Informed Feature Detection**
+**Agent E (Feature Detection) - Sequential after Agent A Completion:**
+- **Input Required**: Complete JIRA context from Agent A including specific PRs and components
+- **Targeted Analysis**: Use exact PR references and component details for precise deployment validation  
+- **Enhanced Confidence**: Higher accuracy through context-driven analysis vs pattern guessing
+- **Evidence-Based Assessment**: Specific behavioral testing based on JIRA-identified feature scope
+
+#### **Phase 2: Enhanced Context-Aware Parallel Execution**
+**Agent B (Documentation Intelligence) - Enhanced Multi-Method Approach:**
+- **GitHub CLI Priority**: Primary method for enhanced documentation analysis with correct branch structure
+- **Correct Branch Detection**: Use actual repository structure ({version}_stage, {version}_prod)  
+- **WebFetch Fallback**: Reliable fallback when GitHub CLI unavailable
+- **Intelligent Internet Search**: Automatic internet search when documentation insufficient
+- **Comprehensive Synthesis**: Combine git documentation with internet research for complete understanding
+
+**Agent C (GitHub Investigation) - AI-Powered Parallel Investigation:**
+- **Input Context**: Complete JIRA context with ALL PRs and repositories from Phase 1a
+- **AI Strategic Analysis**: AI service analyzes ALL PRs and determines investigation depth per PR based on impact
+- **AI Investigation Planning**: AI determines focus areas, code analysis scope, and related work priority for each PR
+- **Script Execution Control**: Reliable execution of AI-determined investigation plan with gh CLI priority + WebFetch fallback
+- **AI Result Synthesis**: AI processes ALL investigation data to identify E2E testing implications and implementation patterns
+
+### 📚 Enhanced AI Documentation Intelligence Service (CORRECTED)
 **Primary Source**: Red Hat ACM Official Documentation Repository
-- **Repository Analysis**: https://github.com/stolostron/rhacm-docs (branch-aware feature discovery)
-- **Architecture Documentation**: Technical implementation patterns and design decisions
-- **User Guide Analysis**: Feature usage patterns and expected behaviors
-- **API Reference Validation**: CRD schemas and field specification verification
-- **Version Correlation**: Documentation version mapping to ACM/MCE releases
-- **Best Practice Extraction**: Official Red Hat recommended usage patterns
-- **Configuration Intelligence**: Validated YAML examples and schema compliance
+- **Repository**: https://github.com/stolostron/rhacm-docs with correct branch structure
+- **Branch Pattern**: {version}_stage (development), {version}_prod (production), main (fallback)
+- **GitHub CLI Integration**: Enhanced analysis with gh api and gh search capabilities
+- **WebFetch Fallback**: Universal compatibility when CLI unavailable
+- **Intelligence Assessment**: Automatic evaluation of documentation completeness
+- **Internet Research Enhancement**: Smart internet search when git documentation insufficient
+- **Comprehensive Synthesis**: Combined analysis of official docs + community knowledge
 
 ### PR and Implementation Deep Dive ⚠️ MANDATORY ENHANCED INVESTIGATION
 - **⚠️ CRITICAL: PR Status Investigation**: MANDATORY detailed analysis including:
@@ -69,11 +99,11 @@ The framework performs **thorough investigation** with **AI Ultrathink deep anal
 
 **FAILURE TO VALIDATE = INVALID DEPLOYMENT ASSESSMENT**
 
-### 🧠 AI Ultrathink Deep Analysis Integration ⚠️ NEW MANDATORY STAGE
+### 🧠 Advanced Deep Reasoning Analysis Integration ⚠️ NEW MANDATORY STAGE
 
 **COMPREHENSIVE COGNITIVE ANALYSIS** - This stage applies advanced AI reasoning to all gathered investigation data:
 
-**Ultrathink Analysis Requirements**:
+**Advanced Analysis Requirements**:
 
 1. **Deep Code Impact Reasoning**:
    - AI comprehends what code modifications accomplish in business and technical terms
@@ -99,14 +129,14 @@ The framework performs **thorough investigation** with **AI Ultrathink deep anal
    - Documentation synchronization assessment and recommendations
    - Strategic guidance for improving repository ecosystem health
 
-**Ultrathink Analysis Outputs**:
+**Advanced Analysis Outputs**:
 - **Comprehensive Impact Report**: Natural language summary of all change implications
 - **Risk-Prioritized Test Recommendations**: Optimized testing strategy focusing on critical areas
 - **Scope Optimization Guidance**: Minimal viable test sets for maximum effectiveness
 - **Cross-Repository Intelligence**: Automation gaps and alignment opportunities
 - **Strategic Implementation Advice**: Clear, actionable recommendations for optimal outcomes
 
-**MANDATORY ENFORCEMENT**: All investigations MUST include AI Ultrathink deep analysis stage before proceeding to test generation - NO EXCEPTIONS.
+**MANDATORY ENFORCEMENT**: All investigations MUST include advanced deep reasoning analysis stage before proceeding to test generation - NO EXCEPTIONS.
 
 ### Missing Data Detection & Response
 When critical data is missing, the framework:
@@ -115,24 +145,24 @@ When critical data is missing, the framework:
 - **✅ Scopes Available Work**: Focus on testable components
 - **📋 Provides Future Roadmap**: Test cases ready for when missing data becomes available
 
-## 🎯 Ultrathink-Enhanced Investigation Quality Standards
+## 🎯 Enhanced Investigation Quality Standards
 
-- **100% Ticket Coverage**: Every linked ticket analyzed regardless of nesting level with AI ultrathink reasoning
+- **100% Ticket Coverage**: Every linked ticket analyzed regardless of nesting level with advanced reasoning
 - **PR Verification**: All attached PRs examined for implementation details with deep code impact analysis
 - **Cross-Reference Validation**: Ensuring consistency across related tickets enhanced by AI correlation analysis
 - **Context Preservation**: Understanding full feature history and evolution with strategic intelligence integration
-- **🧠 Ultrathink Analysis Completion**: ALL investigations must include comprehensive AI ultrathink deep analysis
-- **🎯 Strategic Test Optimization**: AI-powered test scoping and prioritization based on ultrathink insights
+- **🧠 Advanced Analysis Completion**: ALL investigations must include comprehensive deep reasoning analysis
+- **🎯 Strategic Test Optimization**: AI-powered test scoping and prioritization based on cognitive insights
 - **🔄 Cross-Repository Intelligence**: Comprehensive analysis of development-automation alignment and gaps
-- **📊 Evidence-Based Recommendations**: All strategic guidance supported by concrete ultrathink analysis and reasoning
+- **📊 Evidence-Based Recommendations**: All strategic guidance supported by concrete analysis and reasoning
 
-### 🚨 Mandatory Ultrathink Integration Requirements
+### 🚨 Mandatory Advanced Analysis Requirements
 
-- ❌ **BLOCKED**: Investigation completion without AI Ultrathink deep analysis stage
-- ❌ **BLOCKED**: Test strategy generation without ultrathink-informed optimization and prioritization
+- ❌ **BLOCKED**: Investigation completion without advanced deep reasoning analysis stage
+- ❌ **BLOCKED**: Test strategy generation without cognitive-informed optimization and prioritization
 - ❌ **BLOCKED**: Strategic recommendations without comprehensive cognitive analysis and evidence
-- ✅ **REQUIRED**: AI Ultrathink analysis for all complex changes and architectural modifications
+- ✅ **REQUIRED**: Advanced reasoning analysis for all complex changes and architectural modifications
 - ✅ **REQUIRED**: Cross-repository correlation analysis for all feature implementations
-- ✅ **MANDATORY**: Strategic test optimization based on ultrathink insights and recommendations
+- ✅ **MANDATORY**: Strategic test optimization based on cognitive insights and recommendations
 
 This enhanced investigation protocol ensures that all analysis benefits from advanced AI reasoning capabilities, resulting in significantly more accurate, focused, and effective test strategies that maximize quality outcomes while optimizing resource utilization.

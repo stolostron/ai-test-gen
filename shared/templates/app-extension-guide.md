@@ -100,13 +100,14 @@ Add your app to the applications list:
 ```markdown
 ### Your App Name
 **Location:** `apps/your-app-name/`
-**Purpose:** Brief description
+**Purpose:** Brief description of AI capabilities
 **Usage:** `cd apps/your-app-name/` for specialized features
+**Features:** Real data integration, universal component support (if applicable)
 ```
 
 ### Add Global Routing (Optional)
 ```markdown
-/your-app-name {your-request}      # Routes to your app
+/your-app-name {your-request}      # Routes to your app with complete isolation
 ```
 
 ## Best Practices
@@ -115,7 +116,9 @@ Add your app to the applications list:
 2. **Document Everything**: Include comprehensive README and docs
 3. **Test Isolation**: Regularly verify no external dependencies
 4. **Follow Patterns**: Study existing apps for guidance
-5. **Version Properly**: Use semantic versioning in .app-config
+5. **AI Service Design**: Consider real data integration and universal component support
+6. **Professional Standards**: Implement HTML tag prevention and markdown-only formatting
+7. **Quality Focus**: Design for high accuracy and user confidence
 
 ## Support
 

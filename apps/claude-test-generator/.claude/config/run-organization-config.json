@@ -1,0 +1,51 @@
+{
+  "run_organization": {
+    "description": "Configuration for organizing test generation runs with single consolidated directory and verbal timestamps",
+    "structure": {
+      "base_directory": "runs",
+      "run_folder_format": "{timestamp_numerical}_{jira_id}_{feature_description}",
+      "timestamp_format": "YYYYMMDD_HHMMSS",
+      "example": "20250818_034134_acm_22079_digest_upgrade_test_plan"
+    },
+    "consolidation_policy": {
+      "single_directory_enforcement": true,
+      "description": "ALL outputs from ALL agents and phases must be created in the SAME run directory",
+      "agent_outputs": "Individual agent results saved as separate files in main directory (no subdirectories)",
+      "phase_results": "Each phase saves results to main run directory with descriptive filenames"
+    },
+    "folder_contents": {
+      "test_cases_only.md": "Environment-agnostic test cases with 3-section format (Description, Setup, Test Table)",
+      "complete_analysis_report.md": "Comprehensive analysis with feature summary, citations, evidence, test environment details",
+      "feature_availability_analysis.md": "Agent-specific feature detection and availability analysis results",
+      "run_metadata.json": "Complete run metadata including all agents used, timing, quality scores, file inventory"
+    },
+    "naming_conventions": {
+      "primary_files": [
+        "{jira_id}_test_cases_only.md",
+        "{jira_id}_complete_analysis_report.md"
+      ],
+      "agent_files": [
+        "feature_availability_analysis.md",
+        "github_investigation_results.md",
+        "documentation_intelligence_summary.md",
+        "qe_automation_analysis.md"
+      ],
+      "metadata_file": "run_metadata.json"
+    },
+    "directory_creation_rules": {
+      "main_run_directory": "Created once at framework start with numerical timestamp",
+      "agent_outputs": "All agents MUST save to main directory (no separate agent directories)",
+      "phase_results": "All phases MUST save to main directory with descriptive filenames",
+      "consolidation_required": "If agents create separate directories, results MUST be moved to main directory",
+      "cleanup_policy": "Remove empty agent directories after consolidation"
+    },
+    "verbal_timestamp_examples": {
+      "format": "YYYYMMDD_HHMMSS",
+      "samples": [
+        "20250818_034134",
+        "20241216_093000",
+        "20250122_231500"
+      ]
+    }
+  }
+}

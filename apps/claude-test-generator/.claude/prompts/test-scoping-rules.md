@@ -46,7 +46,7 @@ UNCHANGED: Existing functions with no changes
 
 ### 4. Table Optimization
 - **Target**: 1-3 tables for most features
-- **Maximum**: 8-10 steps per table
+- **Optimized Range**: 4-10 steps per table based on workflow complexity
 - **Focus**: E2E scenarios exercising new code paths
 - **Avoid**: Comprehensive testing of every edge case in unchanged code
 

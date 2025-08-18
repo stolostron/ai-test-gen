@@ -121,14 +121,50 @@ The intelligent system uses **multi-layer test discovery**:
 
 **This is why we use `setup_clc qe6` instead of manual setup** - it provides enterprise-grade automation for the complex ACM testing infrastructure.
 
-## Stage 1: Environment Setup & Validation
+## Stage 1a: Independent Parallel Execution
+**🔄 True Parallel Processing of Independent Tasks:**
+
+### Agent A: Advanced JIRA Intelligence
+```bash
+perform_advanced_jira_analysis() {
+    local ticket_id="$1"
+    
+    echo "🔍 Performing sophisticated JIRA analysis..."
+    
+    # 1. MULTI-DIMENSIONAL TICKET ANALYSIS
+    jira issue view "$ticket_id" --plain | analyze_ticket_intelligence
+    
+    # Extract and analyze:
+    # - Business value propositions and customer impact
+    # - Technical complexity indicators and architectural changes
+    # - Risk factors and compliance requirements
+    # - Dependencies and integration touchpoints
+    # - Acceptance criteria sophistication and edge cases
+    
+    # 2. RELATIONSHIP NETWORK ANALYSIS
+    echo "🕸️ Analyzing ticket relationship networks..."
+    # Map subtasks, blockers, dependencies, and related features
+    # Identify impact propagation across feature sets
+    # Understand epic-level strategic context
+    
+    # 3. PR AND COMPONENT EXTRACTION
+    echo "📋 Extracting PR references and component details..."
+    # Extract GitHub PR links from JIRA comments
+    # Identify specific components and repositories
+    # Build complete context for Agent E feature detection
+    
+    # OUTPUT: Complete JIRA context for Phase 1b
+    JIRA_CONTEXT=$(generate_jira_context_output)
+}
+```
+
+### Agent D: Environment Validation (Parallel)
 **🌍 Flexible Environment Configuration:**
 - **Default Environment**: Use `source setup_clc qe6` if no specific environment provided
 - **Custom Environment Support**: Accept user-specified environment (qe7, qe8, staging, dev, etc.)
 - **Environment Override**: Allow users to provide custom cluster credentials and endpoints
 - **Graceful Validation**: Continue with test generation even if environment validation fails
 
-**Environment Validation Process:**
 ```bash
 validate_test_environment() {
     local environment="${1:-qe6}"  # Default to qe6 if not specified
@@ -176,55 +212,363 @@ validate_test_environment() {
 }
 ```
 
-**🚨 Critical Validation Philosophy:**
-- **Always Generate Tests**: Create comprehensive test plans regardless of environment status
-- **Clear Status Reporting**: Document what can/cannot be validated in current environment
-- **Future Readiness**: Ensure test plans work when proper environment is available
-
 **Output:** Environment readiness report with clear execution guidance
 
-## Stage 2: Comprehensive Multi-Source Intelligence Gathering
+## Stage 1b: Context-Informed Feature Detection
+**🎯 Enhanced Analysis with Complete JIRA Context:**
+
+### Agent E: Feature Detection (Sequential after Agent A)
+```bash
+perform_enhanced_feature_detection() {
+    local jira_context="$1"     # Receives Agent A output
+    local env_context="$2"      # Receives Agent D output
+    
+    echo "🔍 Enhanced feature detection with complete JIRA context..."
+    
+    # Now has specific information from Agent A:
+    # - Exact PR references: "stolostron/cluster-curator-controller#468"
+    # - Specific components: "ClusterCurator controller"
+    # - Feature scope: "digest-based upgrade functionality"
+    # - Implementation timeline: PR dates and merge status
+    
+    # TARGETED DEPLOYMENT ANALYSIS (No Guesswork)
+    analyze_specific_deployment() {
+        echo "🎯 Analyzing deployment of specific components..."
+        
+        # 1. TARGETED CONTAINER IMAGE ANALYSIS
+        # Know exactly which component to check
+        local component=$(echo "$jira_context" | jq -r '.identified_components[0]')
+        oc get pods -n multicluster-engine | grep "$component"
+        oc get pod <specific-pod> -n multicluster-engine -o jsonpath='{.spec.containers[0].image}'
+        
+        # 2. SPECIFIC BEHAVIORAL TESTING
+        # Know exactly which features to test from PR analysis
+        local feature_scope=$(echo "$jira_context" | jq -r '.feature_details.scope')
+        test_specific_feature_behavior "$feature_scope" "$env_context"
+        
+        # 3. PRECISE VERSION CORRELATION
+        # Correlate PR merge dates with deployed image build dates
+        local pr_date=$(echo "$jira_context" | jq -r '.timeline_data.pr_merge_date')
+        correlate_pr_date_with_deployment "$pr_date"
+        
+        # 4. EVIDENCE-BASED ASSESSMENT
+        generate_deployment_evidence_report "$jira_context" "$env_context"
+    }
+}
+```
+
+**🚨 Key Improvement: No Pattern Guessing**
+- **Eliminates**: Component pattern guessing and broad searching
+- **Enhances**: Precise, context-driven deployment validation
+- **Result**: Higher confidence assessment with targeted evidence
+
+**Output:** Evidence-based deployment status with high confidence (95%+)
+
+## Stage 2: Enhanced Context-Aware Intelligence Gathering
 
 **CRITICAL**: **Smart Test Scope Analysis** - Focus ONLY on what actually changed in the feature implementation.
 
-**Advanced Capabilities:**
-- **Intelligent Repository Network Analysis**: AI-driven discovery of related repositories and components
-- **Deep Architectural Understanding**: Analysis of system architecture and component interactions  
-- **Business Value Chain Analysis**: Understanding of feature impact on customer workflows
-- **Historical Pattern Correlation**: Learning from similar features across the organization
-- **🎯 Code Change Impact Analysis**: Identify exactly what code paths, functions, and workflows were modified
-- **📋 Test Scope Optimization**: Generate test cases ONLY for changed functionality, skip existing stable features
+**Advanced Capabilities (Enhanced with Phase 1a+1b Context):**
+- **Intelligent Repository Network Analysis**: AI-driven discovery using JIRA-identified repositories
+- **Deep Architectural Understanding**: Analysis of system architecture using specific component context  
+- **Business Value Chain Analysis**: Understanding of feature impact using JIRA business context
+- **Historical Pattern Correlation**: Learning from similar features using specific PR patterns
+- **🎯 Code Change Impact Analysis**: Identify exactly what changed using specific PR references
+- **📋 Test Scope Optimization**: Generate test cases ONLY for changed functionality using precise context
 
 **Refer to `.claude/prompts/test-scoping-rules.md` for detailed smart scoping methodology.**
 
-### Phase A: Advanced JIRA Intelligence
+### Phase A: Enhanced Documentation Intelligence (with JIRA Context)
 ```bash
-perform_advanced_jira_analysis() {
-    local ticket_id="$1"
+perform_enhanced_documentation_intelligence() {
+    local jira_context="$1"     # Complete context from Phase 1a
+    local deployment_context="$2"  # Results from Phase 1b
     
-    echo "🔍 Performing sophisticated JIRA analysis..."
+    echo "📚 Agent B (Documentation) → AI-powered documentation analysis with JIRA context..."
     
-    # 1. MULTI-DIMENSIONAL TICKET ANALYSIS
-    jira issue view "$ticket_id" --plain | analyze_ticket_intelligence
+    # 1. METHOD DETECTION (Sequence Control - KEEP as Script)
+    if gh --version &>/dev/null && gh auth status &>/dev/null; then
+        METHOD="gh_cli"
+        echo "✅ GitHub CLI detected - using enhanced documentation analysis"
+    else
+        METHOD="webfetch"
+        echo "🔄 GitHub CLI not available - using WebFetch fallback"
+    fi
     
-    # Extract and analyze:
-    # - Business value propositions and customer impact
-    # - Technical complexity indicators and architectural changes
-    # - Risk factors and compliance requirements
-    # - Dependencies and integration touchpoints
-    # - Acceptance criteria sophistication and edge cases
+    # 2. AI DOCUMENTATION INTELLIGENCE SERVICE (Replace Decision Logic)
+    echo "🤖 Invoking AI Documentation Intelligence Service..."
     
-    # 2. RELATIONSHIP NETWORK ANALYSIS
-    echo "🕸️ Analyzing ticket relationship networks..."
-    # Map subtasks, blockers, dependencies, and related features
-    # Identify impact propagation across feature sets
-    # Understand epic-level strategic context
+    # Use existing AI service instead of script decision logic
+    local documentation_result=$(ai_documentation_intelligence_service.comprehensive_analysis \
+        --feature-context="$jira_context" \
+        --target-method="$METHOD" \
+        --repository="stolostron/rhacm-docs" \
+        --e2e-focus-required=true \
+        --console-workflow-priority=true)
     
-    # 3. STAKEHOLDER AND TEAM CONTEXT
-    echo "👥 Analyzing stakeholder and team context..."  
-    # Identify key stakeholders and their concerns
-    # Understand team expertise and testing preferences
-    # Extract customer-specific requirements and constraints
+    # AI service handles:
+    # ✅ Intelligent branch discovery and selection  
+    # ✅ Documentation completeness assessment
+    # ✅ Gap identification and internet search triggering
+    # ✅ E2E scenario mapping from documentation
+    # ✅ Console workflow pattern extraction
+    # ✅ Comprehensive synthesis with E2E focus
+    
+    echo "✅ Agent B (Documentation) → AI service complete (E2E patterns: extracted, Console workflows: identified)"
+    
+    # 3. EXECUTION METHOD (Sequence Control - KEEP as Script)
+    # AI service provides execution instructions, script follows sequence
+    local execution_plan=$(echo "$documentation_result" | jq -r '.execution_plan')
+    
+    if [[ "$METHOD" == "gh_cli" ]]; then
+        # Execute GitHub CLI commands provided by AI service
+        execute_gh_cli_documentation_plan "$execution_plan"
+    else
+        # Execute WebFetch commands provided by AI service  
+        execute_webfetch_documentation_plan "$execution_plan"
+    fi
+}
+
+execute_gh_cli_documentation_plan() {
+    local execution_plan="$1"
+    
+    # Execute AI-determined GitHub CLI commands in sequence
+    local optimal_branch=$(echo "$execution_plan" | jq -r '.optimal_branch')
+    local search_patterns=$(echo "$execution_plan" | jq -r '.search_patterns[]')
+    
+    echo "📋 AI selected documentation branch: $optimal_branch"
+    
+    # Execute AI-provided commands in deterministic sequence
+    gh api repos/stolostron/rhacm-docs/contents/clusters --ref $optimal_branch
+    
+    for pattern in $search_patterns; do
+        gh search code --repo stolostron/rhacm-docs "$pattern" --ref $optimal_branch
+    done
+}
+
+execute_webfetch_documentation_plan() {
+    local execution_plan="$1"
+    
+    # Execute AI-determined WebFetch commands in sequence
+    local optimal_branch=$(echo "$execution_plan" | jq -r '.optimal_branch')
+    local webfetch_urls=$(echo "$execution_plan" | jq -r '.webfetch_urls[]')
+    
+    echo "📋 AI selected documentation branch: $optimal_branch"
+    
+    # Execute AI-provided WebFetch commands in sequence
+    for url in $webfetch_urls; do
+        WebFetch: $url
+    done
+    
+    # AI-triggered internet search if gaps detected
+    local internet_search_needed=$(echo "$execution_plan" | jq -r '.internet_search_required')
+    if [[ "$internet_search_needed" == "true" ]]; then
+        execute_ai_internet_search_plan "$execution_plan"
+    fi
+}
+
+execute_ai_internet_search_plan() {
+    local execution_plan="$1"
+    
+    echo "🌐 AI-triggered intelligent internet search..."
+    
+    # Execute AI-determined search strategy (not fixed patterns)
+    local search_strategy=$(echo "$execution_plan" | jq -r '.internet_search_strategy')
+    local search_queries=$(echo "$search_strategy" | jq -r '.search_queries[]')
+    local webfetch_targets=$(echo "$search_strategy" | jq -r '.webfetch_targets[]')
+    
+    # AI-determined search execution
+    for query in $search_queries; do
+        WebSearch: "$query"
+    done
+    
+    for target in $webfetch_targets; do
+        WebFetch: "$target"
+    done
+}
+```
+
+### Phase B: Enhanced GitHub Investigation (with JIRA Context)
+```bash
+perform_enhanced_github_investigation() {
+    local jira_context="$1"     # Complete context from Phase 1a
+    local deployment_context="$2"  # Results from Phase 1b
+    
+    echo "💻 Agent C (GitHub) → AI-powered GitHub investigation with JIRA context..."
+    
+    # 1. METHOD DETECTION (Script - Sequence Control)
+    if gh --version &>/dev/null && gh auth status &>/dev/null; then
+        METHOD="gh_cli"
+        echo "✅ GitHub CLI detected - using enhanced PR analysis"
+    else
+        METHOD="webfetch"
+        echo "🔄 GitHub CLI not available - using WebFetch fallback"
+    fi
+    
+    # 2. AI GITHUB INVESTIGATION SERVICE (AI - Strategic Decision Making)
+    echo "🤖 Invoking AI GitHub Investigation Service for strategic analysis..."
+    
+    # AI service analyzes ALL PRs and determines investigation strategy
+    local investigation_strategy=$(ai_github_investigation_service.generate_investigation_strategy \
+        --jira-context="$jira_context" \
+        --deployment-context="$deployment_context" \
+        --target-method="$METHOD" \
+        --investigation-scope="comprehensive" \
+        --e2e-focus-required=true)
+    
+    # AI service determines for EACH PR:
+    # ✅ Investigation depth (deep|moderate|summary) based on PR impact
+    # ✅ Focus areas (implementation|testing|integration) per PR
+    # ✅ Code analysis scope (full-diff|key-files|summary) per PR
+    # ✅ Related work importance (critical|helpful|skip) per PR
+    # ✅ Search strategy per repository (targeted|broad|focused)
+    
+    echo "📋 AI strategy: $(echo "$investigation_strategy" | jq -r '.strategy_summary')"
+    
+    # 3. EXECUTE AI-DETERMINED INVESTIGATION PLAN (Script - Reliable Execution)
+    if [[ "$METHOD" == "gh_cli" ]]; then
+        execute_ai_gh_cli_investigation_plan "$investigation_strategy"
+    else
+        execute_ai_webfetch_investigation_plan "$investigation_strategy"
+    fi
+    
+    # 4. AI ANALYSIS AND SYNTHESIS (AI - Intelligence Processing)
+    echo "🤖 AI analyzing investigation results for E2E testing implications..."
+    local final_analysis=$(ai_github_investigation_service.synthesize_results \
+        --investigation-data="$INVESTIGATION_RESULTS" \
+        --strategy="$investigation_strategy" \
+        --e2e-requirements=true)
+    
+    echo "✅ Agent C (GitHub) → Complete (Implementation: analyzed, E2E patterns: identified, Testing strategy: optimized)"
+}
+
+execute_ai_gh_cli_investigation_plan() {
+    local investigation_strategy="$1"
+    
+    echo "📋 Executing AI-determined GitHub CLI investigation plan..."
+    
+    # AI provides specific investigation plan for EACH PR
+    local pr_strategies=$(echo "$investigation_strategy" | jq -c '.pr_analysis_plans[]')
+    
+    for pr_strategy in $pr_strategies; do
+        local pr=$(echo "$pr_strategy" | jq -r '.pr_reference')
+        local depth=$(echo "$pr_strategy" | jq -r '.investigation_depth')
+        local focus_areas=$(echo "$pr_strategy" | jq -r '.focus_areas[]')
+        
+        echo "🔍 AI-guided analysis of PR $pr (depth: $depth, focus: $focus_areas)"
+        
+        local repo=$(echo "$pr" | cut -d'#' -f1)
+        local pr_number=$(echo "$pr" | cut -d'#' -f2)
+        
+        # Execute AI-determined commands based on depth and focus
+        case "$depth" in
+            "deep")
+                # Comprehensive analysis for high-impact PRs
+                gh pr view $pr_number --repo $repo --json title,body,state,author,files,reviews,comments
+                gh pr diff $pr_number --repo $repo
+                gh pr checks $pr_number --repo $repo
+                gh api repos/$repo/pulls/$pr_number/files --jq '.[].filename'
+                ;;
+            "moderate")
+                # Focused analysis for medium-impact PRs
+                gh pr view $pr_number --repo $repo --json title,body,state,files
+                gh pr diff $pr_number --repo $repo
+                ;;
+            "summary")
+                # Basic analysis for low-impact PRs
+                gh pr view $pr_number --repo $repo --json title,body,state
+                ;;
+        esac
+        
+        # AI-determined related work analysis
+        local related_work_needed=$(echo "$pr_strategy" | jq -r '.analyze_related_work')
+        if [[ "$related_work_needed" == "true" ]]; then
+            local search_terms=$(echo "$pr_strategy" | jq -r '.related_search_terms[]')
+            for term in $search_terms; do
+                gh pr list --repo $repo --search "in:title $term" --json number,title,state --limit 5
+            done
+        fi
+    done
+    
+    # Execute AI-determined repository investigation plan
+    local repo_strategies=$(echo "$investigation_strategy" | jq -c '.repository_analysis_plans[]')
+    
+    for repo_strategy in $repo_strategies; do
+        local repo=$(echo "$repo_strategy" | jq -r '.repository')
+        local search_scope=$(echo "$repo_strategy" | jq -r '.search_scope')
+        local search_terms=$(echo "$repo_strategy" | jq -r '.search_terms[]')
+        
+        echo "📂 AI-guided repository investigation: $repo (scope: $search_scope)"
+        
+        # Repository metadata (always collected)
+        gh repo view $repo --json description,topics,primaryLanguage,defaultBranch,updatedAt
+        
+        # AI-determined search strategy
+        for term in $search_terms; do
+            echo "🔍 AI-determined search: $term"
+            gh search code --repo $repo "$term" --limit $(echo "$repo_strategy" | jq -r '.search_limit')
+        done
+        
+        # AI-determined repository analysis depth
+        case "$search_scope" in
+            "comprehensive")
+                gh pr list --repo $repo --state merged --limit 20 --json number,title,mergedAt
+                gh release list --repo $repo --limit 10 --json tagName,publishedAt
+                ;;
+            "focused")
+                gh pr list --repo $repo --state merged --limit 5 --json number,title,mergedAt
+                ;;
+            "minimal")
+                # Basic repository overview only
+                ;;
+        esac
+    done
+}
+
+execute_ai_webfetch_investigation_plan() {
+    local investigation_strategy="$1"
+    
+    echo "📋 Executing AI-determined WebFetch investigation plan..."
+    
+    # AI provides WebFetch strategy for each PR
+    local pr_strategies=$(echo "$investigation_strategy" | jq -c '.pr_analysis_plans[]')
+    
+    for pr_strategy in $pr_strategies; do
+        local pr=$(echo "$pr_strategy" | jq -r '.pr_reference')
+        local depth=$(echo "$pr_strategy" | jq -r '.investigation_depth')
+        
+        echo "🔍 AI-guided WebFetch analysis of PR $pr (depth: $depth)"
+        
+        # Execute AI-determined WebFetch commands
+        case "$depth" in
+            "deep")
+                WebFetch: https://github.com/$pr
+                WebFetch: https://github.com/$pr/files
+                WebFetch: https://github.com/$pr/commits
+                ;;
+            "moderate")
+                WebFetch: https://github.com/$pr
+                WebFetch: https://github.com/$pr/files
+                ;;
+            "summary")
+                WebFetch: https://github.com/$pr
+                ;;
+        esac
+    done
+    
+    # Execute AI-determined repository WebFetch plan
+    local repo_strategies=$(echo "$investigation_strategy" | jq -c '.repository_analysis_plans[]')
+    
+    for repo_strategy in $repo_strategies; do
+        local repo=$(echo "$repo_strategy" | jq -r '.repository')
+        local webfetch_targets=$(echo "$repo_strategy" | jq -r '.webfetch_targets[]')
+        
+        echo "📂 AI-guided repository WebFetch: $repo"
+        
+        for target in $webfetch_targets; do
+            WebFetch: $target
+        done
+    done
 }
 ```
 
@@ -421,7 +765,7 @@ analyze_implementation_scope() {
 ```
 
 ### Sophisticated Test Architecture Design with Intelligent Table Structure
-**Purpose**: Generate comprehensive, strategically-designed test suites with **optimal table organization**. Each test case table contains **8-10 steps maximum** for cognitive efficiency, with multiple tables generated as needed to achieve complete coverage.
+**Purpose**: Generate comprehensive, strategically-designed test suites with **optimal table organization**. Each test case table contains **4-10 steps optimized for workflow complexity** for cognitive efficiency, with multiple tables generated as needed to achieve complete coverage.
 
 **Enhanced Table Structure Format with YAML Samples:**
 ```markdown

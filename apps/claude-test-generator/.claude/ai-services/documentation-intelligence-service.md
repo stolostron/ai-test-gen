@@ -98,36 +98,99 @@ MANDATORY INVESTIGATION SEQUENCE (NO EXCEPTIONS):
 
 ## 🔧 Service Configuration
 
-### WebFetch Integration Enhancement
-```markdown
-AI Documentation Service WebFetch Patterns:
-
-# Primary documentation lookup
-WebFetch: https://github.com/stolostron/rhacm-docs/tree/{branch}/{feature-path}
-
-# Architecture documentation
-WebFetch: https://github.com/stolostron/rhacm-docs/tree/{branch}/architecture/{component}
-
-# API reference lookup  
-WebFetch: https://github.com/stolostron/rhacm-docs/tree/{branch}/apis/{resource-type}
-
-# Configuration examples
-WebFetch: https://github.com/stolostron/rhacm-docs/tree/{branch}/config/{use-case}
+### AI Documentation Intelligence Service Interface
+```python
+def comprehensive_analysis(feature_context, target_method, repository, e2e_focus_required=True, console_workflow_priority=True):
+    """
+    AI-powered comprehensive documentation analysis with E2E focus enforcement
+    
+    Args:
+        feature_context: Complete JIRA analysis context from Phase 1a
+        target_method: "gh_cli" or "webfetch" (sequence-determined by script)
+        repository: "stolostron/rhacm-docs" 
+        e2e_focus_required: True (enforces E2E scenario extraction)
+        console_workflow_priority: True (prioritizes UI Console workflows)
+    
+    Returns:
+        {
+            "execution_plan": {
+                "optimal_branch": "2.14_stage",  # AI-discovered optimal branch
+                "search_patterns": ["ClusterCurator E2E", "console workflow"],  # E2E focused
+                "webfetch_urls": [...],  # Method-specific commands
+                "internet_search_required": false,
+                "internet_search_strategy": {...}  # If gaps detected
+            },
+            "documentation_analysis": {
+                "e2e_scenarios_found": [...],  # Console workflow patterns
+                "console_workflow_patterns": [...],  # UI E2E approaches
+                "cli_method_patterns": [...],  # CLI alternatives  
+                "completeness_assessment": "sufficient|insufficient",
+                "gap_analysis": [...],  # What's missing for E2E testing
+                "e2e_focus_compliance": true  # Ensures E2E approach maintained
+            },
+            "strategic_guidance": {
+                "recommended_e2e_approach": "console_primary_cli_alternative",
+                "test_scenario_priorities": [...],  # E2E focused priorities
+                "console_workflow_emphasis": [...],  # UI workflow guidance
+                "api_testing_blocked": true  # Enforces no direct API testing
+            }
+        }
+    """
 ```
 
-### Branch Selection Intelligence
+### Enhanced AI Service Capabilities (E2E Focused)
 ```markdown
-AI Branch Selection Logic:
+## AI Documentation Intelligence Service Features:
 
-1. Feature Status Analysis:
-   - JIRA target version → Documentation branch mapping
-   - PR merge status → Release branch correlation
-   - Environment version → Documentation version matching
+### 1. Intelligent Branch Discovery
+- Discovers ALL available branches using GitHub API
+- Analyzes branch content relevance for feature context
+- Selects optimal branch based on version correlation and content availability
+- No hardcoded branch name patterns - pure discovery
 
-2. Fallback Strategy:
-   - Primary: Feature-specific branch
-   - Secondary: Latest release branch  
-   - Tertiary: Main branch for unreleased features
+### 2. E2E Scenario Extraction (ENFORCED)
+- Extracts ONLY Console workflow patterns from documentation
+- Identifies UI-based testing approaches in official docs
+- Maps documentation examples to E2E user journeys
+- BLOCKS any direct API testing pattern extraction
+
+### 3. Console Workflow Priority (ENFORCED)
+- Prioritizes ACM Console usage patterns in documentation
+- Extracts user interaction workflows from official guides
+- Identifies UI component testing approaches
+- Ensures CLI methods are presented as alternatives, not primary
+
+### 4. Adaptive Completeness Assessment
+- Evaluates documentation sufficiency based on feature complexity
+- Adapts assessment criteria for different feature types
+- Identifies gaps specifically related to E2E testing needs
+- Triggers internet search only when E2E guidance is insufficient
+
+### 5. Internet Search Strategy (E2E Focused)
+- Searches specifically for Console workflow examples
+- Looks for UI testing approaches and user journey guidance
+- Avoids API documentation searches (maintains E2E focus)
+- Synthesizes findings to support E2E test generation
+```
+
+### Enhanced Branch Selection Intelligence
+```markdown
+AI Branch Selection Logic (CORRECTED):
+
+1. Actual Repository Branch Structure:
+   - Target version "2.15" → Check "2.15_stage" and "2.15_prod"
+   - Fallback to latest available: "2.14_stage", "2.14_prod" 
+   - Final fallback: "main" branch
+
+2. GitHub CLI Priority Strategy:
+   - Primary: gh CLI/API for branch detection and content analysis
+   - Secondary: WebFetch fallback for universal compatibility
+   - Branch validation: gh api repos/stolostron/rhacm-docs/branches/{branch}
+
+3. Enhanced Documentation Access:
+   - GitHub CLI: gh api repos/stolostron/rhacm-docs/contents/{path} --ref {branch}
+   - WebFetch Fallback: https://github.com/stolostron/rhacm-docs/tree/{branch}/{path}
+   - Content Search: gh search code --repo stolostron/rhacm-docs "{keywords}" --ref {branch}
 ```
 
 ## 📊 Enhanced Output Quality
