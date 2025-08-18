@@ -123,7 +123,7 @@ Generate test plan for ACM-22079
 **Enterprise AI Intelligence Pipeline with Advanced Reasoning:**
 
 ```yaml
-AI_Services_Ecosystem_V4.0:
+AI_Services_Ecosystem_V4.0_SECURITY_ENHANCED:
   intelligence_services:
     - jira_fixversion_validation_service: "MANDATORY JIRA fixVersion vs test environment version compatibility check"
     - jira_analysis_service: "Deep JIRA hierarchy analysis with intelligent caching"
@@ -146,10 +146,17 @@ AI_Services_Ecosystem_V4.0:
     - ai_services_integration: "Coordinated AI service execution framework"
   
   environment_services:
-    - cluster_connectivity_service: "Intelligent cluster discovery and connection"
-    - authentication_service: "Multi-method secure authentication"
-    - environment_validation_service: "Comprehensive health assessment"
-    - deployment_detection_service: "Evidence-based feature validation"
+    - cluster_connectivity_service: "Intelligent cluster discovery and connection with credential protection"
+    - authentication_service: "Multi-method secure authentication with zero credential exposure"
+    - environment_validation_service: "Comprehensive health assessment with secure data collection"
+    - deployment_detection_service: "Evidence-based feature validation with protected authentication"
+    
+  security_services:
+    - ai_security_core_service: "MANDATORY universal credential protection for ALL framework operations"
+    - tg_security_enhancement_service: "Real-time credential masking and secure data sanitization"
+    - secure_terminal_output_service: "Automatic credential masking in ALL terminal output"
+    - secure_data_storage_service: "Git-safe data storage with comprehensive credential removal"
+    - security_audit_trail_service: "Enterprise-grade security event logging and compliance"
     
   feature_correlation_services:
     - feature_detection_service: "AI-powered definitive feature availability analysis"
@@ -449,6 +456,15 @@ AI_Services_Ecosystem_V4.0:
 - 🔒 **ALL phases MUST save results to main run directory**
 - 🔒 **Agent-specific files saved with descriptive names in main directory**
 - 🔒 **Empty agent directories MUST be cleaned up after consolidation**
+- 🔒 **AUTOMATIC CLEANUP ENFORCEMENT**: Framework MUST consolidate and remove separate agent directories at end of run
+- 🔒 **SINGLE DIRECTORY GUARANTEE**: Only ONE final directory should exist per run in /runs/ folder
+
+**MANDATORY CLEANUP PROCEDURE**:
+- **During Run**: Agents may create temporary directories for processing
+- **Final Deliverables Only**: ONLY final deliverable files should remain in run directory
+- **Required Files**: Test Cases Report + Complete Analysis Report + run-metadata.json
+- **Remove All Intermediate Files**: ALL agent analysis files and temporary outputs MUST be deleted
+- **Final State**: Only 3 files should exist in final run directory (Test Cases, Complete Analysis, Metadata)
 
 **Configuration**: `.claude/config/run-organization-config.json` enforces single directory policy with automatic consolidation rules and cleanup procedures.
 
@@ -521,7 +537,7 @@ spec:
 - **E2E Test Optimization**: 67% reduction in test case count (9→3) while maintaining comprehensive coverage
 - **Intelligent Parallel Architecture**: Smart dependency management prevents blind parallelization, ensures context-aware execution
 - **Enhanced Command Clarity**: Mandatory verbal explanations for all commands including grep usage context
-- **Run Organization Excellence**: Single consolidated directory structure with ALL agent outputs and phases for maximum accessibility and management
+- **Run Organization Excellence**: Single consolidated directory with automatic cleanup delivering exactly 3 final files (Test Cases + Complete Analysis + Metadata)
 - **Comprehensive Metadata Tracking**: Complete run tracking with agent execution results, quality metrics, and citation validation
 - **Enterprise Audit Compliance**: Real-time citation validation with comprehensive evidence tracking and reporting
 - **AI Performance**: Optimized execution through intelligence analysis and background processing
@@ -546,6 +562,9 @@ spec:
 ❌ **BLOCKED**: Complete reports without verified citations for all factual claims
 ❌ **BLOCKED**: Test plans for features without definitive environment availability verification
 ❌ **BLOCKED**: Run results without single consolidated directory structure (agents creating separate directories)
+❌ **BLOCKED**: Framework completion without consolidating ALL agent outputs into main run directory
+❌ **BLOCKED**: Leaving multiple separate agent directories after run completion (automatic cleanup required)
+❌ **BLOCKED**: Leaving intermediate agent analysis files in final run directory (only final deliverables allowed)
 ❌ **BLOCKED**: Commands without comprehensive verbal explanations for purpose and context
 ❌ **BLOCKED**: Test generation without professional enterprise-level detail and comprehensive formatting
 ❌ **BLOCKED**: Brief or superficial explanations lacking comprehensive context and business reasoning
@@ -553,6 +572,10 @@ spec:
 ❌ **BLOCKED**: Test generation without QE automation repository intelligence and coverage analysis
 ❌ **BLOCKED**: Analysis of non-team repositories (stolostron/cluster-lifecycle-e2e excluded)
 ❌ **BLOCKED**: Using stolostron/acmqe-clc-test without specific user mention
+❌ **BLOCKED**: ANY credential exposure in terminal output, stored files, or git-tracked data
+❌ **BLOCKED**: Authentication commands without real-time credential masking
+❌ **BLOCKED**: Environment data storage without comprehensive credential sanitization
+❌ **BLOCKED**: Framework operations without security audit trail generation
 ✅ **MANDATORY**: JIRA fixVersion awareness intelligence against test environment ACM/MCE version before ANY analysis begins
 ✅ **MANDATORY**: Version context intelligence - continue comprehensive analysis with AWARENESS of feature availability status
 ✅ **MANDATORY**: Generate test plans with version context (future-ready when environment upgraded)
@@ -565,6 +588,9 @@ spec:
 ✅ **MANDATORY**: Zero-prompt user experience with seamless authentication and multi-source fallback
 ✅ **MANDATORY**: Intelligence optimization utilization for enhanced performance improvement
 ✅ **MANDATORY**: Single consolidated run directory with ALL agent outputs and phases in same location for maximum accessibility
+✅ **MANDATORY**: Automatic consolidation and cleanup of ALL separate agent directories at end of run (leaving only ONE directory)
+✅ **MANDATORY**: Final deliverables only - remove ALL intermediate agent analysis files from run directory
+✅ **MANDATORY**: Final run directory contains EXACTLY 3 files: Test Cases Report + Complete Analysis Report + run-metadata.json
 ✅ **MANDATORY**: Comprehensive metadata tracking with agent execution results and quality metrics
 ✅ **MANDATORY**: QE automation repository intelligence with complete coverage prioritization over duplication avoidance
 ✅ **MANDATORY**: Team repository focus (stolostron/clc-ui-e2e primary) excluding non-team repositories
@@ -585,6 +611,11 @@ spec:
 ✅ **MANDATORY**: Environment-agnostic test cases using <cluster-host> placeholders
 ✅ **MANDATORY**: Enhanced citations with clickable links in complete reports
 ✅ **MANDATORY**: Clear verbal explanations with comprehensive sample YAMLs
+✅ **MANDATORY**: AI Security Core Service integration with ALL framework operations
+✅ **MANDATORY**: Real-time credential masking in ALL terminal output and command execution
+✅ **MANDATORY**: Secure data sanitization for ALL stored metadata and run outputs
+✅ **MANDATORY**: Zero-tolerance credential storage policy with automatic enforcement
+✅ **MANDATORY**: Enterprise security audit trail generation for ALL credential handling
 ✅ **MANDATORY**: Direct feature validation assuming infrastructure is ready
 
-**The framework delivers focused E2E test generation through direct feature testing with version awareness intelligence, enhanced AI intelligence with adaptive complexity detection and action-oriented title generation, comprehensive-but-targeted test scoping with QE coverage integration, dual UI+CLI approach with complete YAML configurations, environment-agnostic test cases with <cluster-host> placeholders, intelligent scoping within 4-10 step optimization, dual report generation for different audiences (portable test cases + environment-specific complete analysis), evidence-based validation with enhanced clickable citations, QE automation intelligence with team repository focus (stolostron/clc-ui-e2e primary), single consolidated run directory management, comprehensive metadata tracking, and real-time agent execution transparency - ensuring maximum coverage with optimal focus, direct feature validation, universal portability, version context intelligence, enhanced AI optimization, and enterprise compliance through enhanced dual reporting approach with complete agent visibility.**
+**The framework delivers focused E2E test generation through direct feature testing with version awareness intelligence, enhanced AI intelligence with adaptive complexity detection and action-oriented title generation, comprehensive-but-targeted test scoping with QE coverage integration, dual UI+CLI approach with complete YAML configurations, environment-agnostic test cases with <cluster-host> placeholders, intelligent scoping within 4-10 step optimization, dual report generation for different audiences (portable test cases + environment-specific complete analysis), evidence-based validation with enhanced clickable citations, QE automation intelligence with team repository focus (stolostron/clc-ui-e2e primary), single consolidated run directory management with automatic cleanup of intermediate files, comprehensive metadata tracking, and real-time agent execution transparency - ensuring maximum coverage with optimal focus, direct feature validation, universal portability, version context intelligence, enhanced AI optimization, enterprise compliance through enhanced dual reporting approach, and clean professional deliverables with exactly 3 final files per run.**

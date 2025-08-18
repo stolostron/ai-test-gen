@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:modelcontextprotocol.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:arxiv.org)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}

@@ -29,38 +29,16 @@ The Claude Test Generator is an AI-powered system that automatically generates c
 
 ```mermaid
 flowchart TD
-    USER[User Input: Generate test plan for ACM-22079]
+    USER[User Input] --> P0[Phase 0: Version Intelligence]
     
-    subgraph "7-Phase Intelligent Workflow"
-        P0[Phase 0: Version Intelligence]
-        P1A[Phase 1a: Enhanced Parallel + Real Data Collection]  
-        P1B[Phase 1b: Context-Informed + Component Data Collection]
-        P2[Phase 2: Context-Aware Parallel]
-        P25[Phase 2.5: QE Intelligence]
-        P3[Phase 3: AI Sequential Synthesis]
-        P4[Phase 4: Strategic Generation + Real Data Integration]
-    end
+    P0 --> P1A[Phase 1a: Parallel Execution]
+    P1A --> P1B[Phase 1b: Context-Informed]
+    P1B --> P2[Phase 2: Parallel Investigation]
+    P2 --> P25[Phase 2.5: QE Intelligence]
+    P25 --> P3[Phase 3: AI Synthesis]
+    P3 --> P4[Phase 4: Test Generation]
     
-    RESULT[Professional Test Plan + Analysis]
-    
-    USER --> P0
-    P0 --> P1A
-    P1A --> P1B
-    P1B --> P2
-    P2 --> P25
-    P25 --> P3
-    P3 --> P4
-    P4 --> RESULT
-    
-    style USER fill:#e1f5fe
-    style P0 fill:#f3e5f5
-    style P1A fill:#e8f5e8
-    style P1B fill:#fff3e0
-    style P2 fill:#e3f2fd
-    style P25 fill:#f1f8e9
-    style P3 fill:#fce4ec
-    style P4 fill:#e0f2f1
-    style RESULT fill:#e8f5e8
+    P4 --> RESULT[Test Plan Output]
 ```
 
 ### **Key Features: Phase-Based Multi-Agent Orchestration with Real Data Integration**
@@ -137,9 +115,9 @@ flowchart TD
     STRATEGY1 --> CONTEXT
     STRATEGY2 --> CONTEXT
     
-    style AVAILABLE fill:#e8f5e8
-    style NOT_AVAILABLE fill:#fff3e0
-    style CONTEXT fill:#e0f2f1
+    style AVAILABLE fill:#c8e6c8
+    style NOT_AVAILABLE fill:#e6cc80
+    style CONTEXT fill:#b0e0b0
 ```
 
 **Compatibility Logic**:
@@ -177,9 +155,9 @@ flowchart TD
     ALWAYS_GENERATE --> COMPREHENSIVE
     PROVIDE_CONTEXT --> FUTURE_READY
     
-    style POLICY fill:#f3e5f5
-    style COMPREHENSIVE fill:#e0f2f1
-    style FUTURE_READY fill:#e8f5e8
+    style POLICY fill:#d1c4e9
+    style COMPREHENSIVE fill:#b0e0b0
+    style FUTURE_READY fill:#c8e6c8
 ```
 
 **Policy Principles**:
@@ -305,9 +283,9 @@ flowchart TD
     PRS --> |stolostron/cluster-curator-controller#468| COMPONENTS
     COMPONENTS --> |ClusterCurator, cluster-curator-controller| SCOPE
     
-    style PRIMARY fill:#e8f5e8
-    style HIERARCHY fill:#fff3e0
-    style COMPONENTS fill:#e3f2fd
+    style PRIMARY fill:#c8e6c8
+    style HIERARCHY fill:#e6cc80
+    style COMPONENTS fill:#b3d9ff
 ```
 
 **Agent A Output Characteristics**:
@@ -494,10 +472,10 @@ flowchart TD
     SEMANTIC --> PACKAGE
     PACKAGE --> READY
     
-    style RAW fill:#fff3e0
-    style AI_PROCESS fill:#e3f2fd
-    style PACKAGE fill:#e8f5e8
-    style READY fill:#e0f2f1
+    style RAW fill:#e6cc80
+    style AI_PROCESS fill:#b3d9ff
+    style PACKAGE fill:#c8e6c8
+    style READY fill:#b0e0b0
 ```
 
 **Real Data Collection Mechanism**:
@@ -565,9 +543,9 @@ flowchart TD
     REAL_NS --> READY
     REAL_PERMS --> READY
     
-    style CLUSTER fill:#e8f5e8
-    style REAL_LOGIN fill:#e0f2f1
-    style READY fill:#e8f5e8
+    style CLUSTER fill:#c8e6c8
+    style REAL_LOGIN fill:#b0e0b0
+    style READY fill:#c8e6c8
 ```
 
 **Agent D Output Characteristics**:
@@ -697,9 +675,9 @@ flowchart LR
     SCOPE_TARGET --> TARGETED
     TIME_TARGET --> TARGETED
     
-    style PRS fill:#e8f5e8
-    style COMP_TARGET fill:#fff3e0
-    style TARGETED fill:#e0f2f1
+    style PRS fill:#c8e6c8
+    style COMP_TARGET fill:#e6cc80
+    style TARGETED fill:#b0e0b0
 ```
 
 **Agent A Context Advantages**:
@@ -771,10 +749,10 @@ flowchart TD
     REAL_YAML --> READY_PHASE4
     REAL_LOGS --> READY_PHASE4
     
-    style STATUS fill:#fff3e0
-    style CONFIDENCE fill:#e8f5e8
-    style REAL_CREATE fill:#e0f2f1
-    style READY_PHASE4 fill:#e8f5e8
+    style STATUS fill:#e6cc80
+    style CONFIDENCE fill:#c8e6c8
+    style REAL_CREATE fill:#b0e0b0
+    style READY_PHASE4 fill:#c8e6c8
 ```
 
 **Agent E Output Characteristics**:
@@ -1081,9 +1059,9 @@ flowchart TD
     VERIFY --> COMBINED
     COMBINED --> GUIDANCE
     
-    style METHOD fill:#e8f5e8
-    style PATTERNS fill:#fff3e0
-    style COMBINED fill:#e0f2f1
+    style METHOD fill:#c8e6c8
+    style PATTERNS fill:#e6cc80
+    style COMBINED fill:#b0e0b0
 ```
 
 **Agent B Output Characteristics**:
@@ -1137,9 +1115,9 @@ flowchart TD
     WEBFETCH --> DISCOVERY
     WEBFETCH --> UNIVERSAL
     
-    style CLI fill:#e8f5e8
-    style WEBFETCH fill:#fff3e0
-    style LIMITS fill:#e0f2f1
+    style CLI fill:#c8e6c8
+    style WEBFETCH fill:#e6cc80
+    style LIMITS fill:#b0e0b0
 ```
 
 **Method Capability Analysis**:
@@ -1189,9 +1167,9 @@ flowchart TD
     SCOPE --> REPO_PLANS
     PRIORITY --> FOCUS
     
-    style AI_SERVICE fill:#e3f2fd
-    style ANALYZE fill:#fff3e0
-    style PR_PLANS fill:#e8f5e8
+    style AI_SERVICE fill:#b3d9ff
+    style ANALYZE fill:#e6cc80
+    style PR_PLANS fill:#c8e6c8
 ```
 
 **AI Strategy Characteristics**:
@@ -1252,10 +1230,10 @@ flowchart TD
     MOD --> STRATEGIC
     LIGHT --> STRATEGIC
     
-    style AI_PRIORITIZATION fill:#e3f2fd
-    style HIGH fill:#e8f5e8
-    style MEDIUM fill:#fff3e0
-    style STRATEGIC fill:#e0f2f1
+    style AI_PRIORITIZATION fill:#b3d9ff
+    style HIGH fill:#c8e6c8
+    style MEDIUM fill:#e6cc80
+    style STRATEGIC fill:#b0e0b0
 ```
 
 **AI Prioritization Logic**:
@@ -1317,10 +1295,10 @@ flowchart TD
     E2E --> FALLBACK
     HOOKS --> LOGS
     
-    style METHOD fill:#e8f5e8
-    style DEEP fill:#e3f2fd
-    style ALGORITHM fill:#fff3e0
-    style E2E fill:#e0f2f1
+    style METHOD fill:#c8e6c8
+    style DEEP fill:#b3d9ff
+    style ALGORITHM fill:#e6cc80
+    style E2E fill:#b0e0b0
 ```
 
 **Agent C Output Characteristics**:
@@ -1423,9 +1401,9 @@ flowchart TD
     STRATEGY --> FOCUS
     STRATEGY --> TARGETED
     
-    style COVERAGE fill:#e8f5e8
-    style GAPS fill:#fff3e0
-    style STRATEGY fill:#e0f2f1
+    style COVERAGE fill:#c8e6c8
+    style GAPS fill:#e6cc80
+    style STRATEGY fill:#b0e0b0
 ```
 
 **QE Service Output Characteristics**:

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(git clone:*)",
+      "Bash(git checkout:*)",
+      "Bash(git -C ./clc-repo-analysis/clc-ui-e2e checkout release-2.12)",
+      "WebFetch(domain:jenkins-csb-rhacm-tests.dno.corp.redhat.com)",
+      "Bash(mkdir:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(git -C temp-repo-analysis/ branch --show-current)"
+    ],
+    "deny": []
+  }
+}

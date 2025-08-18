@@ -57,7 +57,8 @@
       "Bash(oc delete:*)",
       "WebFetch(domain:www.redhat.com)",
       "Bash(echo:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "WebFetch(domain:docs.cypress.io)"
     ],
     "deny": []
   }

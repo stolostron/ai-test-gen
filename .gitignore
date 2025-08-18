@@ -1,0 +1,92 @@
+# AI Systems Suite - Security-Enhanced Git Protection
+
+## 🚨 CRITICAL SECURITY: Credential Exposure Prevention
+
+# Run data protection (CRITICAL for credential safety)
+apps/*/runs/*/jenkins-metadata.json
+apps/*/runs/*/analysis-metadata.json  
+apps/*/runs/*/*.credentials
+apps/*/runs/*/secure-*
+apps/*/runs/*/auth-*
+
+# Temporary repository protection (Prevent accidental credential exposure)
+apps/*/temp_repos/
+apps/*/temp-repos/
+**/temp_repos/
+**/temp-repos/
+**/cloned-repos/
+
+# Credential file protection (Zero-tolerance credential storage)
+*.env
+*.credentials  
+*password*
+*token*
+*secret*
+*auth*
+kubeconfig*
+.kubeconfig*
+*-credentials.*
+*-auth.*
+
+# Security audit protection  
+security-audit-*.log
+audit-trail-*.json
+security-events-*.log
+
+# Authentication context protection
+.oc-login*
+.kubectl-config*
+.cluster-auth*
+
+# Jenkins parameter protection
+jenkins-params-*.json
+build-params-*.json
+pipeline-credentials-*.json
+
+# Environment variable protection
+.env.*
+env-vars-*.txt
+environment-*.config
+
+# Development security
+.vscode/settings.json
+.idea/workspace.xml
+*.iml
+
+# Runtime credential protection  
+runtime-credentials-*
+session-auth-*
+temp-auth-*
+
+# Build artifact protection
+build-credentials-*
+deployment-secrets-*
+ci-tokens-*
+
+# Backup protection
+*.backup
+*-backup.*
+backup-*
+
+## 📊 Safe Patterns (Allowed)
+
+# Documentation and analysis (safe)
+!**/*.md
+!**/docs/**
+!**/README*
+
+# Configuration files (reviewed for safety)
+!**/.claude/**/*.md
+!**/.claude/**/*.json
+!**/shared/**/*.md
+
+# Templates and examples (safe)
+!**/templates/**
+!**/examples/**
+
+## 🔒 Security Notes
+
+# This .gitignore implements enterprise-grade credential protection
+# Any file matching credential patterns is automatically excluded
+# Security audit trail and credential context files are protected
+# Temporary repositories and authentication data are completely blocked
