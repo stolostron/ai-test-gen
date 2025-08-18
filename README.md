@@ -6,14 +6,23 @@ A modular enterprise automation suite featuring completely isolated AI applicati
 
 ## 🚀 Quick Start
 
-### Method 1: Smart Proxy Router (Root Access)
-```bash
-# Smart routing from root directory with complete app functionality:
-/test-generator Generate test plan for ACM-22079
-/test-generator Analyze PR: https://github.com/org/repo/pull/123
+### Prerequisites
 
-/z-stream-analysis Analyze https://jenkins-url/job/pipeline/123/
-/z-stream-analysis Investigate clc-e2e-pipeline-3313
+- **Claude Code CLI** configured and authenticated
+- **JIRA access** (jira api) for ticket analysis (test generator) - See `shared/docs/JIRA_API_SETUP.md`
+- **kubectl/oc** for cluster operations and real environment data collection
+
+### 2-Step Setup
+1. **Clone the repo** 
+2. **Ask Claude** by - 
+
+### Method 1: Just say for it!
+```bash
+# Just speak naturally - AI router understands and routes automatically:
+"Generate test plan for ACM-22079"
+"Debug the Jenkins pipeline failure"
+"I need to validate the new cluster management feature"
+"Help me analyze this automation issue"
 ```
 
 ### Method 2: Direct Navigation
@@ -30,16 +39,6 @@ cd apps/z-stream-analysis/
 
 **Both methods are 100% equivalent** - Smart Proxy Router with AI-powered intent detection provides transparent context injection with identical results.
 
-### Method 3: Natural Language (AI-Powered)
-```bash
-# Just speak naturally - AI router understands and routes automatically:
-"Generate test plan for ACM-22079"
-"Debug the Jenkins pipeline failure"
-"I need to validate the new cluster management feature"
-"Help me analyze this automation issue"
-```
-
-**AI Intelligence**: Advanced semantic understanding with learning capabilities - no prefixes required!
 
 ## 🎯 Available Applications
 
@@ -58,11 +57,13 @@ cd apps/z-stream-analysis/
 ## 🎯 Which App Should I Use?
 
 | Your Need | Use This App | Example |
-|-----------|--------------|---------|
-| **Test ACM features** | `claude-test-generator` | Analyze JIRA ticket for new ACM functionality |
-| **Debug Jenkins failures** | `z-stream-analysis` | Pipeline failed, need root cause analysis |
-| **Validate deployments** | `claude-test-generator` | Check if feature is actually deployed |
-| **Fix CI/CD issues** | `z-stream-analysis` | Automation scripts breaking, need fixes |
+|-----------|--------------|----------|
+| **Test ACM features** | `claude-test-generator` | Analyze ACM-22079 for comprehensive test plan with real data |
+| **Validate deployments** | `claude-test-generator` | Check if ACM-22079 feature is deployed in qe6 environment |
+| **Debug Jenkins failures** | `z-stream-analysis` | Pipeline failed, need root cause analysis with environment validation |
+| **Fix CI/CD issues** | `z-stream-analysis` | Automation scripts breaking, need comprehensive fixes |
+| **Component testing** | `claude-test-generator` | Generate tests for ClusterCurator, Policy, Application components |
+| **Environment analysis** | Both apps | Validate cluster health, connectivity, and deployment status |
 
 ## 🏗️ Isolation Architecture
 
@@ -89,36 +90,6 @@ apps/your-app/
 - **Parallel Development**: Work on apps simultaneously without interference  
 - **Easy Extension**: Add unlimited apps following standard patterns
 - **Maintenance Safety**: Update one app without affecting others
-
-## 🚀 Getting Started
-
-### Prerequisites
-- **Claude Code CLI** configured and authenticated
-- **GitHub access** to relevant repositories (if not public)
-- **kubectl/oc** for cluster operations (test generator)
-- **JIRA access** for ticket analysis (test generator)
-
-### 2-Step Setup
-1. **Clone the repo** 
-2. **Ask Claude** to perform your task using natural language
-
-### Available Commands
-```bash
-# Direct app navigation (recommended)
-cd apps/claude-test-generator/
-"Generate test plan for ACM-22079"
-
-cd apps/z-stream-analysis/
-"Analyze https://jenkins-url/job/pipeline/123/"
-
-# Global routing commands (explicit)
-/test-generator Generate test plan for ACM-22079
-/z-stream-analysis Analyze https://jenkins-url/job/pipeline/123/
-
-# Natural language routing (AI-powered)
-"Generate test plan for ACM-22079"  # Auto-routes to test-generator
-"Debug Jenkins pipeline failure"      # Auto-routes to z-stream-analysis
-```
 
 
 ## 📖 Documentation
