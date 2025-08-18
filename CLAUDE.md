@@ -7,13 +7,15 @@
 ### Claude Test Generator
 **Location:** `apps/claude-test-generator/`  
 **Purpose:** ACM feature test plan generation with AI analysis and real environment data integration  
-**Features:** JIRA analysis, GitHub investigation, Red Hat ACM docs intelligence, real data collection, HTML tag prevention, universal component support  
+**Features:** JIRA analysis, GitHub investigation, Red Hat ACM docs intelligence, real data collection, HTML tag prevention, universal component support, enterprise security protection  
+**Security:** Zero credential exposure, real-time masking, secure data storage, audit compliance  
 **Performance:** 98.7% success rate, 83% time reduction (4hrs → 3.5min)
 
 ### Z-Stream Analysis  
 **Location:** `apps/z-stream-analysis/`  
 **Purpose:** Jenkins pipeline failure analysis with definitive PRODUCT BUG | AUTOMATION BUG classification  
-**Features:** Environment validation, repository analysis, merge-ready fix generation, branch validation, citation enforcement  
+**Features:** Environment validation, repository analysis, merge-ready fix generation, branch validation, citation enforcement, secure Jenkins data extraction  
+**Security:** Credential-free metadata generation, secure terminal output, comprehensive data sanitization  
 **Performance:** 95% time reduction (2hrs → 5min), 99.5% environment connectivity
 
 ## 🚀 Quick Start

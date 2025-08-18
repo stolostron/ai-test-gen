@@ -140,6 +140,24 @@ Automated Jenkins pipeline failure analysis with comprehensive AI services integ
 - ❌ **NEW: File path references without extension verification**
 - ❌ **NEW: Overconfident validation status without actual verification**
 
+### 🚨 CRITICAL SECURITY BLOCKING CONDITIONS
+**BLOCKED OPERATIONS WITHOUT SECURITY:**
+- ❌ **BLOCKED**: ANY credential exposure in terminal output, stored files, or git-tracked data
+- ❌ **BLOCKED**: Jenkins parameter extraction without real-time credential masking  
+- ❌ **BLOCKED**: Repository cloning operations without secure data sanitization
+- ❌ **BLOCKED**: Environment validation commands without credential protection
+- ❌ **BLOCKED**: Analysis metadata storage without comprehensive credential removal
+- ❌ **BLOCKED**: Framework operations without security audit trail generation
+
+### ✅ MANDATORY SECURITY REQUIREMENTS
+**REQUIRED FOR ALL OPERATIONS:**
+- ✅ **MANDATORY**: AI Security Core Service integration with ALL framework operations
+- ✅ **MANDATORY**: Real-time credential masking in ALL terminal output and command execution
+- ✅ **MANDATORY**: Secure data sanitization for ALL stored metadata and analysis outputs
+- ✅ **MANDATORY**: Zero-tolerance credential storage policy with automatic enforcement
+- ✅ **MANDATORY**: Enterprise security audit trail generation for ALL credential handling
+- ✅ **MANDATORY**: Git-safe data storage with comprehensive credential protection
+
 ### 📋 CITATION ENFORCEMENT SCOPE
 **ANALYSIS REPORTS**: Citations mandatory in all technical findings and fix recommendations
 **COMPREHENSIVE REPORTS**: All claims must be evidence-backed with real-time validation
