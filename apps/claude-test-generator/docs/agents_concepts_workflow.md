@@ -1,16 +1,16 @@
-# Agent-Based Test Generation Framework: How Intelligent Agents Work Together
+# Agent-Based Test Generation Framework: How Agents Work Together
 
 > **A Reader-Friendly Guide to Understanding AI Agents and Their Collaborative Workflow**
 
 ## 🎯 **What This Framework Does**
 
-Imagine you're a quality engineer who needs comprehensive test plans for complex software features. Instead of spending hours manually researching, analyzing, and writing tests, you simply type: **"Generate test plan for [ANY-JIRA-TICKET]"**
+For quality engineers who need comprehensive test plans for complex software features. Instead of spending hours manually researching, analyzing, and writing tests, you simply type: **"Generate test plan for [ANY-JIRA-TICKET]"**
 
 The framework then deploys **4 specialized agents** supported by multiple AI services that work together like a highly coordinated team to investigate, analyze, and generate professional-quality test plans in just **3.5 minutes** with **95% accuracy** - regardless of the feature type, complexity, or technology stack.
 
 ### **📋 Example Ticket: ACM-22079 - Digest-Based Upgrade Feature**
 
-Throughout this document, we use **ACM-22079** as a concrete example to demonstrate the framework workflow. This ticket implements digest-based upgrades for ClusterCurator in disconnected environments, allowing administrators to upgrade clusters using content digest references instead of traditional version tags. The feature adds a 3-tier fallback algorithm for digest discovery and enhances ClusterCurator controller capabilities for enterprise disconnected deployments.
+Throughout this document, we use **ACM-22079** as an example to demonstrate the framework workflow. This ticket implements digest-based upgrades for ClusterCurator in disconnected environments, allowing administrators to upgrade clusters using content digest references instead of traditional version tags. The feature adds a 3-tier fallback algorithm for digest discovery and enhances ClusterCurator controller capabilities for enterprise disconnected deployments.
 
 ---
 
