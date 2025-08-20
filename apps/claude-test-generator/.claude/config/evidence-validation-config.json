@@ -148,7 +148,9 @@
         "intervention_triggers": {
           "fictional_content_threshold": 0.3,
           "evidence_quality_threshold": 0.8,
-          "pattern_compliance_threshold": 0.9
+          "pattern_compliance_threshold": 0.9,
+          "agent_contradiction_threshold": 0.1,
+          "cross_agent_consistency_threshold": 0.95
         }
       },
       "content_blocking_actions": {
@@ -222,6 +224,22 @@
           "cannot_create_fictional_content"
         ],
         "monitoring": "critical_priority"
+      },
+      "cross_agent_validation_engine": {
+        "role": "consistency_coordinator",
+        "authority": "high",
+        "provides": [
+          "agent_consistency_validation",
+          "contradiction_detection",
+          "framework_state_monitoring"
+        ],
+        "integration": "bidirectional_coordination",
+        "coordination_requirements": {
+          "evidence_consistency_validation": "ensure_all_evidence_consistent_across_agents",
+          "fictional_content_prevention_coordination": "coordinate_with_cross_agent_validation_for_framework_wide_prevention",
+          "agent_output_monitoring": "monitor_all_4_agents_for_evidence_compliance",
+          "contradiction_resolution": "coordinate_evidence_validation_with_agent_consistency_checks"
+        }
       }
     },
     "performance_optimization": {

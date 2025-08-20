@@ -284,8 +284,8 @@ def generate_investigation_strategy(jira_context, deployment_context, target_met
     AI-powered investigation strategy generation for ALL PRs with intelligent prioritization
     
     Args:
-        jira_context: Complete JIRA analysis from Phase 1a
-        deployment_context: Deployment status from Phase 1b  
+        jira_context: Complete JIRA analysis from Agent A
+        deployment_context: Environment assessment from Agent D (with context sharing)  
         target_method: "gh_cli" or "webfetch" (script-determined)
         investigation_scope: Overall investigation depth
         e2e_focus_required: True (enforces E2E testing focus)
@@ -352,7 +352,7 @@ def synthesize_results(investigation_data, strategy, e2e_requirements=True):
                 "testing_sequence_optimization": [...]  # AI optimizes test execution order
             },
             "deployment_correlation": {
-                "implementation_vs_deployment": "analysis_result",  # AI correlates with Phase 1b
+                "implementation_vs_deployment": "analysis_result",  # AI correlates with Agent D assessment
                 "feature_readiness": "complete|partial|pending",  # AI assesses readiness
                 "testing_readiness": "immediate|post_deployment|conditional"  # AI determines when testable
             },

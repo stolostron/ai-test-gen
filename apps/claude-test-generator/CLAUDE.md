@@ -47,9 +47,10 @@ Generate focused E2E test plans for any software feature using direct feature te
 
 The framework follows a clear **"Gather → Analyze → Build"** approach that maximizes accuracy and quality for any feature type:
 
-### 📊 **Stage 1: Data Collection (Phases 0-2.5)**
+### 📊 **Stage 1: Data Collection (Phases 0-Pre through 2.5)**
 **"Collect all relevant, useful data from every possible source"**
 
+- **Phase 0-Pre**: Smart environment selection with health validation and qe6 fallback
 - **Phase 0**: Version intelligence and compatibility analysis
 - **Phase 1**: Parallel foundation analysis (JIRA + Environment)
 - **Phase 2**: Parallel deep investigation (Documentation + GitHub)
@@ -168,9 +169,12 @@ The framework follows a clear **"Gather → Analyze → Build"** approach that m
 
 ```
 Generate test plan for ACM-22079
+Generate test plan for ACM-22079 using staging-cluster environment
+Analyze JIRA-12345 in production-east cluster
 ```
 
 **I'll automatically:**
+- ✅ Select optimal environment with health validation and qe6 fallback guarantee (Smart Environment Selection)
 - ✅ Execute cascade failure prevention protocol with evidence-based validation
 - ✅ Validate all assumptions against actual codebase (Implementation Reality Agent)
 - ✅ Prevent fictional content generation and ensure evidence traceability (Evidence Validation Engine)
@@ -187,13 +191,22 @@ Generate test plan for ACM-22079
 
 ## 🏗️ System Architecture
 
-**AI Intelligence Pipeline with Evidence-Based Cascade Failure Prevention:**
+**4-Agent Architecture with AI Intelligence Pipeline and Evidence-Based Cascade Failure Prevention:**
+
+### **Core 4-Agent Architecture**
+- **Agent A (JIRA Intelligence)**: Requirements extraction and scope analysis from any JIRA ticket type
+- **Agent B (Documentation Intelligence)**: Feature understanding and functionality analysis across any technology  
+- **Agent C (GitHub Investigation)**: Code changes and implementation analysis for any repository type
+- **Agent D (Environment Intelligence)**: Infrastructure assessment and real data collection for any environment type
+
+**AI Support Services**: Multiple specialized AI services provide capabilities supporting the 4 core agents with coordination, validation, and enhancement functions.
 
 ```yaml
 AI_SERVICES_ECOSYSTEM_CASCADE_PREVENTION:
   foundational_services:
     - tg_implementation_reality_agent: "NEVER ASSUME - Validate all assumptions against actual codebase"
     - tg_evidence_validation_engine: "PREVENT FICTIONAL CONTENT - Block content generation without implementation evidence"
+    - tg_cross_agent_validation_engine: "CONSISTENCY MONITOR - Continuous monitoring of all 4 agents with framework halt authority"
     
   intelligence_services:
     - jira_fixversion_validation_service: "MANDATORY JIRA fixVersion vs test environment version compatibility check"
@@ -224,10 +237,11 @@ AI_SERVICES_ECOSYSTEM_CASCADE_PREVENTION:
     - ai_services_integration: "Coordinated AI service execution framework"
   
   environment_services:
+    - tg_smart_environment_selection_service: "SMART ENVIRONMENT PRIORITIZATION - Use provided environment if healthy, fallback to qe6 if unhealthy"
     - cluster_connectivity_service: "Intelligent cluster discovery and connection with credential protection"
     - authentication_service: "Multi-method secure authentication with zero credential exposure"
     - enhanced_environment_intelligence_service: "Comprehensive environment + deployment assessment with PR context awareness"
-    - midstream_context_sharing_service: "Sophisticated real-time context coordination with progressive enhancement, adaptive quality (75% no context → 95% full context), and non-blocking intelligent coordination between Agent A and Enhanced Agent D for any feature type"
+    - midstream_context_sharing_service: "Sophisticated real-time context coordination with progressive enhancement, adaptive quality (75% no context → 95% full context), and non-blocking intelligent coordination between Agent A and Agent D for any feature type"
     
   security_services:
     - ai_security_core_service: "MANDATORY universal credential protection for ALL framework operations"
@@ -299,6 +313,11 @@ Generate test plan for [ANY-JIRA-TICKET]
 "Generate test plan for [ANY-FEATURE]"  # Any software feature, any technology
 "Investigate PR: https://github.com/[ANY-ORG]/[ANY-REPO]/pull/123"
 
+# Environment specification (Smart Environment Selection with health validation)
+"Analyze ACM-22079 using staging-cluster environment"  # Uses if healthy, fallback to qe6
+"Generate test plan for JIRA-12345 in production-east cluster"  # Health validated
+"Analyze K8S-456"  # Uses config environment or qe6 fallback
+
 # Direct commands - Universal compatibility
 /analyze {ANY_JIRA_ID}           # Works across all JIRA projects
 /generate {ANY_PR_URL} {FEATURE_NAME} [JIRA_SOURCE]  # Any repository
@@ -319,32 +338,44 @@ Generate test plan for [ANY-JIRA-TICKET]
 
 **Terminal Output Format**:
 ```
+**PHASE 0-PRE: Smart Environment Selection**
+📋 Smart Environment Selection → User requested: staging-cluster environment
+📊 Health validation: staging-cluster (score: 4.2/10 - unhealthy)
+⚠️  Fallback triggered: Health score below 7.0 threshold
+✅ Selected: qe6-vmware-ibm (score: 8.7/10 - healthy)
+
 **PHASE 0: JIRA FixVersion Awareness Intelligence**
 📋 Agent: JIRA FixVersion Service → Validating ACM-22079 version compatibility...
 ✅ Agent: JIRA FixVersion Service → Version context intelligence complete (ACM 2.15 vs ACM 2.14)
 
 ### **Phase 1: Enhanced Parallel Execution with Context Sharing**
 - **Agent A (JIRA Analysis)**: Complete hierarchy analysis with real-time context sharing
-- **Enhanced Agent D (Environment Intelligence)**: Comprehensive environment + deployment assessment with PR context awareness
+- **Agent D (Environment Intelligence)**: Comprehensive environment + deployment assessment with PR context awareness
 ✅ Agent A (JIRA Analysis) → Complete (Feature: cluster update digest support, Context shared)
-✅ Enhanced Agent D (Environment Intelligence) → Complete (Cluster: connected, Deployment: 95% confidence, PR context integrated)
+✅ Agent D (Environment Intelligence) → Complete (Cluster: connected, Deployment: 95% confidence, PR context integrated)
 ```
+
+### **Phase 0-Pre: Smart Environment Selection**
+- **Smart Environment Selection Service**: Use provided environment if healthy (score >= 7.0/10), fallback to qe6 if unhealthy
+- **Health Validation**: Comprehensive connectivity, API, authentication, ACM availability, and cluster stability checks
+- **Transparent Fallback**: Clear communication of environment selection decisions and fallback reasons
+- **Framework Reliability**: Guarantee framework never fails due to environment unavailability
 
 ### **Phase 0: MANDATORY JIRA FixVersion Awareness**
 - **JIRA FixVersion Service (CRITICAL)**: Validate JIRA fixVersion compatibility with test environment ACM/MCE version to provide VERSION AWARENESS
 - **Version Context Intelligence**: Continue comprehensive analysis with AWARENESS of feature availability status (not blocking)
 ### **Phase 1: Enhanced Parallel Execution with Context Sharing**
-- **Agent A (JIRA Analysis)**: Universal JIRA ticket investigation specialist that extracts comprehensive requirements and maps feature scope for any ticket type, with real-time context sharing to Enhanced Agent D
-- **Enhanced Agent D (Environment Intelligence)**: Universal environment assessment specialist that validates infrastructure health, collects real data, and determines deployment readiness for any feature type, with sophisticated context reception and progressive enhancement
+- **Agent A (JIRA Analysis)**: Universal JIRA ticket investigation specialist that extracts comprehensive requirements and maps feature scope for any ticket type, with real-time context sharing to Agent D
+- **Agent D (Environment Intelligence)**: Universal environment assessment specialist that validates infrastructure health, collects real data, and determines deployment readiness for any feature type, with sophisticated context reception and progressive enhancement
 
 **Terminal Output Example**:
 ```
 🚀 **PHASE 1: Enhanced Parallel Execution with Context Sharing**
 📋 Agent A (JIRA Analysis) → Deep hierarchy analysis with context sharing...
-📋 Enhanced Agent D (Environment Intelligence) → Environment + deployment assessment with context reception...
-📥 Context Shared: Agent A → Enhanced Agent D (PR references, components)
+📋 Agent D (Environment Intelligence) → Environment + deployment assessment with context reception...
+📥 Context Shared: Agent A → Agent D (PR references, components)
 ✅ Agent A (JIRA Analysis) → Complete (PRs: extracted, Components: identified, Context shared)
-✅ Enhanced Agent D (Environment Intelligence) → Complete (Environment: healthy, Deployment: 95% confidence, Context integrated)
+✅ Agent D (Environment Intelligence) → Complete (Environment: healthy, Deployment: 95% confidence, Context integrated)
 ```
 
 ### **Phase 2: Context-Aware Parallel Execution**  
@@ -715,6 +746,7 @@ spec:
 ❌ **BLOCKED**: Authentication commands without real-time credential masking
 ❌ **BLOCKED**: Environment data storage without comprehensive credential sanitization
 ❌ **BLOCKED**: Framework operations without security audit trail generation
+✅ **MANDATORY**: Smart Environment Selection with health validation and qe6 fallback guarantee (never fail due to environment issues)
 ✅ **MANDATORY**: Implementation Reality Agent validation of all assumptions against actual codebase
 ✅ **MANDATORY**: Evidence Validation Engine coordination preventing fictional content generation and ensuring implementation evidence
 ✅ **MANDATORY**: Pattern Extension Service pattern evidence requirement for all test generation
@@ -746,7 +778,7 @@ spec:
 ✅ **MANDATORY**: AI action-oriented title generation with professional QE patterns
 ✅ **MANDATORY**: AI comprehensive-but-targeted test scoping with QE coverage integration
 ✅ **MANDATORY**: AI universal data integration with realistic Expected Results for ANY component
-✅ **MANDATORY**: Real environment data PRIORITY in Expected Results with AI fallback (Enhanced Agent D comprehensive data collection)
+✅ **MANDATORY**: Real environment data PRIORITY in Expected Results with AI fallback (Agent D comprehensive data collection)
 ✅ **MANDATORY**: AI realistic sample generation for component-specific Expected Results enhancement
 ✅ **MANDATORY**: Pure AI environment intelligence without script dependencies or hardcoded patterns
 ✅ **MANDATORY**: HTML tag prevention and markdown-only formatting enforcement
@@ -768,4 +800,4 @@ spec:
 ✅ **MANDATORY**: Enterprise security audit trail generation for ALL credential handling
 ✅ **MANDATORY**: Direct feature validation assuming infrastructure is ready
 
-**The framework delivers universal E2E test generation for any JIRA ticket with 100% cascade failure prevention through evidence-based foundation (Implementation Reality Agent validates all assumptions against actual codebase), fictional content prevention (Evidence Validation Engine blocks content generation without implementation evidence), pattern-based generation (Pattern Extension Service requires 100% traceability to proven patterns), ultrathink QE analysis (QE Intelligence Service provides strategic testing pattern intelligence using sophisticated reasoning and actual test file verification), implementation-priority documentation (Evidence-Based Documentation prioritizes code over assumptions), sophisticated agent coordination (Mid-Stream Context Sharing enables progressive enhancement with adaptive quality 75%→95% confidence between Agent A and Enhanced Agent D), 3-stage intelligence process (Gather→Analyze→Build), version awareness intelligence, AI intelligence with adaptive complexity detection and action-oriented title generation, comprehensive-but-targeted test scoping with QE coverage integration, dual UI+CLI approach with complete YAML configurations, environment-agnostic test cases with <cluster-host> placeholders, intelligent scoping within 4-10 step optimization, dual report generation for different audiences (portable test cases + environment-specific complete analysis), evidence-based validation with clickable citations, ultrathink QE automation intelligence with strategic pattern analysis across any technology stack, single consolidated run directory management with automatic cleanup of intermediate files, comprehensive metadata tracking, and real-time agent execution transparency - ensuring maximum coverage with optimal focus, direct feature validation, universal applicability across any software feature type, version context intelligence, AI optimization, compliance through dual reporting approach, zero fictional content generation, framework simplification through Agent E elimination, and clean professional deliverables with exactly 3 final files per run.**
+**The framework delivers universal E2E test generation for any JIRA ticket with 100% cascade failure prevention through smart environment selection (use provided environment if healthy, fallback to qe6 if unhealthy), 4-agent architecture (Agent A: JIRA Intelligence, Agent B: Documentation Intelligence, Agent C: GitHub Investigation, Agent D: Environment Intelligence), evidence-based foundation (Implementation Reality Agent validates all assumptions against actual codebase), fictional content prevention (Evidence Validation Engine blocks content generation without implementation evidence), Cross-Agent Validation (continuous monitoring with framework halt authority), pattern-based generation (Pattern Extension Service requires 100% traceability to proven patterns), ultrathink QE analysis (QE Intelligence Service provides strategic testing pattern intelligence using sophisticated reasoning and actual test file verification), implementation-priority documentation (Evidence-Based Documentation prioritizes code over assumptions), sophisticated agent coordination (Mid-Stream Context Sharing enables progressive enhancement with adaptive quality 75%→95% confidence between Agent A and Agent D), 3-stage intelligence process (Gather→Analyze→Build) with Phase 0-Pre environment selection, version awareness intelligence, AI intelligence with adaptive complexity detection and action-oriented title generation, comprehensive-but-targeted test scoping with QE coverage integration, dual UI+CLI approach with complete YAML configurations, environment-agnostic test cases with <cluster-host> placeholders, intelligent scoping within 4-10 step optimization, dual report generation for different audiences (portable test cases + environment-specific complete analysis), evidence-based validation with clickable citations, ultrathink QE automation intelligence with strategic pattern analysis across any technology stack, single consolidated run directory management with automatic cleanup of intermediate files, comprehensive metadata tracking, and real-time agent execution transparency - ensuring maximum coverage with optimal focus, direct feature validation, universal applicability across any software feature type, version context intelligence, AI optimization, compliance through dual reporting approach, zero fictional content generation, framework simplification through Agent E elimination, environment reliability guarantee (never fails due to environment issues), and clean professional deliverables with exactly 3 final files per run.**

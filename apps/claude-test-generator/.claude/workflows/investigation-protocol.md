@@ -4,30 +4,91 @@
 
 The framework performs **thorough investigation** with **advanced deep reasoning analysis** of all related tickets and code changes:
 
-### Optimized Investigation Workflow with Phase 1a/1b Dependencies
+### Framework 3-Stage Intelligence Process Investigation Protocol
 
-#### **Phase 1a: Independent Parallel Investigation**
-**Agent A (JIRA Analysis) - Comprehensive Ticket Investigation:**
-1. **Main Ticket Analysis**: Requirements, acceptance criteria, technical specifications - EXTRACT ALL INFORMATION
-2. **All Subtasks Investigation**: Implementation status, PR links, completion state - MANDATORY deep content extraction
-3. **Dependency Chain Analysis**: Blocking/blocked tickets, prerequisites - COMPLETE dependency mapping
-4. **Epic Context Review**: Parent epics, strategic objectives, architectural decisions - FULL context extraction
-5. **Related Ticket Mining**: Historical context, previous implementations, lessons learned - COMPREHENSIVE analysis
-6. **Nested Link Traversal**: Following all linked tickets to full depth for complete context
-7. **PR Reference Extraction**: Extract all GitHub PR links and component references for Agent E
-8. **Component Identification**: Identify specific components and repositories for targeted analysis
+#### **Stage 1: Data Collection (Phases 0-2.5)**
+**"Collect all relevant, useful data from every possible source"**
 
-**Agent D (Environment Validation) - Parallel Independent Task:**
-- Environment authentication and cluster connectivity validation
-- ACM/MCE version detection and component health assessment
-- Infrastructure readiness determination
+##### **Phase 0: Version Context Foundation**
+**JIRA FixVersion Intelligence Service:**
+- Universal version compatibility analysis for any JIRA ticket
+- Feature availability determination across any technology stack
+- Version gap analysis and deployment readiness assessment
 
-#### **Phase 1b: Context-Informed Feature Detection**
-**Agent E (Feature Detection) - Sequential after Agent A Completion:**
-- **Input Required**: Complete JIRA context from Agent A including specific PRs and components
-- **Targeted Analysis**: Use exact PR references and component details for precise deployment validation  
-- **Confidence**: Higher accuracy through context-driven analysis vs pattern guessing
-- **Evidence-Based Assessment**: Specific behavioral testing based on JIRA-identified feature scope
+##### **Phase 1: Enhanced Parallel Execution with Context Sharing**
+**Agent A (JIRA Intelligence) - Requirements Extraction:**
+1. **3-Level Deep Analysis**: Main ticket → Subtasks → Dependencies for complete understanding
+2. **Component Identification**: Extract affected software components for any technology stack
+3. **Business Context**: Customer impact, strategic value, compliance requirements
+4. **PR Reference Discovery**: GitHub PR links and implementation changes
+5. **Real-time Context Sharing**: Share discoveries with Agent D via Context Sharing Service
+
+**Agent D (Environment Intelligence) - Infrastructure Assessment:**
+- **Environment Health Scoring**: Multi-dimensional cluster readiness assessment
+- **Real Data Collection**: Actual command outputs and infrastructure samples
+- **Context Reception**: Receive Agent A discoveries for targeted data collection
+- **Deployment Assessment**: Feature availability and deployment status validation
+- **Progressive Enhancement**: 75% confidence (no context) → 95% (full context)
+
+##### **Phase 2: Parallel Deep Investigation**
+**Agent B (Documentation Intelligence) - Feature Understanding:**
+- **Universal Documentation Analysis**: Works with any technology documentation
+- **Feature Functionality Extraction**: How features work conceptually across any software type
+- **User Workflow Analysis**: Available interaction methods (UI, CLI, API) for any feature
+- **AI Documentation Intelligence**: Smart branch selection and content analysis
+
+**Agent C (GitHub Investigation) - Code Analysis:**
+- **AI-Prioritized Investigation**: Deep analysis of high-impact PRs, lighter coverage of supporting changes
+- **Universal Repository Support**: Works with any programming language and repository structure
+- **Implementation to Testing Mapping**: Code changes analyzed for testing implications
+- **Integration Point Identification**: Cross-component analysis for any architecture
+
+##### **Phase 2.5: QE Intelligence Analysis with Ultrathink**
+**Enhanced QE Intelligence Service:**
+- **Ultrathink Reasoning**: Sophisticated pattern analysis across existing test implementations
+- **Strategic Pattern Intelligence**: Extract proven testing approaches from successful QE automation
+- **Coverage Gap Analysis**: Evidence-based identification of testing opportunities
+- **Team Repository Focus**: Analysis limited to team-managed repositories with proper exclusions
+
+#### **Stage 2: AI Analysis (Phase 3)**
+**\"Make sense of ALL collected data and create strategic intelligence\"**
+
+##### **AI Strategic Services Sequential Analysis**
+**Complexity Detection AI:**
+- **Universal Complexity Assessment**: Analyzes any feature type for optimal test structure
+- **Test Sizing Optimization**: Determines 4-10 step optimal range based on feature scope
+- **Multi-table Strategy**: Complex features broken into focused test scenarios
+
+**Ultrathink Analysis AI:**
+- **Strategic Business Reasoning**: Deep analysis of customer value and technical risk
+- **Priority Identification**: Critical validation points for any software feature
+- **Cross-impact Assessment**: Business continuity and user experience implications
+
+**Smart Scoping AI:**
+- **Comprehensive-but-Targeted**: Maximum coverage within focused boundaries
+- **QE Intelligence Integration**: Informed by testing pattern analysis from Phase 2.5
+- **Resource Optimization**: Efficient testing strategy for any feature complexity
+
+**Title Generation AI:**
+- **Professional Standards**: Industry-quality naming conventions for any feature type
+- **Action-Oriented Focus**: Clear test purpose communication
+- **Technology Adaptation**: Appropriate technical detail for any software stack
+
+#### **Stage 3: Report Construction (Phase 4)**
+**\"Build professional test plan using strategic intelligence\"**
+
+##### **Pattern Extension Service Test Generation**
+**Evidence-Based Construction:**
+- **100% Pattern Traceability**: All test elements traceable to proven successful patterns
+- **Implementation Reality Alignment**: Perfect alignment with actual code capabilities
+- **Universal Data Integration**: Real environment data for realistic Expected Results
+- **Dual UI+CLI Excellence**: Complete workflows with comprehensive alternatives
+
+**Quality Assurance Integration:**
+- **Cross-Agent Validation**: Continuous consistency monitoring across all 4 agents
+- **Evidence Validation Engine**: Real-time fictional content prevention throughout
+- **Professional Output**: Enterprise-ready test plans with realistic examples
+- **Dual Report Architecture**: Environment-agnostic test cases + complete analysis
 
 #### **Phase 2: Context-Aware Parallel Execution**
 **Agent B (Documentation Intelligence) - Multi-Method Approach:**

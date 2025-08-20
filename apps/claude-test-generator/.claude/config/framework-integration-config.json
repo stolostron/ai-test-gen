@@ -5,6 +5,58 @@
     "quality_assurance": "ENTERPRISE_GRADE_VALIDATION",
     "cascade_failure_prevention": "CRITICAL_BLOCKING_ENFORCEMENT",
     
+    "agent_architecture_definition": {
+      "4_core_agents": {
+        "agent_a_jira_intelligence": {
+          "role": "Requirements extraction and scope analysis from any JIRA ticket type",
+          "phase": "1",
+          "data_sources": ["JIRA tickets", "subtasks", "dependencies", "PR references"],
+          "universal_capability": "Works with any JIRA project and technology stack"
+        },
+        "agent_b_documentation_intelligence": {
+          "role": "Feature understanding and functionality analysis across any technology",
+          "phase": "2", 
+          "data_sources": ["Documentation repositories", "user guides", "API docs"],
+          "universal_capability": "Analyzes any software feature type and technology documentation"
+        },
+        "agent_c_github_investigation": {
+          "role": "Code changes and implementation analysis for any repository type",
+          "phase": "2",
+          "data_sources": ["GitHub PRs", "code changes", "implementation diffs"],
+          "universal_capability": "Investigates any repository and programming language"
+        },
+        "agent_d_environment_intelligence": {
+          "role": "Infrastructure assessment and real data collection for any environment type",
+          "phase": "1",
+          "data_sources": ["Test environments", "cluster data", "infrastructure info"],
+          "universal_capability": "Works with any infrastructure type and environment"
+        }
+      },
+      "ai_support_services": {
+        "note": "AI services provide specialized capabilities supporting the 4 core agents",
+        "services_count": "multiple specialized AI services",
+        "coordination_role": "Support and enhance the 4 core agents with specialized capabilities"
+      }
+    },
+    
+    "three_stage_intelligence_process": {
+      "stage_1_data_collection": {
+        "description": "Gather all relevant, useful data from every possible source",
+        "phases": ["0", "1", "2", "2.5"],
+        "methodology": "Comprehensive information gathering across all sources"
+      },
+      "stage_2_ai_analysis": {
+        "description": "Make sense of ALL collected data and create strategic intelligence", 
+        "phases": ["3"],
+        "methodology": "AI strategic analysis with complexity, ultrathink, scoping, titles"
+      },
+      "stage_3_report_construction": {
+        "description": "Build professional test plan using strategic intelligence",
+        "phases": ["4"],
+        "methodology": "Pattern-based test generation with evidence validation"
+      }
+    },
+    
     "service_coordination_matrix": {
       "implementation_reality_agent": {
         "execution_phase": "0.5",
@@ -106,20 +158,59 @@
         "execution_phase": "2.5",
         "priority": "HIGH",
         "blocking_authority": true,
-        "coordination_role": "evidence_based_qe_analyzer",
+        "coordination_role": "ultrathink_qe_analyzer",
         "integration_dependencies": ["implementation_reality_agent"],
         "coordination_with": ["pattern_extension_service"],
+        "ultrathink_capabilities": {
+          "strategic_pattern_intelligence": "sophisticated_reasoning_about_optimal_testing_patterns",
+          "ultrathink_reasoning": "deep_analysis_of_testing_approaches_across_ACM_components",
+          "coverage_gap_analysis": "ultrathink_powered_identification_of_testing_opportunities",
+          "pattern_extraction": "proven_testing_approaches_from_successful_implementations"
+        },
         "analysis_requirements": {
           "actual_test_verification": "all_qe_coverage_claims_verified_against_actual_test_files",
           "implementation_alignment": "all_qe_recommendations_aligned_with_implementation_reality",
           "repository_focus": "primary_focus_on_team_managed_repositories",
-          "evidence_based_gaps": "gap_analysis_based_on_actual_test_evidence"
+          "evidence_based_gaps": "gap_analysis_based_on_actual_test_evidence",
+          "ultrathink_analysis": "strategic_testing_pattern_intelligence_using_sophisticated_reasoning"
+        }
+      },
+      
+      "cross_agent_validation_engine": {
+        "execution_phase": "continuous",
+        "priority": "CRITICAL_SAFETY_NET",
+        "blocking_authority": true,
+        "coordination_role": "consistency_monitor",
+        "integration_dependencies": [],
+        "validation_scope": "all_4_agents_throughout_execution",
+        "continuous_monitoring": {
+          "agent_consistency_validation": "ensure_all_4_agents_agree_on_fundamental_facts",
+          "contradiction_detection": "identify_conflicting_claims_between_agents",
+          "evidence_cross_validation": "verify_agent_claims_supported_by_consistent_evidence",
+          "framework_halt_authority": "stop_execution_when_critical_inconsistencies_detected"
+        },
+        "validation_targets": {
+          "agent_a_validation": "feature_scope_consistency_component_identification_accuracy",
+          "agent_b_validation": "feature_understanding_accuracy_documentation_analysis_completeness", 
+          "agent_c_validation": "implementation_analysis_accuracy_code_change_impact_assessment",
+          "agent_d_validation": "environment_health_reliability_version_detection_consistency"
         }
       }
     },
     
     "integration_execution_protocol": {
-      "phase_0_foundational_validation": {
+      "phase_0_version_context_foundation": {
+        "primary_service": "jira_fixversion_intelligence_service",
+        "execution_requirement": "mandatory_version_compatibility_analysis",
+        "validation_scope": "universal_version_gap_analysis_for_any_feature_type",
+        "blocking_conditions": [
+          "provide_version_context_to_all_agents",
+          "inform_feature_availability_status_across_all_phases"
+        ],
+        "output_distribution": "version_awareness_intelligence_to_all_4_agents_and_AI_services"
+      },
+      
+      "phase_0_5_foundational_validation": {
         "primary_service": "implementation_reality_agent",
         "execution_requirement": "mandatory_before_all_other_services",
         "validation_scope": "complete_implementation_capability_assessment",
@@ -155,14 +246,33 @@
         "intervention_authority": "halt_content_generation_without_implementation_evidence"
       },
       
-      "phase_2_evidence_based_analysis": {
-        "coordinated_services": [
-          "evidence_based_documentation_service",
-          "enhanced_qe_intelligence_service"
+      "continuous_cross_agent_validation": {
+        "primary_service": "cross_agent_validation_engine",
+        "execution_requirement": "continuous_monitoring_of_all_4_agents",
+        "validation_scope": "agent_consistency_and_contradiction_prevention",
+        "monitoring_targets": [
+          "agent_a_jira_intelligence_outputs",
+          "agent_b_documentation_intelligence_outputs",
+          "agent_c_github_investigation_outputs",
+          "agent_d_environment_intelligence_outputs"
         ],
-        "execution_requirement": "parallel_execution_with_coordination",
+        "blocking_conditions": [
+          "fundamental_fact_disagreement_between_agents",
+          "evidence_quality_failure_from_any_agent",
+          "cascade_error_detection_across_agents",
+          "framework_consistency_violation"
+        ],
+        "intervention_authority": "halt_framework_execution_until_agent_contradictions_resolved"
+      },
+      
+      "phase_2_parallel_investigation": {
+        "coordinated_agents": [
+          "agent_b_documentation_intelligence",
+          "agent_c_github_investigation"
+        ],
+        "execution_requirement": "parallel_execution_with_context_from_phase_1",
         "evidence_sharing": "bidirectional_evidence_coordination",
-        "quality_validation": "cross_service_consistency_verification",
+        "quality_validation": "cross_agent_consistency_verification",
         "integration_checkpoints": [
           "evidence_consistency_validation",
           "analysis_quality_verification",
@@ -170,16 +280,46 @@
         ]
       },
       
-      "phase_3_pattern_based_generation": {
+      "phase_2_5_qe_intelligence_analysis": {
+        "primary_service": "enhanced_qe_intelligence_service",
+        "execution_requirement": "sequential_after_agent_b_and_c_completion",
+        "ultrathink_analysis": "strategic_testing_pattern_intelligence",
+        "integration_dependencies": [
+          "agent_b_feature_understanding",
+          "agent_c_implementation_analysis",
+          "implementation_reality_validation"
+        ],
+        "analysis_scope": "testing_pattern_analysis_coverage_gaps_strategic_recommendations"
+      },
+      
+      "phase_3_ai_strategic_analysis": {
+        "coordinated_services": [
+          "adaptive_complexity_detection_service",
+          "ultrathink_analysis_service", 
+          "smart_test_scoping_service",
+          "action_oriented_title_service"
+        ],
+        "execution_requirement": "sequential_ai_services_with_complete_data_package",
+        "input_data": "complete_intelligence_from_all_previous_phases",
+        "analysis_outputs": [
+          "optimal_test_structure_guidance",
+          "strategic_testing_priorities",
+          "comprehensive_but_targeted_scope",
+          "professional_test_case_titles"
+        ]
+      },
+      
+      "phase_4_pattern_based_generation": {
         "primary_service": "pattern_extension_service",
-        "execution_requirement": "sequential_after_evidence_analysis_completion",
-        "input_coordination": "integrate_all_prior_service_evidence",
+        "execution_requirement": "sequential_after_ai_strategic_analysis_completion",
+        "input_coordination": "integrate_complete_strategic_intelligence_package",
         "authority_enforcement": "complete_test_generation_replacement",
         "validation_requirements": [
           "100_percent_pattern_traceability",
           "implementation_reality_alignment",
           "cross_agent_validation_compliance",
-          "evidence_based_quality_assurance"
+          "evidence_based_quality_assurance",
+          "strategic_ai_guidance_integration"
         ]
       }
     },

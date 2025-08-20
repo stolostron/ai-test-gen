@@ -1,6 +1,13 @@
 # Detailed Workflow Stages
 
-## Stage 0: Intelligent Pre-Analysis Assessment
+# Framework 3-Stage Intelligence Process
+
+> **"Gather → Analyze → Build" methodology that maximizes accuracy and quality for any feature type**
+
+## Stage 1: Data Collection (Phases 0-2.5)
+**"Collect all relevant, useful data from every possible source"**
+
+### Phase 0: Version Context Foundation
 **SOPHISTICATED ENVIRONMENT AND CONTEXT ANALYSIS:** Deploy multi-layered intelligence to understand the complete analysis context before beginning.
 
 ```bash
@@ -121,7 +128,8 @@ The intelligent system uses **multi-layer test discovery**:
 
 **This is why we use `setup_clc qe6` instead of manual setup** - it provides enterprise-grade automation for the complex ACM testing infrastructure.
 
-## Stage 1a: Independent Parallel Execution
+### Phase 1: Enhanced Parallel Execution with Context Sharing
+**4-Agent Coordination: Agent A (JIRA) + Agent D (Environment) with real-time context sharing**
 **🔄 True Parallel Processing of Independent Tasks:**
 
 ### Agent A: JIRA Intelligence
@@ -278,7 +286,8 @@ execute_enhanced_environment_intelligence() {
 - **Enhances**: PR context awareness for improved deployment confidence 85% → 95%
 - **Maintains**: 30-second parallel execution performance
 
-## Stage 2: Context-Aware Intelligence Gathering
+### Phase 2: Parallel Deep Investigation
+**Agent B (Documentation) + Agent C (GitHub) parallel execution with Phase 1 context**
 
 **CRITICAL**: **Smart Test Scope Analysis** - Focus ONLY on what actually changed in the feature implementation.
 
@@ -639,7 +648,15 @@ perform_intelligent_code_analysis() {
 }
 ```
 
-## Stage 3: AI Reasoning and Strategic Test Intelligence
+### Phase 2.5: QE Intelligence Analysis with Ultrathink
+**Strategic testing pattern analysis using sophisticated reasoning**
+
+---
+
+## Stage 2: AI Analysis (Phase 3)
+**"Make sense of ALL collected data and create strategic intelligence"**
+
+### AI Strategic Services Sequential Analysis
 
 ### Deep Feature Understanding with AI Reasoning
 ```bash
@@ -710,7 +727,12 @@ generate_strategic_test_approach() {
 }
 ```
 
-## Stage 4: Sophisticated Test Strategy Generation & Quality Optimization
+---
+
+## Stage 3: Report Construction (Phase 4)
+**"Build professional test plan using strategic intelligence"**
+
+### Pattern Extension Service Test Generation
 
 **🎯 CRITICAL: Smart Test Scope Analysis Before Test Generation**
 
@@ -820,7 +842,7 @@ data:
 
 **Refer to `.claude/templates/yaml-samples.md` for comprehensive YAML sample templates.**
 
-## Stage 5: Comprehensive Analysis Report & Feedback Loop
+### Final Report Generation and Quality Assurance
 
 ### Final Analysis Report Format
 **Required Components:**

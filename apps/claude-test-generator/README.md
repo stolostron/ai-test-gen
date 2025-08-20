@@ -27,6 +27,10 @@ cd apps/claude-test-generator
 "Analyze ACM-22079"
 "Generate test plan for JIRA-12345"
 "Analyze Kubernetes feature ticket K8S-456"
+
+# Specify environment (framework will validate health)
+"Analyze ACM-22079 using staging-cluster environment"
+"Generate test plan for JIRA-12345 in production-east cluster"
 ```
 
 ### 3. Get your test plan
@@ -42,11 +46,13 @@ cd apps/claude-test-generator
 ## 🎯 What You Get
 
 ### Framework with Cascade Failure Prevention
+- ✅ **4-Agent Architecture**: Agent A (JIRA), Agent B (Documentation), Agent C (GitHub), Agent D (Environment) with coordinated intelligence
 - ✅ **Evidence-Based Foundation**: Implementation Reality Agent validates all assumptions against actual codebase
-- ✅ **Cascade Failure Prevention**: Cross-Agent Validation Engine prevents contradictions and framework failures
+- ✅ **Cross-Agent Validation**: Continuous monitoring with framework halt authority to prevent contradictions
 - ✅ **Pattern-Based Generation**: Pattern Extension Service generates tests only from proven successful patterns
 - ✅ **Ultrathink QE Analysis**: QE Intelligence Service provides strategic testing pattern intelligence using sophisticated reasoning and actual test file verification
-- ✅ **Implementation-First Documentation**: Evidence-Based Documentation prioritizes code over assumptions
+- ✅ **Context Sharing**: Real-time coordination between Agent A and Agent D with progressive enhancement (75%→95% confidence)
+- ✅ **3-Stage Intelligence Process**: Gather → Analyze → Build methodology for maximum accuracy
 
 ### Automatic Analysis with Evidence Validation
 - ✅ **JIRA Deep Dive**: All linked tickets, subtasks, comments analyzed with reality validation
@@ -146,13 +152,24 @@ runs/ACM-22079_August_18_2025/
 "Analyze ACM-22079 using qe7 environment"
 ```
 
-### Automatic Processing with Cascade Prevention
-1. **JIRA FixVersion Intelligence** - Version awareness and context for all subsequent analysis
-2. **Parallel Execution** - Agent A (JIRA Analysis) + Agent D (Environment + Deployment) with context sharing
-3. **Context-Aware Investigation** - Agent B (Documentation) + Agent C (GitHub) with complete context
-4. **QE Repository Intelligence** - Analyze existing automation coverage for targeted test generation
-5. **AI Sequential Synthesis** - Strategic intelligence combining all investigation results
-6. **Strategic Test Generation** - Pattern-based test cases with universal data integration and real environment samples
+### 3-Stage Intelligence Process with 4-Agent Architecture
+**Stage 1: Data Collection (Phases 0-2.5)**
+- **Phase 0**: Version intelligence and compatibility analysis
+- **Phase 1**: Agent A (JIRA) + Agent D (Environment) parallel execution with real-time context sharing
+- **Phase 2**: Agent B (Documentation) + Agent C (GitHub) parallel investigation with Phase 1 context
+- **Phase 2.5**: QE Intelligence with ultrathink reasoning for strategic testing patterns
+
+**Stage 2: AI Analysis (Phase 3)**
+- **Complexity Detection**: Optimal test case sizing for any feature type
+- **Ultrathink Analysis**: Deep reasoning and strategic priorities
+- **Smart Scoping**: Optimal testing boundaries and resource allocation
+- **Title Generation**: Professional naming standards
+
+**Stage 3: Report Construction (Phase 4)**
+- **Pattern Extension**: Generate tests from proven successful patterns
+- **Universal Data Integration**: Real environment data for any component
+- **Evidence Validation**: Prevent fictional content throughout
+- **Quality Assurance**: Professional test plans ready for execution
 
 ---
 
@@ -194,10 +211,13 @@ The AI automatically scores test plans with evidence validation:
 
 ## ⚙️ Framework Features
 
-### Environment Options
-- **Default**: qe6 (automatic)
-- **Alternative**: any accessible cluster
-- **Flexible**: Works even if environment is unavailable
+### Smart Environment Selection
+- **Priority 1**: User-specified environment (if healthy, score >= 7.0/10)
+- **Priority 2**: Config environment from console-url-config.json (if healthy)  
+- **Priority 3**: QE6 fallback (guaranteed working environment)
+- **Health Validation**: Comprehensive connectivity, API, auth, ACM, and cluster stability checks
+- **Transparent Fallback**: Clear communication when fallback to qe6 is triggered
+- **Framework Reliability**: Never fails due to environment unavailability
 
 ### Deployment Validation
 - **Evidence-Based**: Concrete proof of feature availability
@@ -205,13 +225,18 @@ The AI automatically scores test plans with evidence validation:
 - **Clear Status**: DEPLOYED / PARTIALLY / NOT DEPLOYED / BUG
 - **Real Data Collection**: Agents collect component-specific samples during validation
 
-### Phase-Based Architecture with Cascade Prevention
+### 3-Stage Intelligence Architecture with Cascade Prevention
+**Stage 1: Data Collection (Phases 0-2.5)** - "Collect all relevant, useful data from every possible source"
 - **Phase 0**: MANDATORY JIRA FixVersion Awareness with version intelligence
-- **Phase 1**: Parallel Execution with Context Sharing (Agent A + Agent D)
-- **Phase 2**: Context-Aware Parallel Execution (Agent B + Agent C with complete context)
-- **Phase 2.5**: QE Automation Repository Intelligence with actual test file verification
-- **Phase 3**: Sequential Synthesis with AI Intelligence and pattern-based optimization
-- **Phase 4**: Strategic Test Generation with Universal Data Integration and pattern traceability
+- **Phase 1**: Agent A (JIRA) + Agent D (Environment) parallel execution with real-time context sharing
+- **Phase 2**: Agent B (Documentation) + Agent C (GitHub) parallel investigation with Phase 1 context
+- **Phase 2.5**: QE Intelligence with ultrathink reasoning for strategic testing patterns
+
+**Stage 2: AI Analysis (Phase 3)** - "Make sense of ALL collected data and create strategic intelligence"
+- **Complexity Detection, Ultrathink Analysis, Smart Scoping, Title Generation**
+
+**Stage 3: Report Construction (Phase 4)** - "Build professional test plan using strategic intelligence"
+- **Pattern Extension, Universal Data Integration, Evidence Validation, Quality Assurance**
 
 ### Category Intelligence
 - **Auto-Detection**: AI identifies ticket type (Upgrade, UI, Security, etc.)
@@ -278,20 +303,23 @@ For deeper technical details:
 **Universal Support**: Works with any component through dynamic AI adaptation and implementation reality validation  
 **Cascade Prevention**: Complete prevention of ACM-22079-type cascade failures through comprehensive service coordination  
 
-### 4-Agent Architecture with AI Services
-- 🎯 **Agent A (JIRA Analysis)**: Complete hierarchy analysis with component identification and context sharing
-- 📚 **Agent B (Documentation Intelligence)**: Red Hat ACM documentation analysis with intelligent branch discovery
-- 🔍 **Agent C (GitHub Investigation)**: PR analysis and repository investigation with strategic prioritization
-- 🌐 **Agent D (Environment + Deployment)**: Comprehensive environment assessment with real data collection and context reception
+### 4-Agent Architecture with AI Services Ecosystem
+**Core 4-Agent Architecture:**
+- 🎯 **Agent A (JIRA Intelligence)**: Requirements extraction and scope analysis from any JIRA ticket type
+- 📚 **Agent B (Documentation Intelligence)**: Feature understanding and functionality analysis across any technology
+- 🔍 **Agent C (GitHub Investigation)**: Code changes and implementation analysis for any repository type
+- 🌐 **Agent D (Environment Intelligence)**: Infrastructure assessment and real data collection for any environment type
+
+**AI Support Services:**
 - 🛡️ **Implementation Reality Agent**: NEVER ASSUME - Validates all assumptions against actual codebase
 - 🔒 **Evidence Validation Engine**: PREVENT FICTIONAL CONTENT - Blocks content generation without implementation evidence
+- ⚖️ **Cross-Agent Validation Engine**: CONSISTENCY MONITOR - Continuous monitoring with framework halt authority
 - 🎯 **Pattern Extension Service**: EXTEND, NEVER INVENT - Pattern-based test generation with 100% traceability
-- 📊 **QE Intelligence Service**: REALITY-BASED QE ANALYSIS - Actual test file verification
-- 🧠 **AI Sequential Synthesis**: Strategic intelligence combining all investigation results with cognitive analysis
+- 🧠 **QE Intelligence Service**: ULTRATHINK QE ANALYSIS - Strategic testing pattern intelligence with sophisticated reasoning
+- 🔄 **Context Sharing Service**: Real-time coordination between Agent A and Agent D with progressive enhancement
 - 🎆 **Universal Data Integration**: Real environment data collection with comprehensive security processing
-- 🛡️ **Format Enforcement**: Markdown-only formatting with HTML tag prevention and citation compliance
 
-**4-Agent Coordination**: Agent D combines environment + deployment intelligence with context sharing from Agent A, while Agent B and Agent C provide documentation and implementation analysis. Complete cascade failure prevention ensures reliable operation.
+**Advanced Coordination**: Agent A and Agent D execute in parallel with real-time context sharing (75%→95% confidence enhancement), while Agent B and Agent C provide parallel investigation with complete Phase 1 context. Cross-Agent Validation Engine ensures continuous consistency monitoring with framework halt authority for reliable operation.
 
 ---
 

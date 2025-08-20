@@ -1,18 +1,24 @@
-# Claude Test Generator Framework - Evidence-Based Architecture with Fictional Content Prevention
+# Claude Test Generator Framework - 4-Agent Architecture with Evidence-Based AI Services
 
-> **Evidence-Based AI Framework with Implementation Reality Validation, Intelligent Agent Coordination, and Complete Fictional Content Prevention**
+> **4-Agent Architecture with Evidence-Based AI Framework, Implementation Reality Validation, Cross-Agent Validation, and Complete Fictional Content Prevention**
 
-## 🛡️ **FRAMEWORK STATUS: REDESIGNED AND IMPLEMENTED**
+## 🛡️ **FRAMEWORK STATUS: 4-AGENT ARCHITECTURE IMPLEMENTED**
 
-**✅ ALL 6 CORE COMPONENTS IMPLEMENTED AND VALIDATED**
+**✅ 4-AGENT ARCHITECTURE WITH COMPREHENSIVE AI SERVICES ECOSYSTEM**
+- **Agent A (JIRA Intelligence)**: Requirements extraction and scope analysis from any JIRA ticket type
+- **Agent B (Documentation Intelligence)**: Feature understanding and functionality analysis across any technology
+- **Agent C (GitHub Investigation)**: Code changes and implementation analysis for any repository type
+- **Agent D (Environment Intelligence)**: Infrastructure assessment and real data collection for any environment type
+
+**✅ AI SUPPORT SERVICES ECOSYSTEM**
 - **Implementation Reality Agent**: Foundational evidence validation against actual codebase
 - **Evidence Validation Engine**: Comprehensive fictional content prevention safety net
-- **Evidence-Based Documentation Service**: Implementation-first documentation analysis
+- **Cross-Agent Validation Engine**: Continuous monitoring with framework halt authority
 - **Pattern Extension Service**: Complete test generation replacement with pattern traceability
-- **QE Intelligence Service**: Reality-based QE analysis with actual test file verification
-- **Mid-Stream Context Sharing**: Intelligent agent coordination with real-time context integration
+- **QE Intelligence Service**: Ultrathink reasoning with strategic testing pattern intelligence
+- **Context Sharing Service**: Real-time Agent A ↔ Agent D coordination with progressive enhancement
 
-**🎯 FICTIONAL CONTENT PREVENTION**: 100% prevention of ACM-22079-type failures through evidence-based operation, implementation validation, and intelligent agent coordination.
+**🎯 FICTIONAL CONTENT PREVENTION**: 100% prevention of ACM-22079-type failures through 4-agent architecture, evidence-based operation, Cross-Agent Validation, implementation validation, ultrathink QE intelligence, and 3-stage intelligence process (Gather → Analyze → Build).
 
 ## 📖 **Table of Contents**
 
@@ -36,7 +42,7 @@
 
 The Claude Test Generator is an evidence-based AI system that automatically generates comprehensive test plans for any software feature with **complete fictional content prevention**. It works with any JIRA ticket across any technology stack - ACM, OpenShift, Kubernetes, cloud services, APIs, UI components, security features, and more. It transforms a simple user request like "Generate test plan for JIRA-12345" into an **evidence-validated multi-phase investigation workflow** that produces QE-standard test cases with **100% implementation traceability** and **zero fictional content generation**.
 
-**Core Components**: The framework includes **Implementation Reality Agent** for foundational evidence validation, **Evidence Validation Engine** for fictional content prevention, **Pattern Extension Service** for pattern-based test generation, **Mid-Stream Context Sharing** for intelligent agent coordination, and **QE Intelligence Service** for ultrathink testing pattern analysis with sophisticated reasoning - delivering **accurate assessments with actionable guidance** instead of misleading fictional content.
+**Core Components**: The framework implements **4-Agent Architecture** (Agent A: JIRA, Agent B: Documentation, Agent C: GitHub, Agent D: Environment) with comprehensive AI services ecosystem including **Implementation Reality Agent** for foundational evidence validation, **Evidence Validation Engine** for fictional content prevention, **Cross-Agent Validation Engine** for continuous monitoring with framework halt authority, **Pattern Extension Service** for pattern-based test generation, **Context Sharing Service** for real-time Agent A ↔ Agent D coordination, and **QE Intelligence Service** for ultrathink testing pattern analysis with sophisticated reasoning - delivering **accurate assessments with actionable guidance** through **3-stage intelligence process** (Gather → Analyze → Build) instead of misleading fictional content.
 
 ### **Framework Value Proposition**
 
@@ -152,10 +158,87 @@ The framework follows a clear **"Gather → Analyze → Build"** approach that m
 
 ---
 
+## 🔍 **Phase 0-Pre: Smart Environment Selection**
+
+### **Why This Phase Exists**
+Before any analysis begins, the framework must select the optimal environment for testing. This ensures that all subsequent analysis uses a healthy, accessible environment while respecting user preferences when possible.
+
+### **What This Phase Accomplishes**
+- **Environment Prioritization**: Use provided environment if healthy, fallback to qe6 if unhealthy
+- **Health Validation**: Comprehensive connectivity and capability testing
+- **Transparent Selection**: Clear communication of environment selection decisions
+- **Framework Reliability**: Guarantee that framework never fails due to environment issues
+
+### **Service Involved: Smart Environment Selection Service**
+
+```mermaid
+graph TD
+    START[User Input with/without Environment] 
+    EXTRACT[Extract Environment Specification]
+    CONFIG[Load Config Environment]
+    
+    subgraph "Priority 1: User Environment"
+        USER_ENV[User Provided Environment]
+        USER_HEALTH[Health Check: Score >= 7.0]
+        USER_SUCCESS[✅ Use User Environment]
+        USER_FAIL[❌ Health Check Failed]
+    end
+    
+    subgraph "Priority 2: Config Environment"
+        CONFIG_ENV[Config Environment]
+        CONFIG_HEALTH[Health Check: Score >= 7.0]
+        CONFIG_SUCCESS[✅ Use Config Environment]
+        CONFIG_FAIL[❌ Health Check Failed]
+    end
+    
+    subgraph "Priority 3: QE6 Fallback"
+        QE6_ENV[QE6 Default Environment]
+        QE6_HEALTH[Health Check: Score >= 6.0]
+        QE6_SUCCESS[✅ Use QE6 (Guaranteed)]
+    end
+    
+    START --> EXTRACT
+    START --> CONFIG
+    EXTRACT --> USER_ENV
+    USER_ENV --> USER_HEALTH
+    USER_HEALTH -->|Healthy| USER_SUCCESS
+    USER_HEALTH -->|Unhealthy| USER_FAIL
+    
+    USER_FAIL --> CONFIG_ENV
+    CONFIG --> CONFIG_ENV
+    CONFIG_ENV --> CONFIG_HEALTH
+    CONFIG_HEALTH -->|Healthy| CONFIG_SUCCESS
+    CONFIG_HEALTH -->|Unhealthy| CONFIG_FAIL
+    
+    CONFIG_FAIL --> QE6_ENV
+    QE6_ENV --> QE6_HEALTH
+    QE6_HEALTH --> QE6_SUCCESS
+    
+    USER_SUCCESS --> PHASE0[Phase 0: JIRA FixVersion]
+    CONFIG_SUCCESS --> PHASE0
+    QE6_SUCCESS --> PHASE0
+    
+    style USER_SUCCESS fill:#c8e6c8
+    style CONFIG_SUCCESS fill:#e6cc80
+    style QE6_SUCCESS fill:#b0e0b0
+```
+
+### **Health Validation Process**
+- **Connectivity**: Test API endpoint accessibility (30% weight)
+- **API Responsiveness**: Validate Kubernetes API response (20% weight)
+- **Authentication**: Verify cluster authentication capability (20% weight)
+- **ACM Availability**: Check MultiClusterHub presence (20% weight)
+- **Cluster Stability**: Assess node health and readiness (10% weight)
+
+**Health Score Calculation**: Weighted average across all checks, 10-point scale
+**Healthy Threshold**: 7.0/10 for user/config environments, 6.0/10 for qe6 fallback
+
+---
+
 ## 🚀 **Phase 0: MANDATORY JIRA FixVersion Awareness**
 
 ### **Why This Phase Exists**
-Before any investigation begins, the framework must understand **version compatibility** between the JIRA ticket's target version and the test environment. This prevents generating tests for features that don't exist in the current environment and provides **intelligent context** for all subsequent analysis.
+After environment selection, the framework must understand **version compatibility** between the JIRA ticket's target version and the selected test environment. This prevents generating tests for features that don't exist in the current environment and provides **intelligent context** for all subsequent analysis.
 
 ### **What This Phase Accomplishes**
 - **Version Intelligence**: Correlate JIRA fix versions with test environment versions using Implementation Reality context

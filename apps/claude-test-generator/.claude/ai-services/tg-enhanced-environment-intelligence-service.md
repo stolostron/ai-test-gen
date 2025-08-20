@@ -40,12 +40,20 @@ class EnhancedEnvironmentIntelligenceService:
     Consolidates environment validation + deployment status analysis
     """
     
-    def execute_enhanced_workflow(self, base_context):
+    def execute_enhanced_workflow(self, base_context, user_input=None):
         """
-        Enhanced workflow with mid-stream context sharing and comprehensive assessment
+        Enhanced workflow with smart environment selection and mid-stream context sharing
         """
-        # Stage 1: Parallel Start - Environment Health Assessment
-        environment_health = self.assess_environment_health(base_context)
+        # Stage 0: Smart Environment Selection (NEW)
+        from .tg_smart_environment_selection_service import SmartEnvironmentSelectionService
+        environment_selector = SmartEnvironmentSelectionService()
+        selected_environment = environment_selector.select_optimal_environment(
+            user_input=user_input,
+            config_environment=self.load_config_environment()
+        )
+        
+        # Stage 1: Environment Health Assessment with Selected Environment
+        environment_health = self.assess_environment_health(base_context, selected_environment.environment)
         
         # Stage 2: Mid-Stream Context Reception (Non-Blocking)
         pr_context = self.receive_agent_a_context_stream()
@@ -73,6 +81,7 @@ class EnhancedEnvironmentIntelligenceService:
         )
         
         return EnhancedEnvironmentResult(
+            environment_selection=selected_environment,
             health_assessment=environment_health,
             deployment_assessment=deployment_assessment,
             real_data_package=real_data_package,
@@ -80,6 +89,31 @@ class EnhancedEnvironmentIntelligenceService:
             confidence_level=comprehensive_intelligence.confidence,
             pr_context_integration=pr_context.integration_status
         )
+    
+    def load_config_environment(self):
+        """
+        Load environment configuration from console-url-config.json
+        """
+        try:
+            import json
+            with open('.claude/config/console-url-config.json', 'r') as f:
+                config = json.load(f)
+                current_env = config["console_url_configuration"]["environment_compatibility"]["current_test_environment"]
+                
+                if current_env and current_env != "console-openshift-console.apps.<cluster-host>":
+                    # Extract cluster domain from console URL
+                    cluster_domain = current_env.replace("console-openshift-console.apps.", "")
+                    return {
+                        "cluster_name": cluster_domain.split(".")[0],
+                        "domain": cluster_domain,
+                        "api_url": f"https://api.{cluster_domain}:6443",
+                        "console_url": current_env
+                    }
+                    
+        except Exception as e:
+            self.log_config_load_error(f"Failed to load config environment: {e}")
+            
+        return None
 
 ## Mid-Stream Context Sharing Architecture
 
