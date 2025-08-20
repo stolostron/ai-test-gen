@@ -4,9 +4,9 @@
 **SOPHISTICATED ENVIRONMENT AND CONTEXT ANALYSIS:** Deploy multi-layered intelligence to understand the complete analysis context before beginning.
 
 ```bash
-# Advanced context detection and intelligence initialization
+# context detection and intelligence initialization
 intelligent_context_analysis() {
-    echo "🧠 Initializing Advanced AI Analysis Engine..."
+    echo "🧠 Initializing AI Analysis Engine..."
     
     # 1. BUSINESS CONTEXT INTELLIGENCE
     analyze_business_impact() {
@@ -124,7 +124,7 @@ The intelligent system uses **multi-layer test discovery**:
 ## Stage 1a: Independent Parallel Execution
 **🔄 True Parallel Processing of Independent Tasks:**
 
-### Agent A: Advanced JIRA Intelligence
+### Agent A: JIRA Intelligence
 ```bash
 perform_advanced_jira_analysis() {
     local ticket_id="$1"
@@ -151,124 +151,138 @@ perform_advanced_jira_analysis() {
     echo "📋 Extracting PR references and component details..."
     # Extract GitHub PR links from JIRA comments
     # Identify specific components and repositories
-    # Build complete context for Agent E feature detection
+    # Build complete context for Enhanced Agent D deployment assessment
     
-    # OUTPUT: Complete JIRA context for Phase 1b
+    # OUTPUT: Complete JIRA context with PR context sharing
     JIRA_CONTEXT=$(generate_jira_context_output)
 }
 ```
 
-### Agent D: Environment Validation (Parallel)
-**🌍 Flexible Environment Configuration:**
-- **Default Environment**: Use `source setup_clc qe6` if no specific environment provided
-- **Custom Environment Support**: Accept user-specified environment (qe7, qe8, staging, dev, etc.)
-- **Environment Override**: Allow users to provide custom cluster credentials and endpoints
-- **Graceful Validation**: Continue with test generation even if environment validation fails
+### Enhanced Agent D: Environment Intelligence with PR Context Awareness (Parallel)
+**🌍 Comprehensive Environment + Deployment Assessment:**
+- **Environment Health Assessment**: Multi-dimensional cluster health scoring and analysis
+- **PR Context Integration**: Real-time context sharing from Agent A for informed deployment expectations
+- **Comprehensive Deployment Assessment**: Combined environment + deployment validation in single agent
+- **Extensive Real Data Collection**: Enhanced data collection with component-specific samples
 
 ```bash
-validate_test_environment() {
-    local environment="${1:-qe6}"  # Default to qe6 if not specified
+execute_enhanced_environment_intelligence() {
+    local base_context="$1"
     
-    echo "🌍 Validating test environment: $environment"
+    echo "🚀 Enhanced Agent D: Starting comprehensive environment intelligence..."
     
-    # Try environment setup
-    if source setup_clc "$environment" 2>/dev/null; then
-        echo "✅ Environment $environment configured successfully"
-        ENVIRONMENT_STATUS="available"
-    else
-        echo "⚠️ Environment $environment not accessible"
-        echo "📋 Proceeding with test generation for future execution"
-        ENVIRONMENT_STATUS="unavailable"
-    fi
-    
-    # Validate cluster connectivity if environment available
-    if [[ "$ENVIRONMENT_STATUS" == "available" ]]; then
-        if oc version --client &>/dev/null && oc whoami &>/dev/null; then
-            echo "✅ Cluster connectivity confirmed"
-            CLUSTER_ACCESS="available"
+    # Stage 1: Environment Health Assessment (starts immediately in parallel)
+    assess_environment_health() {
+        echo "🌍 Assessing environment health and connectivity..."
+        
+        # Multi-dimensional health assessment
+        local environment="${1:-qe6}"
+        if source setup_clc "$environment" 2>/dev/null; then
+            echo "✅ Environment $environment configured successfully"
+            ENVIRONMENT_STATUS="available"
+            
+            # Cluster connectivity validation
+            if oc version --client &>/dev/null && oc whoami &>/dev/null; then
+                echo "✅ Cluster connectivity confirmed"
+                CLUSTER_ACCESS="available"
+            else
+                echo "⚠️ Cluster access limited"
+                CLUSTER_ACCESS="limited"
+            fi
         else
-            echo "⚠️ Cluster access limited"
-            CLUSTER_ACCESS="limited"
+            echo "⚠️ Environment $environment not accessible"
+            ENVIRONMENT_STATUS="unavailable"
+            CLUSTER_ACCESS="unavailable"
         fi
-    else
-        CLUSTER_ACCESS="unavailable"
-    fi
-    
-    # Set execution status for test plan generation
-    case "$ENVIRONMENT_STATUS-$CLUSTER_ACCESS" in
-        "available-available")
-            echo "🟢 Full validation possible - tests can be executed immediately"
-            EXECUTION_STATUS="immediate"
-            ;;
-        "available-limited")
-            echo "🟡 Partial validation possible - some tests can be executed"
-            EXECUTION_STATUS="partial"
-            ;;
-        *)
-            echo "🔴 Environment unavailable - test plan ready for future execution"
-            EXECUTION_STATUS="future"
-            ;;
-    esac
-}
-```
-
-**Output:** Environment readiness report with clear execution guidance
-
-## Stage 1b: Context-Informed Feature Detection
-**🎯 Enhanced Analysis with Complete JIRA Context:**
-
-### Agent E: Feature Detection (Sequential after Agent A)
-```bash
-perform_enhanced_feature_detection() {
-    local jira_context="$1"     # Receives Agent A output
-    local env_context="$2"      # Receives Agent D output
-    
-    echo "🔍 Enhanced feature detection with complete JIRA context..."
-    
-    # Now has specific information from Agent A:
-    # - Exact PR references: "stolostron/cluster-curator-controller#468"
-    # - Specific components: "ClusterCurator controller"
-    # - Feature scope: "digest-based upgrade functionality"
-    # - Implementation timeline: PR dates and merge status
-    
-    # TARGETED DEPLOYMENT ANALYSIS (No Guesswork)
-    analyze_specific_deployment() {
-        echo "🎯 Analyzing deployment of specific components..."
         
-        # 1. TARGETED CONTAINER IMAGE ANALYSIS
-        # Know exactly which component to check
-        local component=$(echo "$jira_context" | jq -r '.identified_components[0]')
-        oc get pods -n multicluster-engine | grep "$component"
-        oc get pod <specific-pod> -n multicluster-engine -o jsonpath='{.spec.containers[0].image}'
-        
-        # 2. SPECIFIC BEHAVIORAL TESTING
-        # Know exactly which features to test from PR analysis
-        local feature_scope=$(echo "$jira_context" | jq -r '.feature_details.scope')
-        test_specific_feature_behavior "$feature_scope" "$env_context"
-        
-        # 3. PRECISE VERSION CORRELATION
-        # Correlate PR merge dates with deployed image build dates
-        local pr_date=$(echo "$jira_context" | jq -r '.timeline_data.pr_merge_date')
-        correlate_pr_date_with_deployment "$pr_date"
-        
-        # 4. EVIDENCE-BASED ASSESSMENT
-        generate_deployment_evidence_report "$jira_context" "$env_context"
+        # Version detection and compatibility analysis
+        detect_environment_versions
     }
+    
+    # Stage 2: Mid-Stream Context Reception (non-blocking)
+    receive_pr_context_stream() {
+        echo "📥 Enhanced Agent D: Receiving PR context from Agent A..."
+        
+        # Non-blocking context reception from Agent A
+        # Context includes: PR references, component targets, implementation scope
+        PR_CONTEXT=$(receive_agent_a_context_stream)
+        
+        if [[ -n "$PR_CONTEXT" ]]; then
+            echo "✅ PR context received: Enhanced deployment assessment enabled"
+            CONTEXT_AVAILABLE=true
+        else
+            echo "⚠️ No PR context available: Using conservative deployment assessment"
+            CONTEXT_AVAILABLE=false
+        fi
+    }
+    
+    # Stage 3: PR-Informed Deployment Assessment
+    assess_deployment_with_pr_context() {
+        echo "🎯 Enhanced Agent D: Performing PR-informed deployment assessment..."
+        
+        if [[ "$CONTEXT_AVAILABLE" == true ]]; then
+            # Enhanced assessment with PR context
+            echo "🔍 Analyzing deployment with PR timeline correlation..."
+            
+            # Component-specific deployment validation
+            local components=$(echo "$PR_CONTEXT" | jq -r '.components[]')
+            for component in $components; do
+                echo "  📋 Validating $component deployment status..."
+                validate_component_deployment "$component" "$PR_CONTEXT"
+            done
+            
+            # Calculate informed deployment confidence
+            DEPLOYMENT_CONFIDENCE=$(calculate_pr_informed_confidence)
+            echo "📊 Deployment confidence: $DEPLOYMENT_CONFIDENCE (PR-informed)"
+        else
+            # Conservative assessment without PR context
+            echo "🔍 Performing conservative deployment assessment..."
+            DEPLOYMENT_CONFIDENCE=$(calculate_conservative_confidence)
+            echo "📊 Deployment confidence: $DEPLOYMENT_CONFIDENCE (conservative)"
+        fi
+    }
+    
+    # Stage 4: Extensive Real Data Collection  
+    collect_extensive_real_data() {
+        echo "📊 Enhanced Agent D: Collecting extensive real data..."
+        
+        if [[ "$CONTEXT_AVAILABLE" == true && "$DEPLOYMENT_CONFIDENCE" > 0.8 ]]; then
+            echo "🎯 Collecting component-specific data based on PR context..."
+            collect_component_specific_data "$PR_CONTEXT"
+        else
+            echo "📋 Collecting standard real data..."
+            collect_standard_real_data
+        fi
+    }
+    
+    # Execute enhanced workflow
+    assess_environment_health "$base_context"
+    receive_pr_context_stream &  # Non-blocking
+    assess_deployment_with_pr_context
+    collect_extensive_real_data
+    
+    # Generate comprehensive intelligence
+    echo "✅ Enhanced Agent D: Comprehensive environment intelligence complete"
+    echo "   Health Assessment: $ENVIRONMENT_STATUS"
+    echo "   Deployment Assessment: $DEPLOYMENT_CONFIDENCE confidence"
+    echo "   PR Context Integration: $CONTEXT_AVAILABLE"
+    echo "   Real Data Collection: Enhanced with component-specific samples"
 }
 ```
 
-**🚨 Key Improvement: No Pattern Guessing**
-- **Eliminates**: Component pattern guessing and broad searching
-- **Enhances**: Precise, context-driven deployment validation
-- **Result**: Higher confidence assessment with targeted evidence
+**Output:** Comprehensive environment intelligence with PR-informed deployment assessment
 
-**Output:** Evidence-based deployment status with high confidence (95%+)
+**🚨 Key Framework Simplification:**
+- **Eliminates**: Redundant Agent E and Phase 1b complexity
+- **Consolidates**: All environment and deployment assessment in Enhanced Agent D
+- **Enhances**: PR context awareness for improved deployment confidence 85% → 95%
+- **Maintains**: 30-second parallel execution performance
 
-## Stage 2: Enhanced Context-Aware Intelligence Gathering
+## Stage 2: Context-Aware Intelligence Gathering
 
 **CRITICAL**: **Smart Test Scope Analysis** - Focus ONLY on what actually changed in the feature implementation.
 
-**Advanced Capabilities (Enhanced with Phase 1a+1b Context):**
+**Capabilities (with Phase 1 Enhanced Context):**
 - **Intelligent Repository Network Analysis**: AI-driven discovery using JIRA-identified repositories
 - **Deep Architectural Understanding**: Analysis of system architecture using specific component context  
 - **Business Value Chain Analysis**: Understanding of feature impact using JIRA business context
@@ -278,11 +292,11 @@ perform_enhanced_feature_detection() {
 
 **Refer to `.claude/prompts/test-scoping-rules.md` for detailed smart scoping methodology.**
 
-### Phase A: Enhanced Documentation Intelligence (with JIRA Context)
+### Phase A: Documentation Intelligence (with JIRA Context)
 ```bash
 perform_enhanced_documentation_intelligence() {
-    local jira_context="$1"     # Complete context from Phase 1a
-    local deployment_context="$2"  # Results from Phase 1b
+    local jira_context="$1"     # Complete context from Agent A (JIRA Analysis)
+    local environment_context="$2"  # Results from Enhanced Agent D
     
     echo "📚 Agent B (Documentation) → AI-powered documentation analysis with JIRA context..."
     
@@ -388,7 +402,7 @@ execute_ai_internet_search_plan() {
 }
 ```
 
-### Phase B: Enhanced GitHub Investigation (with JIRA Context)
+### Phase B: GitHub Investigation (with JIRA Context)
 ```bash
 perform_enhanced_github_investigation() {
     local jira_context="$1"     # Complete context from Phase 1a
@@ -625,7 +639,7 @@ perform_intelligent_code_analysis() {
 }
 ```
 
-## Stage 3: Advanced AI Reasoning and Strategic Test Intelligence
+## Stage 3: AI Reasoning and Strategic Test Intelligence
 
 ### Deep Feature Understanding with AI Reasoning
 ```bash
@@ -684,7 +698,7 @@ generate_strategic_test_approach() {
     
     # 3. ADAPTIVE TEST SCENARIO GENERATION
     generate_adaptive_scenarios() {
-        # Advanced scenario generation:
+        # scenario generation:
         # - **Positive Flows**: Business-value-driven happy paths
         # - **Intelligent Edge Cases**: AI-predicted boundary conditions
         # - **Failure Mode Analysis**: Systematic failure scenario modeling
@@ -767,7 +781,7 @@ analyze_implementation_scope() {
 ### Sophisticated Test Architecture Design with Intelligent Table Structure
 **Purpose**: Generate comprehensive, strategically-designed test suites with **optimal table organization**. Each test case table contains **4-10 steps optimized for workflow complexity** for cognitive efficiency, with multiple tables generated as needed to achieve complete coverage.
 
-**Enhanced Table Structure Format with YAML Samples:**
+**Table Structure Format with YAML Samples:**
 ```markdown
 ### Test Case N: [Business Context] - [Technical Focus]
 

@@ -1,4 +1,4 @@
-# Advanced Environment Setup
+# Environment Setup
 
 ## Framework Environment Setup Options
 

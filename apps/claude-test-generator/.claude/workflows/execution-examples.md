@@ -78,8 +78,8 @@ execute_phase_1a() {
 execute_phase_1b() {
     echo "🚀 **PHASE 1b: Context-Informed Feature Detection**"
     
-    # Agent E: Enhanced Feature Detection (with Agent A context)
-    echo "📋 Agent E (Feature Detection) → Enhanced deployment analysis with JIRA context..."
+    # Agent E: Feature Detection (with Agent A context)
+    echo "📋 Agent E (Feature Detection) → deployment analysis with JIRA context..."
     
     # Now has specific context from Agent A:
     # - Exact PRs: from JIRA comment extraction
@@ -166,16 +166,16 @@ perform_targeted_deployment_analysis() {
 - Alternative environments: [List other suitable environments]
 ```
 
-## Enhanced Phase 2 Agent B and C Execution Examples
+## Phase 2 Agent B and C Execution Examples
 
 ### Phase 2 Parallel Execution with Corrected Agent B
 
 ```bash
-# Phase 2: Enhanced Context-Aware Parallel Execution
+# Phase 2: Context-Aware Parallel Execution
 execute_phase_2_parallel() {
     local phase_1_context="$1"  # Results from Phase 1a+1b
     
-    echo "🚀 **PHASE 2: Enhanced Context-Aware Parallel Execution**"
+    echo "🚀 **PHASE 2: Context-Aware Parallel Execution**"
     
     # Launch Agent B and Agent C simultaneously with Phase 1 context
     
@@ -338,9 +338,9 @@ execute_phase_2_parallel() {
 ### ACM-22079 Real Execution Example
 
 ```bash
-# Agent B Enhanced Process for ACM-22079
+# Agent B Process for ACM-22079
 execute_agent_b_enhanced() {
-    echo "📚 Agent B (Documentation) → Enhanced documentation analysis..."
+    echo "📚 Agent B (Documentation) → documentation analysis..."
     
     # Stage 1: GitHub CLI Documentation Investigation  
     TARGET_VERSION="2.15"  # From JIRA analysis
@@ -355,7 +355,7 @@ execute_agent_b_enhanced() {
     
     echo "📋 Using documentation branch: $DOCS_BRANCH"
     
-    # Enhanced GitHub CLI investigation
+    # GitHub CLI investigation
     gh api repos/stolostron/rhacm-docs/contents/clusters/cluster-lifecycle --ref $DOCS_BRANCH
     gh search code --repo stolostron/rhacm-docs "ClusterCurator upgrade" --ref $DOCS_BRANCH
     
@@ -380,7 +380,7 @@ execute_agent_b_enhanced() {
 
 ## Example Usage Scenarios
 
-### Scenario 1: Standard Analysis with Enhanced Agent B
+### Scenario 1: Standard Analysis with Agent B
 ```bash
 # User provides: ACM-22079
 # Phase 1a: Agent A extracts PRs and components, Agent D validates qe6
@@ -394,7 +394,7 @@ execute_agent_b_enhanced() {
 # User provides: ACM-22079
 # Phase 2: Agent B finds limited documentation in stolostron/rhacm-docs
 # Agent B triggers: Intelligent internet search for additional context
-# Expected: Enhanced analysis combining git docs + internet research
+# Expected: analysis combining git docs + internet research
 ```
 
 ### Scenario 3: GitHub CLI Unavailable - Graceful Fallback

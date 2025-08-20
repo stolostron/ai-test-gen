@@ -101,11 +101,29 @@ Result: Perfect output with zero user burden
 
 ## 🚨 **AUTOMATIC QUALITY ENFORCEMENT**
 
-### Real-Time HTML Tag Prevention (CRITICAL)
+### Real-Time Format Enforcement (CRITICAL)
+
+**1. HTML Tag Prevention:**
 - **AI HTML Detection**: Real-time scanning for ANY HTML tags during generation (`<br>`, `<b>`, `<i>`, `<div>`, etc.)
 - **Markdown Enforcement**: AI automatically converts HTML patterns to proper markdown equivalents
 - **Generation Blocking**: AI prevents completion of any output containing HTML tags
-- **Pattern Learning**: AI learns common HTML usage patterns to prevent future violations
+
+**2. Citation-Free Test Cases (NEW - CRITICAL):**
+- **Citation Pattern Detection**: Real-time scanning for ANY citation patterns in test cases file
+- **ZERO-TOLERANCE Blocking**: Framework HALTS generation if citations detected in test cases
+- **Clean Format Enforcement**: Test cases must be completely free of all source references
+- **Citation Patterns Blocked**: `[Source:...]`, `*[Source:...]*`, `(Source:...)`, `[Type:ref:data]`
+
+**3. Mandatory Dual-Method Coverage (NEW - CRITICAL):**
+- **UI+CLI Validation**: Every test step must include both UI Method and CLI Method columns
+- **Complete Command Enforcement**: CLI commands must be full, executable commands with complete YAML
+- **Format Validation**: UI methods must start with "**UI Navigation**:" or "**Console Action**:"
+- **CLI Command Validation**: CLI methods must start with "**CLI Command**:" followed by complete command
+
+**4. Complete Report Structure (NEW - MANDATORY):**
+- **Fixed Template Enforcement**: Complete analysis reports must follow exact 8-section structure
+- **Section Order Validation**: Sections must appear in mandatory order without deviations
+- **Content Requirements**: Each section must include all mandatory subsections and content
 
 ### Real-Time Regression Detection
 - **Pattern Analysis**: AI continuously compares output patterns against established templates

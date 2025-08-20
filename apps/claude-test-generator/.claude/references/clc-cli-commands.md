@@ -79,7 +79,7 @@ oc get clusterimageset
 # img4.14.15-x86-64         quay.io/openshift-release-dev/ocp-release:4.14.15-x86_64
 ```
 
-## 4. Enhanced Digest-Based Upgrade Verification with YAML Samples
+## 4. Digest-Based Upgrade Verification with YAML Samples
 
 ```bash
 # Check ClusterCurator annotation (NEW functionality)

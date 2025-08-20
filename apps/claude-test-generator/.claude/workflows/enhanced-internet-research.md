@@ -1,4 +1,4 @@
-# Enhanced Internet Research Protocol
+# Internet Research Protocol
 
 ## 🌐 Comprehensive Internet Research Strategy
 

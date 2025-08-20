@@ -1,0 +1,37 @@
+{
+  "console_url_configuration": {
+    "acm_console_format": "https://console-openshift-console.apps.<cluster-host>",
+    "url_pattern_explanation": "ACM functionality integrated within OpenShift Console",
+    "environment_agnostic_design": true,
+    "placeholder_format": "<cluster-host>",
+    
+    "console_access_patterns": {
+      "primary_console": "https://console-openshift-console.apps.<cluster-host>",
+      "acm_navigation_path": "Infrastructure → Clusters",
+      "cluster_management_path": "Infrastructure → Clusters → [Target Cluster] → Actions",
+      "automation_path": "Infrastructure → Automation → ClusterCurator",
+      "workloads_path": "Workloads → Pods"
+    },
+    
+    "test_case_integration": {
+      "ui_method_format": "Navigate to https://console-openshift-console.apps.<cluster-host> and authenticate with cluster admin credentials",
+      "console_workflow_navigation": {
+        "cluster_upgrade": "Infrastructure → Clusters → Select target managed cluster → Actions menu",
+        "clustercurator_monitoring": "Infrastructure → Automation → ClusterCurator resources",
+        "pod_logs": "Workloads → Pods → Filter by 'curator' → View controller logs"
+      }
+    },
+    
+    "environment_compatibility": {
+      "current_test_environment": "console-openshift-console.apps.ashafi-atif-test.dev09.red-chesterfield.com",
+      "future_environments": "console-openshift-console.apps.<any-cluster-host>",
+      "universal_portability": true
+    },
+    
+    "framework_enforcement": {
+      "mandatory_url_format": "https://console-openshift-console.apps.<cluster-host>",
+      "no_multicloud_console_assumption": "ACM integrated within OpenShift Console",
+      "placeholder_requirement": "Always use <cluster-host> placeholder for environment-agnostic design"
+    }
+  }
+}

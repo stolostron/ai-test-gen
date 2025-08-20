@@ -1,0 +1,302 @@
+{
+  "evidence_validation_engine": {
+    "execution_model": "continuous_monitoring",
+    "authority_level": "content_blocking",
+    "monitoring_phases": [
+      "pre_content_generation",
+      "during_content_generation", 
+      "post_content_validation",
+      "pattern_compliance_check"
+    ],
+    "fictional_content_detection": {
+      "yaml_field_validation": {
+        "enabled": true,
+        "validation_sources": [
+          "implementation_reality_schemas",
+          "successful_pattern_library",
+          "openapi_definitions",
+          "crd_specifications"
+        ],
+        "blocking_conditions": [
+          {
+            "name": "non_existent_yaml_field",
+            "condition": "proposed_field NOT IN implementation_reality.schema_definitions",
+            "action": "BLOCK_CONTENT_GENERATION",
+            "message": "YAML field not found in actual schema definitions - provide schema evidence or use proven pattern"
+          },
+          {
+            "name": "fictional_field_creation",
+            "condition": "agent.creates_field AND field NOT IN proven_patterns",
+            "action": "HALT_AGENT_EXECUTION",
+            "message": "Cannot create fictional YAML fields - must extend proven successful patterns"
+          }
+        ],
+        "evidence_requirements": {
+          "schema_definition_source": "required",
+          "successful_pattern_reference": "required", 
+          "implementation_code_backing": "preferred",
+          "official_documentation": "acceptable"
+        }
+      },
+      "workflow_evidence_validation": {
+        "enabled": true,
+        "validation_targets": [
+          "ui_workflows",
+          "cli_commands",
+          "api_procedures",
+          "configuration_steps"
+        ],
+        "blocking_conditions": [
+          {
+            "name": "unsupported_ui_workflow",
+            "condition": "agent.generates_ui_workflow AND workflow NOT IN implementation_reality.ui_capabilities",
+            "action": "BLOCK_WORKFLOW_GENERATION",
+            "message": "UI workflow not supported by actual implementation - provide code evidence or use CLI alternative"
+          },
+          {
+            "name": "fictional_cli_command",
+            "condition": "agent.uses_cli_command AND command NOT IN api_schema.endpoints",
+            "action": "HALT_COMMAND_USAGE",
+            "message": "CLI command not found in API specifications - verify command exists or use proven alternative"
+          },
+          {
+            "name": "assumption_based_procedure",
+            "condition": "agent.creates_procedure AND evidence_backing < 0.8",
+            "action": "REQUIRE_EVIDENCE",
+            "message": "Procedure lacks adequate evidence backing - provide implementation reference or documentation citation"
+          }
+        ],
+        "evidence_requirements": {
+          "implementation_code_reference": "required",
+          "api_schema_backing": "required",
+          "successful_execution_proof": "preferred",
+          "official_documentation": "acceptable"
+        }
+      },
+      "pattern_compliance_validation": {
+        "enabled": true,
+        "pattern_sources": [
+          "pattern_extension_service",
+          "successful_test_library",
+          "proven_automation_patterns"
+        ],
+        "blocking_conditions": [
+          {
+            "name": "pattern_violation",
+            "condition": "agent.creates_content AND content NOT EXTENDS proven_patterns",
+            "action": "ENFORCE_PATTERN_COMPLIANCE",
+            "message": "Content does not extend proven patterns - must use Pattern Extension Service for content generation"
+          },
+          {
+            "name": "fictional_approach_creation",
+            "condition": "agent.invents_approach AND approach NOT IN successful_patterns",
+            "action": "BLOCK_FICTIONAL_APPROACH",
+            "message": "Cannot invent new approaches - must extend proven successful patterns with evidence"
+          }
+        ],
+        "pattern_requirements": {
+          "proven_pattern_extension": "required",
+          "successful_implementation_trace": "required",
+          "evidence_based_modification": "required"
+        }
+      }
+    },
+    "evidence_quality_standards": {
+      "authority_hierarchy": [
+        "implementation_reality_agent",
+        "actual_code_references",
+        "api_schema_definitions",
+        "successful_pattern_library",
+        "official_documentation",
+        "proven_automation_patterns"
+      ],
+      "minimum_evidence_requirements": {
+        "yaml_field_usage": {
+          "schema_definition": "mandatory",
+          "successful_pattern": "mandatory",
+          "implementation_backing": "preferred"
+        },
+        "workflow_generation": {
+          "implementation_evidence": "mandatory",
+          "execution_proof": "preferred",
+          "documentation_citation": "acceptable"
+        },
+        "content_creation": {
+          "pattern_compliance": "mandatory",
+          "evidence_traceability": "mandatory",
+          "authority_verification": "required"
+        }
+      },
+      "evidence_scoring": {
+        "implementation_code": 1.0,
+        "api_schema_definition": 0.95,
+        "successful_pattern": 0.9,
+        "official_documentation": 0.8,
+        "community_documentation": 0.6,
+        "assumption_based": 0.0
+      }
+    },
+    "intervention_mechanisms": {
+      "real_time_monitoring": {
+        "enabled": true,
+        "monitoring_targets": [
+          "yaml_field_proposals",
+          "workflow_creation",
+          "command_generation",
+          "content_assumptions"
+        ],
+        "intervention_triggers": {
+          "fictional_content_threshold": 0.3,
+          "evidence_quality_threshold": 0.8,
+          "pattern_compliance_threshold": 0.9
+        }
+      },
+      "content_blocking_actions": {
+        "yaml_field_blocking": {
+          "action": "prevent_field_usage",
+          "requirement": "provide_schema_evidence",
+          "alternative": "suggest_proven_patterns"
+        },
+        "workflow_halting": {
+          "action": "stop_workflow_generation",
+          "requirement": "provide_implementation_evidence",
+          "alternative": "use_evidence_based_workflow"
+        },
+        "pattern_enforcement": {
+          "action": "enforce_pattern_service_usage",
+          "requirement": "extend_proven_patterns",
+          "alternative": "block_fictional_content"
+        }
+      },
+      "recovery_protocols": {
+        "evidence_provision": {
+          "accept_when": "adequate_evidence_provided",
+          "validate_source": "authority_hierarchy_check",
+          "integrate_content": "evidence_based_approval"
+        },
+        "pattern_compliance": {
+          "accept_when": "proven_pattern_extended",
+          "validate_traceability": "pattern_extension_verification",
+          "approve_content": "compliance_validated"
+        }
+      }
+    },
+    "agent_integration": {
+      "implementation_reality_agent": {
+        "role": "primary_evidence_provider",
+        "authority": "highest",
+        "provides": [
+          "schema_definitions",
+          "implementation_backing",
+          "code_references",
+          "ui_capabilities"
+        ],
+        "integration": "mandatory_consultation"
+      },
+      "pattern_extension_service": {
+        "role": "pattern_compliance_enforcer", 
+        "authority": "high",
+        "provides": [
+          "proven_patterns",
+          "successful_implementations",
+          "extension_guidance"
+        ],
+        "integration": "mandatory_for_content_generation"
+      },
+      "documentation_intelligence": {
+        "role": "evidence_contributor",
+        "authority": "medium",
+        "constraints": [
+          "must_provide_implementation_evidence",
+          "cannot_generate_fictional_workflows",
+          "must_extend_proven_patterns"
+        ],
+        "monitoring": "high_priority"
+      },
+      "test_generation": {
+        "role": "evidence_consumer",
+        "authority": "lowest",
+        "constraints": [
+          "must_use_validated_yaml_fields",
+          "must_follow_proven_patterns",
+          "cannot_create_fictional_content"
+        ],
+        "monitoring": "critical_priority"
+      }
+    },
+    "performance_optimization": {
+      "real_time_validation": {
+        "enabled": true,
+        "cache_validated_evidence": true,
+        "pattern_library_caching": true,
+        "smart_intervention_threshold": true
+      },
+      "evidence_caching": {
+        "schema_definitions": "cache_indefinitely",
+        "proven_patterns": "cache_per_session",
+        "implementation_evidence": "cache_with_validation",
+        "authority_hierarchy": "cache_permanently"
+      },
+      "intervention_optimization": {
+        "target_significant_issues": true,
+        "allow_minor_inconsistencies": true,
+        "batch_similar_validations": true,
+        "prioritize_critical_blocking": true
+      }
+    }
+  },
+  "validation_metrics": {
+    "success_criteria": {
+      "zero_fictional_content": true,
+      "100_percent_evidence_backing": true,
+      "pattern_compliance_rate": 1.0,
+      "implementation_traceability": true
+    },
+    "prevention_targets": {
+      "fictional_yaml_fields": 0,
+      "unsupported_workflows": 0,
+      "assumption_based_content": 0,
+      "pattern_violations": 0
+    },
+    "quality_assurance": {
+      "evidence_quality_scoring": true,
+      "pattern_compliance_tracking": true,
+      "implementation_backing_verification": true,
+      "content_authority_validation": true
+    },
+    "performance_monitoring": {
+      "intervention_response_time": "< 1 second",
+      "evidence_validation_speed": "< 500ms",
+      "pattern_lookup_performance": "< 100ms",
+      "framework_overhead": "< 5%"
+    }
+  },
+  "acm_22079_prevention": {
+    "specific_prevention_rules": {
+      "yaml_field_fictional_generation": {
+        "blocked_example": "spec.upgrade.imageDigest",
+        "reason": "Field does not exist in actual ClusterCurator schema",
+        "prevention": "Block field usage until schema evidence provided",
+        "alternative": "Use proven ClusterCurator upgrade patterns with validated fields"
+      },
+      "ui_workflow_fictional_creation": {
+        "blocked_behavior": "Creating UI workflows without implementation backing",
+        "reason": "Workflows not supported by actual ACM Console implementation",
+        "prevention": "Require implementation evidence for all UI workflows",
+        "alternative": "Use CLI alternatives with API schema backing"
+      },
+      "assumption_based_test_generation": {
+        "blocked_behavior": "Creating tests based on assumptions about feature functionality",
+        "reason": "Tests should reflect actual implementation, not assumptions",
+        "prevention": "Require implementation evidence for all test generation",
+        "alternative": "Use Pattern Extension Service to extend proven successful patterns"
+      }
+    },
+    "cascade_failure_prevention": {
+      "detection_mechanism": "Real-time monitoring of fictional content generation",
+      "intervention_point": "During content generation (not after)",
+      "prevention_strategy": "Evidence requirement before content approval",
+      "recovery_approach": "Block fictional content, provide evidence-based alternatives"
+    }
+  }
+}

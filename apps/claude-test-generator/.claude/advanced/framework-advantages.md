@@ -9,7 +9,7 @@ This framework delivers significant advancement in automated test generation:
 - **Environment Adaptability**: Work with available resources, plan for ideal conditions
 - **Architecture-Aware Testing**: Detects job-based vs controller-based patterns for accurate log locations and validation commands
 
-## Advanced Investigation Capabilities
+## Investigation Capabilities
 - **Comprehensive Investigation**: Deep analysis of all linked tickets and nested dependencies
 - **Missing Data Intelligence**: Automatic detection and graceful handling of incomplete information
 - **Graceful Error Prevention**: Validates field existence and deployment status before generating test cases
@@ -33,7 +33,7 @@ The modular design enables:
 - **Task-Focused Reports**: Removed framework references, reports focus purely on testing tasks
 - **Generic Login Instructions**: Reports use placeholder format for broader team usability
 - **Early Environment Assessment**: Clear feature availability status in report headers
-- **Enhanced Test Case Structure**: Consistent Description, Setup, and table formats
+- **Test Case Structure**: Consistent Description, Setup, and table formats
 
 ### Quality Features
 - **Environment Assessment**: Early determination of feature deployment status
