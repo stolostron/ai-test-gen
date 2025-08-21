@@ -1,51 +1,118 @@
 {
   "run_organization": {
-    "description": "Configuration for organizing test generation runs with single consolidated directory and verbal timestamps",
+    "description": "Configuration for organizing test generation runs with single consolidated directory enforcement and mandatory cleanup",
     "structure": {
       "base_directory": "runs",
-      "run_folder_format": "{timestamp_numerical}_{jira_id}_{feature_description}",
-      "timestamp_format": "YYYYMMDD_HHMMSS",
-      "example": "20250818_034134_acm_22079_digest_upgrade_test_plan"
+      "run_folder_format": "{jira_id}-{timestamp}",
+      "timestamp_format": "YYYYMMDD-HHMMSS",
+      "example": "ACM-22079-20250820-140028"
     },
     "consolidation_policy": {
       "single_directory_enforcement": true,
-      "description": "ALL outputs from ALL agents and phases must be created in the SAME run directory",
-      "agent_outputs": "Individual agent results saved as separate files in main directory (no subdirectories)",
-      "phase_results": "Each phase saves results to main run directory with descriptive filenames"
+      "zero_tolerance_policy": true,
+      "description": "ALL outputs from ALL agents and phases must be created in the SAME run directory with AUTOMATIC cleanup of intermediate files",
+      "agent_outputs": "NO separate agent directories allowed - agents may create temporary files but MUST consolidate to main directory",
+      "phase_results": "ALL phases save final results to main run directory only",
+      "automatic_cleanup": "Framework MUST automatically remove ALL intermediate files leaving only final deliverables"
     },
-    "folder_contents": {
-      "test_cases_only.md": "Environment-agnostic test cases with 3-section format (Description, Setup, Test Table)",
-      "complete_analysis_report.md": "Comprehensive analysis with feature summary, citations, evidence, test environment details",
-      "feature_availability_analysis.md": "Agent-specific feature detection and availability analysis results",
-      "run_metadata.json": "Complete run metadata including all agents used, timing, quality scores, file inventory"
-    },
-    "naming_conventions": {
-      "primary_files": [
-        "{jira_id}_test_cases_only.md",
-        "{jira_id}_complete_analysis_report.md"
+    "final_deliverables_only": {
+      "description": "ONLY these 3 files allowed in final run directory",
+      "required_files": [
+        "Test-Cases-Report.md",
+        "Complete-Analysis-Report.md", 
+        "run-metadata.json"
       ],
-      "agent_files": [
+      "file_descriptions": {
+        "Test-Cases-Report.md": "Environment-agnostic test cases ONLY - clean format without citations",
+        "Complete-Analysis-Report.md": "Comprehensive analysis with citations, evidence, test environment details",
+        "run-metadata.json": "Complete run metadata including agents used, timing, quality scores"
+      }
+    },
+    "strict_enforcement_rules": {
+      "blocked_file_patterns": [
+        "agent-*-results.md",
+        "*-analysis.md", 
+        "*-investigation.md",
+        "*-intelligence-*.md",
         "feature_availability_analysis.md",
         "github_investigation_results.md",
         "documentation_intelligence_summary.md",
         "qe_automation_analysis.md"
       ],
-      "metadata_file": "run_metadata.json"
+      "blocked_directories": [
+        "agent-*",
+        "*-intelligence",
+        "*-investigation",
+        "*-analysis"
+      ],
+      "root_directory_prevention": {
+        "blocked_patterns": [
+          "{jira_id}-*-Intelligence-Report.md",
+          "{jira_id}-*-Analysis.md",
+          "{jira_id}-*-Investigation.md"
+        ],
+        "enforcement": "BLOCK creation of ANY intermediate files in root directory"
+      }
+    },
+    "automatic_cleanup_procedure": {
+      "description": "MANDATORY cleanup executed automatically at framework completion",
+      "cleanup_phases": [
+        {
+          "phase": "intermediate_file_removal",
+          "action": "Remove ALL files matching blocked_file_patterns from run directory",
+          "verification": "Verify only 3 final deliverable files remain"
+        },
+        {
+          "phase": "separate_directory_removal", 
+          "action": "Remove ALL separate agent directories and consolidate any remaining content",
+          "verification": "Verify only ONE run directory exists"
+        },
+        {
+          "phase": "root_directory_cleanup",
+          "action": "Remove ANY intermediate files created in root directory",
+          "verification": "Verify NO intermediate files exist outside run directory"
+        },
+        {
+          "phase": "final_validation",
+          "action": "Verify EXACTLY 3 files exist in final run directory",
+          "blocking_condition": "HALT framework if cleanup verification fails"
+        }
+      ]
     },
     "directory_creation_rules": {
-      "main_run_directory": "Created once at framework start with numerical timestamp",
-      "agent_outputs": "All agents MUST save to main directory (no separate agent directories)",
-      "phase_results": "All phases MUST save to main directory with descriptive filenames",
-      "consolidation_required": "If agents create separate directories, results MUST be moved to main directory",
-      "cleanup_policy": "Remove empty agent directories after consolidation"
+      "main_run_directory": "Created once at framework start with JIRA-timestamp format",
+      "agent_outputs": "Agents may create temporary files but MUST NOT create separate directories",
+      "phase_results": "ALL phases save results to main directory with immediate cleanup of intermediates",
+      "zero_separate_directories": "NO separate agent directories allowed - automatic removal if created",
+      "cleanup_enforcement": "Framework MUST verify cleanup completion before finishing"
     },
-    "verbal_timestamp_examples": {
-      "format": "YYYYMMDD_HHMMSS",
-      "samples": [
-        "20250818_034134",
-        "20241216_093000",
-        "20250122_231500"
-      ]
+    "violation_prevention": {
+      "qe_intelligence_service": {
+        "blocked_behavior": "Creating separate QE Intelligence run directories",
+        "required_behavior": "Save QE analysis to main run directory and remove intermediate files"
+      },
+      "documentation_intelligence": {
+        "blocked_behavior": "Creating *-Documentation-Intelligence-Report.md in root directory", 
+        "required_behavior": "Include documentation analysis in Complete-Analysis-Report.md only"
+      },
+      "all_agents": {
+        "blocked_behavior": "Leaving ANY intermediate files after completion",
+        "required_behavior": "Clean up ALL intermediate files automatically"
+      }
+    },
+    "enforcement_integration": {
+      "ai_services": [
+        "tg-run-organization-enforcement-service",
+        "tg-cleanup-automation-service", 
+        "tg-directory-validation-service"
+      ],
+      "validation_checkpoints": [
+        "before_agent_execution",
+        "after_each_phase", 
+        "before_final_delivery",
+        "framework_completion"
+      ],
+      "blocking_authority": "Framework MUST halt if cleanup violations detected"
     }
   }
 }

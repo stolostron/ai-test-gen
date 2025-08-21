@@ -10,7 +10,29 @@
 
 ## 🔒 **ZERO-TOLERANCE ENFORCEMENT RULES**
 
-### **1. CITATION-FREE TEST CASES (ABSOLUTE)**
+### **1. HTML TAG PREVENTION (ABSOLUTE)**
+
+**REQUIREMENT**: Test cases and reports must contain ZERO HTML tags - markdown-only formatting
+
+**BLOCKING PATTERNS:**
+```regex
+HTML_Tags_BLOCKED:
+  - '<br>'                     # Line break tags
+  - '<br/>'                    # Self-closing line breaks
+  - '<br\s*>'                  # Line breaks with spaces
+  - '<[^>]+>'                  # Any HTML tags
+  - '&lt;'                     # HTML entities
+  - '&gt;'                     # HTML entities
+  - '&amp;'                    # HTML entities
+```
+
+**ENFORCEMENT ACTION:**
+- **Real-time scanning** during content generation
+- **IMMEDIATE REPLACEMENT** of HTML tags with markdown equivalents
+- **AUTOMATIC CONVERSION** of `<br>` to proper line breaks
+- **FRAMEWORK HALT** if HTML cannot be cleanly converted
+
+### **2. CITATION-FREE TEST CASES (ABSOLUTE)**
 
 **REQUIREMENT**: Test cases file must contain ZERO citations, sources, or references
 
@@ -35,7 +57,7 @@ Citation_Patterns_BLOCKED:
 - **AUTOMATIC REMOVAL** of all citation content
 - **FRAMEWORK HALT** if citations cannot be cleanly removed
 
-### **2. MANDATORY DUAL-METHOD COVERAGE**
+### **3. MANDATORY DUAL-METHOD COVERAGE**
 
 **REQUIREMENT**: Every test step must include both UI and CLI methods
 
@@ -52,7 +74,7 @@ Citation_Patterns_BLOCKED:
 - ❌ **BLOCK**: Generic CLI descriptions without actual commands
 - ❌ **BLOCK**: UI methods without clear navigation paths
 
-### **3. COMPLETE CLI COMMANDS + FULL YAML**
+### **4. COMPLETE CLI COMMANDS + FULL YAML**
 
 **REQUIREMENT**: All CLI commands must be complete and executable
 
@@ -86,48 +108,54 @@ EOF
 ### **EXACT SECTION ORDER (NO DEVIATIONS):**
 
 ```markdown
-## 1. Feature Deployment Status
-### **Feature Availability: [DEPLOYED/NOT_DEPLOYED/PARTIALLY_DEPLOYED]**
-[Supporting data and evidence]
+## Summary
+**Feature**: [Full JIRA ticket title as clickable link to JIRA]
+**Customer Impact**: [Business impact description]
+**Implementation Status**: [Clickable PR link with status]
+**Test Environment**: [Clickable environment link with details]
+**Feature Validation**: ✅/❌ [CLEAR STATUS] - [Explanation of validation capability]
+**Testing Approach**: [Brief test strategy description]
 
-## 2A. Feature Validation Results (IF DEPLOYED)
-### **Validation Status: [PASSED/FAILED/PARTIAL]**
-[Validation tests and results]
+## 1. JIRA Analysis Summary
+**Ticket Details**: [Clickable JIRA link with full title]
+[Requirements, customer context, business value]
 
-## 2B. Feature Validation Limitation (IF NOT DEPLOYED)  
-### **Validation Status: NOT POSSIBLE**
-[Clear explanation of limitation]
+## 2. Environment Assessment
+**Test Environment Health**: [Score/Status]
+**Cluster Details**: [Clickable environment link]
+[Infrastructure readiness, connectivity, real data collected]
 
-## 3. Test Environment Status
-### **Environment Summary:**
-[Cluster details and capabilities]
+## 3. Implementation Analysis
+**Primary Implementation**: [Clickable GitHub PR link]
+[Code changes, technical details, integration points]
 
-## 4. Feature Implementation Analysis
-### **Implementation Overview:**
-[Verbal conceptual explanations with exact code portions]
-
-## 5. Main Test Scenarios
-### **Test Case 1: [Title]**
-[Purpose, logic, and coverage explanation]
-
-## 6. Business Impact
-### **Customer Value:**
-[Customer impact and business value]
-
-## 7. Quality Metrics
-### **Implementation Quality:**
-[Quality assessment and metrics]
-
-## 8. Conclusion
-### **Summary Assessment:**
-[Final summary and recommendations]
+## 4. Test Scenarios Analysis
+**Testing Strategy**: [Description of test approach]
+### Test Case 1: [Scenario Title]
+**Scenario**: [Brief description]
+**Purpose**: [What this validates and why]
+**Critical Validation**: [Key validation points]
+**Customer Value**: [Business relevance]
+[Repeat for each test case]
+**Comprehensive Coverage Rationale**: [Why these scenarios provide complete coverage]
 ```
+
+**MANDATORY REQUIREMENTS:**
+- ❌ **BLOCK**: Use of "Executive" in any section heading
+- ❌ **BLOCK**: Non-clickable JIRA or PR references
+- ❌ **BLOCK**: Missing full JIRA ticket title
+- ❌ **BLOCK**: Unclear feature validation status
+- ❌ **BLOCK**: Sections 4-7 from old structure (Documentation, QE Intelligence, Feature Deployment, Business Impact)
+- ✅ **REQUIRED**: Clickable links for JIRA, PRs, and environment
+- ✅ **REQUIRED**: Clear feature validation status in Summary
+- ✅ **REQUIRED**: Test scenarios discussion based on generated test cases
+- ✅ **REQUIRED**: Exactly 4 main sections after Summary
 
 **BLOCKING CONDITIONS:**
 - ❌ **BLOCK**: Missing any required section
-- ❌ **BLOCK**: Sections in wrong order
-- ❌ **BLOCK**: Modified section headings
-- ❌ **BLOCK**: Missing mandatory subsections
+- ❌ **BLOCK**: Including removed sections (Documentation Analysis, QE Intelligence Assessment, etc.)
+- ❌ **BLOCK**: Non-clickable links in Summary
+- ❌ **BLOCK**: Unclear feature validation status
 
 ## 🔧 **ENHANCED EXPECTED RESULTS REQUIREMENTS**
 
@@ -158,6 +186,40 @@ status:
 - **Status Indicators**: Use specific status conditions and states
 
 ## 🚨 **REAL-TIME ENFORCEMENT MECHANISMS**
+
+### **HTML Tag Prevention Engine:**
+```python
+def enforce_html_tag_prevention(content):
+    """
+    Real-time HTML tag detection and conversion to markdown
+    """
+    html_patterns = [
+        (r'<br\s*/?>', '\n'),        # Convert <br> to newline
+        (r'<[^>]+>', ''),            # Remove any other HTML tags
+        (r'&lt;', '<'),              # Convert HTML entities
+        (r'&gt;', '>'),              # Convert HTML entities
+        (r'&amp;', '&')              # Convert HTML entities
+    ]
+    
+    violations = []
+    cleaned_content = content
+    
+    for pattern, replacement in html_patterns:
+        if re.search(pattern, cleaned_content):
+            violations.append(f"HTML pattern detected: {pattern}")
+            cleaned_content = re.sub(pattern, replacement, cleaned_content)
+    
+    if violations:
+        return {
+            "status": "AUTO_FIXED",
+            "violations": violations,
+            "cleaned_content": cleaned_content,
+            "action": "CONVERTED_TO_MARKDOWN",
+            "message": "HTML tags automatically converted to markdown"
+        }
+    
+    return {"status": "APPROVED", "content": content}
+```
 
 ### **Citation Detection Engine:**
 ```python
@@ -191,68 +253,157 @@ def enforce_citation_free_test_cases(test_case_content):
     return {"status": "APPROVED", "violations": []}
 ```
 
+### **YAML Escape Sequence Detection Engine:**
+```python
+def enforce_yaml_block_formatting(test_content):
+    """
+    Critical: Detect and block escape sequence YAML formatting in CLI commands
+    """
+    # Detect escape sequence patterns in YAML
+    escape_sequence_patterns = [
+        r'`[^`]*\\n[^`]*`',                    # YAML with \n escape sequences in backticks
+        r'"[^"]*\\n[^"]*"',                    # YAML with \n escape sequences in quotes
+        r"'[^']*\\n[^']*'",                    # YAML with \n escape sequences in single quotes
+        r'add:\s*`[^`]*apiVersion[^`]*\\n',    # Specific pattern: add: `apiVersion...\n
+        r'and add:\s*`[^`]*apiVersion[^`]*\\n' # Specific pattern: and add: `apiVersion...\n
+    ]
+    
+    violations = []
+    for pattern in escape_sequence_patterns:
+        matches = re.findall(pattern, test_content, re.MULTILINE | re.DOTALL)
+        if matches:
+            violations.extend(matches)
+    
+    if violations:
+        return {
+            "status": "CRITICAL_BLOCK",
+            "violations": violations,
+            "action": "CONVERT_TO_YAML_BLOCKS",
+            "message": "YAML with escape sequences detected - must use proper indented blocks",
+            "required_format": "```yaml\\napiVersion: v1\\nkind: Resource\\n```",
+            "blocking_priority": "ABSOLUTE"
+        }
+    
+    return {"status": "APPROVED", "yaml_format": "valid"}
+```
+
+### **Enhanced CLI Command Validation Engine:**
+```python
+def enforce_executable_cli_commands(test_table_content):
+    """
+    Validate that every CLI command is copy-paste executable
+    """
+    required_columns = ["UI Method", "CLI Method", "Expected Results"]
+    missing_requirements = []
+    
+    # Check for executable CLI command patterns
+    executable_patterns = [
+        r'oc apply -f - <<EOF.*?EOF',          # Heredoc pattern
+        r'```yaml.*?```',                       # YAML block pattern
+        r'touch.*?\.yaml.*?```yaml.*?```'       # Touch file + YAML block pattern
+    ]
+    
+    has_executable_format = False
+    for pattern in executable_patterns:
+        if re.search(pattern, test_table_content, re.DOTALL):
+            has_executable_format = True
+            break
+    
+    if not has_executable_format:
+        missing_requirements.append("Executable CLI commands with proper YAML blocks")
+    
+    # Check for UI navigation patterns
+    ui_pattern = r'\*\*UI.*?\*\*:|Console.*?→|Navigate to|Click'
+    if not re.search(ui_pattern, test_table_content):
+        missing_requirements.append("Clear UI navigation methods")
+    
+    # Block escape sequence YAML
+    if re.search(r'\\n|\\t', test_table_content):
+        missing_requirements.append("CRITICAL: Escape sequence YAML detected - use proper blocks")
+    
+    if missing_requirements:
+        return {
+            "status": "BLOCKED",
+            "missing": missing_requirements,
+            "action": "FIX_CLI_METHODS",
+            "message": "All CLI methods must be copy-paste executable"
+        }
+    
+    return {"status": "APPROVED", "missing": []}
+```
+
 ### **Dual-Method Validation Engine:**
 ```python
 def enforce_dual_method_coverage(test_table_content):
     """
     Validate that every step includes both UI and CLI methods
     """
-    required_columns = ["UI Method", "CLI Method", "Expected Results"]
-    missing_requirements = []
+    # Use enhanced CLI command validation
+    cli_validation = enforce_executable_cli_commands(test_table_content)
+    yaml_validation = enforce_yaml_block_formatting(test_table_content)
     
-    # Check for complete CLI commands
-    cli_command_pattern = r'oc apply -f - <<EOF.*?EOF'
-    if not re.search(cli_command_pattern, test_table_content, re.DOTALL):
-        missing_requirements.append("Complete CLI commands with full YAML")
+    if cli_validation["status"] == "BLOCKED":
+        return cli_validation
     
-    # Check for UI navigation patterns
-    ui_pattern = r'\*\*UI.*?\*\*:|Console.*?→'
-    if not re.search(ui_pattern, test_table_content):
-        missing_requirements.append("Clear UI navigation methods")
+    if yaml_validation["status"] == "CRITICAL_BLOCK":
+        return yaml_validation
     
-    if missing_requirements:
-        return {
-            "status": "BLOCKED",
-            "missing": missing_requirements,
-            "action": "ADD_MISSING_METHODS",
-            "message": "All steps must include both UI and CLI methods"
-        }
-    
-    return {"status": "APPROVED", "missing": []}
+    return {"status": "APPROVED", "methods": "dual_coverage_validated"}
 ```
 
 ### **Complete Report Structure Validation:**
 ```python
 def enforce_complete_report_structure(report_content):
     """
-    Validate exact section order and content requirements
+    Validate exact section order and content requirements for new structure
     """
     mandatory_sections = [
+        "Summary",
+        "1. JIRA Analysis Summary",
+        "2. Environment Assessment", 
+        "3. Implementation Analysis",
+        "4. Test Scenarios Analysis"
+    ]
+    
+    # Blocked sections from old structure
+    blocked_sections = [
+        "Documentation Analysis",
+        "QE Intelligence Assessment", 
         "Feature Deployment Status",
-        "Test Environment Status", 
-        "Feature Implementation Analysis",
-        "Main Test Scenarios",
-        "Business Impact",
-        "Quality Metrics",
-        "Conclusion"
+        "Business Impact Assessment",
+        "Executive Summary"
     ]
     
     section_validation = []
-    for i, section in enumerate(mandatory_sections):
-        if section not in report_content:
-            section_validation.append(f"Missing section: {section}")
-        # Add order validation logic
     
-    # Check for deployment status format
-    if "Feature Availability:" not in report_content:
-        section_validation.append("Missing explicit deployment status declaration")
+    # Check for mandatory sections
+    for section in mandatory_sections:
+        if section not in report_content:
+            section_validation.append(f"Missing mandatory section: {section}")
+    
+    # Check for blocked sections
+    for blocked_section in blocked_sections:
+        if blocked_section in report_content:
+            section_validation.append(f"Blocked section found: {blocked_section}")
+    
+    # Check for clickable links in Summary
+    if "Feature Validation:" not in report_content:
+        section_validation.append("Missing Feature Validation status in Summary")
+    
+    # Check for full JIRA title link
+    if not re.search(r'\[.*?\]\(https://issues\.redhat\.com/browse/.*?\)', report_content):
+        section_validation.append("Missing clickable JIRA link with full title")
+    
+    # Check for "Executive" usage
+    if "Executive" in report_content:
+        section_validation.append("Blocked word 'Executive' found in report")
     
     if section_validation:
         return {
             "status": "BLOCKED",
             "violations": section_validation,
             "action": "FIX_STRUCTURE",
-            "message": "Complete report must follow exact template structure"
+            "message": "Complete report must follow new mandatory structure"
         }
     
     return {"status": "APPROVED", "structure_compliance": True}
@@ -275,15 +426,25 @@ def enforce_complete_report_structure(report_content):
 ## 📊 **ENFORCEMENT METRICS**
 
 ### **Compliance Targets:**
+- **HTML Tag Prevention**: 100% compliance (zero HTML tags, markdown-only)
 - **Citation-Free Test Cases**: 100% compliance (zero tolerance)
 - **Dual-Method Coverage**: 100% (every step must have both UI and CLI)
 - **Complete CLI Commands**: 100% (no truncated or incomplete commands)
-- **Fixed Report Structure**: 100% (exact template compliance required)
+- **New Report Structure**: 100% (mandatory 4-section structure only)
+- **Clickable Links**: 100% (all JIRA, PR, and environment links must be clickable)
+- **Feature Validation Status**: 100% (clear validation status required in Summary)
+
+### **Blocked Content Enforcement:**
+- **"Executive" Usage**: 0% tolerance (blocked word in all content)
+- **Old Report Sections**: 0% tolerance (Documentation, QE Intelligence, Business Impact, Feature Deployment sections blocked)
+- **Non-Clickable References**: 0% tolerance (all links must be clickable)
+- **HTML Tags**: 0% tolerance (automatic conversion to markdown)
 
 ### **Quality Improvements Expected:**
 - **Tester Clarity**: 95% improvement in step execution clarity
 - **Copy-Paste Readiness**: 100% CLI commands ready for immediate execution
-- **Professional Presentation**: Clean test cases without technical clutter
-- **Comprehensive Analysis**: Complete reports with consistent structure and content
+- **Professional Presentation**: Clean test cases without HTML clutter or citations
+- **Streamlined Analysis**: Focused 4-section reports with test scenarios focus
+- **Link Accessibility**: 100% clickable links for immediate access to sources
 
-This Format Enforcement Service ensures all user requirements are met with zero tolerance for deviations, providing professional-quality outputs with clear separation between clean test cases and comprehensive analysis reports.
+This Format Enforcement Service ensures all user requirements are met with zero tolerance for deviations, providing professional-quality outputs with mandatory HTML tag prevention, clickable links, clear feature validation status, and streamlined report structure focused on test scenarios analysis.

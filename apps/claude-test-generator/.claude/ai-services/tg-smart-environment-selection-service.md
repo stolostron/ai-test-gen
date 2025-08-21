@@ -362,7 +362,7 @@ AI_SERVICES_ECOSYSTEM_ENHANCED:
   foundational_services:
     - tg_smart_environment_selection_service: "SMART ENVIRONMENT PRIORITIZATION - Use provided environment if healthy, fallback to qe6 if unhealthy"
     - tg_implementation_reality_agent: "NEVER ASSUME - Validate all assumptions against actual codebase"
-    - tg_evidence_validation_engine: "PREVENT FICTIONAL CONTENT - Block content generation without implementation evidence"
+    - tg_evidence_validation_engine: "COMPREHENSIVE TEST ENABLEMENT - Distinguish implementation vs deployment reality, enable comprehensive testing while blocking only fictional content"
 ```
 
 ## User Experience

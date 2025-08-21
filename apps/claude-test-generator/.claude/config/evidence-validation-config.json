@@ -1,14 +1,14 @@
 {
   "evidence_validation_engine": {
-    "execution_model": "continuous_monitoring",
-    "authority_level": "content_blocking",
+    "execution_model": "comprehensive_test_enablement",
+    "authority_level": "smart_fiction_blocking",
     "monitoring_phases": [
-      "pre_content_generation",
-      "during_content_generation", 
-      "post_content_validation",
-      "pattern_compliance_check"
+      "evidence_accumulation",
+      "smart_validation_during_generation", 
+      "comprehensive_enablement_verification",
+      "pattern_compliance_with_alternatives"
     ],
-    "fictional_content_detection": {
+    "comprehensive_test_enablement": {
       "yaml_field_validation": {
         "enabled": true,
         "validation_sources": [
@@ -17,18 +17,18 @@
           "openapi_definitions",
           "crd_specifications"
         ],
-        "blocking_conditions": [
+        "smart_validation_conditions": [
           {
-            "name": "non_existent_yaml_field",
-            "condition": "proposed_field NOT IN implementation_reality.schema_definitions",
-            "action": "BLOCK_CONTENT_GENERATION",
-            "message": "YAML field not found in actual schema definitions - provide schema evidence or use proven pattern"
+            "name": "fictional_yaml_field_detection",
+            "condition": "proposed_field NOT IN agent_c_implementation_evidence.schema_definitions",
+            "action": "PROVIDE_EVIDENCE_BASED_ALTERNATIVE",
+            "message": "Field not found in Agent C schema analysis - using validated alternative while maintaining comprehensive coverage"
           },
           {
-            "name": "fictional_field_creation",
-            "condition": "agent.creates_field AND field NOT IN proven_patterns",
-            "action": "HALT_AGENT_EXECUTION",
-            "message": "Cannot create fictional YAML fields - must extend proven successful patterns"
+            "name": "comprehensive_test_enablement",
+            "condition": "agent_c_finds_implementation_evidence",
+            "action": "ENABLE_COMPREHENSIVE_TESTING",
+            "message": "Implementation evidence found - generating comprehensive test plan with validated fields"
           }
         ],
         "evidence_requirements": {
@@ -38,7 +38,7 @@
           "official_documentation": "acceptable"
         }
       },
-      "workflow_evidence_validation": {
+      "workflow_comprehensive_enablement": {
         "enabled": true,
         "validation_targets": [
           "ui_workflows",
@@ -46,24 +46,24 @@
           "api_procedures",
           "configuration_steps"
         ],
-        "blocking_conditions": [
+        "smart_enablement_conditions": [
           {
-            "name": "unsupported_ui_workflow",
-            "condition": "agent.generates_ui_workflow AND workflow NOT IN implementation_reality.ui_capabilities",
-            "action": "BLOCK_WORKFLOW_GENERATION",
-            "message": "UI workflow not supported by actual implementation - provide code evidence or use CLI alternative"
+            "name": "implementation_based_workflow_enablement",
+            "condition": "agent_c_provides_implementation_evidence FOR workflow_type",
+            "action": "ENABLE_COMPREHENSIVE_WORKFLOW_TESTING",
+            "message": "Implementation evidence found - enabling comprehensive workflow testing with validated approaches"
           },
           {
-            "name": "fictional_cli_command",
-            "condition": "agent.uses_cli_command AND command NOT IN api_schema.endpoints",
-            "action": "HALT_COMMAND_USAGE",
-            "message": "CLI command not found in API specifications - verify command exists or use proven alternative"
+            "name": "deployment_aware_cli_enablement",
+            "condition": "agent_c_validates_cli_command AND agent_d_provides_deployment_context",
+            "action": "ENABLE_CLI_WITH_CONTEXT",
+            "message": "CLI command validated by Agent C - enabling with deployment context awareness"
           },
           {
-            "name": "assumption_based_procedure",
-            "condition": "agent.creates_procedure AND evidence_backing < 0.8",
-            "action": "REQUIRE_EVIDENCE",
-            "message": "Procedure lacks adequate evidence backing - provide implementation reference or documentation citation"
+            "name": "evidence_based_alternative_provision",
+            "condition": "proposed_workflow NOT IN agent_c_evidence AND alternative_exists",
+            "action": "PROVIDE_VALIDATED_ALTERNATIVE",
+            "message": "Using Agent C validated alternative while maintaining comprehensive coverage"
           }
         ],
         "evidence_requirements": {
@@ -265,16 +265,16 @@
   },
   "validation_metrics": {
     "success_criteria": {
-      "zero_fictional_content": true,
-      "100_percent_evidence_backing": true,
-      "pattern_compliance_rate": 1.0,
-      "implementation_traceability": true
+      "comprehensive_test_enablement_rate": 1.0,
+      "implementation_evidence_based_testing": true,
+      "smart_fiction_blocking_accuracy": 1.0,
+      "deployment_context_awareness": true
     },
-    "prevention_targets": {
-      "fictional_yaml_fields": 0,
-      "unsupported_workflows": 0,
-      "assumption_based_content": 0,
-      "pattern_violations": 0
+    "enablement_targets": {
+      "comprehensive_test_plans_for_implemented_features": 1.0,
+      "evidence_based_alternatives_provided": 1.0,
+      "deployment_context_included": 1.0,
+      "fictional_content_replaced_with_alternatives": 1.0
     },
     "quality_assurance": {
       "evidence_quality_scoring": true,
@@ -289,32 +289,32 @@
       "framework_overhead": "< 5%"
     }
   },
-  "acm_22079_prevention": {
-    "specific_prevention_rules": {
-      "yaml_field_fictional_generation": {
-        "blocked_example": "spec.upgrade.imageDigest",
-        "reason": "Field does not exist in actual ClusterCurator schema",
-        "prevention": "Block field usage until schema evidence provided",
-        "alternative": "Use proven ClusterCurator upgrade patterns with validated fields"
+  "acm_22079_comprehensive_enablement": {
+    "comprehensive_test_enablement_examples": {
+      "yaml_field_smart_validation": {
+        "example_scenario": "spec.upgrade.imageDigest field proposed",
+        "agent_c_validation": "Field not found in Agent C ClusterCurator schema analysis",
+        "smart_decision": "Provide Agent C validated alternative (spec.upgrade.desiredUpdate)",
+        "comprehensive_enablement": "Generate complete test plan with validated fields while maintaining full coverage"
       },
-      "ui_workflow_fictional_creation": {
-        "blocked_behavior": "Creating UI workflows without implementation backing",
-        "reason": "Workflows not supported by actual ACM Console implementation",
-        "prevention": "Require implementation evidence for all UI workflows",
-        "alternative": "Use CLI alternatives with API schema backing"
+      "implementation_vs_deployment_distinction": {
+        "scenario": "Feature implemented (Agent C) but not deployed (Agent D)",
+        "approach": "Enable comprehensive testing based on implementation evidence",
+        "context_inclusion": "Include deployment awareness without restricting test scope",
+        "result": "Future-ready test plans for when features become available"
       },
-      "assumption_based_test_generation": {
-        "blocked_behavior": "Creating tests based on assumptions about feature functionality",
-        "reason": "Tests should reflect actual implementation, not assumptions",
-        "prevention": "Require implementation evidence for all test generation",
-        "alternative": "Use Pattern Extension Service to extend proven successful patterns"
+      "evidence_based_alternative_provision": {
+        "trigger": "Proposed content lacks Agent C implementation evidence",
+        "action": "Provide evidence-backed alternatives while maintaining comprehensive coverage",
+        "recovery": "Use Pattern Extension Service with Agent C validated patterns",
+        "outcome": "Comprehensive test generation with implementation alignment"
       }
     },
-    "cascade_failure_prevention": {
-      "detection_mechanism": "Real-time monitoring of fictional content generation",
-      "intervention_point": "During content generation (not after)",
-      "prevention_strategy": "Evidence requirement before content approval",
-      "recovery_approach": "Block fictional content, provide evidence-based alternatives"
+    "comprehensive_enablement_strategy": {
+      "detection_mechanism": "Smart validation against Agent C implementation evidence vs Agent D deployment evidence",
+      "intervention_point": "During content generation with immediate alternative provision",
+      "enablement_strategy": "Distinguish implementation vs deployment reality and enable comprehensive testing",
+      "recovery_approach": "Provide evidence-based alternatives while maintaining comprehensive test coverage"
     }
   }
 }

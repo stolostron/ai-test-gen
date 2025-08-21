@@ -96,6 +96,26 @@
 ❌ INVALID: [Code:pkg/controllers/cluster.go:999-1005:a1b2c3d4] - Line numbers exceed file length
 ```
 
+#### Environment Reference Validation
+```markdown
+## Environment Citation Validation Protocol
+
+**Format Required**: [Env:environment_name:health_status:last_verified]
+
+**Validation Steps**:
+1. **Environment Accessibility**: Verify API endpoint responds (200 OK)
+2. **Console Accessibility**: Verify console URL responds (200 OK)  
+3. **Health Status Verification**: Confirm current health matches citation
+4. **Timestamp Validation**: Verify last_verified is recent (within 24 hours)
+5. **Environment Data Correlation**: Ensure claim matches actual environment state
+
+**Validation Examples**:
+✅ VALID: [Env:ashafi-atif-test:healthy:2025-08-21] - Environment accessible, health verified
+❌ INVALID: [Env:nonexistent-cluster:healthy:2025-08-21] - Environment not accessible
+❌ INVALID: [Env:ashafi-atif-test:unhealthy:2025-08-21] - Health status mismatch
+❌ INVALID: [Env:ashafi-atif-test:healthy:2025-07-01] - Timestamp too old (over 30 days)
+```
+
 ## 🚫 CITATION ENFORCEMENT RULES
 
 ### Blocked Response Categories
@@ -137,27 +157,139 @@
 
 ## 🔧 VALIDATION IMPLEMENTATION
 
+### Real-Time Citation Format Enforcement Engine
+```python
+def enforce_citation_metadata_format(complete_report_content):
+    """
+    Critical: Validate all citations follow exact metadata format requirements
+    """
+    # Define exact citation format patterns
+    valid_citation_patterns = {
+        'jira': r'\[JIRA:[A-Z]+-\d+:(Open|In Progress|Review|Resolved|Closed):\d{4}-\d{2}-\d{2}\]',
+        'github': r'\[GitHub:[^/]+/[^#]+#\d+:(open|closed|merged):\d{4}-\d{2}-\d{2}\]',
+        'environment': r'\[Env:[^:]+:(healthy|unhealthy|unknown):\d{4}-\d{2}-\d{2}\]',
+        'documentation': r'\[Docs:https://[^#]+#[^:]+:\d{4}-\d{2}-\d{2}\]',
+        'code': r'\[Code:[^:]+:\d+-\d+:[a-f0-9]{7,40}\]'
+    }
+    
+    # Find all citation-like patterns
+    all_citations = re.findall(r'\[[^\]]+\](?=\(https?://[^\)]+\))', complete_report_content)
+    
+    violations = []
+    for citation in all_citations:
+        is_valid = False
+        for citation_type, pattern in valid_citation_patterns.items():
+            if re.match(pattern, citation):
+                is_valid = True
+                break
+        
+        if not is_valid:
+            violations.append({
+                "citation": citation,
+                "error": "Invalid metadata format - missing or incorrect status/date",
+                "required_formats": [
+                    "[JIRA:ACM-XXXXX:status:YYYY-MM-DD]",
+                    "[GitHub:org/repo#PR:state:YYYY-MM-DD]", 
+                    "[Env:name:health:YYYY-MM-DD]",
+                    "[Docs:URL#section:YYYY-MM-DD]",
+                    "[Code:file:lines:commit]"
+                ]
+            })
+    
+    if violations:
+        return {
+            "status": "CRITICAL_BLOCK",
+            "violations": violations,
+            "action": "FIX_CITATION_METADATA",
+            "message": "All citations must include required metadata (status/state/health + date)",
+            "blocking_priority": "ABSOLUTE"
+        }
+    
+    return {"status": "APPROVED", "citation_format": "valid_metadata"}
+
+def enforce_citation_accessibility(complete_report_content):
+    """
+    Validate that all cited sources are accessible and current
+    """
+    import requests
+    import re
+    from datetime import datetime, timedelta
+    
+    # Extract all clickable citations with URLs
+    citation_url_pattern = r'\[([^\]]+)\]\((https?://[^\)]+)\)'
+    citations_with_urls = re.findall(citation_url_pattern, complete_report_content)
+    
+    validation_results = []
+    for citation_text, url in citations_with_urls:
+        result = {
+            "citation": citation_text,
+            "url": url,
+            "status": "UNKNOWN",
+            "error": None
+        }
+        
+        try:
+            # Test URL accessibility
+            response = requests.head(url, timeout=10, allow_redirects=True)
+            if response.status_code == 200:
+                result["status"] = "ACCESSIBLE"
+            else:
+                result["status"] = "INACCESSIBLE" 
+                result["error"] = f"HTTP {response.status_code}"
+        except Exception as e:
+            result["status"] = "INACCESSIBLE"
+            result["error"] = str(e)
+        
+        # Validate date freshness for environment citations
+        if citation_text.startswith("Env:"):
+            parts = citation_text.split(":")
+            if len(parts) >= 4:
+                try:
+                    citation_date = datetime.strptime(parts[3], "%Y-%m-%d")
+                    age_days = (datetime.now() - citation_date).days
+                    if age_days > 1:  # Environment citations must be recent
+                        result["status"] = "STALE"
+                        result["error"] = f"Environment citation {age_days} days old (max 1 day)"
+                except ValueError:
+                    result["status"] = "INVALID_DATE"
+                    result["error"] = "Invalid date format in environment citation"
+        
+        validation_results.append(result)
+    
+    # Check for critical failures
+    critical_failures = [r for r in validation_results if r["status"] in ["INACCESSIBLE", "STALE", "INVALID_DATE"]]
+    
+    if critical_failures:
+        return {
+            "status": "CRITICAL_BLOCK",
+            "failures": critical_failures,
+            "action": "FIX_INACCESSIBLE_CITATIONS", 
+            "message": f"{len(critical_failures)} citations failed accessibility validation",
+            "blocking_priority": "ABSOLUTE"
+        }
+    
+    return {"status": "APPROVED", "accessibility": "all_citations_validated"}
+```
+
 ### Real-Time Validation Service
 ```markdown
 ## Citation Validation Workflow
 
 **PRE-RESPONSE VALIDATION**:
-1. Parse draft response for citation patterns
-2. Extract all [Type:reference:metadata] patterns
-3. Validate each citation against live sources:
-   - JIRA: API call to verify ticket existence/status
-   - GitHub: API call to verify PR/issue/commit state
-   - Docs: HTTP request to verify URL accessibility
-   - Code: Repository query to verify file/line existence
-4. Generate validation report with pass/fail status
-5. BLOCK response if any citation fails validation
-6. Require AI to fix invalid citations before proceeding
+1. Parse draft response for citation patterns using format enforcement engine
+2. Extract all [Type:reference:metadata] patterns with metadata validation
+3. Validate each citation against live sources using accessibility engine
+4. Check date freshness and metadata accuracy requirements
+5. Generate validation report with pass/fail status for each citation
+6. BLOCK response if any citation fails format or accessibility validation
+7. Require AI to fix invalid citations before proceeding
 
 **VALIDATION ERROR HANDLING**:
-- Invalid Citation: Force AI to provide valid alternative or remove claim
-- Inaccessible Source: Require AI to find accessible alternative source
-- Content Mismatch: Force AI to revise claim to match cited source
+- Invalid Format: Force AI to update citation to include required metadata
+- Inaccessible Source: Require AI to find accessible alternative source  
+- Stale Citation: Force AI to update with current date after re-verification
 - Missing Citation: Block response until citation is provided
+- Content Mismatch: Force AI to revise claim to match cited source
 ```
 
 ### Audit Trail Requirements
