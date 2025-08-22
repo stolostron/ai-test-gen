@@ -118,6 +118,53 @@
         }
       },
       
+      "ai_enhancement_services": {
+        "ai_conflict_pattern_recognition_service": {
+          "execution_phase": "continuous",
+          "priority": "HIGH_AI_ENHANCEMENT",
+          "blocking_authority": false,
+          "coordination_role": "intelligent_conflict_pattern_analyzer",
+          "integration_dependencies": ["context_validation_engine", "conflict_resolution_service"],
+          "analysis_scope": "all_detected_conflicts_with_pattern_recognition",
+          "ai_capabilities": {
+            "pattern_learning": "continuous_learning_from_conflict_resolutions",
+            "root_cause_analysis": "ai_powered_root_cause_identification",
+            "resolution_recommendation": "intelligent_resolution_strategy_generation",
+            "prevention_insights": "proactive_conflict_prevention_recommendations"
+          }
+        },
+        
+        "ai_semantic_consistency_validator_service": {
+          "execution_phase": "continuous",
+          "priority": "HIGH_AI_ENHANCEMENT",
+          "blocking_authority": false,
+          "coordination_role": "semantic_consistency_analyzer",
+          "integration_dependencies": ["cross_agent_validation_engine", "universal_context_manager"],
+          "validation_scope": "semantic_consistency_across_all_agents",
+          "ai_capabilities": {
+            "terminology_normalization": "intelligent_component_name_standardization",
+            "relationship_understanding": "domain_aware_component_relationship_validation",
+            "variation_handling": "automatic_terminology_variation_recognition",
+            "knowledge_building": "continuous_domain_knowledge_enhancement"
+          }
+        },
+        
+        "ai_predictive_health_monitor_service": {
+          "execution_phase": "continuous",
+          "priority": "HIGH_AI_ENHANCEMENT",
+          "blocking_authority": false,
+          "coordination_role": "predictive_health_analyzer",
+          "integration_dependencies": ["real_time_monitoring_service", "framework_observability_agent"],
+          "monitoring_scope": "predictive_framework_health_analysis",
+          "ai_capabilities": {
+            "failure_prediction": "cascade_failure_pattern_prediction",
+            "early_warning": "proactive_issue_detection_and_alerting",
+            "optimization_recommendation": "intelligent_workflow_optimization",
+            "learning_integration": "continuous_prediction_improvement"
+          }
+        }
+      },
+      
       "enhanced_agent_services": {
         "enhanced_jira_intelligence_service": {
           "execution_phase": "1",

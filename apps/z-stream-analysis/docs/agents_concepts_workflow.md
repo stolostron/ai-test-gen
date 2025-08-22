@@ -75,6 +75,26 @@ flowchart TB
     
     CONTEXT_ARCHITECTURE <-.-> VALIDATION_SERVICE
     
+    %% === ARROW STYLING FOR VISIBILITY ===
+    %% Main flow - thick dark blue
+    linkStyle 0 stroke:#0d47a1,stroke-width:4px
+    linkStyle 1 stroke:#0d47a1,stroke-width:4px
+    linkStyle 2 stroke:#0d47a1,stroke-width:4px
+    linkStyle 3 stroke:#0d47a1,stroke-width:4px
+    
+    %% Validation services - thick green dotted
+    linkStyle 4 stroke:#1b5e20,stroke-width:3px,stroke-dasharray: 5 5
+    linkStyle 5 stroke:#1b5e20,stroke-width:3px,stroke-dasharray: 5 5
+    linkStyle 6 stroke:#1b5e20,stroke-width:3px,stroke-dasharray: 5 5
+    linkStyle 7 stroke:#1b5e20,stroke-width:3px,stroke-dasharray: 5 5
+    
+    %% Cross validation - bold red dashed
+    linkStyle 8 stroke:#c62828,stroke-width:3px,stroke-dasharray: 3 3
+    linkStyle 9 stroke:#c62828,stroke-width:3px,stroke-dasharray: 3 3
+    
+    %% Context architecture - thick green dotted
+    linkStyle 10 stroke:#1b5e20,stroke-width:3px,stroke-dasharray: 5 5
+    
     %% Clear 2-Agent Styling
     style AGENT_A fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style AGENT_B fill:#e8f5e8,stroke:#388e3c,stroke-width:3px,color:#000
@@ -126,6 +146,21 @@ flowchart LR
     EVIDENCE_ANALYSIS --> CLASSIFICATION
     CLASSIFICATION --> FIX_GENERATION
     FIX_GENERATION --> REPORTING
+    
+    %% === ARROW STYLING FOR VISIBILITY ===
+    %% Stage 1 internal flow - thick dark blue
+    linkStyle 0 stroke:#0d47a1,stroke-width:4px
+    linkStyle 1 stroke:#0d47a1,stroke-width:4px
+    linkStyle 2 stroke:#0d47a1,stroke-width:4px
+    
+    %% Context bridge - very bold purple
+    linkStyle 3 stroke:#4a148c,stroke-width:5px
+    
+    %% Stage 2 flow - thick dark green
+    linkStyle 4 stroke:#1b5e20,stroke-width:4px
+    linkStyle 5 stroke:#1b5e20,stroke-width:4px
+    linkStyle 6 stroke:#1b5e20,stroke-width:4px
+    linkStyle 7 stroke:#1b5e20,stroke-width:4px
     
     %% Styling
     style STAGE1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
