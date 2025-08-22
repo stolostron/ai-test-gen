@@ -585,12 +585,21 @@
         "input_coordination": "integrate_complete_strategic_intelligence_package",
         "authority_enforcement": "complete_test_generation_replacement",
         "validation_requirements": [
+          "mandatory_pre_write_technical_validation",
           "100_percent_pattern_traceability",
           "implementation_reality_alignment",
           "cross_agent_validation_compliance",
           "evidence_based_quality_assurance",
           "strategic_ai_guidance_integration"
-        ]
+        ],
+        "technical_enforcement": {
+          "pre_write_validation": "MANDATORY",
+          "validation_script": ".claude/enforcement/pre_write_validator.py",
+          "blocking_authority": "ABSOLUTE",
+          "html_tag_prevention": "CRITICAL_BLOCK",
+          "citation_enforcement": "test_cases_citation_free",
+          "dual_method_validation": "REQUIRED"
+        }
       },
       
       "phase_5_mandatory_cleanup_and_finalization": {

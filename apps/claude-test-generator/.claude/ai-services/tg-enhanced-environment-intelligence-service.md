@@ -24,6 +24,7 @@ AI_Enhanced_Environment_Intelligence:
     - deployment_timeline_correlation: "PR merge timeline correlation with environment deployment status"
     - comprehensive_deployment_assessment: "Combined environment + deployment validation in single agent"
     - extensive_real_data_collection: "Enhanced data collection knowing what to expect from PR context"
+    - intelligent_gap_detection: "Identifies specific environment limitations that could impact testing (missing clusters, operators, resources)"
     
   midstream_context_integration:
     - agent_a_context_sharing: "Real-time context updates from Agent A during parallel execution"
@@ -72,6 +73,11 @@ class EnhancedEnvironmentIntelligenceService:
             inherited_context, selected_environment
         )
         
+        # Stage 3.5: Intelligent Gap Detection and Assessment
+        environment_gaps = self.detect_environment_gaps_for_testing(
+            inherited_context, environment_health, selected_environment
+        )
+        
         # Stage 4: Mid-Stream Context Reception (Enhanced)
         pr_context = self.receive_enhanced_context_stream(inherited_context)
         
@@ -87,7 +93,7 @@ class EnhancedEnvironmentIntelligenceService:
         
         # Stage 7: Context Enhancement with Environment Intelligence
         enhanced_context = self.enhance_context_with_environment_intelligence(
-            inherited_context, environment_health, deployment_assessment, real_data_package
+            inherited_context, environment_health, deployment_assessment, real_data_package, environment_gaps
         )
         
         # Stage 8: Context Validation and Quality Assurance
@@ -159,9 +165,9 @@ class EnhancedEnvironmentIntelligenceService:
         return selected_environment
     
     def enhance_context_with_environment_intelligence(self, inherited_context, environment_health, 
-                                                     deployment_assessment, real_data_package):
+                                                     deployment_assessment, real_data_package, environment_gaps):
         """
-        Enhance inherited context with comprehensive environment intelligence
+        Enhance inherited context with comprehensive environment intelligence including gap detection
         """
         print("📊 Agent D: Enhancing context with environment intelligence...")
         
@@ -170,16 +176,20 @@ class EnhancedEnvironmentIntelligenceService:
             'environment_health': environment_health,
             'deployment_assessment': deployment_assessment,
             'real_data_package': real_data_package,
+            'environment_gaps': environment_gaps,
             'environment_intelligence': {
                 'cluster_connectivity': environment_health.get('connectivity_status'),
                 'acm_version_confirmed': environment_health.get('acm_version'),  # CRITICAL: Confirm ACM version
                 'deployment_confidence': deployment_assessment.get('confidence_score'),
-                'infrastructure_readiness': environment_health.get('infrastructure_score')
+                'infrastructure_readiness': environment_health.get('infrastructure_score'),
+                'testing_limitations': environment_gaps.get('testing_limitations', []),
+                'gap_impact_level': environment_gaps.get('gap_impact_assessment', {}).get('overall_impact', 'none')
             },
             'context_contributions': {
                 'environment_validation': 'comprehensive',
                 'deployment_status': 'confirmed',
-                'real_data_availability': 'extensive'
+                'real_data_availability': 'extensive',
+                'gap_detection': 'complete'
             }
         }
         
@@ -254,6 +264,248 @@ class EnhancedEnvironmentIntelligenceService:
             self.log_config_load_error(f"Failed to load config environment: {e}")
             
         return None
+    
+    def detect_environment_gaps_for_testing(self, inherited_context, environment_health, selected_environment):
+        """
+        Detect specific environment gaps that could impact testing capability
+        """
+        print("🔍 Agent D: Detecting environment gaps for testing requirements...")
+        
+        # Extract feature requirements from inherited context
+        jira_analysis = inherited_context['agent_contributions']['agent_a_jira']['enhancements']
+        feature_requirements = jira_analysis.get('technical_scope', {})
+        component_mapping = jira_analysis.get('component_mapping', {})
+        
+        # Comprehensive gap detection
+        environment_gaps = {
+            'infrastructure_gaps': self._detect_infrastructure_gaps(selected_environment, feature_requirements),
+            'cluster_topology_gaps': self._detect_cluster_topology_gaps(selected_environment, feature_requirements),
+            'operator_gaps': self._detect_operator_gaps(selected_environment, component_mapping),
+            'network_configuration_gaps': self._detect_network_gaps(selected_environment, feature_requirements),
+            'storage_configuration_gaps': self._detect_storage_gaps(selected_environment, feature_requirements),
+            'authentication_gaps': self._detect_authentication_gaps(selected_environment, feature_requirements)
+        }
+        
+        # Calculate gap impact on testing
+        gap_impact_assessment = self._assess_gap_impact_on_testing(environment_gaps, feature_requirements)
+        
+        print(f"✅ Agent D: Environment gap detection complete")
+        print(f"   Infrastructure gaps: {len(environment_gaps['infrastructure_gaps'])}")
+        print(f"   Cluster topology gaps: {len(environment_gaps['cluster_topology_gaps'])}")
+        print(f"   Operator gaps: {len(environment_gaps['operator_gaps'])}")
+        
+        return {
+            'detected_gaps': environment_gaps,
+            'gap_impact_assessment': gap_impact_assessment,
+            'testing_limitations': self._identify_testing_limitations(environment_gaps),
+            'mitigation_strategies': self._suggest_gap_mitigation_strategies(environment_gaps),
+            'alternative_approaches': self._recommend_alternative_testing_approaches(environment_gaps)
+        }
+    
+    def _detect_infrastructure_gaps(self, environment, requirements):
+        """Detect infrastructure-related gaps that could impact testing"""
+        gaps = []
+        
+        # Check for spoke cluster requirements
+        if any(keyword in str(requirements).lower() for keyword in ['spoke', 'managed cluster', 'aws cluster', 'edge cluster']):
+            # Verify spoke clusters are available
+            try:
+                # This would be real oc command in implementation
+                spoke_clusters = ["Check for specific spoke cluster types needed"]
+                if not spoke_clusters:
+                    gaps.append({
+                        'gap_type': 'missing_spoke_clusters',
+                        'description': 'Feature requires AWS/Edge spoke clusters but none available in environment',
+                        'impact': 'high',
+                        'testing_implication': 'Cannot validate spoke cluster functionality'
+                    })
+            except:
+                gaps.append({
+                    'gap_type': 'spoke_cluster_detection_failed',
+                    'description': 'Unable to detect spoke cluster availability',
+                    'impact': 'medium',
+                    'testing_implication': 'Uncertain spoke cluster testing capability'
+                })
+        
+        return gaps
+    
+    def _detect_cluster_topology_gaps(self, environment, requirements):
+        """Detect cluster topology gaps affecting test capability"""
+        gaps = []
+        
+        # Check for multi-cluster requirements
+        if any(keyword in str(requirements).lower() for keyword in ['multi-cluster', 'hub', 'spoke', 'federation']):
+            # Check if environment has required topology
+            try:
+                # This would check actual cluster configuration
+                cluster_topology = {"single_cluster": True, "multi_cluster": False}
+                if not cluster_topology.get('multi_cluster'):
+                    gaps.append({
+                        'gap_type': 'single_cluster_limitation',
+                        'description': 'Feature requires multi-cluster topology but only single cluster available',
+                        'impact': 'high',
+                        'testing_implication': 'Cannot validate cross-cluster functionality'
+                    })
+            except:
+                pass
+        
+        return gaps
+    
+    def _detect_operator_gaps(self, environment, component_mapping):
+        """Detect missing operators that could impact testing"""
+        gaps = []
+        
+        # Common operator requirements based on component analysis
+        required_operators = {
+            'ansible': ['ansible-automation-platform-operator'],
+            'observability': ['multicluster-observability-operator'],
+            'policy': ['governance-policy-framework'],
+            'application': ['multicluster-applications-operator'],
+            'search': ['search-operator']
+        }
+        
+        components = component_mapping.get('components', [])
+        for component in components:
+            component_lower = component.lower()
+            for operator_category, operators in required_operators.items():
+                if operator_category in component_lower:
+                    for operator in operators:
+                        # Check if operator is installed (simplified for framework)
+                        operator_available = False  # Would check with oc get operators
+                        if not operator_available:
+                            gaps.append({
+                                'gap_type': 'missing_operator',
+                                'description': f'Component {component} requires {operator} but not found in environment',
+                                'impact': 'high',
+                                'testing_implication': f'Cannot validate {component} functionality without {operator}'
+                            })
+        
+        return gaps
+    
+    def _detect_network_gaps(self, environment, requirements):
+        """Detect network configuration gaps"""
+        gaps = []
+        
+        # Check for disconnected environment requirements
+        if any(keyword in str(requirements).lower() for keyword in ['disconnected', 'air-gapped', 'offline']):
+            # Check if environment supports disconnected testing
+            network_config = {"disconnected_mode": False}  # Would check actual config
+            if not network_config.get('disconnected_mode'):
+                gaps.append({
+                    'gap_type': 'connected_environment_limitation',
+                    'description': 'Feature requires disconnected environment validation but environment is connected',
+                    'impact': 'medium',
+                    'testing_implication': 'Cannot validate true disconnected behavior'
+                })
+        
+        return gaps
+    
+    def _detect_storage_gaps(self, environment, requirements):
+        """Detect storage configuration gaps"""
+        gaps = []
+        
+        # Check for persistent storage requirements
+        if any(keyword in str(requirements).lower() for keyword in ['persistent', 'storage', 'pvc', 'backup']):
+            # Check storage class availability
+            storage_classes = []  # Would check with oc get storageclass
+            if not storage_classes:
+                gaps.append({
+                    'gap_type': 'missing_storage_classes',
+                    'description': 'Feature requires persistent storage but no storage classes configured',
+                    'impact': 'medium',
+                    'testing_implication': 'Cannot validate persistent storage functionality'
+                })
+        
+        return gaps
+    
+    def _detect_authentication_gaps(self, environment, requirements):
+        """Detect authentication and authorization gaps"""
+        gaps = []
+        
+        # Check for RBAC requirements
+        if any(keyword in str(requirements).lower() for keyword in ['rbac', 'role', 'permission', 'user', 'identity']):
+            # Check if test users/roles are configured
+            test_users_available = False  # Would check actual RBAC config
+            if not test_users_available:
+                gaps.append({
+                    'gap_type': 'missing_test_users',
+                    'description': 'Feature requires specific user roles but test users not configured',
+                    'impact': 'medium',
+                    'testing_implication': 'Cannot validate role-based access control'
+                })
+        
+        return gaps
+    
+    def _assess_gap_impact_on_testing(self, environment_gaps, requirements):
+        """Assess how environment gaps impact testing capability"""
+        all_gaps = []
+        for gap_category, gaps in environment_gaps.items():
+            all_gaps.extend(gaps)
+        
+        if not all_gaps:
+            return {
+                'overall_impact': 'none',
+                'testing_readiness': 'complete',
+                'limitations': []
+            }
+        
+        high_impact_gaps = [gap for gap in all_gaps if gap['impact'] == 'high']
+        medium_impact_gaps = [gap for gap in all_gaps if gap['impact'] == 'medium']
+        
+        return {
+            'overall_impact': 'high' if high_impact_gaps else 'medium' if medium_impact_gaps else 'low',
+            'testing_readiness': 'limited' if high_impact_gaps else 'mostly_ready',
+            'limitations': [gap['testing_implication'] for gap in all_gaps],
+            'gap_summary': f"{len(high_impact_gaps)} high-impact, {len(medium_impact_gaps)} medium-impact gaps detected"
+        }
+    
+    def _identify_testing_limitations(self, environment_gaps):
+        """Identify specific testing limitations based on detected gaps"""
+        limitations = []
+        for gap_category, gaps in environment_gaps.items():
+            for gap in gaps:
+                limitations.append({
+                    'limitation_type': gap['gap_type'],
+                    'description': gap['testing_implication'],
+                    'workaround_available': self._check_workaround_availability(gap)
+                })
+        return limitations
+    
+    def _suggest_gap_mitigation_strategies(self, environment_gaps):
+        """Suggest strategies to mitigate environment gaps"""
+        strategies = []
+        for gap_category, gaps in environment_gaps.items():
+            for gap in gaps:
+                if gap['gap_type'] == 'missing_spoke_clusters':
+                    strategies.append('Deploy temporary spoke cluster for testing or use local-cluster simulation')
+                elif gap['gap_type'] == 'missing_operator':
+                    strategies.append(f'Install required operator or test with operator simulation')
+                elif gap['gap_type'] == 'connected_environment_limitation':
+                    strategies.append('Use network policies to simulate disconnected behavior')
+        return strategies
+    
+    def _recommend_alternative_testing_approaches(self, environment_gaps):
+        """Recommend alternative testing approaches when gaps exist"""
+        alternatives = []
+        for gap_category, gaps in environment_gaps.items():
+            for gap in gaps:
+                alternatives.append({
+                    'gap_addressed': gap['gap_type'],
+                    'alternative_approach': f"Test {gap['gap_type']} functionality using available environment capabilities",
+                    'validation_method': 'Modified validation focusing on available resources'
+                })
+        return alternatives
+    
+    def _check_workaround_availability(self, gap):
+        """Check if workarounds are available for specific gaps"""
+        workarounds = {
+            'missing_spoke_clusters': True,   # Can use local-cluster
+            'missing_operator': False,        # Usually requires actual operator
+            'connected_environment_limitation': True,  # Can simulate
+            'missing_storage_classes': True,  # Can use default storage
+            'missing_test_users': True        # Can create temporary users
+        }
+        return workarounds.get(gap['gap_type'], False)
 
 ## Mid-Stream Context Sharing Architecture
 

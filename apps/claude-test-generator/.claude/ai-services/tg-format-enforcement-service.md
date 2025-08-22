@@ -114,7 +114,6 @@ EOF
 **Implementation Status**: [Clickable PR link with status]
 **Test Environment**: [Clickable environment link with details]
 **Feature Validation**: ✅/❌ [CLEAR STATUS] - [Explanation of validation capability]
-**Testing Approach**: [Brief test strategy description]
 
 ## 1. JIRA Analysis Summary
 **Ticket Details**: [Clickable JIRA link with full title]
@@ -191,34 +190,66 @@ status:
 ```python
 def enforce_html_tag_prevention(content):
     """
-    Real-time HTML tag detection and conversion to markdown
+    CRITICAL: Real-time HTML tag detection and BLOCKING (not just conversion)
     """
     html_patterns = [
-        (r'<br\s*/?>', '\n'),        # Convert <br> to newline
-        (r'<[^>]+>', ''),            # Remove any other HTML tags
-        (r'&lt;', '<'),              # Convert HTML entities
-        (r'&gt;', '>'),              # Convert HTML entities
-        (r'&amp;', '&')              # Convert HTML entities
+        r'<br\s*/?>',                # All <br> variants
+        r'<[^>]+>',                  # Any HTML tags
+        r'&lt;',                     # HTML entities
+        r'&gt;',                     # HTML entities
+        r'&amp;'                     # HTML entities
     ]
     
     violations = []
-    cleaned_content = content
-    
-    for pattern, replacement in html_patterns:
-        if re.search(pattern, cleaned_content):
-            violations.append(f"HTML pattern detected: {pattern}")
-            cleaned_content = re.sub(pattern, replacement, cleaned_content)
+    for pattern in html_patterns:
+        matches = re.findall(pattern, content, re.IGNORECASE)
+        if matches:
+            violations.extend(matches)
     
     if violations:
         return {
-            "status": "AUTO_FIXED",
+            "status": "CRITICAL_BLOCK",
             "violations": violations,
-            "cleaned_content": cleaned_content,
-            "action": "CONVERTED_TO_MARKDOWN",
-            "message": "HTML tags automatically converted to markdown"
+            "action": "BLOCK_HTML_CONTENT",
+            "message": "HTML tags detected - must use markdown-only formatting",
+            "required_fix": "Convert all HTML to proper markdown formatting",
+            "blocking_priority": "ABSOLUTE"
         }
     
     return {"status": "APPROVED", "content": content}
+
+def enforce_yaml_block_html_prevention(yaml_content):
+    """
+    CRITICAL: Detect and BLOCK HTML tags specifically within YAML blocks
+    """
+    # Detect HTML tags within YAML content (the critical issue reported)
+    html_in_yaml_patterns = [
+        r'yaml<br>',                    # Critical: yaml<br> pattern
+        r'yaml.*<br>.*apiVersion',      # YAML block with <br> tags
+        r'<br>\s*apiVersion',           # <br> before apiVersion
+        r'<br>\s*kind:',                # <br> before kind
+        r'<br>\s*metadata:',            # <br> before metadata
+        r'<br>\s*spec:',                # <br> before spec
+        r'with:\s*yaml<br>'             # "with: yaml<br>" pattern
+    ]
+    
+    violations = []
+    for pattern in html_in_yaml_patterns:
+        matches = re.findall(pattern, yaml_content, re.IGNORECASE | re.MULTILINE)
+        if matches:
+            violations.extend(matches)
+    
+    if violations:
+        return {
+            "status": "CRITICAL_BLOCK",
+            "violations": violations,
+            "action": "CONVERT_TO_PROPER_YAML_BLOCKS",
+            "message": "HTML tags detected in YAML content - must use proper ```yaml blocks",
+            "required_format": "```yaml\napiVersion: cluster.open-cluster-management.io/v1beta1\nkind: ClusterCurator\n```",
+            "blocking_priority": "ABSOLUTE"
+        }
+    
+    return {"status": "APPROVED", "yaml_format": "valid"}
 ```
 
 ### **Citation Detection Engine:**
@@ -296,11 +327,31 @@ def enforce_executable_cli_commands(test_table_content):
     required_columns = ["UI Method", "CLI Method", "Expected Results"]
     missing_requirements = []
     
+    # Check for console login CLI method requirement
+    console_login_patterns = [
+        r'Log into.*Console|Login.*ACM.*Console|Access.*Console',
+        r'Navigate to.*console-openshift-console\.apps'
+    ]
+    
+    has_console_login_step = False
+    for pattern in console_login_patterns:
+        if re.search(pattern, test_table_content, re.IGNORECASE):
+            has_console_login_step = True
+            break
+    
+    # If console login step exists, must have oc login CLI method
+    if has_console_login_step:
+        oc_login_pattern = r'oc login.*https://api\.|oc login.*--token'
+        if not re.search(oc_login_pattern, test_table_content):
+            missing_requirements.append("CRITICAL: Console login step missing oc login CLI command")
+    
     # Check for executable CLI command patterns
     executable_patterns = [
         r'oc apply -f - <<EOF.*?EOF',          # Heredoc pattern
         r'```yaml.*?```',                       # YAML block pattern
-        r'touch.*?\.yaml.*?```yaml.*?```'       # Touch file + YAML block pattern
+        r'touch.*?\.yaml.*?```yaml.*?```',      # Touch file + YAML block pattern
+        r'oc login.*https://api\.',             # oc login commands
+        r'oc login.*--token'                    # Token-based login
     ]
     
     has_executable_format = False
@@ -422,6 +473,65 @@ def enforce_complete_report_structure(report_content):
 - **Regression Prevention Service**: Integrate with existing quality enforcement
 - **Universal Data Integration**: Ensure real data integration follows format standards
 - **Configuration Automation**: Auto-update enforcement rules based on template changes
+
+## 🚨 **COMPREHENSIVE ENFORCEMENT EXECUTION ENGINE**
+
+### **Real-Time Format Validation Pipeline:**
+```python
+def comprehensive_format_enforcement(content, content_type):
+    """
+    Comprehensive real-time format enforcement for all content types
+    """
+    validation_results = []
+    
+    # 1. CRITICAL: HTML Tag Prevention (ALL content)
+    html_validation = enforce_html_tag_prevention(content)
+    if html_validation["status"] == "CRITICAL_BLOCK":
+        return html_validation  # Immediate block
+    
+    # 2. CRITICAL: YAML HTML Prevention (CLI methods)
+    if "yaml" in content.lower() or "oc apply" in content:
+        yaml_html_validation = enforce_yaml_block_html_prevention(content)
+        if yaml_html_validation["status"] == "CRITICAL_BLOCK":
+            return yaml_html_validation  # Immediate block
+    
+    # 3. Content-specific validations
+    if content_type == "test_cases":
+        # Citation-free enforcement for test cases
+        citation_validation = enforce_citation_free_test_cases(content)
+        if citation_validation["status"] == "BLOCKED":
+            return citation_validation
+        
+        # Dual-method coverage enforcement
+        dual_method_validation = enforce_dual_method_coverage(content)
+        if dual_method_validation["status"] == "BLOCKED":
+            return dual_method_validation
+    
+    elif content_type == "complete_report":
+        # Complete report structure enforcement
+        structure_validation = enforce_complete_report_structure(content)
+        if structure_validation["status"] == "BLOCKED":
+            return structure_validation
+    
+    return {"status": "APPROVED", "content_validated": True}
+```
+
+### **Mandatory Integration Points:**
+```python
+def integrate_with_framework_generation():
+    """
+    Integration points with framework content generation
+    """
+    integration_checkpoints = {
+        "test_step_generation": "validate_dual_method_coverage_and_cli_completeness",
+        "yaml_content_creation": "enforce_html_free_yaml_blocks", 
+        "cli_command_generation": "validate_executable_commands_and_console_login",
+        "report_section_creation": "enforce_structure_and_citation_compliance",
+        "final_output_delivery": "comprehensive_validation_all_requirements"
+    }
+    
+    return integration_checkpoints
+```
 
 ## 📊 **ENFORCEMENT METRICS**
 
