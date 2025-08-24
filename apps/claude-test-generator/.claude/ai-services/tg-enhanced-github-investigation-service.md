@@ -31,6 +31,12 @@ AI_Enhanced_GitHub_Investigation:
     - implementation_validation: "Code-based validation of inherited feature understanding"
     - integration_analysis: "Comprehensive integration point analysis for testing implications"
     - evidence_consolidation: "Final evidence consolidation across all context sources"
+    
+  html_sanitization_capabilities:
+    - mandatory_data_cleaning: "Comprehensive HTML tag and entity removal from all collected data"
+    - webfetch_content_sanitization: "Automatic cleaning of HTML-contaminated GitHub content"
+    - recursive_data_processing: "Deep sanitization of nested data structures"
+    - contamination_reporting: "Real-time reporting of HTML patterns removed during collection"
 ```
 
 ### Progressive Context Integration
@@ -83,19 +89,22 @@ class EnhancedGitHubInvestigationService:
         # Stage 2: Context-Informed GitHub Strategy
         github_strategy = self.develop_context_informed_github_strategy(inherited_context)
         
-        # Stage 3: Targeted GitHub Investigation
+        # Stage 3: Targeted GitHub Investigation with HTML Sanitization
         github_analysis = self.perform_targeted_github_investigation(
             inherited_context, github_strategy
         )
         
+        # Stage 3.5: Mandatory HTML Sanitization of Collected Data
+        sanitized_github_analysis = self.sanitize_collected_data(github_analysis)
+        
         # Stage 4: Implementation Validation and Analysis
         implementation_analysis = self.validate_and_analyze_implementation(
-            inherited_context, github_analysis
+            inherited_context, sanitized_github_analysis
         )
         
         # Stage 5: Context Completion with GitHub Intelligence
         complete_context = self.complete_context_with_github_intelligence(
-            inherited_context, github_analysis, implementation_analysis
+            inherited_context, sanitized_github_analysis, implementation_analysis
         )
         
         # Stage 6: Final Context Validation and Quality Assurance
@@ -104,7 +113,7 @@ class EnhancedGitHubInvestigationService:
         return EnhancedGitHubResult(
             inherited_context=inherited_context,
             github_strategy=github_strategy,
-            github_analysis=github_analysis,
+            github_analysis=sanitized_github_analysis,  # Return sanitized data
             implementation_analysis=implementation_analysis,
             complete_context=complete_context,
             validation_results=validation_results,
@@ -406,6 +415,97 @@ class EnhancedGitHubInvestigationService:
             }
         
         return results
+    
+    def sanitize_collected_data(self, github_analysis):
+        """
+        Mandatory HTML sanitization of all collected GitHub data before passing to downstream agents
+        """
+        print("🧹 Agent C: Sanitizing collected data to remove HTML contamination...")
+        
+        import re
+        
+        # Comprehensive HTML removal patterns
+        html_patterns = [
+            r'<br\s*/?>', # <br>, <br/>, <br >
+            r'<[^>]+>',   # Any HTML tags
+            r'&lt;',      # HTML entities
+            r'&gt;',
+            r'&amp;',
+            r'&nbsp;',
+            r'&quot;',
+            r'&apos;'
+        ]
+        
+        def clean_text(text):
+            """Remove HTML patterns from text while preserving content structure"""
+            if not isinstance(text, str):
+                return text
+            
+            cleaned = text
+            
+            # Remove HTML tags and entities
+            for pattern in html_patterns:
+                cleaned = re.sub(pattern, '', cleaned, flags=re.IGNORECASE)
+            
+            # Clean up multiple spaces and newlines caused by tag removal
+            cleaned = re.sub(r'\s+', ' ', cleaned)
+            cleaned = re.sub(r'\n\s*\n', '\n\n', cleaned)
+            
+            # Preserve markdown structure
+            cleaned = cleaned.strip()
+            
+            return cleaned
+        
+        def sanitize_dict(data):
+            """Recursively sanitize dictionary data"""
+            if isinstance(data, dict):
+                return {key: sanitize_dict(value) for key, value in data.items()}
+            elif isinstance(data, list):
+                return [sanitize_dict(item) for item in data]
+            elif isinstance(data, str):
+                return clean_text(data)
+            else:
+                return data
+        
+        # Sanitize the entire GitHub analysis structure
+        sanitized_analysis = sanitize_dict(github_analysis)
+        
+        # Count sanitization operations for reporting
+        html_removals_count = self._count_html_removals(github_analysis, sanitized_analysis)
+        
+        print(f"✅ Agent C: Data sanitization complete")
+        print(f"   HTML patterns removed: {html_removals_count}")
+        print(f"   Clean data ready for downstream processing")
+        
+        return sanitized_analysis
+    
+    def _count_html_removals(self, original, sanitized):
+        """Count HTML patterns that were removed during sanitization"""
+        import re
+        
+        def extract_strings(data):
+            """Extract all string values from nested data structure"""
+            strings = []
+            if isinstance(data, dict):
+                for value in data.values():
+                    strings.extend(extract_strings(value))
+            elif isinstance(data, list):
+                for item in data:
+                    strings.extend(extract_strings(item))
+            elif isinstance(data, str):
+                strings.append(data)
+            return strings
+        
+        original_strings = extract_strings(original)
+        sanitized_strings = extract_strings(sanitized)
+        
+        # Count HTML patterns in original data
+        html_pattern = r'<[^>]+>|&lt;|&gt;|&amp;|&nbsp;|&quot;|&apos;'
+        
+        original_html_count = sum(len(re.findall(html_pattern, s, re.IGNORECASE)) for s in original_strings)
+        sanitized_html_count = sum(len(re.findall(html_pattern, s, re.IGNORECASE)) for s in sanitized_strings)
+        
+        return original_html_count - sanitized_html_count
     
     def _analyze_mcp_pr_data(self, mcp_result, pr_number):
         """Analyze MCP PR data for comprehensive insights"""

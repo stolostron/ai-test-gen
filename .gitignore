@@ -53,6 +53,12 @@ environment-*.config
 .idea/workspace.xml
 *.iml
 
+# Python cache protection
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
 # Runtime credential protection  
 runtime-credentials-*
 session-auth-*
