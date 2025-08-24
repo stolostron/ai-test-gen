@@ -52,82 +52,114 @@ class FrameworkIntelligenceService:
             }
     
     def discover_main_framework_services(self) -> Dict[str, Any]:
-        """Discover main framework AI services using git"""
+        """Discover main framework AI services using direct file access"""
         print("🔍 Discovering main framework AI services...")
         
-        # Use git to list service files - use the full correct path
-        git_result = self.run_git_command([
-            'git', 'ls-files', '../../../../apps/claude-test-generator/.claude/ai-services/*.md'
-        ])
+        # Use direct file system access instead of git commands
+        # This reads current file state, not just git-tracked files
+        services_dir = Path("../../apps/claude-test-generator/.claude/ai-services/")
         
         services = []
         service_count = 0
         
-        if git_result['success'] and git_result['stdout'].strip():
-            service_files = [f for f in git_result['stdout'].strip().split('\n') if f]
-            service_count = len(service_files)
+        try:
+            if services_dir.exists():
+                # Get all .md files in the services directory
+                service_files = list(services_dir.glob("*.md"))
+                service_count = len(service_files)
+                
+                for service_file in service_files:
+                    service_name = service_file.stem
+                    services.append({
+                        'name': service_name,
+                        'file_path': str(service_file),
+                        'prefix': service_name.split('-')[0] if '-' in service_name else 'unknown'
+                    })
             
-            for service_file in service_files:
-                service_name = Path(service_file).stem
-                services.append({
-                    'name': service_name,
-                    'file_path': service_file,
-                    'prefix': service_name.split('-')[0] if '-' in service_name else 'unknown'
-                })
+            # Analyze service patterns
+            prefixes = {}
+            for service in services:
+                prefix = service['prefix']
+                if prefix not in prefixes:
+                    prefixes[prefix] = []
+                prefixes[prefix].append(service['name'])
         
-        # Analyze service patterns
-        prefixes = {}
-        for service in services:
-            prefix = service['prefix']
-            if prefix not in prefixes:
-                prefixes[prefix] = []
-            prefixes[prefix].append(service['name'])
-        
-        evidence = {
-            'total_services': service_count,
-            'services': services,
-            'prefixes': prefixes,
-            'git_command_result': git_result,
-            'discovery_timestamp': datetime.now().isoformat()
-        }
+            evidence = {
+                'total_services': service_count,
+                'services': services,
+                'prefixes': prefixes,
+                'services_directory_exists': services_dir.exists(),
+                'discovery_method': 'direct_file_access',
+                'discovery_timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            evidence = {
+                'total_services': 0,
+                'services': [],
+                'prefixes': {},
+                'services_directory_exists': False,
+                'error': str(e),
+                'discovery_method': 'direct_file_access_failed',
+                'discovery_timestamp': datetime.now().isoformat()
+            }
         
         print(f"📊 Discovered {service_count} AI services in main framework")
         
         return evidence
     
     def discover_testing_framework_services(self) -> Dict[str, Any]:
-        """Discover current testing framework services"""
+        """Discover current testing framework services using direct file access"""
         print("🔍 Discovering testing framework AI services...")
         
-        services_dir = Path("../../.claude/ai-services")
+        # Use direct file system access instead of git commands
+        # This reads current file state, not just git-tracked files
+        services_dir = Path(".claude/ai-services")
+        
         services = []
+        service_count = 0
         
-        if services_dir.exists():
-            for service_file in services_dir.glob("*.md"):
-                service_name = service_file.stem
-                services.append({
-                    'name': service_name,
-                    'file_path': str(service_file),
-                    'prefix': service_name.split('-')[0] if '-' in service_name else 'unknown'
-                })
+        try:
+            if services_dir.exists():
+                # Get all .md files in the services directory
+                service_files = list(services_dir.glob("*.md"))
+                service_count = len(service_files)
+                
+                for service_file in service_files:
+                    service_name = service_file.stem
+                    services.append({
+                        'name': service_name,
+                        'file_path': str(service_file),
+                        'prefix': service_name.split('-')[0] if '-' in service_name else 'unknown'
+                    })
         
-        # Analyze service patterns
-        prefixes = {}
-        for service in services:
-            prefix = service['prefix']
-            if prefix not in prefixes:
-                prefixes[prefix] = []
-            prefixes[prefix].append(service['name'])
+            # Analyze service patterns
+            prefixes = {}
+            for service in services:
+                prefix = service['prefix']
+                if prefix not in prefixes:
+                    prefixes[prefix] = []
+                prefixes[prefix].append(service['name'])
         
-        evidence = {
-            'total_services': len(services),
-            'services': services,
-            'prefixes': prefixes,
-            'services_directory_exists': services_dir.exists(),
-            'discovery_timestamp': datetime.now().isoformat()
-        }
+            evidence = {
+                'total_services': service_count,
+                'services': services,
+                'prefixes': prefixes,
+                'services_directory_exists': services_dir.exists(),
+                'discovery_method': 'direct_file_access',
+                'discovery_timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            evidence = {
+                'total_services': 0,
+                'services': [],
+                'prefixes': {},
+                'services_directory_exists': False,
+                'error': str(e),
+                'discovery_method': 'direct_file_access_failed',
+                'discovery_timestamp': datetime.now().isoformat()
+            }
         
-        print(f"📊 Discovered {len(services)} AI services in testing framework")
+        print(f"📊 Discovered {service_count} AI services in testing framework")
         
         return evidence
     
@@ -266,7 +298,7 @@ class FrameworkIntelligenceService:
             'intelligence_gathering': {
                 'start_time': datetime.now().isoformat(),
                 'isolation_compliant': True,
-                'method': 'git_based_analysis'
+                'method': 'direct_file_access'
             }
         }
         

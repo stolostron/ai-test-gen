@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 """
-Intelligent Run Organization Service
-Provides ticket-based grouping for multiple test runs while maintaining backward compatibility.
+Intelligent Run Organization Service - Automatic Enforcement
+=========================================================
+
+FRAMEWORK INTEGRATION: Automatically enforces proper ticket-based run organization
+for all framework executions, ensuring consistent structure:
+
+runs/
+├── ACM-XXXXX/
+│   ├── ACM-XXXXX-20250823-170246/
+│   ├── ACM-XXXXX-20250824-091502/
+│   └── latest -> ACM-XXXXX-20250824-091502
+
+This service is called automatically during framework execution to ensure
+proper organization without requiring manual intervention.
 """
 
 import os
@@ -102,6 +114,8 @@ class IntelligentRunOrganizer:
             ticket_parent = self.runs_dir / jira_ticket
             new_run_path = ticket_parent / new_run_id
             new_run_path.mkdir(exist_ok=True)
+            # Update latest symlink
+            self.create_latest_symlink(jira_ticket, new_run_id)
             return str(new_run_path)
             
         else:
@@ -110,6 +124,8 @@ class IntelligentRunOrganizer:
             ticket_parent.mkdir(exist_ok=True)
             new_run_path = ticket_parent / new_run_id
             new_run_path.mkdir(exist_ok=True)
+            # Update latest symlink
+            self.create_latest_symlink(jira_ticket, new_run_id)
             return str(new_run_path)
     
     def _reorganize_for_second_run(self, jira_ticket: str, existing_run: str, new_run_id: str) -> str:
@@ -133,9 +149,34 @@ class IntelligentRunOrganizer:
         new_run_path = ticket_parent / new_run_id
         new_run_path.mkdir(exist_ok=True)
         
+        # Create latest symlink pointing to newest run
+        self.create_latest_symlink(jira_ticket, new_run_id)
+        
         print(f"✅ Organization complete: {jira_ticket}/ now contains multiple runs")
         return str(new_run_path)
     
+    def create_latest_symlink(self, jira_ticket: str, latest_run_id: str) -> None:
+        """
+        Creates/updates 'latest' symlink pointing to most recent run
+        """
+        ticket_parent = self.runs_dir / jira_ticket
+        if not ticket_parent.exists():
+            return  # No ticket organization
+            
+        latest_link = ticket_parent / "latest"
+        
+        try:
+            # Remove existing symlink
+            if latest_link.exists() or latest_link.is_symlink():
+                latest_link.unlink()
+            
+            # Create new symlink pointing to latest run
+            latest_link.symlink_to(latest_run_id)
+            print(f"🔗 Updated latest symlink: {jira_ticket}/latest -> {latest_run_id}")
+            
+        except Exception as e:
+            print(f"❌ Failed to create latest symlink: {e}")
+
     def create_latest_run_metadata(self, jira_ticket: str, run_metadata: Dict) -> None:
         """
         Creates/updates latest-run-metadata.json in ticket parent directory
@@ -149,7 +190,7 @@ class IntelligentRunOrganizer:
             "latest_timestamp": run_metadata.get("generation_timestamp"),
             "jira_ticket": jira_ticket,
             "feature_title": run_metadata.get("feature_title"),
-            "total_runs": len([d for d in ticket_parent.iterdir() if d.is_dir()]),
+            "total_runs": len([d for d in ticket_parent.iterdir() if d.is_dir() and d.name != "latest"]),
             "organization_type": "ticket_based",
             "last_updated": datetime.now().isoformat()
         }

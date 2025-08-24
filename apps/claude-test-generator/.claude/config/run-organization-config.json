@@ -3,9 +3,13 @@
     "description": "Configuration for organizing test generation runs with single consolidated directory enforcement and mandatory cleanup",
     "structure": {
       "base_directory": "runs",
-      "run_folder_format": "{jira_id}-{timestamp}",
+      "organization_type": "ticket_based",
+      "ticket_folder_format": "runs/{jira_id}/",
+      "run_folder_format": "runs/{jira_id}/{jira_id}-{timestamp}/",
+      "latest_symlink": "runs/{jira_id}/latest -> {jira_id}-{timestamp}",
       "timestamp_format": "YYYYMMDD-HHMMSS",
-      "example": "ACM-22079-20250820-140028"
+      "example": "runs/ACM-22079/ACM-22079-20250824-140028/",
+      "latest_example": "runs/ACM-22079/latest -> ACM-22079-20250824-140028"
     },
     "consolidation_policy": {
       "single_directory_enforcement": true,
@@ -104,8 +108,16 @@
       "ai_services": [
         "tg-run-organization-enforcement-service",
         "tg-cleanup-automation-service", 
-        "tg-directory-validation-service"
+        "tg-directory-validation-service",
+        "tg-intelligent-run-organizer-service"
       ],
+      "automatic_organization": {
+        "enabled": true,
+        "ticket_extraction": true,
+        "latest_symlink_creation": true,
+        "metadata_generation": true,
+        "structure_validation": true
+      },
       "validation_checkpoints": [
         "before_agent_execution",
         "after_each_phase", 

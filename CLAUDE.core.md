@@ -1,6 +1,6 @@
 # AI Systems Suite - Core Configuration
 
-> **Multi-app Claude configuration with complete isolation architecture**
+> **Multi-app Claude configuration with hierarchical isolation architecture**
 
 ## 📋 GLOBAL DOCUMENTATION STANDARDS (PERSISTENT MEMORY)
 
@@ -15,13 +15,15 @@
 
 **Claude Code Memory**: These standards apply to ALL apps permanently and override any default behavior.
 
-## 🏗️ Core Isolation Principles
+## 🏗️ Hierarchical Isolation Principles
 
-- **Zero Context Contamination**: Apps never interfere with each other
-- **Complete Self-Containment**: Each app works independently
+- **Strict App Boundaries**: Apps completely contained within their directories with real-time violation detection
+- **Hierarchical Access Control**: Root level maintains full orchestration and cross-app capabilities
+- **External Access Prevention**: Apps cannot access `../../`, `../other-app/`, or system directories
+- **Complete Self-Containment**: Each app works independently within enforced boundaries
 - **Prefixed AI Services**: `tg_` (test-generator) and `za_` (z-stream-analysis) namespacing
 - **Transparent Proxy Access**: Full app functionality from root via `/app-name` commands
-- **Dynamic App Discovery**: Router automatically detects new apps
+- **Dynamic App Discovery**: Router automatically detects new apps with isolation enforcement
 
 ### App Structure
 ```
@@ -29,7 +31,16 @@ apps/your-app/
 ├── .app-config              # App identity and isolation rules
 ├── CLAUDE.md               # Self-contained configuration
 ├── .claude/                # App-specific AI services (prefixed)
-├── runs/                   # Independent results storage
+│   ├── ai-services/        # Prefixed AI service configurations
+│   └── isolation/          # Strict isolation enforcement system
+│       ├── isolation_config.json    # Isolation boundaries configuration
+│       ├── app_isolation_enforcer.py # Real-time violation detection
+│       ├── isolation_monitor.py     # Monitoring and logging
+│       └── validation_status.json   # Continuous compliance status
+├── runs/                   # Intelligent ticket-based organization
+│   ├── ACM-XXXXX/          # Ticket-based folders
+│   │   ├── ACM-XXXXX-timestamp/  # Timestamped run directories
+│   │   └── latest -> ACM-XXXXX-timestamp  # Latest symlink
 └── docs/                   # App-specific documentation
 ```
 
@@ -37,6 +48,10 @@ apps/your-app/
 
 - **95% reduction** in configuration complexity
 - **100% elimination** of cross-app contamination  
+- **100% app isolation** with strict boundary enforcement
 - **Zero AI service conflicts** through proper prefixing
-- **Complete functionality preservation** with capabilities
-- **Future-proof extensibility** with automatic app discovery
+- **Complete functionality preservation** with hierarchical access
+- **Real-time violation detection** with `.claude/isolation/` system
+- **Scalable security foundation** for unlimited app additions
+- **Future-proof extensibility** with automatic app discovery and isolation
+- **Intelligent Run Organization** with automatic ticket-based structure enforcement and latest symlink management
