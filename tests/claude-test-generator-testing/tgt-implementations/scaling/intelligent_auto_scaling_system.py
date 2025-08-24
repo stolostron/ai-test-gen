@@ -8,7 +8,6 @@ import json
 import time
 import asyncio
 import threading
-import psutil
 import statistics
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple, Callable
@@ -16,9 +15,21 @@ from datetime import datetime, timedelta
 from dataclasses import dataclass, field
 from enum import Enum
 import subprocess
-import numpy as np
 from collections import defaultdict, deque
 import concurrent.futures
+
+# Mock imports for dependencies not available
+try:
+    import psutil
+except ImportError:
+    psutil = None
+
+try:
+    import numpy as np
+except ImportError:
+    class MockNumpy:
+        def mean(self, data): return sum(data) / len(data) if data else 0
+    np = MockNumpy()
 
 class ScalingDirection(Enum):
     SCALE_UP = "scale_up"
