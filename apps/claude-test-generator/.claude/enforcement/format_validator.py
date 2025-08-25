@@ -110,6 +110,31 @@ class FormatEnforcementValidator:
     
     def validate_dual_method_coverage(self, content: str) -> Dict[str, Any]:
         """Validate dual UI+CLI method coverage and proper table format"""
+        # Check for ACM-22079 specific violations - wrong structure
+        structure_violations = []
+        
+        # Check for wrong section headers (ACM-22079 violations)
+        wrong_sections = [
+            r'###\s*Preconditions',     # Should be "Setup"
+            r'###\s*Test Steps',        # Should be table  
+            r'###\s*Test Data',         # Should be within table
+            r'###\s*CLI Implementation' # Should be within table
+        ]
+        
+        for pattern in wrong_sections:
+            matches = re.findall(pattern, content, re.IGNORECASE)
+            if matches:
+                structure_violations.extend(matches)
+        
+        if structure_violations:
+            return {
+                "status": "BLOCKED",
+                "violations": structure_violations,
+                "action": "FIX_TEST_CASE_STRUCTURE",
+                "message": "Test cases must use: Description, Setup, and Test Table - not Preconditions/Test Steps/Test Data sections",
+                "required_format": "## Description\n[content]\n## Setup\n[content]\n| Step | Action | UI Method | CLI Method | Expected Results |"
+            }
+        
         # Check for paragraph format violations (CRITICAL)
         paragraph_format_patterns = [
             r'\*\*Step \d+:.*?\*\*',  # **Step 1:** patterns

@@ -133,6 +133,11 @@ class ObservabilityCommandHandler:
         else:
             return self._handle_unknown_command(command)
     
+    def _handle_insights_command(self) -> str:
+        """Handle /insights command - key business and technical insights"""
+        # For compatibility: insights provides similar information to status
+        return self._handle_status_command()
+    
     def _handle_status_command(self) -> str:
         """Handle /status command - current execution status and progress"""
         # Load current run metadata if available

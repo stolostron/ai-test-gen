@@ -1,0 +1,9 @@
+{
+  "jira_ticket": "ACM-999",
+  "run_directory": "runs/ACM-999/ACM-999-20250824-155513",
+  "start_timestamp": "2025-08-24T19:55:13.704515+00:00",
+  "framework_version": "v4.2.0-strict-enforcement",
+  "enforcement_level": "MANDATORY_NO_BYPASS",
+  "execution_guarantee": "FULL_6_PHASE_WORKFLOW_REQUIRED",
+  "feature": "Final Test"
+}

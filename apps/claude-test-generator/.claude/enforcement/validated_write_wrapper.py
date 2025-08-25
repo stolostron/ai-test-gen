@@ -72,8 +72,10 @@ class ValidatedWriteWrapper:
         
         # STEP 2: Execute write operation (validation passed)
         try:
-            # Ensure directory exists
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            # Ensure directory exists (handle empty dirname case)
+            file_dir = os.path.dirname(file_path)
+            if file_dir:  # Only create if dirname is not empty
+                os.makedirs(file_dir, exist_ok=True)
             
             # Write file with validation approval
             with open(file_path, 'w', encoding='utf-8') as f:

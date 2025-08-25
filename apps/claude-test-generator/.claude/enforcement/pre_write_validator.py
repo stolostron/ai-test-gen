@@ -20,7 +20,9 @@ class PreWriteValidationService:
         
     def determine_content_type(self, file_path: str) -> str:
         """Determine content type based on file path"""
-        if "Test-Cases" in file_path or "test-cases" in file_path:
+        if ("Test-Cases" in file_path or "test-cases" in file_path or 
+            "test-" in file_path or "Test" in file_path or 
+            file_path.endswith(".md")):
             return "test_cases"
         elif "Complete-Analysis" in file_path or "analysis" in file_path:
             return "complete_report"
