@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "enabled": true,
+    "hook_directory": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator/.claude/hooks",
+    "active_hooks": [
+      {
+        "name": "user_prompt_completion_hook",
+        "file": "user_prompt_completion_hook.py",
+        "function": "user_prompt_completion_hook.claude_code_tool_hook",
+        "mandatory": false
+      }
+    ]
+  },
+  "logging": {
+    "comprehensive_logging": true,
+    "mandatory_logging": true,
+    "log_all_tools": true,
+    "log_directory": ".claude/logs/active-runs"
+  }
+}

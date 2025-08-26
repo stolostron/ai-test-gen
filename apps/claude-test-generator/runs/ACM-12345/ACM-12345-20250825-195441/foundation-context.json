@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "context_version": "1.0.0",
+    "creation_timestamp": "2025-08-25T23:54:41.271791",
+    "last_updated": "2025-08-25T23:54:41.272757",
+    "consistency_score": 1.0,
+    "validation_level": "standard"
+  },
+  "jira_info": {
+    "jira_id": "ACM-12345",
+    "title": "Test issue for framework validation",
+    "status": "Open",
+    "fix_version": "2.15.0",
+    "priority": "Medium",
+    "component": "Test",
+    "detection_timestamp": "2025-08-25T23:54:41.272561",
+    "confidence": 0.9
+  },
+  "version_context": {
+    "target_version": "2.15.0",
+    "environment_version": "2.14.0",
+    "comparison_result": "newer",
+    "detection_method": "intelligent_simulation",
+    "confidence": 0.9,
+    "version_gap_details": {
+      "comparison": "newer",
+      "gap_type": "upgrade_required",
+      "urgency": "medium",
+      "target_version": "2.15.0",
+      "environment_version": "2.14.0",
+      "version_difference": {
+        "major": 0,
+        "minor": 1,
+        "patch": 0
+      }
+    }
+  },
+  "environment_baseline": {
+    "cluster_name": "default-cluster",
+    "api_url": "https://api.default-cluster.example.com:6443",
+    "console_url": "https://console.default-cluster.example.com",
+    "platform": "kubernetes",
+    "region": "us-east-1",
+    "health_status": "healthy",
+    "connectivity_confirmed": true,
+    "assessment_timestamp": "2025-08-25T23:54:41.272613",
+    "confidence": 0.9
+  },
+  "deployment_instruction": "MINOR UPGRADE REQUIRED: Upgrade from 2.14.0 to 2.15.0. Standard upgrade process with feature validation.",
+  "agent_inheritance_ready": true,
+  "validation_results": {
+    "jira_id_present": true,
+    "target_version_present": true,
+    "environment_version_present": true,
+    "version_gap_analyzed": true,
+    "environment_assessed": true,
+    "deployment_instruction_generated": true,
+    "connectivity_confirmed": true,
+    "metadata_complete": true
+  }
+}

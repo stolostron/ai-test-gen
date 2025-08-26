@@ -19,7 +19,7 @@ A modular enterprise automation suite featuring completely isolated AI applicati
 ### Method 1: Just say it!
 ```bash
 # Just speak naturally - AI router understands and routes automatically:
-"Generate test plan for ACM-22079"
+"Generate test plan for ACM-22079"  # Example ticket
 "Debug the Jenkins pipeline failure"
 "I need to validate the new cluster management feature"
 "Help me analyze this automation issue"
@@ -29,7 +29,7 @@ A modular enterprise automation suite featuring completely isolated AI applicati
 ```bash
 # Direct app navigation:
 cd apps/claude-test-generator/
-"Generate test plan for ACM-22079"
+"Generate test plan for ACM-22079"  # Example command
 "Analyze PR: https://github.com/org/repo/pull/123"
 
 cd apps/z-stream-analysis/  
@@ -50,7 +50,7 @@ cd apps/z-stream-analysis/
 **Key Components:** Implementation Reality Agent, Evidence Validation Engine, Cross-Agent Validation Engine, Framework Reliability Architecture resolving 23 critical issues, MCP Integration with 45-60% GitHub performance improvement  
 **Universal Support:** Works with any JIRA ticket across any technology stack through dynamic AI adaptation and evidence-based operation  
 **Framework Observability:** Real-time execution visibility with 13-command interface providing business intelligence, technical analysis, and agent coordination tracking  
-**Usage:** `cd apps/claude-test-generator/` → "Generate test plan for ACM-22079"
+**Usage:** `cd apps/claude-test-generator/` → "Generate test plan for ACM-22079"  # Example usage
 
 ### Z-Stream Analysis  
 **Location:** `apps/z-stream-analysis/`  
@@ -62,8 +62,8 @@ cd apps/z-stream-analysis/
 
 | Your Need | Use This App | Example |
 |-----------|--------------|----------|
-| **Test ACM features** | `claude-test-generator` | Analyze ACM-22079 for comprehensive test plan with real data |
-| **Validate deployments** | `claude-test-generator` | Check if ACM-22079 feature is deployed in qe6 environment |
+| **Test ACM features** | `claude-test-generator` | Analyze ACM-22079 for comprehensive test plan with real data (example) |
+| **Validate deployments** | `claude-test-generator` | Check if ACM-22079 feature is deployed in qe6 environment (example) |
 | **Debug Jenkins failures** | `z-stream-analysis` | Pipeline failed, need root cause analysis with environment validation |
 | **Fix CI/CD issues** | `z-stream-analysis` | Automation scripts breaking, need comprehensive fixes |
 | **Component testing** | `claude-test-generator` | Generate tests for ClusterCurator, Policy, Application components |

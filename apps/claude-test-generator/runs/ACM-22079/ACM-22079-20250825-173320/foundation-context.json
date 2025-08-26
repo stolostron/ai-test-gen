@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "context_version": "1.0.0",
+    "creation_timestamp": "2025-08-25T21:33:20.453891",
+    "last_updated": "2025-08-25T21:33:20.453946",
+    "consistency_score": 1.0,
+    "validation_level": "standard"
+  },
+  "jira_info": {
+    "jira_id": "ACM-22079",
+    "title": "ClusterCurator digest-based upgrades for disconnected environments",
+    "status": "In Progress",
+    "fix_version": "2.15.0",
+    "priority": "High",
+    "component": "ClusterCurator",
+    "detection_timestamp": "2025-08-25T21:33:20.453902",
+    "confidence": 0.9
+  },
+  "version_context": {
+    "target_version": "2.15.0",
+    "environment_version": "4.20.0-ec.4",
+    "comparison_result": "newer",
+    "detection_method": "oc_assessment",
+    "confidence": 0.9,
+    "version_gap_details": {
+      "comparison": "newer",
+      "gap_type": "upgrade_required",
+      "urgency": "high",
+      "target_version": "2.15.0",
+      "environment_version": "4.20.0-ec.4",
+      "version_difference": {
+        "major": 2,
+        "minor": 15,
+        "patch": 0
+      }
+    }
+  },
+  "environment_baseline": {
+    "cluster_name": "test-cluster",
+    "api_url": "https://api.mist10-0.qe.red-chesterfield.com:6443\u001b[0m",
+    "console_url": "https://console.mist10-0.qe.red-chesterfield.com:6443\u001b[0m",
+    "platform": "openshift",
+    "region": "unknown",
+    "health_status": "healthy",
+    "connectivity_confirmed": true,
+    "assessment_timestamp": "2025-08-25T21:33:20.453915",
+    "confidence": 0.9
+  },
+  "deployment_instruction": "MAJOR UPGRADE REQUIRED: Upgrade from 4.20.0-ec.4 to 2.15.0. Review breaking changes and perform comprehensive testing.",
+  "agent_inheritance_ready": true,
+  "validation_results": {
+    "jira_id_present": true,
+    "target_version_present": true,
+    "environment_version_present": true,
+    "version_gap_analyzed": true,
+    "environment_assessed": true,
+    "deployment_instruction_generated": true,
+    "connectivity_confirmed": true,
+    "metadata_complete": true
+  }
+}

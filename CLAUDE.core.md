@@ -18,6 +18,9 @@
 ## 🏗️ Hierarchical Isolation Principles
 
 - **Strict App Boundaries**: Apps completely contained within their directories with real-time violation detection
+- **Framework Execution Integrity**: 8-Layer Safety System preventing framework split personality disorder and execution isolation failures
+- **Agent Output Reality Validation**: Mandatory validation ensuring agents produce actual output files before claiming completion
+- **Data Pipeline Integrity**: Phase boundary validation preventing downstream processing without validated agent intelligence
 - **Hierarchical Access Control**: Root level maintains full orchestration and cross-app capabilities
 - **External Access Prevention**: Apps cannot access `../../`, `../other-app/`, or system directories
 - **Complete Self-Containment**: Each app works independently within enforced boundaries
@@ -47,8 +50,8 @@ apps/your-app/
 ## 📊 Architecture Benefits
 
 - **95% reduction** in configuration complexity
-- **100% elimination** of cross-app contamination  
-- **100% app isolation** with strict boundary enforcement
+- **Comprehensive elimination** of cross-app contamination  
+- **Complete app isolation** with strict boundary enforcement
 - **Zero AI service conflicts** through proper prefixing
 - **Complete functionality preservation** with hierarchical access
 - **Real-time violation detection** with `.claude/isolation/` system

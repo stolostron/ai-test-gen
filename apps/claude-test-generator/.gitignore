@@ -1,0 +1,23 @@
+**/__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+venv/
+env/
+.venv/
+.env/
+*.egg-info/
+dist/
+build/
+.DS_Store
+.vscode/
+.idea/
+*.log
+temp_*
+*.tmp
+
+# Test reports
+tests/reports/
+comprehensive_test_report_*.json

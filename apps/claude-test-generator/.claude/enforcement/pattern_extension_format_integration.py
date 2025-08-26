@@ -24,7 +24,7 @@ class PatternExtensionFormatIntegration:
 {format_requirements}
 
 CRITICAL: Generated test cases will be automatically validated. 
-Target: 85+ points for framework acceptance.
+Target: target compliances for framework acceptance.
 Format violations will trigger corrective guidance generation.
 """
         return enhanced_prompt

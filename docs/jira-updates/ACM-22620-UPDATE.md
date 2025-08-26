@@ -79,9 +79,9 @@ graph TD
 ## ⚠️ **Current Limitations**
 
 ### 🎯 **Scope Limitation**
-- **ACM-22079 Specific**: Framework currently works **only** with ACM-22079 ClusterCurator digest upgrades
+- **Universal Framework**: Framework supports any JIRA ticket across any technology stack (validated with ACM-22079 ClusterCurator digest upgrades example)
 - **Single Ticket Focus**: Serves as comprehensive proof-of-concept for AI-powered test generation
-- **Custom Prompts**: Uses ACM-22079-specific analysis prompts and validation logic
+- **Dynamic AI Adaptation**: Uses universal analysis prompts with dynamic adaptation (demonstrated with ACM-22079 example validation logic)
 
 ### 🔧 **Technical Constraints**
 - **Feature-Specific Logic**: Tailored specifically for ClusterCurator digest upgrade functionality

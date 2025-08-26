@@ -1,12 +1,12 @@
 {
   "intelligence_gathering": {
-    "start_time": "2025-08-24T03:41:41.411591",
+    "start_time": "2025-08-25T01:07:56.150257",
     "isolation_compliant": true,
     "method": "direct_file_access"
   },
   "service_gap_analysis": {
     "main_framework": {
-      "total_services": 55,
+      "total_services": 57,
       "services": [
         {
           "name": "tg-enhanced-qe-intelligence-service",
@@ -151,6 +151,16 @@
         {
           "name": "tg-enhanced-github-investigation-service",
           "file_path": "../../apps/claude-test-generator/.claude/ai-services/tg-enhanced-github-investigation-service.md",
+          "prefix": "tg"
+        },
+        {
+          "name": "tg-intelligent-run-organizer-service",
+          "file_path": "../../apps/claude-test-generator/.claude/ai-services/tg-intelligent-run-organizer-service.md",
+          "prefix": "tg"
+        },
+        {
+          "name": "tg-agent-learning-framework",
+          "file_path": "../../apps/claude-test-generator/.claude/ai-services/tg-agent-learning-framework.md",
           "prefix": "tg"
         },
         {
@@ -306,6 +316,8 @@
           "tg-action-oriented-title-service",
           "tg-regression-prevention-service",
           "tg-enhanced-github-investigation-service",
+          "tg-intelligent-run-organizer-service",
+          "tg-agent-learning-framework",
           "tg-run-organization-enforcement-service",
           "tg-evidence-validation-engine",
           "tg-citation-enforcement-service",
@@ -379,7 +391,7 @@
       },
       "services_directory_exists": true,
       "discovery_method": "direct_file_access",
-      "discovery_timestamp": "2025-08-24T03:41:41.411857"
+      "discovery_timestamp": "2025-08-25T01:07:56.150577"
     },
     "testing_framework": {
       "total_services": 21,
@@ -517,34 +529,34 @@
       },
       "services_directory_exists": true,
       "discovery_method": "direct_file_access",
-      "discovery_timestamp": "2025-08-24T03:41:41.411960"
+      "discovery_timestamp": "2025-08-25T01:07:56.150694"
     },
     "gap_analysis": {
-      "main_service_count": 55,
+      "main_service_count": 57,
       "testing_service_count": 21,
-      "service_gap": 34,
-      "coverage_percentage": 38.18181818181819,
+      "service_gap": 36,
+      "coverage_percentage": 36.84210526315789,
       "missing_prefixes": [
-        "smart",
-        "cross",
-        "enhanced",
-        "github",
-        "AI",
-        "cluster",
-        "ai",
-        "mcp",
-        "script",
-        "DEPRECATED",
-        "documentation",
-        "tg",
-        "environment",
         "acm",
-        "v3",
+        "DEPRECATED",
+        "environment",
+        "mcp",
+        "ai",
         "ultrathink",
+        "tg",
+        "cluster",
+        "github",
+        "claude",
         "authentication",
-        "claude"
+        "enhanced",
+        "AI",
+        "v3",
+        "documentation",
+        "smart",
+        "script",
+        "cross"
       ],
-      "missing_services_count": 32
+      "missing_services_count": 34
     },
     "recommendations": [
       {
@@ -643,6 +655,16 @@
         "status": "missing"
       },
       {
+        "main_service": "tg-intelligent-run-organizer-service",
+        "recommended_testing_service": "tgt-intelligent-run-organizer-service",
+        "status": "missing"
+      },
+      {
+        "main_service": "tg-agent-learning-framework",
+        "recommended_testing_service": "tgt-agent-learning-framework",
+        "status": "missing"
+      },
+      {
         "main_service": "tg-run-organization-enforcement-service",
         "recommended_testing_service": "tgt-run-organization-enforcement-service",
         "status": "missing"
@@ -708,7 +730,7 @@
         "status": "missing"
       }
     ],
-    "analysis_timestamp": "2025-08-24T03:41:41.412009"
+    "analysis_timestamp": "2025-08-25T01:07:56.150752"
   },
   "framework_structure": {
     "directories": [],
@@ -719,10 +741,10 @@
       "stdout": "",
       "stderr": "",
       "command": "git ls-files apps/claude-test-generator/.claude/",
-      "timestamp": "2025-08-24T03:41:41.424971",
+      "timestamp": "2025-08-25T01:07:56.165928",
       "success": true
     },
-    "analysis_timestamp": "2025-08-24T03:41:41.424998"
+    "analysis_timestamp": "2025-08-25T01:07:56.165962"
   },
   "recent_changes": {
     "recent_commits": {
@@ -730,7 +752,7 @@
       "stdout": "",
       "stderr": "",
       "command": "git log --oneline -10 -- apps/claude-test-generator/",
-      "timestamp": "2025-08-24T03:41:41.451200",
+      "timestamp": "2025-08-25T01:07:56.191379",
       "success": true
     },
     "current_status": {
@@ -738,18 +760,18 @@
       "stdout": "",
       "stderr": "warning: could not open directory 'tests/claude-test-generator-testing/apps/claude-test-generator/': No such file or directory\n",
       "command": "git status --porcelain apps/claude-test-generator/",
-      "timestamp": "2025-08-24T03:41:41.472992",
+      "timestamp": "2025-08-25T01:07:56.204242",
       "success": true
     },
     "changes_detected": false,
-    "analysis_timestamp": "2025-08-24T03:41:41.473013"
+    "analysis_timestamp": "2025-08-25T01:07:56.204259"
   },
   "summary": {
-    "main_framework_services": 55,
+    "main_framework_services": 57,
     "testing_framework_services": 21,
-    "service_coverage": "38.2%",
-    "missing_services": 32,
+    "service_coverage": "36.8%",
+    "missing_services": 34,
     "intelligence_quality": "high",
-    "end_time": "2025-08-24T03:41:41.473046"
+    "end_time": "2025-08-25T01:07:56.204275"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "mandate": "COMPREHENSIVE_ANALYSIS_GUARANTEE",
+  "mandate": "COMPREHENSIVE_ANALYSIS_enforcement",
   "deployment_timestamp": "2025-08-24T20:33:56.501990",
-  "enforcement_level": "ABSOLUTE",
+  "enforcement_level": "strict",
   "shortcut_tolerance": "ZERO",
   "trigger_patterns": [
     "generate.*test.*plan",

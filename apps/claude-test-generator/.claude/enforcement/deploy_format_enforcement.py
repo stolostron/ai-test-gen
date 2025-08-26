@@ -97,7 +97,7 @@ MANDATORY FORMAT REQUIREMENTS (TARGET: 85+ POINTS):
    - **Description:** and **Setup:** sections required
    - Minimum 3 test cases
 
-4. **Validation:** Automatic format validation applied (85+ points required)
+4. **Validation:** Automatic format validation applied (target compliances required)
 """
 '''
         
@@ -196,7 +196,7 @@ class PatternExtensionFormatIntegration:
 {format_requirements}
 
 CRITICAL: Generated test cases will be automatically validated. 
-Target: 85+ points for framework acceptance.
+Target: target compliances for framework acceptance.
 Format violations will trigger corrective guidance generation.
 """
         return enhanced_prompt
@@ -294,7 +294,7 @@ class FrameworkFormatWorkflowIntegration:
 {validation_result['enforcement_summary']}
 
 ## Format Compliance
-Target Score: 85+ points
+Target Score: target compliances
 Status: {'✅ COMPLIANT' if validation_result['format_validation_passed'] else '❌ NON-COMPLIANT'}
 
 Generated: {self._get_timestamp()}
@@ -342,7 +342,7 @@ def execute_framework_format_enforcement(ticket_id, run_path):
                 'pre_generation_format_hook.py',
                 'post_generation_format_hook.py'
             ],
-            'validation_target': '85+ points',
+            'validation_target': 'target compliances',
             'enforcement_scope': 'All test case generation',
             'auto_correction': 'Enabled',
             'deployment_log': self.deployment_log,
@@ -394,7 +394,7 @@ The format enforcement system is now active and will:
 4. Integrate with Pattern Extension Service
 5. Provide comprehensive reporting
 
-**Target:** 85+ points for framework acceptance
+**Target:** target compliances for framework acceptance
 **Validation:** Automatic on every test case generation
 """
         
@@ -420,7 +420,7 @@ def main():
     print("✅ Pattern Extension Service integration active")
     print("✅ Framework workflow integration complete")
     print("✅ Automatic correction capabilities enabled")
-    print("✅ 85+ point validation target enforced")
+    print("✅ target compliance validation target enforced")
     print("\n📋 All future test case generation will be format-validated")
 
 if __name__ == "__main__":

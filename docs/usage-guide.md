@@ -19,7 +19,7 @@ Work from anywhere in the repository using natural language with automatic routi
 
 ```bash
 # From root directory - AI automatically routes to appropriate app
-"Generate test plan for ACM-22079"
+"Generate test plan for ACM-22079"  # Example ticket
 "Analyze PR: https://github.com/org/repo/pull/123"  
 "Debug Jenkins pipeline failure: https://jenkins-url/job/pipeline/123/"
 "Investigate clc-e2e-pipeline-3313"
@@ -176,7 +176,7 @@ Systematic context inheritance across all agents:
 
 - **Universal Context Management**: Progressive context building with intelligent coordination
 - **Real-Time Conflict Resolution**: Automatic detection and resolution of data inconsistencies
-- **Enhanced Agent Communication**: Optimized data sharing preventing errors like ACM-22079 version context issues
+- **Enhanced Agent Communication**: Optimized data sharing preventing version context inconsistency errors
 
 ## 🛡️ Security and Compliance
 

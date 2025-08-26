@@ -61,7 +61,7 @@ class FrameworkFormatWorkflowIntegration:
 {validation_result['enforcement_summary']}
 
 ## Format Compliance
-Target Score: 85+ points
+Target Score: target compliances
 Status: {'✅ COMPLIANT' if validation_result['format_validation_passed'] else '❌ NON-COMPLIANT'}
 
 Generated: {self._get_timestamp()}

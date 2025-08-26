@@ -62,7 +62,7 @@ class FrameworkFormatIntegration:
 
 **File:** {test_cases_path.name}
 **Current Score:** {validation_result['score']}/{validation_result['max_score']} ({validation_result['percentage']}%)
-**Required:** 85+ points
+**Required:** target compliances
 
 ## Critical Issues to Fix:
 
@@ -123,7 +123,7 @@ Each expected result should include realistic output in backticks:
 python .claude/enforcement/test_case_format_enforcer.py {test_cases_path.name}
 ```
 
-**Target:** 85+ points for framework acceptance
+**Target:** target compliances for framework acceptance
 """
         
         with open(guidance_path, 'w', encoding='utf-8') as f:

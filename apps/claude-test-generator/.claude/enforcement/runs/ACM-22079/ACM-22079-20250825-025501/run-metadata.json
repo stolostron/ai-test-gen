@@ -6,7 +6,7 @@
   "comprehensive_analysis_guarantee": {
     "certificate_id": "CAG-20250825-025501",
     "status": "ACTIVE",
-    "protection_level": "ABSOLUTE",
+    "protection_level": "strict",
     "context_isolation": true,
     "fresh_analysis": true,
     "agent_enforcement": true
@@ -76,7 +76,7 @@
     ],
     "customer_focus": "Amadeus disconnected environments",
     "technical_focus": "PR #468 3-tier fallback algorithm",
-    "format_compliance": "85+ points targeted"
+    "format_compliance": "target compliances targeted"
   },
   "deliverables": {
     "test_cases": "ACM-22079-Test-Cases.md",

@@ -5,9 +5,9 @@ MANDATORY COMPREHENSIVE ANALYSIS ENFORCEMENT SYSTEM
 
 CRITICAL PURPOSE: Prevent ALL framework shortcuts and force comprehensive analysis
 SCOPE: Universal application for ANY test plan generation request
-ENFORCEMENT LEVEL: ABSOLUTE - No exceptions, no optimizations, no shortcuts
+ENFORCEMENT LEVEL: STRICT - No exceptions, no optimizations, no shortcuts
 
-This system ensures 100% comprehensive analysis regardless of:
+This system enforces comprehensive analysis regardless of:
 - Previous runs existence
 - Chat session context
 - Time proximity to other runs  
@@ -81,7 +81,7 @@ class MandatoryComprehensiveAnalysisEnforcer:
             "require_environment_validation": True,
             "mandate_full_4_agent_execution": True,
             "block_context_reuse": True,
-            "enforcement_level": "ABSOLUTE",
+            "enforcement_level": "STRICT",
             "shortcut_tolerance": "ZERO"
         }
         
@@ -166,8 +166,6 @@ if __name__ == "__main__":
     ]
     
     for test_input in test_inputs:
-        print(f"
-Testing: {test_input}")
+        print(f"Testing: {test_input}")
         result = enforce_comprehensive_analysis_for_test_plan(test_input)
-        print(f"Enforcement: {result.get('execution_mode', 'NONE')}
-")
+        print(f"Enforcement: {result.get('execution_mode', 'NONE')}")

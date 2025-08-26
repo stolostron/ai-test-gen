@@ -37,5 +37,5 @@ MANDATORY FORMAT REQUIREMENTS (TARGET: 85+ POINTS):
    - **Description:** and **Setup:** sections required
    - Minimum 3 test cases
 
-4. **Validation:** Automatic format validation applied (85+ points required)
+4. **Validation:** Automatic format validation applied (target compliances required)
 """

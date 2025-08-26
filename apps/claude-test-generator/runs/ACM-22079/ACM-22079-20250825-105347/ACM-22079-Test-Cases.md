@@ -67,7 +67,7 @@ Validate the complete three-tier fallback algorithm (conditionalUpdates → avai
 - Environment from Test Case 1 with additional network simulation capability
 - Network policies configured for controlled API access restriction
 - Local registry mirror for disconnected environment simulation
-- Monitoring infrastructure for fallback progression tracking
+- Logging infrastructure for fallback progression validation
 
 ### Test Steps:
 
@@ -119,7 +119,7 @@ Validate ClusterCurator digest-based upgrades in completely disconnected air-gap
 - Complete network isolation with restrictive network policies
 - Local container registry mirror with ACM/OpenShift images
 - ImageContentSourcePolicy configured for local registry redirection
-- Performance monitoring for disconnected operation validation
+- Functional validation for disconnected operation compliance
 
 ### Test Steps:
 
@@ -131,9 +131,9 @@ Validate ClusterCurator digest-based upgrades in completely disconnected air-gap
 | **Step 4: Verify external connectivity blocked** | `oc exec -n multicluster-engine deployment/cluster-curator-controller -- curl -m 5 google.com` | `curl: (28) Connection timed out` |
 | **Step 5: Create disconnected upgrade ClusterCurator** | `oc apply -f clustercurator-airgap.yaml` | `clustercurator.cluster.open-cluster-management.io/airgap-curator created` |
 | **Step 6: Monitor local registry digest discovery** | `oc logs -n multicluster-engine -l app=cluster-curator-controller -f` | `Digest discovered from local registry: sha256:local123...` |
-| **Step 7: Track resource utilization during upgrade** | `oc top pods -n multicluster-engine --sort-by=cpu` | `cluster-curator-controller-xxx CPU: 2m Memory: 22Mi` |
+| **Step 7: Verify local registry integration** | `oc get imagecontentsourcepolicy local-mirror -o jsonpath='{.status.repositoryDigestMirrors[0].mirrors[0]}'` | `<local-registry-url>/ocp-release` |
 | **Step 8: Validate disconnected upgrade completion** | `oc get clustercurator airgap-curator -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}'` | `True` |
-| **Step 9: Verify upgrade time under 60 minutes** | `oc get clustercurator airgap-curator -o jsonpath='{.status.conditions[?(@.type=="Ready")].lastTransitionTime}'` | `<timestamp within 60min of start>` |
+| **Step 9: Confirm digest-based image source** | `oc get clustercurator airgap-curator -o jsonpath='{.status.conditions[?(@.type=="Ready")].message}'` | `Upgrade completed using local registry digest` |
 
 **airgap-network-policy.yaml:**
 ```yaml
@@ -154,7 +154,7 @@ spec:
 ### Deployment Status:
 - **Disconnected Support**: Full air-gap capability with local registry integration
 - **Network Isolation**: Complete external connectivity blocking with internal communication
-- **Performance Validation**: Resource utilization within <20% thresholds
+- **Functional Validation**: Digest-based upgrade workflow in disconnected environment
 
 ---
 
@@ -207,55 +207,7 @@ spec:
 
 ---
 
-## Test Case 5: Performance and Resource Utilization Validation
-
-### Description:
-Validate ClusterCurator digest-based upgrade performance characteristics and resource utilization to ensure minimal impact on cluster operations during Amadeus production upgrades.
-
-### Setup:
-- Baseline cluster performance metrics collection
-- Resource monitoring infrastructure with alerting
-- Load simulation for realistic production conditions
-- Performance comparison with traditional upgrade methods
-
-### Test Steps:
-
-| Step | Action | Expected Result |
-|------|--------|-----------------|
-| **Step 1: Log into the ACM hub cluster** | `oc login <CLUSTER_CONSOLE_URL> --username=<CLUSTER_ADMIN_USER> --password=<CLUSTER_ADMIN_PASSWORD>` | `Login successful. You have access to X projects` |
-| **Step 2: Establish baseline resource metrics** | `oc top nodes && oc top pods -n multicluster-engine` | `Baseline CPU: <value>m, Memory: <value>Mi recorded` |
-| **Step 3: Start performance monitoring** | `oc apply -f performance-monitor.yaml` | `configmap/performance-monitor created` |
-| **Step 4: Deploy ClusterCurator with performance tracking** | `oc apply -f clustercurator-performance.yaml` | `clustercurator.cluster.open-cluster-management.io/perf-curator created` |
-| **Step 5: Monitor CPU utilization during digest discovery** | `oc top pods -n multicluster-engine -l app=cluster-curator-controller --watch` | `CPU increase: 2-4m (within <20% threshold)` |
-| **Step 6: Track memory usage during upgrade** | `oc adm top pods -n multicluster-engine --containers -l app=cluster-curator-controller` | `Memory increase: 20-30Mi (within limits)` |
-| **Step 7: Measure digest discovery time** | `oc logs -n multicluster-engine -l app=cluster-curator-controller | grep -E "(digest.*found|Image.*discovered)"` | `Digest discovery time: 8-15 seconds` |
-| **Step 8: Validate total upgrade time** | `oc get clustercurator perf-curator -o jsonpath='{.status.conditions[?(@.type=="Ready")].lastTransitionTime}' && date` | `Total upgrade time: 35-45 minutes` |
-| **Step 9: Verify resource cleanup efficiency** | `oc get managedclusterviews,managedclusteractions -A | grep perf-curator` | `No resources found (cleanup complete)` |
-
-**performance-monitor.yaml:**
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: performance-monitor
-  namespace: multicluster-engine
-data:
-  monitor.sh: |
-    #!/bin/bash
-    while true; do
-      echo "$(date): $(oc top nodes --no-headers | awk '{print $3}' | head -1)"
-      sleep 10
-    done
-```
-
-### Deployment Status:
-- **Performance Optimization**: Resource efficient with 3m CPU, 25Mi memory footprint
-- **Time Efficiency**: Digest discovery under 30 seconds, complete upgrades under 60 minutes
-- **Resource Management**: Automatic cleanup with minimal cluster impact
-
----
-
-## Test Case 6: Security and RBAC Validation
+## Test Case 5: Security and RBAC Validation
 
 ### Description:
 Validate security posture and RBAC implementation for ClusterCurator digest-based upgrades ensuring enterprise-grade security compliance for Amadeus production deployment.
@@ -302,8 +254,8 @@ spec:
 
 ## Summary
 
-**Test Coverage**: 6 comprehensive test cases addressing the 18.8% coverage gap identified in PR #468 analysis  
+**Test Coverage**: 5 comprehensive test cases addressing the 18.8% coverage gap identified in PR #468 analysis  
 **Customer Focus**: All test cases specifically address Amadeus disconnected environment requirements  
 **Security Compliance**: Zero credential exposure with <CLUSTER_CONSOLE_URL> and <CLUSTER_ADMIN_USER>/<CLUSTER_ADMIN_PASSWORD> placeholders  
-**Performance Validation**: Resource utilization within <20% thresholds with upgrade times under 60 minutes  
+**Functional Focus**: E2E scenarios targeting ClusterCurator digest-based upgrade feature implementation  
 **Quality Assurance**: Evidence-based test cases with specific implementation validation and realistic expectations

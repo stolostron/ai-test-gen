@@ -5,7 +5,7 @@ Write Tool Interceptor - MANDATORY VALIDATION ENFORCEMENT
 
 CRITICAL PURPOSE: Automatically intercept all Write tool calls and enforce validation
 INTEGRATION LEVEL: Framework-wide automatic enforcement
-AUTHORITY: ABSOLUTE - No Write operations can bypass validation
+AUTHORITY: strict - No Write operations can bypass validation
 
 This creates an unavoidable validation layer for ALL Write tool usage.
 """
@@ -127,7 +127,7 @@ class WriteToolInterceptor:
             "total_interceptions": total,
             "blocked_writes": blocked,
             "approved_writes": approved,
-            "interception_rate": "100%" if self.active else "0%",
+            "interception_rate": "comprehensive" if self.active else "0%",
             "enforcement_effectiveness": "MAXIMUM" if blocked > 0 else "PREVENTATIVE"
         }
         

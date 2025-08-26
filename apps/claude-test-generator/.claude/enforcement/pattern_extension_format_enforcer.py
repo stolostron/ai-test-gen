@@ -216,7 +216,7 @@ CRITICAL FORMAT REQUIREMENTS - MANDATORY COMPLIANCE:
 
 7. **Single-Line Table Cells:** No multi-line code blocks in table cells - use inline backticks only
 
-TARGET: 85+ points for framework acceptance
+TARGET: target compliances for framework acceptance
 VALIDATION: Automatic format validation will be applied
 """
 

@@ -2,7 +2,7 @@
 
 **Generated:** 2025-08-25  
 **Framework:** Claude Test Generator v2.1 with Enhanced Format Enforcement  
-**Format Compliance:** 85+ points validated  
+**Format Compliance:** target compliances validated  
 **Security:** Credential exposure prevention active  
 
 ## Description

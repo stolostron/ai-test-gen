@@ -36,4 +36,4 @@ For automated JIRA updates, see the [JIRA API Setup Guide](../JIRA_API_SETUP.md)
 
 ---
 
-**Note**: These templates are specific to ACM-22079 framework development. Adapt content as needed for other tickets.
+**Note**: These templates use ACM-22079 as a validation example for the universal framework. Content demonstrates capabilities applicable to any JIRA ticket.

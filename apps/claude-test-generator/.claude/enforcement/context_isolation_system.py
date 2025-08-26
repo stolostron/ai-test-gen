@@ -82,7 +82,7 @@ class ContextIsolationSystem:
         })
         
         # Force framework to treat this as a completely new request
-        context['chat_context_isolation'] = 'ABSOLUTE'
+        context['chat_context_isolation'] = 'STRICT'
         context['conversation_influence'] = 'DISABLED'
         
         return context
@@ -94,7 +94,7 @@ class ContextIsolationSystem:
         context.update({
             'agent_state_reset': 'MANDATORY',
             'agent_cache_clear': 'COMPLETE',
-            'agent_memory_isolation': 'ABSOLUTE',
+            'agent_memory_isolation': 'STRICT',
             'force_agent_restart': True
         })
         

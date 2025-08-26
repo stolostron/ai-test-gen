@@ -166,7 +166,7 @@ All four agents (JIRA Intelligence, Environment Intelligence, Documentation Inte
 6. **Production Scenarios:** Real-world upgrade testing
 
 ### Format Compliance
-- **Enhanced Format Enforcement:** 85+ point validation target
+- **Enhanced Format Enforcement:** target compliance validation target
 - **Security Compliance:** Credential placeholder enforcement
 - **Table Format:** Single-line step descriptions with expected outputs
 - **Command Examples:** Realistic oc commands with sample outputs
@@ -193,7 +193,7 @@ All four agents (JIRA Intelligence, Environment Intelligence, Documentation Inte
 - **Template Compliance:** Secure placeholder usage throughout
 
 ### Format Enforcement
-- **Target Score:** 85+ points validated
+- **Target Score:** target compliances validated
 - **Compliance Areas:** Login format, table structure, command examples
 - **Quality Assurance:** Automated validation and correction
 

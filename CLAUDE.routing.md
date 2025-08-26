@@ -45,10 +45,10 @@ AI ROUTING DECISION PROCESS:
 
 **High-Confidence Auto-Routing**:
 ```bash
-User: "Generate test plan for ACM-22079"
+User: "Generate test plan for ACM-22079"  # Example request
 AI Analysis: ACM ticket (95%) + test generation (90%) + feature context (85%)
 Router: 🎯 Auto-routing to test-generator (92% confidence)
-Result: Identical to /test-generator Generate test plan for ACM-22079
+Result: Identical to /test-generator Generate test plan for ACM-22079  # Example routing
 ```
 
 **Semantic Understanding**:
@@ -92,7 +92,7 @@ The following commands provide **full app functionality** with **complete isolat
 /test-generator {any-request}
 
 # Examples:
-/test-generator Generate test plan for ACM-22079
+/test-generator Generate test plan for ACM-22079  # Example usage
 /test-generator Analyze PR: https://github.com/org/repo/pull/123
 /test-generator Investigate feature deployment status
 ```
@@ -115,18 +115,18 @@ The following commands provide **full app functionality** with **complete isolat
 
 ### Router Usage Equivalence
 ```bash
-# These two approaches are 100% equivalent:
+# These two approaches are equivalent:
 
 # Direct Navigation:
 cd apps/claude-test-generator/
-"Generate test plan for ACM-22079"
-# → Results: apps/claude-test-generator/runs/ACM-22079/
+"Generate test plan for ACM-22079"  # Example command
+# → Results: apps/claude-test-generator/runs/ACM-22079/  # Example output
 
 # Smart Proxy Router:
-/test-generator Generate test plan for ACM-22079
-# → Results: apps/claude-test-generator/runs/ACM-22079/ (IDENTICAL)
+/test-generator Generate test plan for ACM-22079  # Example usage
+# → Results: apps/claude-test-generator/runs/ACM-22079/ (IDENTICAL)  # Example output
 ```
 
 ### Router Guarantee
 
-**ABSOLUTE PROMISE**: Apps remain **100% unaffected** by this router implementation. AI-powered intent detection adds zero overhead and maintains **identical context**, **identical performance**, and **identical results** whether accessed directly, via explicit routing, or through intelligent auto-detection.
+**Framework enforcement**: Apps remain **completely unaffected** by this router implementation. AI-powered intent detection adds zero overhead and maintains **identical context**, **identical performance**, and **identical results** whether accessed directly, via explicit routing, or through intelligent auto-detection.

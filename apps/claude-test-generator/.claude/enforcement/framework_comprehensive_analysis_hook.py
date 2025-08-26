@@ -50,7 +50,7 @@ class FrameworkComprehensiveAnalysisHook:
                 'ignore_chat_context': True,
                 'prevent_agent_shortcuts': True,
                 'mandate_fresh_analysis': True,
-                'enforcement_level': 'ABSOLUTE'
+                'enforcement_level': 'STRICT'
             })
             
             # Log enforcement action
@@ -120,7 +120,7 @@ class FrameworkComprehensiveAnalysisHook:
             'version': '1.0-MANDATORY',
             'enforcement_active': self.hook_active,
             'enforcement_actions': self.enforcement_log,
-            'guarantee': 'ABSOLUTE_COMPREHENSIVE_ANALYSIS_FOR_ALL_TEST_PLAN_REQUESTS'
+            'enforcement': 'STRICT_COMPREHENSIVE_ANALYSIS_FOR_ALL_TEST_PLAN_REQUESTS'
         }
         
         os.makedirs(os.path.dirname(audit_path), exist_ok=True)

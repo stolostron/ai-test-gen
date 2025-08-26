@@ -177,7 +177,7 @@ class TestCaseFormatEnforcer:
 
 **File:** {file_path}
 **Score:** {result['score']}/{result['max_score']} ({result['percentage']}%)
-**Target:** {result['target']}% (85+ points)
+**Target:** {result['target']}% (target compliances)
 **Status:** {'✅ PASSED' if result['passed'] else '❌ FAILED'}
 
 ## Validation Results

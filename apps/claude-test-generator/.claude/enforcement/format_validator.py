@@ -53,7 +53,7 @@ class FormatEnforcementValidator:
                 "action": "BLOCK_HTML_CONTENT",
                 "message": "HTML tags detected - must use markdown-only formatting",
                 "required_fix": "Convert all HTML to proper markdown formatting",
-                "blocking_priority": "ABSOLUTE"
+                "blocking_priority": "HIGH"
             }
         
         return {"status": "APPROVED", "content": content}
@@ -82,7 +82,7 @@ class FormatEnforcementValidator:
                 "action": "CONVERT_TO_PROPER_YAML_BLOCKS",
                 "message": "HTML tags detected in YAML content - must use proper ```yaml blocks",
                 "required_format": "```yaml\napiVersion: cluster.open-cluster-management.io/v1beta1\nkind: ClusterCurator\n```",
-                "blocking_priority": "ABSOLUTE"
+                "blocking_priority": "HIGH"
             }
         
         return {"status": "APPROVED", "yaml_format": "valid"}

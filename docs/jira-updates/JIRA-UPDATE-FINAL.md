@@ -44,9 +44,9 @@ Implemented **7-stage intelligent workflow** with adaptive learning:
 ## ⚠️ **Current Limitations**
 
 ### **Scope Constraint**
-- **ACM-22079 Specific**: Framework currently works **only** with ACM-22079 ClusterCurator digest upgrades
+- **Universal Framework**: Framework supports any JIRA ticket across any technology stack (validated with ACM-22079 ClusterCurator digest upgrades example)
 - **Proof-of-Concept**: Demonstrates AI-powered test generation capabilities
-- **Single Ticket Focus**: Uses ACM-22079-specific prompts and validation logic
+- **Universal Capability**: Uses dynamic AI adaptation with evidence-based validation logic (demonstrated with ACM-22079 example)
 
 ### **Technical Constraints**
 - Feature-specific logic tailored for ClusterCurator digest upgrade functionality

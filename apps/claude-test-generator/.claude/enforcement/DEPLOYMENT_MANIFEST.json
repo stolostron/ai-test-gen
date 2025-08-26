@@ -13,7 +13,7 @@
     "pre_generation_format_hook.py",
     "post_generation_format_hook.py"
   ],
-  "validation_target": "85+ points",
+  "validation_target": "target compliances",
   "enforcement_scope": "All test case generation",
   "auto_correction": "Enabled",
   "deployment_log": [

@@ -23,7 +23,7 @@ python .claude/enforcement/pre_write_validator.py "<file_path>" "<content>"
 
 ### **BLOCKING AUTHORITY**
 
-The validation service has **ABSOLUTE BLOCKING AUTHORITY**:
+The validation service has **strict BLOCKING AUTHORITY**:
 - ❌ **BLOCKED**: Write tool usage if validation fails
 - ❌ **BLOCKED**: Content generation with HTML tags 
 - ❌ **BLOCKED**: Test cases with citations
@@ -163,14 +163,14 @@ All validation attempts are logged for audit purposes:
 ```
 
 ### **Success Metrics**
-- **HTML Tag Prevention**: 100% blocking of HTML tag violations
-- **Format Compliance**: 100% adherence to documented requirements
-- **Technical Enforcement**: 100% validation before Write tool usage
+- **HTML Tag Prevention**: comprehensive blocking of HTML tag violations
+- **Format Compliance**: comprehensive adherence to documented requirements
+- **Technical Enforcement**: comprehensive validation before Write tool usage
 - **Audit Trail**: Complete logging of all validation attempts
 
-## 🎯 IMPLEMENTATION GUARANTEE
+## 🎯 IMPLEMENTATION enforcement
 
-**ABSOLUTE ENFORCEMENT PROMISE**:
+**strict ENFORCEMENT PROMISE**:
 - ✅ Technical validation replaces semantic-only enforcement
 - ✅ Blocking authority prevents HTML tag violations
 - ✅ Executable code validates content before Write tool usage

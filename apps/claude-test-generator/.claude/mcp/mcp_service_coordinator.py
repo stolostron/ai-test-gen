@@ -49,21 +49,39 @@ class MCPServiceCoordinator:
         try:
             # Initialize GitHub MCP if enabled
             if self.config.get("mcp_integration", {}).get("github_mcp", {}).get("enabled", False):
-                github_module_path = self.base_path / ".claude/mcp/github_mcp_integration.py"
+                # Try optimized version first
+                github_module_path = self.base_path / ".claude/mcp/optimized_github_mcp_integration.py"
                 if github_module_path.exists():
                     spec = importlib.util.spec_from_file_location("github_mcp", github_module_path)
                     github_module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(github_module)
-                    self.github_mcp = github_module.GitHubMCPIntegration()
+                    self.github_mcp = github_module.OptimizedGitHubMCPIntegration()
+                else:
+                    # Fallback to base implementation
+                    github_module_path = self.base_path / ".claude/mcp/github_mcp_integration.py"
+                    if github_module_path.exists():
+                        spec = importlib.util.spec_from_file_location("github_mcp", github_module_path)
+                        github_module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(github_module)
+                        self.github_mcp = github_module.GitHubMCPIntegration()
             
             # Initialize File System MCP if enabled
             if self.config.get("mcp_integration", {}).get("filesystem_mcp", {}).get("enabled", False):
-                fs_module_path = self.base_path / ".claude/mcp/filesystem_mcp_integration.py"
+                # Try optimized version first
+                fs_module_path = self.base_path / ".claude/mcp/optimized_filesystem_mcp_integration.py"
                 if fs_module_path.exists():
                     spec = importlib.util.spec_from_file_location("filesystem_mcp", fs_module_path)
                     fs_module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(fs_module)
-                    self.filesystem_mcp = fs_module.FileSystemMCPIntegration(str(self.base_path))
+                    self.filesystem_mcp = fs_module.OptimizedFileSystemMCPIntegration(str(self.base_path))
+                else:
+                    # Fallback to base implementation
+                    fs_module_path = self.base_path / ".claude/mcp/filesystem_mcp_integration.py"
+                    if fs_module_path.exists():
+                        spec = importlib.util.spec_from_file_location("filesystem_mcp", fs_module_path)
+                        fs_module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(fs_module)
+                        self.filesystem_mcp = fs_module.FileSystemMCPIntegration(str(self.base_path))
                     
         except Exception as e:
             print(f"Warning: MCP service initialization error: {e}")
@@ -129,7 +147,8 @@ class MCPServiceCoordinator:
         
         if self.filesystem_mcp:
             try:
-                return self.filesystem_mcp.search_files(pattern, semantic_search, file_types)
+                # Optimized filesystem implementation uses different parameters
+                return self.filesystem_mcp.search_files(pattern, semantic_search=semantic_search)
             except Exception as e:
                 if use_fallback:
                     self.performance_stats["fallback_activations"] += 1
@@ -164,7 +183,8 @@ class MCPServiceCoordinator:
         
         if self.filesystem_mcp:
             try:
-                return self.filesystem_mcp.find_test_patterns(test_dirs)
+                # Optimized filesystem implementation
+                return self.filesystem_mcp.find_test_patterns(test_dirs, fast_mode=True)
             except Exception as e:
                 if use_fallback:
                     self.performance_stats["fallback_activations"] += 1
@@ -176,19 +196,16 @@ class MCPServiceCoordinator:
             return {"error": "File System MCP not available"}
     
     def filesystem_cache_content(self, file_paths: List[str], content_type: str = "pattern_analysis") -> Dict:
-        """Intelligent content caching (MCP-only feature)"""
+        """Intelligent content caching (MCP-only feature) - Note: Not available in optimized implementation"""
         self.performance_stats["filesystem_calls"] += 1
         
-        if self.filesystem_mcp:
-            try:
-                result = self.filesystem_mcp.cache_file_content(file_paths, content_type)
-                if result.get("cache_stats", {}).get("hits", 0) > 0:
-                    self.performance_stats["cache_hits"] += result["cache_stats"]["hits"]
-                return result
-            except Exception as e:
-                return {"error": str(e), "fallback_available": False}
-        else:
-            return {"error": "File System MCP not available - caching requires MCP"}
+        # This method is not implemented in the optimized filesystem MCP
+        # Return a graceful message indicating this is a future enhancement
+        return {
+            "error": "Content caching not available in current optimized implementation",
+            "fallback_available": False,
+            "enhancement_note": "Content caching is planned for future MCP enhancement"
+        }
     
     # Fallback Methods
     def _github_cli_fallback(self, operation: str, *args) -> Dict:

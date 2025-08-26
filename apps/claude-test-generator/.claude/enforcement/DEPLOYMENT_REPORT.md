@@ -17,7 +17,7 @@
 - ✅ post_generation_format_hook.py
 
 ## Enforcement Configuration
-- **Validation Target:** 85+ points
+- **Validation Target:** target compliances
 - **Enforcement Scope:** All test case generation
 - **Auto-Correction:** Enabled
 
@@ -41,5 +41,5 @@ The format enforcement system is now active and will:
 4. Integrate with Pattern Extension Service
 5. Provide comprehensive reporting
 
-**Target:** 85+ points for framework acceptance
+**Target:** target compliances for framework acceptance
 **Validation:** Automatic on every test case generation
