@@ -54,6 +54,7 @@ class EnvironmentBaseline:
     connectivity_confirmed: bool
     assessment_timestamp: str
     confidence: float = 0.9
+    jenkins_deployment_metadata: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -248,7 +249,8 @@ class FoundationContextBuilder:
     
     def with_environment_baseline(self, cluster_name: str, api_url: str, console_url: str,
                                 platform: str, region: str, health_status: str,
-                                connectivity_confirmed: bool) -> 'FoundationContextBuilder':
+                                connectivity_confirmed: bool, 
+                                jenkins_deployment_metadata: Optional[Dict[str, Any]] = None) -> 'FoundationContextBuilder':
         """Add environment baseline"""
         self._environment_baseline = EnvironmentBaseline(
             cluster_name=cluster_name,
@@ -258,7 +260,8 @@ class FoundationContextBuilder:
             region=region,
             health_status=health_status,
             connectivity_confirmed=connectivity_confirmed,
-            assessment_timestamp=datetime.utcnow().isoformat()
+            assessment_timestamp=datetime.utcnow().isoformat(),
+            jenkins_deployment_metadata=jenkins_deployment_metadata
         )
         return self
     

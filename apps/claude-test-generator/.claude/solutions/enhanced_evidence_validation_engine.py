@@ -277,7 +277,9 @@ class EnhancedEvidenceValidationEngine:
         
         This maintains the existing Evidence Validation Engine behavior
         """
-        # Implementation vs Deployment distinction
+        # Implementation vs Deployment distinction  
+        if evidence_sources is None:
+            evidence_sources = {}
         implementation_evidence = evidence_sources.get('agent_c', {})
         deployment_evidence = evidence_sources.get('agent_d', {})
         
@@ -625,6 +627,8 @@ class EnhancedEvidenceValidationEngine:
     
     def _flatten_dict(self, d: Dict[str, Any], parent_key: str = '', sep: str = '.') -> Dict[str, Any]:
         """Flatten nested dictionary for field path analysis"""
+        if d is None:
+            return {}
         items = []
         for k, v in d.items():
             new_key = f"{parent_key}{sep}{k}" if parent_key else k

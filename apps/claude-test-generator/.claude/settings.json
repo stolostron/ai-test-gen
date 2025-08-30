@@ -1,0 +1,54 @@
+{
+  "execution_verification": {
+    "enforce_evidence_requirements": true,
+    "block_fictional_execution_claims": true,
+    "mandatory_command_output": true,
+    "require_timestamp_verification": true,
+    "execution_audit_trail": true
+  },
+  
+  "evidence_enforcement": {
+    "required_evidence_patterns": [
+      "pwd",
+      "ls -la",
+      "actual_command_execution",
+      "file_timestamp_verification"
+    ],
+    "forbidden_patterns": [
+      "fictional",
+      "constructed", 
+      "created.*output",
+      "generated.*data",
+      "simulated.*execution"
+    ],
+    "enforcement_level": "strict"
+  },
+  
+  "response_validation": {
+    "validate_execution_claims": true,
+    "require_proof_of_execution": true,
+    "block_unverified_claims": true,
+    "mandate_error_transparency": true
+  },
+  
+  "hooks": {
+    "pre_response_validation": [
+      ".claude/hooks/execution_verification_hook.py"
+    ],
+    "execution_claim_triggers": [
+      "fresh execution",
+      "executed",
+      "ran the",
+      "running",
+      "command output",
+      "framework run"
+    ]
+  },
+  
+  "prompt_enforcement": {
+    "always_require_evidence": true,
+    "auto_validate_execution": true,
+    "transparent_failure_reporting": true,
+    "distinguish_analysis_vs_execution": true
+  }
+}

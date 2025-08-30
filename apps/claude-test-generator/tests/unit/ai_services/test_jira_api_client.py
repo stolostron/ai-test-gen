@@ -180,82 +180,122 @@ class TestJiraApiClient(unittest.TestCase):
             self.assertFalse(connected)
             self.assertIn("Not authenticated", message)
     
-    def test_get_ticket_information_success(self):
-        """Test successful ticket information retrieval"""
+    def test_get_ticket_information_deterministic_cli_success(self):
+        """Test successful ticket information retrieval using deterministic CLI approach"""
         client = JiraApiClient()
         
-        # Mock the session to return proper ticket data
-        with patch.object(client, 'session') as mock_session:
-            mock_response = Mock()
-            mock_response.status_code = 200
-            mock_response.raise_for_status.return_value = None
-            mock_response.json.return_value = {
-                "key": "ACM-12345",
-                "fields": {
-                    "summary": "Test Issue",
-                    "status": {"name": "Open"},
-                    "fixVersions": [{"name": "2.15.0"}],
-                    "priority": {"name": "High"},
-                    "components": [{"name": "TestComponent"}],
-                    "description": "Test description",
-                    "assignee": {"displayName": "Test Assignee"},
-                    "reporter": {"displayName": "Test Reporter"},
-                    "created": "2024-01-01T00:00:00.000+0000",
-                    "updated": "2024-01-02T00:00:00.000+0000",
-                    "labels": ["test", "unit-test"]
-                }
-            }
-            mock_session.get.return_value = mock_response
+        # Mock the JIRA CLI to return proper ticket data
+        with patch.object(client, '_fetch_from_jira_cli') as mock_cli:
+            mock_ticket = JiraTicketData(
+                id="ACM-12345",
+                title="CLI Test Issue",
+                status="Open",
+                fix_version="2.15.0",
+                priority="High",
+                component="TestComponent",
+                description="Test description from CLI",
+                assignee="CLI Test Assignee",
+                reporter="CLI Test Reporter",
+                created="2024-01-01T00:00:00.000+0000",
+                updated="2024-01-02T00:00:00.000+0000",
+                labels=["test", "cli-test"]
+            )
+            mock_cli.return_value = mock_ticket
             
             ticket_data = client.get_ticket_information("ACM-12345")
             
             self.assertIsInstance(ticket_data, JiraTicketData)
             self.assertEqual(ticket_data.id, "ACM-12345")
-            self.assertEqual(ticket_data.title, "Test Issue")
+            self.assertEqual(ticket_data.title, "CLI Test Issue")
             self.assertEqual(ticket_data.status, "Open")
             self.assertEqual(ticket_data.fix_version, "2.15.0")
             self.assertEqual(ticket_data.priority, "High")
             self.assertEqual(ticket_data.component, "TestComponent")
-            self.assertEqual(ticket_data.description, "Test description")
-            self.assertEqual(ticket_data.assignee, "Test Assignee")
-            self.assertEqual(ticket_data.reporter, "Test Reporter")
-            self.assertEqual(ticket_data.labels, ["test", "unit-test"])
+            self.assertEqual(ticket_data.description, "Test description from CLI")
+            self.assertEqual(ticket_data.assignee, "CLI Test Assignee")
+            self.assertEqual(ticket_data.reporter, "CLI Test Reporter")
+            self.assertEqual(ticket_data.labels, ["test", "cli-test"])
     
-    def test_get_ticket_information_not_found(self):
-        """Test ticket not found error"""
+    def test_get_ticket_information_deterministic_webfetch_fallback(self):
+        """Test WebFetch fallback when CLI fails"""
         client = JiraApiClient()
         
-        # Mock the session to return 404
-        with patch.object(client, 'session') as mock_session:
-            mock_response = Mock()
-            mock_response.status_code = 404
-            mock_response.text = "Not Found"
-            mock_session.get.return_value = mock_response
+        # Mock CLI to fail and WebFetch to succeed, also disable cache
+        with patch.object(client, '_fetch_from_jira_cli', return_value=None), \
+             patch.object(client, '_fetch_from_webfetch_structured') as mock_webfetch, \
+             patch.object(client, '_get_cached_ticket', return_value=None):
+            
+            mock_ticket = JiraTicketData(
+                id="ACM-54321",  # Use different ID to avoid cache conflicts
+                title="WebFetch Test Issue",
+                status="Open",
+                fix_version="2.15.0",
+                priority="High",
+                component="WebFetch Component",
+                description="Test description from WebFetch",
+                assignee="WebFetch Assignee",
+                reporter="WebFetch Reporter",
+                labels=["webfetch", "fallback"]
+            )
+            mock_webfetch.return_value = mock_ticket
+            
+            ticket_data = client.get_ticket_information("ACM-54321")
+            
+            self.assertIsInstance(ticket_data, JiraTicketData)
+            self.assertEqual(ticket_data.title, "WebFetch Test Issue")
+            self.assertEqual(ticket_data.component, "WebFetch Component")
+            self.assertEqual(ticket_data.description, "Test description from WebFetch")
+            self.assertIn("webfetch", ticket_data.labels)
+    
+    def test_get_ticket_information_deterministic_failure(self):
+        """Test deterministic failure when both CLI and WebFetch fail"""
+        client = JiraApiClient()
+        
+        # Mock both CLI and WebFetch to fail
+        with patch.object(client, '_fetch_from_jira_cli', return_value=None), \
+             patch.object(client, '_fetch_from_webfetch_structured', return_value=None):
             
             with self.assertRaises(JiraApiError) as context:
                 client.get_ticket_information("ACM-99999")
             
-            # Check for either the direct error or the retry failure message
+            # Check for deterministic failure message
             error_msg = str(context.exception)
-            self.assertTrue(
-                "JIRA ticket ACM-99999 not found" in error_msg or
-                "Failed to fetch ACM-99999 after" in error_msg,
-                f"Expected error message not found: {error_msg}"
-            )
+            self.assertIn("JIRA CLI failed, WebFetch failed", error_msg)
+            self.assertIn("No simulation fallback", error_msg)
     
-    def test_fallback_simulation(self):
-        """Test fallback to simulation when API fails"""
-        # Initialize client without API credentials
-        with patch.dict(os.environ, {}, clear=True):
-            client = JiraApiClient()
-            
-            # Should use simulation for known tickets
-            ticket_data = client.get_ticket_information("ACM-22079")
-            
-            self.assertIsInstance(ticket_data, JiraTicketData)
-            self.assertEqual(ticket_data.id, "ACM-22079")
-            self.assertIn("ClusterCurator", ticket_data.title)
-            self.assertEqual(ticket_data.fix_version, "2.15.0")
+    def test_deterministic_approach_validation(self):
+        """Test that the deterministic 2-tier approach is enforced"""
+        client = JiraApiClient()
+        
+        # Verify that deprecated methods are disabled
+        result = client._fetch_from_api("ACM-12345")
+        self.assertIsNone(result)
+        
+        # REMOVED: _get_simulated_ticket test - simulation method removed
+        # Framework now raises JIRAExtractionError when JIRA data unavailable
+    
+    def test_webfetch_structured_data_creation(self):
+        """Test intelligent WebFetch structured data creation"""
+        client = JiraApiClient()
+        
+        # Test component guessing functionality
+        component = client._guess_component_from_ticket_id("22079")
+        self.assertEqual(component, "ClusterCurator")
+        
+        component = client._guess_component_from_ticket_id("15000")
+        self.assertEqual(component, "ApplicationLifecycle")
+        
+        component = client._guess_component_from_ticket_id("5000")
+        self.assertEqual(component, "Observability")
+        
+        # Test structured data creation
+        structured_data = client._create_webfetch_structured_data("ACM-22079", "https://issues.redhat.com/browse/ACM-22079")
+        
+        self.assertIsInstance(structured_data, JiraTicketData)
+        self.assertEqual(structured_data.id, "ACM-22079")
+        self.assertIn("ClusterCurator", structured_data.title)
+        self.assertEqual(structured_data.component, "ClusterCurator")
+        self.assertIn("webfetch-structured", structured_data.labels)
     
     def test_cache_functionality(self):
         """Test ticket caching functionality"""

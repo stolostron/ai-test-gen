@@ -25,11 +25,11 @@ All AI services use prefix: tgt (test-generator-testing) for isolation but follo
 
 # Evidence-Based Testing Framework with Progressive Context Intelligence and Hierarchical Isolation
 
-> **AI-Powered Testing Framework Using Main Framework's Own Principles for Maximum Reliability with Hierarchical Isolation Architecture and 8-Layer Safety System Validation**
+> **AI-Powered Testing Framework Using Main Framework's Own Principles for Maximum Reliability with Hierarchical Isolation Architecture and Comprehensive Safety Mechanisms**
 
 ## 🎯 Framework Purpose
 
-Provide comprehensive, intelligent testing for the claude-test-generator framework using evidence-based validation and progressive context awareness with hierarchical isolation architecture. Tests the main framework using its own sophisticated principles to ensure quality, prevent regressions, and enable continuous improvement while maintaining strict app boundaries. Validates 8-Layer Safety System deployment and framework execution unification preventing split personality disorder.
+Provide comprehensive, intelligent testing for the claude-test-generator framework using evidence-based validation and progressive context awareness with hierarchical isolation architecture. Tests the main framework using its own sophisticated principles to ensure quality, prevent regressions, and enable continuous improvement while maintaining strict app boundaries. Validates comprehensive safety mechanisms deployment and framework execution unification preventing split personality disorder.
 
 **Framework Philosophy**: Test the framework as intelligently as the framework tests software, with complete isolation guarantee and comprehensive validation of framework execution integrity, agent output reality, and cascade failure prevention.
 

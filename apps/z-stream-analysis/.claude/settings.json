@@ -1,0 +1,35 @@
+{
+  "notifications": {
+    "enabled": true,
+    "sound": "default",
+    "events": {
+      "ai_response_complete": {
+        "enabled": true,
+        "sound": "default",
+        "description": "Play notification when AI finishes responding to user queries"
+      },
+      "analysis_complete": {
+        "enabled": true,
+        "sound": "default", 
+        "description": "Play notification when Jenkins pipeline analysis is complete"
+      },
+      "error_occurred": {
+        "enabled": true,
+        "sound": "error",
+        "description": "Play notification when analysis encounters errors"
+      }
+    }
+  },
+  "app_settings": {
+    "name": "z-stream-analysis",
+    "auto_notifications": true,
+    "persist_across_sessions": true,
+    "notification_preferences": {
+      "volume": "medium",
+      "timing": "on_completion",
+      "scope": "all_ai_responses"
+    }
+  },
+  "version": "1.0.0",
+  "last_updated": "2025-08-26T00:00:00Z"
+}

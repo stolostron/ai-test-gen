@@ -15,6 +15,16 @@ from dataclasses import dataclass, asdict
 from foundation_context import FoundationContext, ContextMetadata
 from version_intelligence_service import VersionIntelligenceService
 
+# Import context manager for token counting
+import sys
+sys.path.append('../../src')
+try:
+    from context.context_manager import ContextManager, ContextItemType, create_framework_context_manager, get_importance_score
+    CONTEXT_MANAGER_AVAILABLE = True
+except ImportError:
+    CONTEXT_MANAGER_AVAILABLE = False
+    print("Warning: Context Manager not available, using legacy context tracking")
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,6 +48,12 @@ class ContextInheritanceChain:
     validation_results: Dict[str, bool]
     chain_integrity: bool = False
     
+    # Enhanced context management (Factor 3)
+    context_manager: Optional[Any] = None  # ContextManager instance
+    total_tokens: int = 0
+    token_budget_allocation: Dict[str, int] = None
+    context_compression_applied: bool = False
+    
     def __post_init__(self):
         if not self.agent_contexts:
             self.agent_contexts = {}
@@ -45,6 +61,40 @@ class ContextInheritanceChain:
             self.inheritance_metadata = {}
         if not self.validation_results:
             self.validation_results = {}
+        if not self.token_budget_allocation:
+            self.token_budget_allocation = {}
+    
+    def get_agent_context(self, agent_id: str) -> Dict[str, Any]:
+        """Get context for specific agent with token tracking"""
+        return self.agent_contexts.get(agent_id, {})
+    
+    def merge_contexts(self, agent_ids: List[str]) -> Dict[str, Any]:
+        """Merge contexts from multiple agents with token management"""
+        merged = {}
+        for agent_id in agent_ids:
+            if agent_id in self.agent_contexts:
+                merged.update(self.agent_contexts[agent_id])
+        return merged
+    
+    def add_agent_context(self, agent_id: str, context_data: Dict[str, Any], importance: float = 0.8):
+        """Add agent context with intelligent token management"""
+        self.agent_contexts[agent_id] = context_data
+        
+        # Add to context manager if available
+        if self.context_manager and CONTEXT_MANAGER_AVAILABLE:
+            context_str = json.dumps(context_data, default=str)
+            self.context_manager.add_context(
+                content=context_str,
+                importance=importance,
+                item_type=ContextItemType.AGENT_OUTPUT,
+                source=agent_id,
+                metadata={"agent_id": agent_id, "context_size": len(context_str)}
+            )
+            
+            # Update token tracking
+            metrics = self.context_manager.get_context_summary()
+            self.total_tokens = metrics.total_tokens
+            self.context_compression_applied = metrics.compression_savings > 0
 
 
 class ProgressiveContextArchitecture:
@@ -53,7 +103,7 @@ class ProgressiveContextArchitecture:
     Provides systematic context inheritance with intelligent conflict resolution
     """
     
-    def __init__(self, framework_root: str = None):
+    def __init__(self, framework_root: str = None, enable_context_management: bool = True):
         self.framework_root = framework_root or os.getcwd()
         self.context_dir = Path(self.framework_root) / ".claude" / "context"
         self.context_dir.mkdir(parents=True, exist_ok=True)
@@ -64,7 +114,14 @@ class ProgressiveContextArchitecture:
         # Context inheritance chains
         self.active_chains: Dict[str, ContextInheritanceChain] = {}
         
-        logger.info("Progressive Context Architecture initialized")
+        # Initialize context manager (Factor 3)
+        self.context_management_enabled = enable_context_management and CONTEXT_MANAGER_AVAILABLE
+        if self.context_management_enabled:
+            self.context_manager = create_framework_context_manager()
+            logger.info("Progressive Context Architecture initialized with intelligent context management")
+        else:
+            self.context_manager = None
+            logger.info("Progressive Context Architecture initialized (legacy mode)")
     
     def _load_agent_configurations(self) -> Dict[str, AgentContextRequirements]:
         """Load agent context requirements for the 4-agent system"""
@@ -144,6 +201,37 @@ class ProgressiveContextArchitecture:
         foundation_context.metadata.pca_enabled = True
         foundation_context.metadata.agent_inheritance_ready = True
         
+        # Add context management metadata (Factor 3)
+        if self.context_management_enabled:
+            foundation_context.metadata.context_management_enabled = True
+            foundation_context.metadata.max_tokens = self.context_manager.max_tokens
+            foundation_context.metadata.compression_threshold = self.context_manager.compression_threshold
+            
+            # Add foundation context to context manager
+            foundation_str = json.dumps(foundation_context.get_agent_context_summary(), default=str)
+            importance_score = get_importance_score("foundation_context", "progressive_context_architecture")
+            
+            self.context_manager.add_context(
+                content=foundation_str,
+                importance=importance_score,
+                item_type=ContextItemType.FOUNDATION,
+                source="progressive_context_architecture",
+                metadata={
+                    "jira_id": foundation_context.jira_info.jira_id,
+                    "context_type": "foundation",
+                    "enhancement_timestamp": datetime.now().isoformat()
+                }
+            )
+            
+            # Get initial metrics
+            metrics = self.context_manager.get_context_summary()
+            foundation_context.metadata.initial_token_count = metrics.total_tokens
+            foundation_context.metadata.initial_budget_utilization = metrics.budget_utilization
+            
+            logger.info(f"Foundation context added to context manager: {metrics.total_tokens:,} tokens ({metrics.budget_utilization:.1%} utilization)")
+        else:
+            foundation_context.metadata.context_management_enabled = False
+        
         # Add agent-specific context summaries
         agent_context_summary = foundation_context.get_agent_context_summary()
         
@@ -201,9 +289,11 @@ class ProgressiveContextArchitecture:
                 'foundation_jira_id': foundation_context.jira_info.jira_id,
                 'agent_count': 4,
                 'inheritance_level': 'full',
-                'validation_required': True
+                'validation_required': True,
+                'context_management_enabled': self.context_management_enabled
             },
-            validation_results={}
+            validation_results={},
+            context_manager=self.context_manager if self.context_management_enabled else None
         )
         
         # Prepare agent contexts

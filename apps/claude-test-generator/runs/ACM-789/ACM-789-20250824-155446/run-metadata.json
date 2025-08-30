@@ -1,9 +1,0 @@
-{
-  "jira_ticket": "ACM-789",
-  "run_directory": "runs/ACM-789/ACM-789-20250824-155446",
-  "start_timestamp": "2025-08-24T19:54:46.694270+00:00",
-  "framework_version": "v4.2.0-strict-enforcement",
-  "enforcement_level": "MANDATORY_NO_BYPASS",
-  "execution_guarantee": "FULL_6_PHASE_WORKFLOW_REQUIRED",
-  "feature": "Strict Framework Test"
-}

@@ -1,0 +1,109 @@
+name: Deploy AI Conflict Resolver
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'automation/ai-conflict-resolver/**'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/ai-conflict-resolver
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: automation/ai-conflict-resolver/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: automation/ai-conflict-resolver
+        run: npm ci
+      
+      - name: Run linter
+        working-directory: automation/ai-conflict-resolver
+        run: npm run lint
+      
+      - name: Run tests
+        working-directory: automation/ai-conflict-resolver
+        run: npm test
+        env:
+          NODE_ENV: test
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: automation/ai-conflict-resolver
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Deploy to Kubernetes
+        run: |
+          echo "Deployment step would go here"
+          echo "This would typically:"
+          echo "1. Update Kubernetes manifests with new image tag"
+          echo "2. Apply the manifests to the cluster"
+          echo "3. Wait for rollout to complete"
+      
+      # Alternative: Deploy to a cloud service
+      # - name: Deploy to Cloud Run
+      #   uses: google-github-actions/deploy-cloudrun@v2
+      #   with:
+      #     service: ai-conflict-resolver
+      #     image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+  configure-github-app:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Update GitHub App Webhook URL
+        run: |
+          echo "Would update GitHub App webhook URL to the deployed service endpoint"
+          echo "This ensures the GitHub App points to the latest deployment"

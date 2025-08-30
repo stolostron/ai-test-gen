@@ -1,5 +1,5 @@
 {
-  "last_updated": "2025-08-25T21:57:33.571285",
+  "last_updated": "2025-08-29T01:02:28.815850",
   "active_hooks": {
     "user_prompt_completion_hook": {
       "enabled": true,
@@ -7,6 +7,27 @@
       "registered_at": "2025-08-25T21:57:33.571274",
       "hook_function": "user_prompt_completion_hook.claude_code_tool_hook",
       "mandatory": false
+    },
+    "comprehensive_logging_hook": {
+      "enabled": true,
+      "file_path": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator/.claude/hooks/comprehensive_logging_hook.py",
+      "registered_at": "2025-08-29T01:02:28.812700",
+      "hook_function": "comprehensive_logging_hook.claude_code_tool_hook",
+      "mandatory": true
+    },
+    "pre_write_enforcement_hook": {
+      "enabled": true,
+      "file_path": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator/.claude/hooks/pre_write_enforcement_hook.py",
+      "registered_at": "2025-08-29T01:02:28.815324",
+      "hook_function": "pre_write_enforcement_hook.claude_code_tool_hook",
+      "mandatory": true
+    },
+    "todo_display_hook": {
+      "enabled": true,
+      "file_path": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator/.claude/hooks/todo_display_hook.py",
+      "registered_at": "2025-08-29T01:02:28.815846",
+      "hook_function": null,
+      "mandatory": true
     }
   },
   "hook_metadata": {
@@ -20,11 +41,10 @@
         "user_prompt_submit"
       ],
       "enabled": true
-    }
-  },
-  "mandatory_hooks": [
-    "comprehensive_logging_hook",
-    "pre_write_enforcement_hook",
-    "todo_display_hook"
-  ]
-}
+    },
+    "comprehensive_logging_hook": {
+      "name": "comprehensive_logging_hook",
+      "version": "1.0-PRODUCTION",
+      "description": "Comprehensive logging of all Claude Code tool executions for framework observability",
+      "author": "AI Systems Suite",
+      "hook_function": 

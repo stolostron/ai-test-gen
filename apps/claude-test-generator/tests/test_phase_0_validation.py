@@ -135,8 +135,9 @@ def test_phase_0_version_gap_analysis():
         env_version = version_context.environment_version
         assert env_version is not None and env_version != "", "Environment version should be detected"
         
-        # Verify comparison result is logical
-        assert version_context.comparison_result in ["newer", "same", "older"], "Should have valid comparison result"
+        # Verify comparison result is logical (including context mismatch)
+        valid_results = ["newer", "same", "older", "context_mismatch", "not_installed"]
+        assert version_context.comparison_result in valid_results, f"Should have valid comparison result, got: {version_context.comparison_result}"
         
         # Verify deployment instruction exists and is logical
         instruction = context.deployment_instruction.upper()
@@ -149,6 +150,10 @@ def test_phase_0_version_gap_analysis():
             assert any(keyword in instruction for keyword in ["NO ACTION", "PROCEED", "TESTING"]), "Should indicate no upgrade needed"
         elif version_context.comparison_result == "older":
             assert any(keyword in instruction for keyword in ["REVIEW", "DOWNGRADE", "VERSION"]), "Should indicate version review needed"
+        elif version_context.comparison_result == "context_mismatch":
+            assert any(keyword in instruction for keyword in ["CONTEXT MISMATCH", "VERSION CONTEXT", "ACM VERSION"]), "Should indicate context mismatch"
+        elif version_context.comparison_result == "not_installed":
+            assert any(keyword in instruction for keyword in ["NOT INSTALLED", "INSTALL ACM", "ACM NOT"]), "Should indicate ACM not installed"
         
         print("✅ test_phase_0_version_gap_analysis: PASSED")
         return True

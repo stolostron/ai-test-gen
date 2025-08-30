@@ -28,6 +28,31 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+class JIRAExtractionError(Exception):
+    """Raised when JIRA extraction fails - stops framework completely"""
+    
+    def __init__(self, message: str, jira_id: str, suggestions: List[str]):
+        self.message = message
+        self.jira_id = jira_id
+        self.suggestions = suggestions
+        super().__init__(self.message)
+    
+    def get_failure_report(self) -> Dict[str, Any]:
+        """Generate comprehensive failure report with actionable suggestions"""
+        return {
+            'error': f'JIRA extraction failed for {self.jira_id}',
+            'details': self.message,
+            'timestamp': datetime.now().isoformat(),
+            'actionable_suggestions': self.suggestions,
+            'next_steps': [
+                'Fix the JIRA connectivity issues listed above',
+                'Verify JIRA ticket exists and is accessible',
+                'Re-run the framework after resolving issues'
+            ],
+            'framework_action': 'STOPPED - Framework cannot proceed without JIRA data'
+        }
+
+
 class VersionIntelligenceError(Exception):
     """Custom exception for Version Intelligence Service"""
     pass
@@ -49,16 +74,63 @@ class VersionIntelligenceService:
     Provides deterministic JIRA analysis, version gap assessment, and foundation context creation
     """
     
-    def __init__(self, framework_root: str = None):
+    def __init__(self, framework_root: str = None, universal_tool_access: bool = True):
         self.framework_root = framework_root or os.getcwd()
         self.runs_dir = os.path.join(self.framework_root, "runs")
         self.config = self._load_configuration()
+        self.universal_tool_access = universal_tool_access
         
-        # Initialize components
+        # Initialize components with universal tool access
         self.jira_integration = self._initialize_jira_client()
         self.environment_assessor = self._initialize_environment_client()
         
+        if self.universal_tool_access:
+            logger.info("🌍 Version Intelligence Service initialized with universal tool access enabled")
+        
         logger.info(f"Version Intelligence Service initialized at {self.framework_root}")
+    
+    def execute_any_tool(self, tool: str, args: List[str], timeout: int = 30) -> Dict[str, Any]:
+        """
+        Universal tool execution at Phase 0 level - enables ANY tool ANYWHERE
+        Delegates to environment assessor for consistent tool management
+        """
+        if not self.universal_tool_access:
+            raise VersionIntelligenceError(f"Universal tool access disabled - cannot execute {tool}")
+        
+        if self.environment_assessor:
+            return self.environment_assessor.execute_any_tool(tool, args, timeout)
+        else:
+            # Fallback direct execution if environment assessor unavailable
+            logger.warning("Environment assessor unavailable, executing tool directly")
+            try:
+                import subprocess
+                result = subprocess.run(
+                    [tool] + args,
+                    capture_output=True,
+                    text=True,
+                    timeout=timeout
+                )
+                return {
+                    'tool': tool,
+                    'args': args,
+                    'returncode': result.returncode,
+                    'stdout': result.stdout,
+                    'stderr': result.stderr,
+                    'success': result.returncode == 0,
+                    'execution_timestamp': datetime.now().isoformat(),
+                    'fallback_execution': True
+                }
+            except Exception as e:
+                return {
+                    'tool': tool,
+                    'args': args,
+                    'returncode': -1,
+                    'stdout': '',
+                    'stderr': str(e),
+                    'success': False,
+                    'execution_timestamp': datetime.now().isoformat(),
+                    'error': 'fallback_execution_failed'
+                }
     
     def _initialize_jira_client(self) -> Optional[JiraApiClient]:
         """Initialize JIRA API client with proper error handling"""
@@ -80,9 +152,13 @@ class VersionIntelligenceService:
             return None
     
     def _initialize_environment_client(self) -> Optional[EnvironmentAssessmentClient]:
-        """Initialize environment assessment client with proper error handling"""
+        """Initialize environment assessment client with universal tool access"""
         try:
-            env_client = EnvironmentAssessmentClient()
+            from environment_assessment_client import EnvironmentAssessmentConfig
+            
+            # Create config with universal tool access
+            config = EnvironmentAssessmentConfig(universal_tool_access=self.universal_tool_access)
+            env_client = EnvironmentAssessmentClient(config)
             connected, status_msg = env_client.test_connectivity()
             
             if connected:
@@ -131,8 +207,8 @@ class VersionIntelligenceService:
             environment_data = self._assess_environment_version(environment)
             logger.info(f"Environment version detected: {environment_data['version']}")
             
-            # Step 4: Calculate version gap
-            version_gap_analysis = self._calculate_version_gap(target_version, environment_data['version'])
+            # Step 4: Calculate version gap with enhanced product context
+            version_gap_analysis = self._calculate_version_gap(target_version, environment_data)
             logger.info(f"Version gap analysis: {version_gap_analysis['comparison']}")
             
             # Step 5: Generate deployment instruction
@@ -187,82 +263,19 @@ class VersionIntelligenceService:
                 }
                 
             except JiraApiError as e:
-                logger.warning(f"JIRA API failed for {jira_id}: {e}")
-                logger.info(f"Falling back to simulation for {jira_id}")
+                logger.error(f"❌ JIRA API failed for {jira_id}: {e}")
+                self._raise_jira_failure(jira_id, str(e))
             except Exception as e:
-                logger.error(f"Unexpected error fetching {jira_id}: {e}")
-                logger.info(f"Falling back to simulation for {jira_id}")
+                logger.error(f"❌ Unexpected error fetching {jira_id}: {e}")
+                self._raise_jira_failure(jira_id, str(e))
         
-        # Fallback to enhanced simulation (maintains backward compatibility)
-        logger.info(f"Using enhanced simulation for {jira_id}")
-        return self._get_enhanced_simulated_data(jira_id)
+        # If no JIRA integration available, raise clear error
+        logger.error(f"❌ No JIRA integration available for {jira_id}")
+        self._raise_jira_failure(jira_id, "No JIRA integration configured")
     
-    def _get_enhanced_simulated_data(self, jira_id: str) -> Dict[str, Any]:
-        """Enhanced simulation with more realistic data patterns"""
-        
-        # Enhanced simulated data based on common ACM ticket patterns
-        enhanced_simulated_data = {
-            'ACM-22079': {
-                'id': jira_id,
-                'title': 'ClusterCurator digest-based upgrades for disconnected environments',
-                'status': 'In Progress',
-                'fix_version': '2.15.0',
-                'priority': 'High',
-                'component': 'ClusterCurator',
-                'description': 'Implement digest-based upgrade functionality for disconnected Amadeus environments',
-                'assignee': 'ACM Engineering Team',
-                'reporter': 'Product Management',
-                'created': '2024-01-15T10:30:00.000+0000',
-                'updated': '2024-01-20T14:45:00.000+0000',
-                'labels': ['disconnected', 'upgrade', 'digest-based'],
-                'api_source': 'simulation'
-            },
-            'ACM-12345': {
-                'id': jira_id,
-                'title': 'Test issue for framework validation',
-                'status': 'Open',
-                'fix_version': '2.15.0',
-                'priority': 'Medium',
-                'component': 'Test',
-                'description': 'Test case for framework development and validation',
-                'assignee': 'Framework Developer',
-                'reporter': 'QE Team',
-                'created': '2024-01-10T09:00:00.000+0000',
-                'updated': '2024-01-12T16:30:00.000+0000',
-                'labels': ['testing', 'framework', 'validation'],
-                'api_source': 'simulation'
-            }
-        }
-        
-        # Return known simulation if available
-        if jira_id in enhanced_simulated_data:
-            return enhanced_simulated_data[jira_id]
-        
-        # Generate intelligent simulation for unknown tickets
-        if jira_id.startswith('ACM-'):
-            # Extract potential version from JIRA ID patterns
-            ticket_number = jira_id.split('-')[1] if '-' in jira_id else '0'
-            
-            # Determine likely component based on ticket number ranges (realistic patterns)
-            component = self._guess_component_from_ticket_id(ticket_number)
-            
-            return {
-                'id': jira_id,
-                'title': f'{component} issue {jira_id}',
-                'status': 'Open',
-                'fix_version': '2.15.0',  # Default assumption for current ACM release
-                'priority': 'Medium',
-                'component': component,
-                'description': f'Auto-generated context for {jira_id} - {component} related issue',
-                'assignee': f'{component} Team',
-                'reporter': 'System',
-                'created': datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000+0000'),
-                'updated': datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000+0000'),
-                'labels': ['auto-generated', component.lower()],
-                'api_source': 'intelligent_simulation'
-            }
-        
-        raise JiraIntegrationError(f"Could not extract information for JIRA ID: {jira_id}")
+    # REMOVED: _get_enhanced_simulated_data method
+    # All JIRA simulation removed - framework now raises JIRAExtractionError with actionable suggestions
+    # when JIRA data cannot be retrieved, stopping framework execution completely
     
     def _guess_component_from_ticket_id(self, ticket_number: str) -> str:
         """Guess component based on ticket ID patterns (realistic ACM patterns)"""
@@ -320,7 +333,11 @@ class VersionIntelligenceService:
     
     def _assess_environment_version(self, environment: str = None) -> Dict[str, Any]:
         """Assess environment version using environment client with fallback"""
-        logger.info(f"Assessing environment version for: {environment or 'current context'}")
+        # Default to qe6 when no environment provided (as mandated by user)
+        if environment is None:
+            environment = 'Console: https://console-openshift-console.apps.qe6-vmware-ibm.install.dev09.red-chesterfield.com'
+            logger.info(f"No environment specified - defaulting to qe6 cluster as mandated")
+        logger.info(f"Assessing environment version for: {environment}")
         
         # Try environment assessment client first if available
         if self.environment_assessor:
@@ -328,7 +345,10 @@ class VersionIntelligenceService:
                 env_data = self.environment_assessor.assess_environment(environment)
                 logger.info(f"Successfully assessed environment via {env_data.detection_method}")
                 
-                # Convert EnvironmentData to legacy format for compatibility
+                # Convert EnvironmentData to enhanced format with product awareness
+                env_raw_data = getattr(env_data, 'raw_data', {})
+                version_info = env_raw_data.get('version_info', {})
+                
                 return {
                     'version': env_data.version,
                     'cluster_name': env_data.cluster_name,
@@ -342,7 +362,18 @@ class VersionIntelligenceService:
                     'platform_details': env_data.platform_details,
                     'tools_available': env_data.tools_available,
                     'assessment_timestamp': env_data.assessment_timestamp,
-                    'api_source': 'environment_assessment'
+                    'api_source': 'environment_assessment',
+                    # NEW: Product awareness and enhanced version info
+                    'product_detected': version_info.get('product', 'Unknown'),
+                    'version_detection_method': version_info.get('detection_method', 'unknown'),
+                    'acm_status': self._determine_acm_status(version_info),
+                    'version_context': {
+                        'is_acm': version_info.get('product') == 'ACM',
+                        'is_openshift': version_info.get('product') == 'OpenShift',
+                        'is_kubernetes': version_info.get('product') == 'Kubernetes',
+                        'command_used': version_info.get('command_used'),
+                        'raw_output': version_info.get('raw_output')
+                    }
                 }
                 
             except EnvironmentAssessmentError as e:
@@ -352,117 +383,274 @@ class VersionIntelligenceService:
                 logger.error(f"Unexpected error assessing environment: {e}")
                 logger.info(f"Falling back to simulation for environment assessment")
         
-        # Fallback to enhanced simulation (maintains backward compatibility)
-        logger.info(f"Using enhanced simulation for environment assessment")
-        return self._get_enhanced_simulated_environment(environment)
+        # AI Services fallback when environment assessment fails
+        logger.info(f"Attempting AI services fallback for environment assessment")
+        ai_fallback_result = self._try_ai_services_fallback(environment)
+        if ai_fallback_result:
+            return ai_fallback_result
+        
+        # Environment failure: Continue WITHOUT test environment (user's mandate)
+        logger.warning(f"🚨 All environment assessment methods failed for: {environment[:100]}{'...' if len(environment) > 100 else ''}")
+        logger.warning(f"⚠️ CONTINUING TEST PLANNING WITHOUT TEST ENVIRONMENT")
+        return self._create_no_environment_context(environment)
     
-    def _get_enhanced_simulated_environment(self, environment: str = None) -> Dict[str, Any]:
-        """Enhanced environment simulation with more realistic data patterns"""
+    def _determine_acm_status(self, version_info: Dict[str, Any]) -> str:
+        """Determine ACM installation status from version info"""
+        product = version_info.get('product')
+        version = version_info.get('version')
+        error = version_info.get('error')
         
-        cluster_name = environment or 'default-cluster'
-        
-        # Enhanced simulated environments based on common patterns
-        enhanced_simulated_environments = {
-            'test-cluster': {
-                'version': '2.14.0',
-                'cluster_name': 'test-cluster',
-                'api_url': 'https://api.test-cluster.example.com:6443',
-                'console_url': 'https://console.test-cluster.example.com',
-                'platform': 'openshift',
-                'region': 'us-east-1',
-                'health_status': 'healthy',
-                'connectivity_confirmed': True,
-                'detection_method': 'enhanced_simulation',
-                'platform_details': {
-                    'platform': 'openshift',
-                    'distribution': 'openshift',
-                    'features': ['oc_cli', 'openshift_namespaces'],
-                    'openshift_version': '4.14.0'
-                },
-                'tools_available': {'oc': True, 'kubectl': False},
-                'assessment_timestamp': datetime.now().isoformat(),
-                'api_source': 'simulation'
-            },
-            'prod-cluster': {
-                'version': '2.15.0',
-                'cluster_name': 'prod-cluster',
-                'api_url': 'https://api.prod-cluster.company.com:6443',
-                'console_url': 'https://console.prod-cluster.company.com',
-                'platform': 'openshift',
-                'region': 'us-west-2',
-                'health_status': 'healthy',
-                'connectivity_confirmed': True,
-                'detection_method': 'enhanced_simulation',
-                'platform_details': {
-                    'platform': 'openshift',
-                    'distribution': 'openshift',
-                    'features': ['oc_cli', 'openshift_namespaces', 'istio'],
-                    'openshift_version': '4.15.0'
-                },
-                'tools_available': {'oc': True, 'kubectl': True},
-                'assessment_timestamp': datetime.now().isoformat(),
-                'api_source': 'simulation'
-            },
-            'dev-cluster': {
-                'version': '2.13.5',
-                'cluster_name': 'dev-cluster',
-                'api_url': 'https://api.dev-cluster.internal.com:6443',
-                'console_url': 'https://console.dev-cluster.internal.com',
-                'platform': 'kubernetes',
-                'region': 'us-central-1',
-                'health_status': 'healthy',
-                'connectivity_confirmed': True,
-                'detection_method': 'enhanced_simulation',
-                'platform_details': {
-                    'platform': 'kubernetes',
-                    'distribution': 'vanilla',
-                    'features': ['kubernetes_system']
-                },
-                'tools_available': {'oc': False, 'kubectl': True},
-                'assessment_timestamp': datetime.now().isoformat(),
-                'api_source': 'simulation'
+        if product == 'ACM' and version and version != 'acm_detected_no_version':
+            return 'acm_installed_with_version'
+        elif product == 'ACM' and version == 'acm_detected_no_version':
+            return 'acm_installed_no_version'
+        elif error == 'acm_not_installed':
+            return 'acm_not_installed'
+        elif error == 'oc_not_available':
+            return 'acm_detection_unavailable'
+        else:
+            return 'acm_status_unknown'
+    
+    def _try_ai_services_fallback(self, environment: str = None) -> Optional[Dict[str, Any]]:
+        """Try AI services fallback when direct environment assessment fails"""
+        try:
+            logger.info("🤖 Attempting AI services fallback for environment analysis")
+            
+            # Check if environment string contains useful information for AI analysis
+            if not environment or len(environment.strip()) < 10:
+                logger.info("❌ Environment string too short for AI analysis")
+                return None
+            
+            # AI analysis of environment string for extracting useful information
+            ai_analysis = self._ai_analyze_environment_string(environment)
+            
+            if ai_analysis and ai_analysis.get('confidence', 0) > 0.7:
+                logger.info(f"✅ AI services provided environment analysis with {ai_analysis['confidence']} confidence")
+                return {
+                    'version': ai_analysis.get('detected_version', 'ai_detected'),
+                    'cluster_name': ai_analysis.get('cluster_name', 'ai_extracted'),
+                    'api_url': ai_analysis.get('api_url', 'unknown'),
+                    'console_url': ai_analysis.get('console_url', 'unknown'),
+                    'platform': ai_analysis.get('platform', 'unknown'),
+                    'region': ai_analysis.get('region', 'ai_inferred'),
+                    'health_status': 'ai_assumed_healthy',
+                    'connectivity_confirmed': False,
+                    'detection_method': 'ai_services_fallback',
+                    'platform_details': ai_analysis.get('platform_details', {}),
+                    'tools_available': {'ai_analysis': True},
+                    'assessment_timestamp': datetime.now().isoformat(),
+                    'api_source': 'ai_services_fallback',
+                    'product_detected': ai_analysis.get('product', 'Unknown'),
+                    'version_detection_method': 'ai_inference',
+                    'acm_status': 'ai_analysis_required',
+                    'version_context': {
+                        'is_acm': ai_analysis.get('product') == 'ACM',
+                        'is_openshift': ai_analysis.get('platform') == 'openshift',
+                        'is_kubernetes': ai_analysis.get('platform') == 'kubernetes',
+                        'ai_confidence': ai_analysis.get('confidence'),
+                        'ai_notes': ai_analysis.get('notes', [])
+                    }
+                }
+            else:
+                logger.info("❌ AI services fallback provided low confidence analysis")
+                return None
+                
+        except Exception as e:
+            logger.warning(f"AI services fallback failed: {e}")
+            return None
+    
+    def _ai_analyze_environment_string(self, environment: str) -> Optional[Dict[str, Any]]:
+        """AI analysis of environment string to extract useful information"""
+        try:
+            # Simple pattern-based analysis for environment strings
+            analysis = {
+                'confidence': 0.5,
+                'detected_version': 'unknown',
+                'platform': 'unknown',
+                'notes': []
             }
-        }
-        
-        # Return known simulation if available
-        if cluster_name in enhanced_simulated_environments:
-            return enhanced_simulated_environments[cluster_name]
-        
-        # Generate intelligent simulation for unknown environments
-        # Guess platform based on cluster name patterns
-        platform = 'openshift' if any(keyword in cluster_name.lower() for keyword in ['ocp', 'openshift', 'rhel']) else 'kubernetes'
-        
-        return {
-            'version': '2.14.0',  # Common baseline
-            'cluster_name': cluster_name,
-            'api_url': f'https://api.{cluster_name}.example.com:6443',
-            'console_url': f'https://console.{cluster_name}.example.com',
-            'platform': platform,
-            'region': 'us-east-1',
-            'health_status': 'healthy',
-            'connectivity_confirmed': True,
-            'detection_method': 'intelligent_simulation',
-            'platform_details': {
-                'platform': platform,
-                'distribution': platform,
-                'features': ['kubernetes_system'] if platform == 'kubernetes' else ['oc_cli', 'openshift_namespaces']
-            },
-            'tools_available': {'oc': platform == 'openshift', 'kubectl': True},
-            'assessment_timestamp': datetime.now().isoformat(),
-            'api_source': 'intelligent_simulation'
-        }
+            
+            # Extract cluster name from console URL
+            if 'console' in environment.lower():
+                import re
+                console_match = re.search(r'console[.-]([^/\s:]+)', environment)
+                if console_match:
+                    analysis['cluster_name'] = console_match.group(1)
+                    analysis['console_url'] = environment.split(',')[0].replace('Console: ', '').strip()
+                    analysis['confidence'] += 0.2
+                    analysis['notes'].append('Extracted cluster info from console URL')
+            
+            # Detect OpenShift patterns
+            if 'openshift' in environment.lower() or 'apps.' in environment:
+                analysis['platform'] = 'openshift'
+                analysis['product'] = 'OpenShift'
+                analysis['confidence'] += 0.1
+                analysis['notes'].append('OpenShift patterns detected')
+            
+            # Extract API URL
+            if 'api.' in environment:
+                api_match = re.search(r'(https?://api[^/\s:]+:?\d*)', environment)
+                if api_match:
+                    analysis['api_url'] = api_match.group(1)
+                    analysis['confidence'] += 0.1
+                    analysis['notes'].append('API URL extracted')
+            
+            # Check for credential patterns (but don't extract them)
+            if 'creds:' in environment.lower() or 'password' in environment.lower():
+                analysis['notes'].append('Credentials detected in environment string')
+                analysis['confidence'] += 0.05
+            
+            return analysis if analysis['confidence'] > 0.6 else None
+            
+        except Exception as e:
+            logger.debug(f"AI environment analysis failed: {e}")
+            return None
     
-    def _calculate_version_gap(self, target_version: str, environment_version: str) -> Dict[str, Any]:
-        """Calculate version gap between target and environment versions"""
+    # REMOVED: _get_enhanced_simulated_environment method
+    # All environment simulation removed - framework now continues test planning WITHOUT environment
+    # when environment assessment fails, using _create_no_environment_context instead
+    
+    def _calculate_version_gap(self, target_version: str, environment_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate version gap between target and environment versions with no-environment handling"""
+        
+        environment_version = environment_data.get('version', 'unknown')
+        environment_product = environment_data.get('product_detected', 'Unknown')
+        acm_status = environment_data.get('acm_status', 'unknown')
+        version_context = environment_data.get('version_context', {})
+        
+        # Handle no-environment scenarios
+        if environment_version == 'environment_unavailable' or environment_data.get('platform') == 'no_environment':
+            logger.warning(f"🚨 No test environment available for version comparison")
+            return {
+                'comparison': 'no_environment',
+                'gap_type': 'environment_unavailable',
+                'urgency': 'workflow_completion_without_environment',
+                'target_version': target_version,
+                'environment_version': None,
+                'product_context': {
+                    'target_product': 'ACM',
+                    'environment_product': 'NO_ENVIRONMENT',
+                    'issue': 'No test environment available for version validation',
+                    'connection_error': environment_data.get('platform_details', {}).get('error', 'unknown'),
+                    'root_cause': environment_data.get('platform_details', {}).get('root_cause', 'unknown')
+                },
+                'version_difference': {'major': 0, 'minor': 0, 'patch': 0}
+            }
+        
+        def is_acm_version(version_str: str) -> bool:
+            """Check if version appears to be ACM version (2.x.x)"""
+            try:
+                major = int(version_str.split('.')[0])
+                return major == 2
+            except (ValueError, AttributeError, IndexError):
+                return False
+        
+        def is_openshift_version(version_str: str) -> bool:
+            """Check if version appears to be OpenShift version (4.x.x)"""
+            try:
+                major = int(version_str.split('.')[0])
+                return major == 4
+            except (ValueError, AttributeError, IndexError):
+                return False
         
         def version_to_tuple(version_str: str) -> Tuple[int, ...]:
-            """Convert version string to tuple for comparison"""
+            """Convert version string to tuple for comparison, handling different formats"""
             try:
-                return tuple(map(int, version_str.split('.')))
+                # Handle formats like "4.20.0-ec.4" by taking only the main version part
+                base_version = version_str.split('-')[0]
+                return tuple(map(int, base_version.split('.')))
             except (ValueError, AttributeError):
                 logger.warning(f"Invalid version format: {version_str}")
                 return (0, 0, 0)
         
+        # Detect product context using enhanced environment data
+        target_is_acm = is_acm_version(target_version)
+        
+        # Use enhanced product detection
+        env_is_acm = (environment_product == 'ACM' or 
+                     version_context.get('is_acm', False) or
+                     acm_status in ['acm_installed_with_version', 'acm_installed_no_version'])
+        
+        env_is_openshift = (environment_product == 'OpenShift' or 
+                           version_context.get('is_openshift', False) or
+                           is_openshift_version(environment_version))
+        
+        # Enhanced ACM status handling
+        if target_is_acm:
+            logger.info(f"Target is ACM {target_version}, Environment ACM Status: {acm_status}")
+            
+            if acm_status == 'acm_installed_with_version':
+                logger.info(f"✅ ACM version match: Target {target_version} vs Environment {environment_version}")
+                # Proceed with normal ACM version comparison
+                pass
+            elif acm_status == 'acm_installed_no_version':
+                logger.warning(f"⚠️ ACM detected but version unavailable")
+                return {
+                    'comparison': 'acm_version_unavailable',
+                    'gap_type': 'version_detection_failed',
+                    'urgency': 'medium',
+                    'target_version': target_version,
+                    'environment_version': environment_version,
+                    'product_context': {
+                        'target_product': 'ACM',
+                        'environment_product': 'ACM',
+                        'issue': 'ACM installed but version not detectable',
+                        'acm_status': acm_status,
+                        'detection_method': environment_data.get('version_detection_method')
+                    },
+                    'version_difference': {'major': 0, 'minor': 0, 'patch': 0}
+                }
+            elif acm_status == 'acm_not_installed':
+                logger.info(f"❌ ACM not installed in environment")
+                return {
+                    'comparison': 'not_installed',
+                    'gap_type': 'fresh_install_required',
+                    'urgency': 'install_required',
+                    'target_version': target_version,
+                    'environment_version': None,
+                    'product_context': {
+                        'target_product': 'ACM',
+                        'environment_product': environment_product,
+                        'issue': 'ACM not installed in environment',
+                        'acm_status': acm_status
+                    },
+                    'version_difference': {'major': 0, 'minor': 0, 'patch': 0}
+                }
+            elif acm_status == 'acm_detection_unavailable':
+                logger.warning(f"⚠️ ACM detection not possible")
+                return {
+                    'comparison': 'detection_unavailable',
+                    'gap_type': 'acm_detection_required',
+                    'urgency': 'medium',
+                    'target_version': target_version,
+                    'environment_version': environment_version,
+                    'product_context': {
+                        'target_product': 'ACM',
+                        'environment_product': environment_product,
+                        'issue': 'ACM detection tools not available',
+                        'acm_status': acm_status
+                    },
+                    'version_difference': {'major': 0, 'minor': 0, 'patch': 0}
+                }
+            elif env_is_openshift and not env_is_acm:
+                logger.warning(f"🚨 Context mismatch: Target ACM {target_version} vs Environment OpenShift {environment_version}")
+                return {
+                    'comparison': 'context_mismatch',
+                    'gap_type': 'acm_not_detected',
+                    'urgency': 'install_required',
+                    'target_version': target_version,
+                    'environment_version': environment_version,
+                    'product_context': {
+                        'target_product': 'ACM',
+                        'environment_product': environment_product,
+                        'issue': 'ACM version not detected in OpenShift environment',
+                        'acm_status': acm_status,
+                        'command_used': version_context.get('command_used')
+                    },
+                    'version_difference': {'major': 0, 'minor': 0, 'patch': 0}
+                }
+        
+        # Normal version comparison (same product context)
         target_tuple = version_to_tuple(target_version)
         env_tuple = version_to_tuple(environment_version)
         
@@ -485,6 +673,11 @@ class VersionIntelligenceService:
             'urgency': urgency,
             'target_version': target_version,
             'environment_version': environment_version,
+            'product_context': {
+                'target_product': 'ACM' if target_is_acm else 'Unknown',
+                'environment_product': 'ACM' if env_is_acm else ('OpenShift' if env_is_openshift else 'Unknown'),
+                'compatible': True
+            },
             'version_difference': {
                 'major': target_tuple[0] - env_tuple[0] if len(target_tuple) > 0 and len(env_tuple) > 0 else 0,
                 'minor': target_tuple[1] - env_tuple[1] if len(target_tuple) > 1 and len(env_tuple) > 1 else 0,
@@ -494,29 +687,54 @@ class VersionIntelligenceService:
     
     def _generate_deployment_instruction(self, target_version: str, environment_version: str, 
                                        gap_analysis: Dict[str, Any]) -> str:
-        """Generate deployment instruction based on version gap analysis"""
+        """Generate deployment instruction based on version gap analysis with product context awareness"""
         
         comparison = gap_analysis['comparison']
         gap_type = gap_analysis['gap_type']
         urgency = gap_analysis['urgency']
         
-        if comparison == "newer":
+        # Handle no-environment scenarios
+        if comparison == "no_environment":
+            product_context = gap_analysis.get('product_context', {})
+            connection_error = product_context.get('connection_error', 'unknown')
+            root_cause = product_context.get('root_cause', 'unknown')
+            
+            return (f"NO TEST ENVIRONMENT AVAILABLE: Cannot validate ACM {target_version} deployment - "
+                   f"no test environment connection established. Error: {connection_error}. "
+                   f"Root cause: {root_cause}. Framework will complete analysis without environment validation.")
+        
+        # Handle new context mismatch scenarios (from real data testing fixes)
+        elif comparison == "context_mismatch":
+            product_context = gap_analysis.get('product_context', {})
+            target_product = product_context.get('target_product', 'Unknown')
+            env_product = product_context.get('environment_product', 'Unknown')
+            issue = product_context.get('issue', 'Version context mismatch')
+            
+            return (f"VERSION CONTEXT MISMATCH: Target {target_product} {target_version} cannot be compared "
+                   f"with {env_product} {environment_version}. {issue}. "
+                   f"ACM version detection required in OpenShift environment.")
+        
+        elif comparison == "not_installed":
+            return (f"ACM NOT INSTALLED: Install ACM {target_version} in the OpenShift environment. "
+                   f"ACM version not detected - fresh installation required.")
+        
+        elif comparison == "newer":
             if gap_analysis['version_difference']['major'] > 0:
-                return (f"MAJOR UPGRADE REQUIRED: Upgrade from {environment_version} to {target_version}. "
+                return (f"MAJOR UPGRADE REQUIRED: Upgrade ACM from {environment_version} to {target_version}. "
                        f"Review breaking changes and perform comprehensive testing.")
             elif gap_analysis['version_difference']['minor'] > 0:
-                return (f"MINOR UPGRADE REQUIRED: Upgrade from {environment_version} to {target_version}. "
+                return (f"MINOR UPGRADE REQUIRED: Upgrade ACM from {environment_version} to {target_version}. "
                        f"Standard upgrade process with feature validation.")
             else:
-                return (f"PATCH UPGRADE REQUIRED: Upgrade from {environment_version} to {target_version}. "
+                return (f"PATCH UPGRADE REQUIRED: Upgrade ACM from {environment_version} to {target_version}. "
                        f"Low-risk patch update recommended.")
         
         elif comparison == "same":
-            return (f"NO ACTION REQUIRED: Environment is already at target version {target_version}. "
+            return (f"NO ACTION REQUIRED: ACM environment is already at target version {target_version}. "
                    f"Proceed with feature testing and validation.")
         
         else:  # older
-            return (f"VERSION REVIEW REQUIRED: Target version {target_version} is older than "
+            return (f"VERSION REVIEW REQUIRED: Target ACM version {target_version} is older than "
                    f"environment version {environment_version}. Review requirements and confirm "
                    f"if downgrade is intentional.")
     
@@ -549,7 +767,8 @@ class VersionIntelligenceService:
                       platform=environment_data['platform'],
                       region=environment_data['region'],
                       health_status=environment_data['health_status'],
-                      connectivity_confirmed=environment_data['connectivity_confirmed']
+                      connectivity_confirmed=environment_data['connectivity_confirmed'],
+                      jenkins_deployment_metadata=environment_data.get('raw_data', {}).get('jenkins_deployment_metadata')
                   )
                   .with_deployment_instruction(deployment_instruction)
                   .build())
@@ -582,6 +801,19 @@ class VersionIntelligenceService:
         self._auto_save_context(foundation_context, jira_id)
         
         return foundation_context
+    
+    def _is_valid_version_format(self, version: str) -> bool:
+        """Check if version format is valid for various product versions"""
+        if not version:
+            return False
+        
+        import re
+        # Support various version formats: 
+        # - X.Y.Z (standard semver)
+        # - X.Y.Z-suffix (e.g., 4.20.0-ec.4, 2.15.0-RC1)
+        # - X.Y.Z.suffix (alternative format)
+        pattern = r'^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)*$'
+        return bool(re.match(pattern, str(version)))
     
     def _auto_save_context(self, context: FoundationContext, jira_id: str):
         """Automatically save context to runs directory with proper structure"""
@@ -810,6 +1042,61 @@ def create_foundation_context(jira_id: str, environment: str = None) -> Foundati
     except Exception as e:
         logger.error(f"❌ Foundation context creation failed for {jira_id}: {str(e)}")
         raise VersionIntelligenceError(f"Foundation context creation failed: {str(e)}") from e
+
+
+    def _raise_jira_failure(self, jira_id: str, error_details: str):
+        """Raise detailed JIRA failure - stops framework completely"""
+        
+        suggestions = [
+            f"1. Check JIRA connectivity: Verify access to https://issues.redhat.com/browse/{jira_id}",
+            "2. Verify JIRA CLI setup: Run 'jira version' to check CLI installation",
+            "3. Check JIRA authentication: Ensure JIRA_API_TOKEN environment variable is set",
+            "4. Verify ticket existence: Confirm the JIRA ticket ID is correct and accessible",
+            "5. Check network connectivity: Ensure access to Red Hat JIRA instance",
+            "6. Try WebFetch fallback: Check if browser access to JIRA works"
+        ]
+        
+        # Log failure details for debugging
+        logger.error(f"🚨 FRAMEWORK STOPPED: JIRA extraction failed for {jira_id}")
+        logger.error(f"   Error: {error_details}")
+        logger.error(f"   Actionable suggestions:")
+        for suggestion in suggestions:
+            logger.error(f"   {suggestion}")
+        
+        raise JIRAExtractionError(error_details, jira_id, suggestions)
+    
+    def _create_no_environment_context(self, environment: str) -> Dict[str, Any]:
+        """Create no-environment context for continuing test planning without cluster"""
+        
+        logger.warning(f"📋 Creating NO-ENVIRONMENT context for test planning")
+        logger.warning(f"   Target environment: {environment[:80]}{'...' if len(environment) > 80 else ''}")
+        logger.warning(f"   Test cases will include environment setup instructions")
+        logger.warning(f"   Manual cluster verification will be required")
+        
+        return {
+            'version': 'NO_ENVIRONMENT',
+            'cluster_name': 'test-environment-required',
+            'api_url': 'manual-setup-required',
+            'console_url': 'manual-setup-required', 
+            'platform': 'environment-independent',
+            'region': 'not-applicable',
+            'health_status': 'unavailable',
+            'connectivity_confirmed': False,
+            'detection_method': 'no_environment_fallback',
+            'platform_details': {
+                'platform': 'requires-manual-setup',
+                'distribution': 'any-kubernetes-openshift',
+                'features': ['manual-verification-required'],
+                'setup_required': True
+            },
+            'tools_available': [],
+            'assessment_timestamp': datetime.now().isoformat(),
+            'api_source': 'no_environment_fallback',
+            'test_planning_mode': 'environment_independent',
+            'manual_setup_required': True,
+            'original_target': environment,
+            'framework_continuation': 'test_planning_without_environment'
+        }
 
 
 if __name__ == "__main__":

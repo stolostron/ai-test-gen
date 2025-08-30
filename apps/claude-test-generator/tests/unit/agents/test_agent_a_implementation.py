@@ -137,6 +137,97 @@ class TestAgentABasic(unittest.TestCase):
         
         execution_time = time.time() - start_time
         self.assertLess(execution_time, 5.0, "Analysis should complete within 5 seconds")
+    
+    def test_feature_first_analysis_approach(self):
+        """Test Agent A optimization: Feature-first analysis approach"""
+        result = self.agent.analyze_jira("ACM-22079")
+        
+        # Verify feature understanding is comprehensive
+        self.assertIn('ticket_type', result)
+        self.assertIn('components', result)
+        
+        # Feature understanding should be thorough
+        self.assertGreater(len(result['components']), 0, "Should identify feature components")
+        self.assertGreater(result['confidence'], 0.8, "Should have high confidence in feature analysis")
+        
+        # Business context should be present
+        self.assertIsInstance(result['ticket_type'], str)
+        self.assertNotEqual(result['ticket_type'], '', "Should identify ticket/feature type")
+    
+    def test_deployment_agnostic_analysis(self):
+        """Test Agent A optimization: Analysis completeness regardless of deployment status"""
+        # Test with different ticket scenarios that might have different deployment states
+        test_scenarios = [
+            ("ACM-12345", "deployed_feature"),
+            ("ACM-22079", "new_feature"), 
+            ("ACM-99999", "future_feature")
+        ]
+        
+        for ticket, scenario_type in test_scenarios:
+            with self.subTest(ticket=ticket, scenario=scenario_type):
+                result = self.agent.analyze_jira(ticket)
+                
+                # Analysis should be complete regardless of deployment status
+                required_analysis_fields = ['ticket', 'ticket_type', 'components', 'confidence', 'version']
+                for field in required_analysis_fields:
+                    self.assertIn(field, result, f"Missing {field} in {scenario_type} analysis")
+                
+                # Confidence should not be artificially limited by deployment status
+                self.assertGreater(result['confidence'], 0.5, 
+                    f"Analysis confidence should not be limited for {scenario_type}")
+    
+    def test_version_context_enhancement(self):
+        """Test Agent A optimization: Version context enhances rather than limits analysis"""
+        result = self.agent.analyze_jira("ACM-22079")
+        
+        # Version information should be present for context
+        self.assertIn('version', result)
+        self.assertIsInstance(result['version'], str)
+        
+        # Analysis should not be limited by version information
+        # (Should have comprehensive analysis regardless of version status)
+        self.assertGreater(len(result['components']), 0, "Version context should not limit component analysis")
+        self.assertGreater(result['confidence'], 0.7, "Version context should not artificially reduce confidence")
+        
+        # PR references should be analyzed comprehensively
+        self.assertIn('pr_references', result)
+        self.assertIsInstance(result['pr_references'], list)
+    
+    def test_future_compatibility_analysis(self):
+        """Test Agent A optimization: Future-ready intelligence supporting current and future scenarios"""
+        result = self.agent.analyze_jira("ACM-12345")
+        
+        # Analysis structure should support both current and future deployment scenarios
+        # Core analysis fields should be deployment-scenario agnostic
+        future_ready_fields = ['ticket', 'ticket_type', 'components', 'confidence', 'pr_references', 'version']
+        
+        for field in future_ready_fields:
+            self.assertIn(field, result, f"Missing future-compatible field: {field}")
+        
+        # Analysis should provide rich context that works for multiple scenarios
+        self.assertIsInstance(result['components'], list)
+        self.assertTrue(len(result['components']) > 0 or result['confidence'] > 0.8, 
+            "Should provide either component analysis or high confidence feature understanding")
+    
+    def test_business_context_quality(self):
+        """Test Agent A optimization: Strong customer and business requirements foundation"""
+        result = self.agent.analyze_jira("ACM-22079")
+        
+        # Should identify business-relevant information
+        self.assertIn('ticket_type', result)
+        self.assertIn('components', result)
+        
+        # Business context indicators
+        business_indicators = [
+            result['ticket_type'] != '',  # Identifies feature type
+            len(result['components']) > 0,  # Identifies affected components
+            result['confidence'] > 0.0,  # Has confidence in analysis
+            isinstance(result['pr_references'], list)  # Tracks implementation details
+        ]
+        
+        business_quality_score = sum(business_indicators) / len(business_indicators)
+        self.assertGreater(business_quality_score, 0.75, 
+            "Should demonstrate strong business context quality (>75% indicators present)")
 
 
 class TestAgentAWithLearning(unittest.TestCase):
@@ -310,6 +401,44 @@ class TestAgentAWithLearning(unittest.TestCase):
         core_fields = ['ticket', 'status', 'ticket_type', 'components', 'version']
         for field in core_fields:
             self.assertEqual(result[field], base_result[field])
+    
+    def test_optimization_criteria_with_learning(self):
+        """Test Agent A optimizations work correctly with learning enabled"""
+        # Mock learning framework for optimization validation
+        self.mock_learning_framework.apply_learnings.return_value = {
+            'confidence_adjustment': 0.05,
+            'patterns': ['feature_analysis_pattern', 'business_context_pattern'],
+            'optimization_suggestions': ['feature_first_approach', 'deployment_agnostic_analysis']
+        }
+        
+        result = self.agent.analyze_jira("ACM-22079")
+        
+        # All optimization criteria should still be met with learning enabled
+        optimization_validations = [
+            # Feature-first analysis approach
+            result['ticket_type'] != '' and len(result['components']) > 0,
+            
+            # Deployment-agnostic analysis completeness
+            all(field in result for field in ['ticket', 'ticket_type', 'components', 'confidence', 'version']),
+            
+            # Version context enhancement (not limitation)
+            result['confidence'] > 0.7 and len(result['components']) > 0,
+            
+            # Future compatibility
+            all(field in result for field in ['ticket', 'ticket_type', 'components', 'confidence', 'pr_references', 'version']),
+            
+            # Business context quality
+            result['confidence'] > 0.0 and isinstance(result['pr_references'], list)
+        ]
+        
+        optimization_score = sum(optimization_validations) / len(optimization_validations)
+        self.assertGreater(optimization_score, 0.8, 
+            "Agent A optimizations should work correctly with learning enabled (>80% criteria met)")
+        
+        # Learning should enhance, not replace, the optimization features
+        self.assertIn('learning_insights', result)
+        insights = result['learning_insights']
+        self.assertGreater(insights['patterns_applied'], 0, "Learning should apply optimization patterns")
 
 
 class TestAgentAIntegration(unittest.TestCase):

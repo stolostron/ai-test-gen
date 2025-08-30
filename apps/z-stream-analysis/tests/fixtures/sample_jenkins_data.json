@@ -1,0 +1,60 @@
+{
+  "jenkins_urls": {
+    "clc_e2e_3313": "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/clc-e2e-pipeline/3313/",
+    "alc_e2e_2412": "https://jenkins-csb-rhacm-tests.dno.corp.redhat.com/job/qe-acm-automation-poc/job/alc_e2e_tests/2412/",
+    "simple_pipeline": "https://jenkins-server.com/job/test-pipeline/123/",
+    "invalid_url": "https://invalid-jenkins.com/job/nonexistent/999/"
+  },
+  "console_logs": {
+    "timeout_failure": "[INFO] Starting test execution\n[ERROR] TimeoutError: Timed out after 30 seconds waiting for element\ncypress timed out waiting for selector '.cluster-list'\nTest failed due to timeout in cluster management page",
+    "element_not_found": "[INFO] Navigating to cluster page\n[ERROR] ElementNotInteractableException: Element not found\nselector 'button[data-test=\"create-cluster\"]' not found\nNoSuchElementException: Unable to locate element",
+    "network_error": "[INFO] Connecting to cluster API\n[ERROR] Connection refused to https://api.cluster.example.com\nDNS resolution failed for cluster endpoint\nNetwork error: failed to connect to cluster",
+    "mixed_failures": "[ERROR] TimeoutError: timeout waiting for element\n[ERROR] ElementNotInteractableException: element not found\n[ERROR] Connection refused to cluster API\nTest suite failed with multiple errors",
+    "successful_test": "[INFO] Starting test execution\n[INFO] All tests passed successfully\n[INFO] Test suite completed with 0 failures"
+  },
+  "build_info": {
+    "successful_build": {
+      "result": "SUCCESS",
+      "timestamp": "2024-08-17T17:55:40Z",
+      "parameters": {
+        "CLUSTER_NAME": "qe6-vmware-ibm",
+        "BRANCH": "release-2.9",
+        "TEST_SUITE": "clc-e2e"
+      },
+      "artifacts": ["test-results.xml", "screenshots.zip"]
+    },
+    "failed_build": {
+      "result": "FAILURE",
+      "timestamp": "2024-08-17T14:03:00Z",
+      "parameters": {
+        "environment": "staging-cluster",
+        "git_branch": "origin/release-2.11",
+        "SUITE": "alc_e2e_tests"
+      },
+      "artifacts": ["console.log", "cypress-results.json"]
+    },
+    "minimal_build": {
+      "result": "UNKNOWN",
+      "timestamp": "",
+      "parameters": {},
+      "artifacts": []
+    }
+  },
+  "expected_patterns": {
+    "timeout_errors": [
+      "TimeoutError",
+      "timed out",
+      "timeout waiting"
+    ],
+    "element_not_found": [
+      "ElementNotInteractableException",
+      "Element not found",
+      "NoSuchElementException"
+    ],
+    "network_errors": [
+      "Connection refused",
+      "DNS resolution failed", 
+      "Network error"
+    ]
+  }
+}

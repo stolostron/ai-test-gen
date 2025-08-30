@@ -15,15 +15,17 @@ class TestCaseFormatEnforcer:
         self.max_score = 100
         self.violations = []
         
-        # Scoring weights
+        # Enhanced scoring weights for comprehensive template enforcement
         self.weights = {
-            'files_exist': 30,
-            'no_html_tags': 10,
-            'correct_login_step': 15,
-            'deployment_status_header': 15,
-            'sample_outputs': 10,
-            'no_internal_scripts': 10,
-            'other_formatting': 10
+            'files_exist': 20,
+            'no_html_tags': 5,
+            'correct_login_step': 10,
+            'ui_cli_instructions': 20,  # NEW: UI/CLI instructions with verbal explanations
+            'sample_data_in_steps': 15,  # NEW: Sample YAMLs/logs/outputs in steps
+            'proper_table_structure': 10,  # NEW: Proper table headers with UI/CLI/Expected columns
+            'required_sections': 10,  # Description/Setup sections
+            'sample_outputs': 5,
+            'no_internal_scripts': 5
         }
         
     def validate_test_cases(self, file_path):
@@ -38,10 +40,13 @@ class TestCaseFormatEnforcer:
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
             
-        # Validation checks
+        # Enhanced validation checks
         self._check_html_tags(content)
         self._check_login_step_format(content)
-        self._check_deployment_status_header(content)
+        self._check_ui_cli_instructions(content)  # NEW: UI/CLI instructions with verbal explanations
+        self._check_sample_data_in_steps(content)  # NEW: Sample YAMLs/logs/outputs in steps
+        self._check_proper_table_structure(content)  # NEW: Proper table headers
+        self._check_required_sections(content)  # NEW: Description/Setup sections
         self._check_sample_outputs(content)
         self._check_internal_scripts(content)
         self._check_table_formatting(content)
@@ -152,6 +157,64 @@ class TestCaseFormatEnforcer:
                 self.violations.append(f"❌ Missing required section: {section}")
             else:
                 self.score += 1  # Partial credit for other formatting
+    
+    def _check_ui_cli_instructions(self, content):
+        """Check for UI/CLI instructions with verbal explanations in tables (20-point deduction)"""
+        # Look for tables with proper UI/CLI instruction columns
+        table_pattern = r'\|.*Action.*\|.*Expected Result.*\|'
+        tables_found = re.findall(table_pattern, content, re.IGNORECASE)
+        
+        # Check for verbal explanations in table cells
+        ui_cli_pattern = r'Navigate to.*\|.*oc .*\|.*Login successful'
+        ui_cli_matches = re.findall(ui_cli_pattern, content, re.IGNORECASE)
+        
+        if len(ui_cli_matches) >= 3:  # Expect multiple UI/CLI instructions
+            self.score += self.weights['ui_cli_instructions']
+        else:
+            self.violations.append(f"❌ Insufficient UI/CLI instructions with verbal explanations. Found {len(ui_cli_matches)}, expected 3+ (-{self.weights['ui_cli_instructions']} points)")
+    
+    def _check_sample_data_in_steps(self, content):
+        """Check for sample YAMLs/logs/terminal outputs in test steps (15-point deduction)"""
+        # Look for YAML blocks
+        yaml_pattern = r'```yaml[\s\S]*?```'
+        yaml_blocks = re.findall(yaml_pattern, content)
+        
+        # Look for terminal output samples
+        terminal_pattern = r'`[^`]*status.*[^`]*`|`[^`]*created.*[^`]*`|`[^`]*Ready.*[^`]*`'
+        terminal_outputs = re.findall(terminal_pattern, content)
+        
+        total_samples = len(yaml_blocks) + len(terminal_outputs)
+        
+        if total_samples >= 5:  # Expect multiple sample data elements
+            self.score += self.weights['sample_data_in_steps']
+        else:
+            self.violations.append(f"❌ Insufficient sample YAMLs/logs/terminal outputs. Found {total_samples}, expected 5+ (-{self.weights['sample_data_in_steps']} points)")
+    
+    def _check_proper_table_structure(self, content):
+        """Check for proper table headers with UI/CLI/Expected columns (10-point deduction)"""
+        # Look for tables with proper headers
+        proper_header_pattern = r'\|\s*Step\s*\|\s*Action\s*\|\s*Expected Result\s*\|'
+        proper_headers = re.findall(proper_header_pattern, content, re.IGNORECASE)
+        
+        if len(proper_headers) >= 3:  # Expect multiple properly formatted tables
+            self.score += self.weights['proper_table_structure']
+        else:
+            self.violations.append(f"❌ Missing proper table headers with Step|Action|Expected Result format (-{self.weights['proper_table_structure']} points)")
+    
+    def _check_required_sections(self, content):
+        """Check for required Description and Setup sections (10-point deduction)"""
+        required_sections = ['**Description**:', '**Setup**:']
+        found_sections = 0
+        
+        for section in required_sections:
+            if section in content:
+                found_sections += 1
+        
+        if found_sections >= 2:
+            self.score += self.weights['required_sections']
+        else:
+            missing = [s for s in required_sections if s not in content]
+            self.violations.append(f"❌ Missing required sections: {missing} (-{self.weights['required_sections']} points)")
                 
     def _calculate_final_score(self):
         """Calculate final score and generate report"""

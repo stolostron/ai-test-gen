@@ -1,8 +1,8 @@
 {
-  "cache_timestamp": "2025-08-25T20:27:06.710173",
+  "cache_timestamp": "2025-08-26T17:44:40.570427",
   "environment_data": {
     "cluster_name": "test-cluster",
-    "version": "4.20.0-ec.4",
+    "version": "2.14.0-62",
     "api_url": "https://api.mist10-0.qe.red-chesterfield.com:6443\u001b[0m",
     "console_url": "https://console.mist10-0.qe.red-chesterfield.com:6443\u001b[0m",
     "platform": "openshift",
@@ -20,10 +20,13 @@
       "openshift_version": "4.20.0-ec.4"
     },
     "detection_method": "oc_assessment",
-    "assessment_timestamp": "2025-08-25T20:27:06.710095",
+    "assessment_timestamp": "2025-08-26T17:44:40.570286",
     "tools_available": {
       "oc": true,
-      "kubectl": true
+      "kubectl": true,
+      "gh": true,
+      "curl": true,
+      "docker": true
     }
   }
 }

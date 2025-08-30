@@ -36,7 +36,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 
-from .validation_learning_core import LearningMode, ValidationEvent, ValidationInsights
+from validation_learning_core import LearningMode, ValidationEvent, ValidationInsights
 
 
 @dataclass

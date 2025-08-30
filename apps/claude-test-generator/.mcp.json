@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "test-generator-filesystem": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [".claude/mcp/simple_mcp_server.py"],
+      "env": {},
+      "cwd": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator"
+    },
+    "test-generator-github": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [".claude/mcp/simple_github_mcp_server.py"],
+      "env": {},
+      "cwd": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator"
+    },
+    "test-generator-filesystem-minimal": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [".claude/mcp/minimal_filesystem_server.py"],
+      "env": {},
+      "cwd": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator"
+    },
+    "test-generator-github-minimal": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [".claude/mcp/minimal_github_server.py"],
+      "env": {},
+      "cwd": "/Users/ashafi/Documents/work/ai/ai_systems/apps/claude-test-generator"
+    }
+  }
+}

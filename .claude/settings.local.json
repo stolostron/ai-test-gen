@@ -5,7 +5,9 @@
       "WebFetch(domain:modelcontextprotocol.io)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:arxiv.org)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(python3:*)",
+      "Bash(lsof:*)"
     ],
     "deny": []
   }

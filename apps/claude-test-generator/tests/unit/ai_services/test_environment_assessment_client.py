@@ -52,7 +52,7 @@ class TestEnvironmentAssessmentConfig(unittest.TestCase):
             health_check_timeout=30,
             max_retries=5,
             cache_duration=600,
-            fallback_to_simulation=False
+            # REMOVED: fallback_to_simulation - no simulation allowed
         )
         
         self.assertEqual(config.cluster_timeout, 60)
@@ -70,7 +70,7 @@ class TestEnvironmentAssessmentConfig(unittest.TestCase):
         self.assertEqual(config.max_retries, 3)
         self.assertEqual(config.cache_duration, 180)
         self.assertTrue(config.fallback_to_simulation)
-        self.assertEqual(config.preferred_tools, ['oc', 'kubectl'])
+        self.assertEqual(config.preferred_tools, ['oc', 'kubectl', 'gh', 'curl', 'docker'])
 
 
 class TestEnvironmentData(unittest.TestCase):
@@ -98,6 +98,12 @@ class TestEnvironmentData(unittest.TestCase):
         self.assertEqual(env_data.platform, "openshift")
         self.assertTrue(env_data.connectivity_confirmed)
         self.assertEqual(env_data.raw_data, {})  # Should initialize empty
+        # Test new sample_data field
+        self.assertIsNotNone(env_data.sample_data)
+        self.assertIn('sample_yamls', env_data.sample_data)
+        self.assertIn('sample_commands', env_data.sample_data)
+        self.assertIn('sample_outputs', env_data.sample_data)
+        self.assertIn('sample_logs', env_data.sample_data)
 
 
 class TestEnvironmentAssessmentClient(unittest.TestCase):
@@ -347,9 +353,9 @@ class TestEnvironmentAssessmentClient(unittest.TestCase):
             self.assertEqual(platform_info['platform'], 'kubernetes')
             self.assertIn('kubernetes_system', platform_info['features'])
     
-    def test_fallback_simulation(self):
-        """Test fallback to simulation when tools are unavailable"""
-        config = EnvironmentAssessmentConfig(fallback_to_simulation=True)
+    def test_no_environment_fallback(self):
+        """Test no-environment context creation when tools are unavailable"""
+        config = EnvironmentAssessmentConfig()  # REMOVED: fallback_to_simulation
         
         # Mock cache_dir and create client properly
         with patch('environment_assessment_client.Path') as mock_path:
@@ -358,12 +364,12 @@ class TestEnvironmentAssessmentClient(unittest.TestCase):
                 with patch.object(EnvironmentAssessmentClient, '_select_primary_tool', return_value=None):
                     client = EnvironmentAssessmentClient(config)
                     
-                    # Should fall back to simulation
+                    # Should create no-environment context instead of simulation
                     env_data = client.assess_environment("test-cluster")
                     
                     self.assertIsInstance(env_data, EnvironmentData)
-                    self.assertEqual(env_data.cluster_name, "test-cluster")
-                    self.assertEqual(env_data.detection_method, "intelligent_simulation")
+                    self.assertEqual(env_data.cluster_name, "test-environment-required")
+                    self.assertEqual(env_data.detection_method, "no_environment_fallback")
     
     def test_cache_functionality(self):
         """Test environment assessment caching"""
@@ -462,6 +468,204 @@ class TestEnvironmentAssessmentClient(unittest.TestCase):
                         client.assess_environment("test-cluster")
                     
                     self.assertIn("tools unavailable and simulation disabled", str(context.exception))
+
+
+class TestAgentDSampleDataCollection(unittest.TestCase):
+    """Test Agent D sample data collection functionality for enhanced templates"""
+    
+    def setUp(self):
+        """Setup test environment for Agent D sample data collection"""
+        self.temp_dir = tempfile.mkdtemp()
+        self.cache_dir = Path(self.temp_dir) / ".claude" / "cache" / "environment"
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        
+    def tearDown(self):
+        """Clean up test environment"""
+        import shutil
+        shutil.rmtree(self.temp_dir)
+    
+    def test_collect_sample_data_for_tests(self):
+        """Test Agent D collects sample YAMLs, commands, outputs, and logs without Agent A intelligence"""
+        config = EnvironmentAssessmentConfig()
+        
+        with patch('environment_assessment_client.Path') as mock_path:
+            mock_path.return_value = self.cache_dir
+            with patch.object(EnvironmentAssessmentClient, '_detect_available_tools', return_value={'oc': True, 'kubectl': True, 'gh': True}):
+                with patch.object(EnvironmentAssessmentClient, '_select_primary_tool', return_value='oc'):
+                    client = EnvironmentAssessmentClient(config)
+                    
+                    # Test sample data collection without Agent A intelligence (fallback mode)
+                    sample_data = client.collect_sample_data_for_tests("ACM-22079")
+                    
+                    # Validate structure
+                    self.assertIsInstance(sample_data, dict)
+                    self.assertIn('sample_yamls', sample_data)
+                    self.assertIn('sample_commands', sample_data)
+                    self.assertIn('sample_outputs', sample_data)
+                    self.assertIn('sample_logs', sample_data)
+                    self.assertIn('intelligence_metadata', sample_data)
+                    
+                    # Validate intelligence metadata for fallback mode
+                    metadata = sample_data['intelligence_metadata']
+                    self.assertEqual(metadata['components_discovered'], 'unknown')
+                    self.assertEqual(metadata['collection_strategy'], 'intelligent_based_on_agent_a')
+                    self.assertFalse(metadata['agent_a_context_used'])
+                    
+                    # In fallback mode, should collect generic ACM samples
+                    self.assertIn('managedcluster_sample', sample_data['sample_yamls'])
+                    self.assertIn('oc_get_managedclusters', sample_data['sample_commands'])
+    
+    def test_intelligent_sample_collection_clustercurator(self):
+        """Test Agent D intelligently collects ClusterCurator samples based on Agent A intelligence"""
+        config = EnvironmentAssessmentConfig()
+        
+        # Simulate Agent A discovering ClusterCurator with digest-based upgrades
+        agent_a_intelligence = {
+            'findings': {
+                'component': 'ClusterCurator',
+                'description': 'ClusterCurator digest-based upgrades for disconnected environments',
+                'scope': 'digest-based upgrades',
+                'prs': ['PR #468']
+            }
+        }
+        
+        with patch('environment_assessment_client.Path') as mock_path:
+            mock_path.return_value = self.cache_dir
+            with patch.object(EnvironmentAssessmentClient, '_detect_available_tools', return_value={'oc': True}):
+                with patch.object(EnvironmentAssessmentClient, '_select_primary_tool', return_value='oc'):
+                    client = EnvironmentAssessmentClient(config)
+                    
+                    # Test intelligent sample collection
+                    sample_data = client.collect_sample_data_for_tests("ACM-22079", agent_a_intelligence)
+                    
+                    # Validate intelligence metadata
+                    metadata = sample_data['intelligence_metadata']
+                    self.assertIn('ClusterCurator', metadata['components_discovered'])
+                    self.assertEqual(metadata['feature_scope'], 'digest-based upgrades')
+                    self.assertIn('PR #468', metadata['pr_information'])
+                    self.assertTrue(metadata['agent_a_context_used'])
+                    
+                    # Validate ClusterCurator-specific samples
+                    self.assertIn('clustercurator_digest', sample_data['sample_yamls'])
+                    self.assertIn('clustercurator_fallback', sample_data['sample_yamls'])
+                    
+                    # Validate digest-specific YAML content
+                    digest_yaml = sample_data['sample_yamls']['clustercurator_digest']
+                    self.assertIn('conditionalUpdates', digest_yaml)
+                    self.assertIn('digest: "sha256:abc123def456..."', digest_yaml)
+                    
+                    # Validate ClusterCurator commands
+                    self.assertIn('oc_get_clustercurator', sample_data['sample_commands'])
+                    self.assertIn('oc_describe_clustercurator', sample_data['sample_commands'])
+                    
+                    # Validate digest-specific logs
+                    self.assertIn('clustercurator_digest_success', sample_data['sample_logs'])
+                    self.assertIn('clustercurator_fallback', sample_data['sample_logs'])
+    
+    def test_intelligent_sample_collection_policy(self):
+        """Test Agent D intelligently collects Policy samples based on Agent A intelligence"""
+        config = EnvironmentAssessmentConfig()
+        
+        # Simulate Agent A discovering Policy components
+        agent_a_intelligence = {
+            'findings': {
+                'component': 'Policy',
+                'description': 'Policy governance and compliance management',
+                'scope': 'policy management',
+                'prs': ['PR #123']
+            }
+        }
+        
+        with patch('environment_assessment_client.Path') as mock_path:
+            mock_path.return_value = self.cache_dir
+            with patch.object(EnvironmentAssessmentClient, '_detect_available_tools', return_value={'oc': True}):
+                with patch.object(EnvironmentAssessmentClient, '_select_primary_tool', return_value='oc'):
+                    client = EnvironmentAssessmentClient(config)
+                    
+                    # Test intelligent policy sample collection
+                    sample_data = client.collect_sample_data_for_tests("ACM-12345", agent_a_intelligence)
+                    
+                    # Validate Policy-specific intelligence
+                    metadata = sample_data['intelligence_metadata']
+                    self.assertIn('Policy', metadata['components_discovered'])
+                    self.assertEqual(metadata['feature_scope'], 'policy management')
+                    
+                    # Validate Policy-specific samples
+                    self.assertIn('policy_sample', sample_data['sample_yamls'])
+                    self.assertIn('oc_get_policies', sample_data['sample_commands'])
+                    
+                    # Validate Policy YAML content
+                    policy_yaml = sample_data['sample_yamls']['policy_sample']
+                    self.assertIn('apiVersion: policy.open-cluster-management.io/v1', policy_yaml)
+                    self.assertIn('kind: Policy', policy_yaml)
+                    self.assertIn('complianceType: musthave', policy_yaml)
+    
+    def test_sample_data_yaml_structure(self):
+        """Test that sample YAML data has proper structure when Agent A provides ClusterCurator intelligence"""
+        config = EnvironmentAssessmentConfig()
+        
+        # Provide Agent A intelligence for ClusterCurator
+        agent_a_intelligence = {
+            'findings': {
+                'component': 'ClusterCurator',
+                'description': 'ClusterCurator digest-based upgrades',
+                'scope': 'digest-based upgrades'
+            }
+        }
+        
+        with patch('environment_assessment_client.Path') as mock_path:
+            mock_path.return_value = self.cache_dir
+            with patch.object(EnvironmentAssessmentClient, '_detect_available_tools', return_value={'oc': True}):
+                with patch.object(EnvironmentAssessmentClient, '_select_primary_tool', return_value='oc'):
+                    client = EnvironmentAssessmentClient(config)
+                    
+                    sample_data = client.collect_sample_data_for_tests("ACM-22079", agent_a_intelligence)
+                    
+                    # Test ClusterCurator digest YAML structure
+                    digest_yaml = sample_data['sample_yamls']['clustercurator_digest']
+                    yaml_lines = digest_yaml.split('\n')
+                    
+                    # Verify key ClusterCurator fields
+                    api_version_found = any('apiVersion: cluster.open-cluster-management.io/v1beta1' in line for line in yaml_lines)
+                    kind_found = any('kind: ClusterCurator' in line for line in yaml_lines)
+                    conditional_updates_found = any('conditionalUpdates:' in line for line in yaml_lines)
+                    digest_found = any('digest:' in line for line in yaml_lines)
+                    
+                    self.assertTrue(api_version_found, "ClusterCurator apiVersion not found")
+                    self.assertTrue(kind_found, "ClusterCurator kind not found")
+                    self.assertTrue(conditional_updates_found, "conditionalUpdates field not found")
+                    self.assertTrue(digest_found, "digest field not found")
+    
+    def test_sample_data_command_output_consistency(self):
+        """Test that sample commands and outputs are consistent for generic ACM samples"""
+        config = EnvironmentAssessmentConfig()
+        
+        with patch('environment_assessment_client.Path') as mock_path:
+            mock_path.return_value = self.cache_dir
+            with patch.object(EnvironmentAssessmentClient, '_detect_available_tools', return_value={'oc': True}):
+                with patch.object(EnvironmentAssessmentClient, '_select_primary_tool', return_value='oc'):
+                    client = EnvironmentAssessmentClient(config)
+                    
+                    # Test without Agent A intelligence (fallback to generic ACM samples)
+                    sample_data = client.collect_sample_data_for_tests("ACM-22079")
+                    
+                    # Test generic ACM command-output consistency
+                    oc_get_cmd = sample_data['sample_commands']['oc_get_managedclusters']
+                    oc_get_output = sample_data['sample_outputs']['oc_get_managedclusters']
+                    
+                    self.assertEqual(oc_get_cmd, "oc get managedclusters")
+                    self.assertIn("NAME", oc_get_output)       # Table header
+                    self.assertIn("HUB ACCEPTED", oc_get_output)  # Table header
+                    self.assertIn("test-cluster", oc_get_output)    # Sample cluster
+                    
+                    # Test login command-output consistency (available in all sample types)
+                    login_cmd = sample_data['sample_commands']['oc_login']
+                    login_output = sample_data['sample_outputs']['oc_login']
+                    
+                    self.assertIn("<CLUSTER_CONSOLE_URL>", login_cmd)
+                    self.assertIn("<CLUSTER_ADMIN_USER>", login_cmd)
+                    self.assertIn("<CLUSTER_ADMIN_PASSWORD>", login_cmd)
+                    self.assertIn("Login successful", login_output)
 
 
 if __name__ == '__main__':

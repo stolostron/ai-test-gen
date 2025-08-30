@@ -18,7 +18,7 @@
 ## 🏗️ Hierarchical Isolation Principles
 
 - **Strict App Boundaries**: Apps completely contained within their directories with real-time violation detection
-- **Framework Execution Integrity**: 8-Layer Safety System preventing framework split personality disorder and execution isolation failures
+- **Framework Execution Integrity**: Comprehensive safety mechanisms preventing framework split personality disorder and execution isolation failures
 - **Agent Output Reality Validation**: Mandatory validation ensuring agents produce actual output files before claiming completion
 - **Data Pipeline Integrity**: Phase boundary validation preventing downstream processing without validated agent intelligence
 - **Hierarchical Access Control**: Root level maintains full orchestration and cross-app capabilities

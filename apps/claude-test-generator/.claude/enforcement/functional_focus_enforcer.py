@@ -198,8 +198,8 @@ class FunctionalFocusEnforcer:
             "recommendations": []
         }
         
-        # Split content by test cases
-        test_case_sections = re.split(r'## Test Case \d+:', test_plan_content)
+        # Split content by test categories (updated pattern)
+        test_case_sections = re.split(r'### \d+\.\s*([^(]*(?:Testing|Test))', test_plan_content)
         
         for i, section in enumerate(test_case_sections[1:], 1):  # Skip header section
             enforcement_result["test_cases_analyzed"] += 1

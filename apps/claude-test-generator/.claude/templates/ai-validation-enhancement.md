@@ -19,23 +19,28 @@
 - **Compliance Verification**: AI ensures 85+ point quality target compliance
 - **Format Standardization**: AI enforces consistent formatting across all outputs
 
-### AI Category Recognition Service
+### AI Pattern Recognition Service
 
-**INTELLIGENT TICKET CATEGORIZATION** - AI automatically identifies ticket types and applies appropriate templates.
+**INTELLIGENT PATTERN DETECTION** - AI automatically identifies testing patterns and applies appropriate approaches based on ACM domain knowledge.
 
-#### 📊 AI Category Detection:
-- **Upgrade Tickets**: AI detects version changes, upgrade keywords, migration content
-- **UI/Frontend Changes**: AI identifies console, dashboard, user interface modifications
-- **Import/Export Features**: AI recognizes cluster management, resource transfer functionality
-- **API/Backend Changes**: AI detects REST API, service layer, backend logic modifications
-- **Security/RBAC Features**: AI identifies permission, authentication, authorization changes
-- **Performance/Scalability**: AI recognizes load testing, optimization, scaling requirements
+#### 📊 AI Pattern Detection:
+The AI recognizes these ACM patterns (and continuously learns new ones):
+- **Fleet Management**: Cluster operations, lifecycle, platform providers, infrastructure
+- **Policy & Governance**: Compliance, enforcement, remediation, security policies
+- **Application Lifecycle**: GitOps, deployments, channels, subscriptions, placements
+- **Observability & Search**: Metrics, monitoring, dashboards, alerts, queries
+- **Security & Access**: RBAC, authentication, authorization, identity management
+- **Infrastructure & Automation**: Ansible, credentials, integrations, automation
+- **UI & Console**: User interfaces, forms, navigation, dashboards, tables
+- **New Patterns**: The AI discovers and learns patterns it hasn't seen before
 
-#### 🎯 AI Template Application:
-- **Smart Template Selection**: AI chooses optimal test scenario template based on ticket analysis
-- **Dynamic Customization**: AI adapts template requirements to specific feature context
-- **Scenario Generation**: AI generates appropriate test scenarios for identified category
-- **Quality Optimization**: AI ensures category-specific best practices are applied
+#### 🎯 AI Test Generation:
+- **Smart Pattern Application**: AI applies learned patterns appropriately to each feature
+- **Feature-Focused E2E**: Always generates end-to-end scenarios following user journeys
+- **RBAC-Aware**: Includes permission testing when users and roles are involved
+- **Multi-cluster Ready**: Considers ACM's hub-spoke architecture in test design
+- **Integration Testing**: Validates component interactions and external integrations
+- **Adaptive Learning**: Improves pattern recognition with each successful test
 
 ### AI Consistency Enforcement Service
 

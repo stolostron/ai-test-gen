@@ -58,7 +58,15 @@
       "WebFetch(domain:www.redhat.com)",
       "Bash(echo:*)",
       "Bash(mv:*)",
-      "WebFetch(domain:docs.cypress.io)"
+      "WebFetch(domain:docs.cypress.io)",
+      "Bash(python3:*)",
+      "Bash(oc adm top:*)",
+      "Bash(ping:*)",
+      "Bash(nslookup:*)",
+      "Bash(docker --version:*)",
+      "Bash(true:*)",
+      "Bash(awk:*)",
+      "Bash(sed:*)"
     ],
     "deny": []
   }

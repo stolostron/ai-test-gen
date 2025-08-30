@@ -6,15 +6,17 @@ This module provides intelligent learning capabilities for all validation system
 while maintaining zero impact on existing framework operations.
 
 Key Features:
-- Non-intrusive operation (zero impact when disabled)
+- Advanced learning enabled by default (full ML capabilities)
+- Non-intrusive operation (zero impact if disabled)
 - Safe failure handling (learning failures never affect validation)
 - Async-first processing (non-blocking operations)
 - Configuration-controlled (complete environment variable control)
 - Modular architecture (separate learning services)
 - Resource-bounded (controlled memory and storage usage)
+- Machine learning integration (TF-IDF, similarity matching, predictive analytics)
 
 Author: AI Systems Suite / Claude Test Generator Framework
-Version: 1.0.0
+Version: 1.1.0 - ML-Enabled by Default
 """
 
 import asyncio
@@ -36,10 +38,10 @@ import weakref
 
 class LearningMode(Enum):
     """Learning operation modes with different capability levels"""
-    DISABLED = "disabled"       # No learning operations (default)
+    DISABLED = "disabled"       # No learning operations
     CONSERVATIVE = "conservative"  # Basic pattern storage only
     STANDARD = "standard"       # Pattern storage + basic analytics
-    ADVANCED = "advanced"       # Full learning capabilities
+    ADVANCED = "advanced"       # Full learning capabilities (default)
 
 
 @dataclass
@@ -220,7 +222,7 @@ class ConfigurationController:
     def _load_configuration(self) -> Dict[str, Any]:
         """Load configuration from environment variables"""
         return {
-            'learning_mode': os.getenv('CLAUDE_VALIDATION_LEARNING', 'disabled'),
+            'learning_mode': os.getenv('CLAUDE_VALIDATION_LEARNING', 'advanced'),
             'storage_path': os.getenv('CLAUDE_LEARNING_STORAGE_PATH', './.claude/learning/validation'),
             'max_memory_mb': int(os.getenv('CLAUDE_LEARNING_MAX_MEMORY', '100')),
             'max_storage_mb': int(os.getenv('CLAUDE_LEARNING_MAX_STORAGE', '500')),
@@ -365,7 +367,7 @@ class ValidationLearningCore:
         
         # Configuration-based initialization
         self.config_controller = ConfigurationController()
-        self.learning_mode = LearningMode(self.config_controller.get_config('learning_mode', 'disabled'))
+        self.learning_mode = LearningMode(self.config_controller.get_config('learning_mode', 'advanced'))
         self.storage_path = self.config_controller.get_config('storage_path')
         self.async_queue_size = self.config_controller.get_config('async_queue_size', 1000)
         
@@ -537,7 +539,7 @@ class ValidationLearningCore:
         """Initialize learning services (only when enabled)"""
         try:
             # Import learning services only when needed
-            from .learning_services import (
+            from learning_services import (
                 ValidationPatternMemory,
                 ValidationAnalyticsService,
                 ValidationKnowledgeBase
