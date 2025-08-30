@@ -1,22 +1,27 @@
 {
-  "name": "ai-conflict-resolver",
-  "version": "1.0.0",
-  "description": "AI-powered merge conflict resolution system using Claude",
+  "name": "ai-code-review-system",
+  "version": "2.0.0",
+  "description": "AI-powered code review and conflict resolution system using Claude Sonnet 4",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
     "lint": "eslint src/",
-    "docker:build": "docker build -t ai-conflict-resolver .",
-    "docker:run": "docker run -p 3000:3000 --env-file .env ai-conflict-resolver"
+    "setup": "node scripts/setup-logging.js",
+    "setup:logging": "node scripts/setup-logging.js",
+    "docker:build": "docker build -t ai-code-review-system .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env ai-code-review-system"
   },
   "keywords": [
     "github",
+    "code-review",
     "conflict-resolution",
     "ai",
-    "claude",
-    "automation"
+    "claude-sonnet-4",
+    "multi-agent",
+    "automation",
+    "developer-tools"
   ],
   "author": "QE Team",
   "license": "MIT",

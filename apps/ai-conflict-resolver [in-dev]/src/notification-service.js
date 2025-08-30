@@ -126,6 +126,66 @@ class NotificationService {
     await Promise.all(notificationPromises);
   }
 
+  async notifyReviewComplete({ pr, report, repository, workflowId }) {
+    console.log('Sending review complete notifications...');
+
+    const notification = this.buildReviewCompleteNotification({
+      pr,
+      report,
+      repository,
+      workflowId
+    });
+
+    const notificationPromises = [];
+
+    // Send Slack notification
+    if (this.slackClient && this.preferences.notifyOnSuccess) {
+      notificationPromises.push(
+        this.sendSlackNotification(notification.slack)
+      );
+    }
+
+    // Send email notification
+    if (this.emailTransporter && this.preferences.notifyOnSuccess) {
+      notificationPromises.push(
+        this.sendEmailNotification(notification.email)
+      );
+    }
+
+    await Promise.all(notificationPromises);
+  }
+
+  buildReviewCompleteNotification({ pr, report, repository, workflowId }) {
+    const healthScore = report.healthScore || 0;
+    const emoji = healthScore >= 80 ? '✅' : healthScore >= 60 ? '⚠️' : '❌';
+    const status = healthScore >= 80 ? 'Excellent' : healthScore >= 60 ? 'Good' : 'Needs Attention';
+
+    const summary = `
+${emoji} **Code Review Complete**
+Repository: ${repository.full_name}
+PR #${pr.number}: ${pr.title}
+Health Score: ${healthScore}%
+Status: ${status}
+    `.trim();
+
+    return {
+      slack: {
+        blocks: [{
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: summary
+          }
+        }]
+      },
+      email: {
+        subject: `[${repository.name}] ${emoji} Code Review Complete - PR #${pr.number}`,
+        html: summary.replace(/\n/g, '<br>'),
+        to: this.getRecipients(pr)
+      }
+    };
+  }
+
   buildResolutionNotification({ repository, pullRequest, analysis, resolution, validation }) {
     const isSuccess = resolution.success && validation.testsPass;
     const emoji = isSuccess ? '✅' : '⚠️';

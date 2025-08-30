@@ -1,538 +1,658 @@
+const winston = require('winston');
 const { App } = require('@octokit/app');
-const { Octokit } = require('@octokit/rest');
-const express = require('express');
-const { createNodeMiddleware } = require('@octokit/webhooks');
-const { ClaudeConflictResolver } = require('./claude-resolver');
-const { CodeReviewIntelligence } = require('./code-review-intelligence');
-const { JiraClient } = require('./jira-client');
-const { NotificationService } = require('./notification-service');
-const { ContextCollector } = require('./context-collector');
+const AgentOrchestrator = require('./orchestrator/agent-orchestrator');
+const NotificationService = require('./notification-service');
 
 class EnhancedGitHubApp {
   constructor(config) {
     this.config = config;
-    
-    // Initialize GitHub App
     this.app = new App({
       appId: config.github.appId,
       privateKey: config.github.privateKey,
-      oauth: {
-        clientId: config.github.clientId,
-        clientSecret: config.github.clientSecret,
-      },
+      webhooks: { secret: config.github.webhookSecret }
     });
-
-    // Initialize services
-    this.conflictResolver = new ClaudeConflictResolver(config.claude);
-    this.codeReviewer = new CodeReviewIntelligence(config);
-    this.jiraClient = new JiraClient(config.jira);
+    
+    // Initialize services with octokit factory
+    this.orchestrator = new AgentOrchestrator(config, this.createOctokit.bind(this));
     this.notificationService = new NotificationService(config.notifications);
-    this.contextCollector = new ContextCollector({
-      github: this.app,
-      jira: this.jiraClient,
+    
+    this.setupWebhooks();
+    
+    this.logger = winston.createLogger({
+      level: 'info',
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.errors({ stack: true }),
+        winston.format.json()
+      ),
+      defaultMeta: { service: 'enhanced-github-app' }
     });
 
-    // Set up webhook handlers
-    this.setupWebhooks();
+    // Setup cleanup interval for old workflows
+    setInterval(() => {
+      this.orchestrator.cleanupOldWorkflows();
+    }, 60 * 60 * 1000); // Run every hour
   }
 
+  createOctokit(installationId) {
+    return this.app.getInstallationOctokit(installationId);
+  }
+  
   setupWebhooks() {
-    const webhooks = this.app.webhooks;
-
-    // Handle PR events
-    webhooks.on(['pull_request.opened', 'pull_request.synchronize', 'pull_request.reopened'], 
-      async ({ payload, octokit }) => {
-        await this.handlePullRequestEvent(payload, octokit);
-      }
-    );
-
-    // Handle PR ready for review
-    webhooks.on('pull_request.ready_for_review', async ({ payload, octokit }) => {
-      await this.performCodeReview(payload, octokit);
+    // PR opened - trigger full analysis
+    this.app.webhooks.on('pull_request.opened', async ({ payload, octokit }) => {
+      await this.handlePullRequestEvent(payload, octokit, 'opened');
+    });
+    
+    // PR updated - trigger incremental analysis
+    this.app.webhooks.on('pull_request.synchronize', async ({ payload, octokit }) => {
+      await this.handlePullRequestEvent(payload, octokit, 'updated');
     });
 
-    // Handle manual triggers via PR comment
-    webhooks.on('issue_comment.created', async ({ payload, octokit }) => {
+    // PR reopened - trigger full analysis
+    this.app.webhooks.on('pull_request.reopened', async ({ payload, octokit }) => {
+      await this.handlePullRequestEvent(payload, octokit, 'reopened');
+    });
+
+    // PR ready for review - trigger analysis if not done
+    this.app.webhooks.on('pull_request.ready_for_review', async ({ payload, octokit }) => {
+      await this.handlePullRequestEvent(payload, octokit, 'ready_for_review');
+    });
+    
+    // Comment commands
+    this.app.webhooks.on('issue_comment.created', async ({ payload, octokit }) => {
       if (payload.issue.pull_request) {
         await this.handleCommentCommand(payload, octokit);
       }
     });
 
-    // Handle review submission
-    webhooks.on('pull_request_review.submitted', async ({ payload, octokit }) => {
-      await this.handleReviewFeedback(payload, octokit);
+    // Installation events
+    this.app.webhooks.on('installation.created', async ({ payload, octokit }) => {
+      this.logger.info('New installation created', {
+        installation_id: payload.installation.id,
+        account: payload.installation.account.login
+      });
     });
   }
-
-  async handlePullRequestEvent(payload, octokit) {
-    const { repository, pull_request } = payload;
+  
+  async handlePullRequestEvent(payload, octokit, eventType) {
+    const pr = payload.pull_request;
+    const repository = payload.repository;
     
-    console.log(`Processing PR #${pull_request.number} in ${repository.full_name}`);
-
     try {
-      // Get detailed PR information
-      const prDetails = await octokit.pulls.get({
-        owner: repository.owner.login,
-        repo: repository.name,
-        pull_number: pull_request.number,
+      this.logger.info('Processing PR event', {
+        event_type: eventType,
+        action: payload.action,
+        pr_number: pr.number,
+        repository: repository.full_name,
+        author: pr.user.login,
+        draft: pr.draft
       });
 
-      // Check for conflicts
-      const hasConflicts = prDetails.data.mergeable_state === 'dirty';
-      
-      // Perform both conflict resolution and code review
-      const tasks = [];
-
-      if (hasConflicts) {
-        console.log('Merge conflicts detected - initiating resolution');
-        tasks.push(this.resolveConflicts({
-          repository,
-          pullRequest: prDetails.data,
-          octokit,
-        }));
-      }
-
-      // Always perform code review on new or updated PRs
-      console.log('Initiating AI code review');
-      tasks.push(this.performCodeReview(payload, octokit));
-
-      // Execute tasks in parallel
-      const results = await Promise.allSettled(tasks);
-      
-      // Handle results
-      results.forEach((result, index) => {
-        if (result.status === 'rejected') {
-          console.error(`Task ${index} failed:`, result.reason);
-        }
-      });
-
-    } catch (error) {
-      console.error('Error handling PR event:', error);
-      await this.notificationService.notifyError({
-        repository,
-        pullRequest: pull_request,
-        error,
-      });
-    }
-  }
-
-  async performCodeReview(payload, octokit) {
-    const { repository, pull_request } = payload;
-    
-    console.log(`Starting AI code review for PR #${pull_request.number}`);
-
-    try {
-      // Set PR status to indicate review is in progress
-      await this.updatePRStatus({
-        repository,
-        pullRequest: pull_request,
-        state: 'pending',
-        description: '🤖 AI Code Review in progress...',
-        context: 'ai-code-review',
-        octokit,
-      });
-
-      // Collect comprehensive context
-      const context = await this.contextCollector.gatherContext({
-        repository,
-        pullRequest: pull_request,
-        octokit,
-      });
-
-      // Perform AI code review
-      const reviewResult = await this.codeReviewer.reviewPullRequest({
-        pullRequest: pull_request,
-        context,
-        repository,
-        octokit,
-      });
-
-      // Post review results
-      await this.postReviewResults({
-        repository,
-        pullRequest: pull_request,
-        reviewResult,
-        octokit,
-      });
-
-      // Update PR status based on health score
-      const state = reviewResult.healthScore >= 75 ? 'success' : 
-                    reviewResult.healthScore >= 60 ? 'failure' : 'failure';
-      
-      await this.updatePRStatus({
-        repository,
-        pullRequest: pull_request,
-        state,
-        description: `Health Score: ${reviewResult.healthScore}/100`,
-        context: 'ai-code-review',
-        targetUrl: reviewResult.reportUrl,
-        octokit,
-      });
-
-      // Send notifications
-      await this.notificationService.notifyReview({
-        repository,
-        pullRequest: pull_request,
-        reviewResult,
-      });
-
-      // Update JIRA with review results
-      await this.updateJiraWithReview({
-        context,
-        reviewResult,
-        pullRequest: pull_request,
-      });
-
-    } catch (error) {
-      console.error('Error during code review:', error);
-      
-      await this.updatePRStatus({
-        repository,
-        pullRequest: pull_request,
-        state: 'error',
-        description: 'AI Code Review failed',
-        context: 'ai-code-review',
-        octokit,
-      });
-
-      throw error;
-    }
-  }
-
-  async handleCommentCommand(payload, octokit) {
-    const { repository, issue, comment } = payload;
-    const command = comment.body.toLowerCase().trim();
-
-    // Command handlers
-    const commands = {
-      '/review': () => this.performCodeReview({ 
-        repository, 
-        pull_request: issue 
-      }, octokit),
-      
-      '/review security': () => this.performSecurityReview({ 
-        repository, 
-        pull_request: issue 
-      }, octokit),
-      
-      '/review performance': () => this.performPerformanceReview({ 
-        repository, 
-        pull_request: issue 
-      }, octokit),
-      
-      '/suggest improvements': () => this.suggestImprovements({ 
-        repository, 
-        pull_request: issue 
-      }, octokit),
-      
-      '/resolve-conflicts': () => this.handleManualConflictResolution({ 
-        repository, 
-        pull_request: issue 
-      }, octokit),
-      
-      '/review help': () => this.postHelpComment({ 
-        repository, 
-        issue 
-      }, octokit),
-    };
-
-    // Find and execute matching command
-    for (const [cmd, handler] of Object.entries(commands)) {
-      if (command.startsWith(cmd)) {
-        await this.acknowledgeCommand({ repository, issue, command: cmd }, octokit);
-        await handler();
+      // Skip draft PRs unless explicitly ready for review
+      if (pr.draft && eventType !== 'ready_for_review') {
+        this.logger.info('Skipping draft PR', {
+          pr_number: pr.number,
+          repository: repository.full_name
+        });
         return;
       }
-    }
-  }
 
-  async postReviewResults({ repository, pullRequest, reviewResult, octokit }) {
-    // Create main review comment
-    const mainComment = this.formatMainReviewComment(reviewResult);
-    
-    await octokit.issues.createComment({
-      owner: repository.owner.login,
-      repo: repository.name,
-      issue_number: pullRequest.number,
-      body: mainComment,
-    });
-
-    // Add inline comments for specific suggestions
-    if (reviewResult.suggestions && reviewResult.suggestions.length > 0) {
-      await this.postInlineComments({
-        repository,
-        pullRequest,
-        suggestions: reviewResult.suggestions,
-        octokit,
-      });
-    }
-
-    // Add labels based on review results
-    await this.updatePRLabels({
-      repository,
-      pullRequest,
-      reviewResult,
-      octokit,
-    });
-  }
-
-  formatMainReviewComment(reviewResult) {
-    const { report, healthScore, suggestions } = reviewResult;
-    
-    return `## 🤖 AI Code Review Results
-
-${report.summary}
-
-### 📊 Health Score: ${healthScore}/100 ${this.getHealthEmoji(healthScore)}
-
-<details>
-<summary><strong>📋 Detailed Analysis</strong> (click to expand)</summary>
-
-${report.markdown}
-
-</details>
-
-### 💡 Top Suggestions
-
-${suggestions.slice(0, 5).map((s, i) => `
-${i + 1}. **[${s.priority.toUpperCase()}]** ${s.title}
-   - **File**: \`${s.file}\`
-   - **Issue**: ${s.description}
-   - **Suggestion**: ${s.suggestion}
-   ${s.codeExample ? `\n   \`\`\`${s.language || 'javascript'}\n   ${s.codeExample}\n   \`\`\`` : ''}
-`).join('\n')}
-
-${suggestions.length > 5 ? `\n<details>\n<summary>View ${suggestions.length - 5} more suggestions</summary>\n\n${
-  suggestions.slice(5).map((s, i) => `
-${i + 6}. **[${s.priority.toUpperCase()}]** ${s.title}
-   - **File**: \`${s.file}\`
-   - **Issue**: ${s.description}
-   - **Suggestion**: ${s.suggestion}
-`).join('\n')
-}\n</details>` : ''}
-
-### 🔗 Actions
-
-- Reply with \`/review\` to trigger a fresh review
-- Reply with \`/review security\` for focused security analysis
-- Reply with \`/review performance\` for performance deep-dive
-- Reply with \`/suggest improvements\` for additional suggestions
-
----
-*Generated by AI Code Review & Conflict Resolution Assistant v2.0.0*
-*Health Score Threshold: ${this.config.review?.healthScoreThreshold || 75}/100*`;
-  }
-
-  getHealthEmoji(score) {
-    if (score >= 90) return '🌟 Excellent';
-    if (score >= 75) return '✅ Good';
-    if (score >= 60) return '⚠️ Needs Improvement';
-    return '❌ Poor';
-  }
-
-  async postInlineComments({ repository, pullRequest, suggestions, octokit }) {
-    // Get the latest commit SHA
-    const { data: commits } = await octokit.pulls.listCommits({
-      owner: repository.owner.login,
-      repo: repository.name,
-      pull_number: pullRequest.number,
-    });
-    
-    const latestCommitSha = commits[commits.length - 1].sha;
-
-    // Group suggestions by file
-    const suggestionsByFile = suggestions.reduce((acc, suggestion) => {
-      if (suggestion.line && suggestion.file) {
-        if (!acc[suggestion.file]) acc[suggestion.file] = [];
-        acc[suggestion.file].push(suggestion);
-      }
-      return acc;
-    }, {});
-
-    // Create review with inline comments
-    const comments = [];
-    
-    for (const [file, fileSuggestions] of Object.entries(suggestionsByFile)) {
-      for (const suggestion of fileSuggestions.slice(0, 3)) { // Limit inline comments per file
-        comments.push({
-          path: file,
-          line: suggestion.line,
-          body: `**${suggestion.priority.toUpperCase()}: ${suggestion.title}**\n\n${suggestion.description}\n\n💡 **Suggestion:**\n${suggestion.suggestion}${
-            suggestion.codeExample ? `\n\n\`\`\`${suggestion.language || 'javascript'}\n${suggestion.codeExample}\n\`\`\`` : ''
-          }`,
-        });
-      }
-    }
-
-    if (comments.length > 0) {
+      // Add a reaction to show we're processing
       try {
-        await octokit.pulls.createReview({
+        await octokit.reactions.createForIssue({
           owner: repository.owner.login,
           repo: repository.name,
-          pull_number: pullRequest.number,
-          commit_id: latestCommitSha,
-          event: 'COMMENT',
-          comments,
+          issue_number: pr.number,
+          content: 'eyes'
         });
-      } catch (error) {
-        console.error('Error posting inline comments:', error);
+      } catch (reactionError) {
+        this.logger.debug('Could not add reaction', { error: reactionError.message });
       }
-    }
-  }
-
-  async updatePRLabels({ repository, pullRequest, reviewResult, octokit }) {
-    const labels = [];
-    
-    // Add health score label
-    if (reviewResult.healthScore >= 90) {
-      labels.push('ai-review: excellent');
-    } else if (reviewResult.healthScore >= 75) {
-      labels.push('ai-review: good');
-    } else if (reviewResult.healthScore >= 60) {
-      labels.push('ai-review: needs-improvement');
-    } else {
-      labels.push('ai-review: poor');
-    }
-
-    // Add issue type labels
-    if (reviewResult.metrics.criticalIssues > 0) {
-      labels.push('has: critical-issues');
-    }
-    
-    if (reviewResult.metrics.testCoverage < this.config.review?.testCoverageThreshold) {
-      labels.push('needs: test-coverage');
-    }
-
-    if (reviewResult.report.detailedAnalysis.security.vulnerabilities?.length > 0) {
-      labels.push('security: review-needed');
-    }
-
-    // Apply labels
-    try {
-      await octokit.issues.addLabels({
-        owner: repository.owner.login,
-        repo: repository.name,
-        issue_number: pullRequest.number,
-        labels,
+      
+      // Orchestrate the full PR review workflow
+      const result = await this.orchestrator.orchestratePRReview(pr, {
+        eventType,
+        repository,
+        incremental: eventType === 'updated'
       });
-    } catch (error) {
-      console.error('Error applying labels:', error);
-    }
-  }
-
-  async updatePRStatus({ repository, pullRequest, state, description, context, targetUrl, octokit }) {
-    try {
-      await octokit.repos.createCommitStatus({
-        owner: repository.owner.login,
-        repo: repository.name,
-        sha: pullRequest.head.sha,
-        state,
-        description,
-        context,
-        target_url: targetUrl,
+      
+      // Post the comprehensive review results
+      await this.postComprehensiveReview(pr, result.report, repository, octokit);
+      
+      // Send notifications
+      await this.notificationService.notifyReviewComplete({
+        pr,
+        report: result.report,
+        repository,
+        workflowId: result.workflowId
       });
-    } catch (error) {
-      console.error('Error updating PR status:', error);
-    }
-  }
 
-  async updateJiraWithReview({ context, reviewResult, pullRequest }) {
-    for (const ticket of context.jiraTickets) {
+      // Add success reaction
       try {
-        const comment = `
-AI Code Review completed for PR #${pullRequest.number}
+        await octokit.reactions.createForIssue({
+          owner: repository.owner.login,
+          repo: repository.name,
+          issue_number: pr.number,
+          content: 'rocket'
+        });
+      } catch (reactionError) {
+        this.logger.debug('Could not add success reaction', { error: reactionError.message });
+      }
+      
+    } catch (error) {
+      this.logger.error('Failed to handle PR event', {
+        pr_number: pr.number,
+        repository: repository.full_name,
+        event_type: eventType,
+        error: error.message,
+        stack: error.stack
+      });
+      
+      await this.postErrorComment(pr, error, repository, octokit);
 
-Health Score: ${reviewResult.healthScore}/100
-Test Coverage: ${reviewResult.metrics.testCoverage}%
-Critical Issues: ${reviewResult.metrics.criticalIssues}
-Total Suggestions: ${reviewResult.metrics.totalSuggestions}
-
-View full review: ${pullRequest.html_url}
-        `.trim();
-
-        await this.jiraClient.addComment(ticket.key, comment);
-      } catch (error) {
-        console.error(`Error updating JIRA ticket ${ticket.key}:`, error);
+      // Add error reaction
+      try {
+        await octokit.reactions.createForIssue({
+          owner: repository.owner.login,
+          repo: repository.name,
+          issue_number: pr.number,
+          content: 'confused'
+        });
+      } catch (reactionError) {
+        this.logger.debug('Could not add error reaction', { error: reactionError.message });
       }
     }
   }
+  
+  async handleCommentCommand(payload, octokit) {
+    const comment = payload.comment;
+    const issue = payload.issue;
+    const repository = payload.repository;
+    
+    if (!this.isCommand(comment.body)) {
+      return;
+    }
+    
+    try {
+      this.logger.info('Processing comment command', {
+        comment_id: comment.id,
+        pr_number: issue.number,
+        repository: repository.full_name,
+        author: comment.user.login,
+        command: comment.body.split('\n')[0]
+      });
 
-  async postHelpComment({ repository, issue }, octokit) {
-    const helpText = `
-## 🤖 AI Code Review & Conflict Resolution Commands
+      const command = this.parseCommand(comment.body);
+      
+      // Add eyes reaction to acknowledge command
+      await octokit.reactions.createForComment({
+        owner: repository.owner.login,
+        repo: repository.name,
+        comment_id: comment.id,
+        content: 'eyes'
+      });
 
-### Review Commands
-- \`/review\` - Perform comprehensive code review
-- \`/review security\` - Focus on security vulnerabilities
-- \`/review performance\` - Analyze performance issues
-- \`/suggest improvements\` - Get additional improvement suggestions
+      await this.executeCommand(command, {
+        issue,
+        comment,
+        repository,
+        octokit
+      });
+      
+    } catch (error) {
+      this.logger.error('Failed to handle comment command', {
+        comment_id: comment.id,
+        pr_number: issue.number,
+        repository: repository.full_name,
+        error: error.message
+      });
 
-### Conflict Resolution
-- \`/resolve-conflicts\` - Attempt automatic conflict resolution
-- \`/resolve-conflicts --force\` - Force resolution with lower confidence
+      await this.postComment(issue, repository, octokit, 
+        `❌ Command failed: ${error.message}`);
+    }
+  }
+  
+  isCommand(text) {
+    return text.trim().startsWith('/ai-');
+  }
+  
+  parseCommand(text) {
+    const trimmed = text.trim();
+    const parts = trimmed.split(/\s+/);
+    const command = parts[0];
+    const args = parts.slice(1);
+    
+    return { command, args, original: trimmed };
+  }
+  
+  async executeCommand(command, context) {
+    const { issue, repository, octokit, comment } = context;
+    
+    switch (command.command) {
+      case '/ai-review':
+        await this.executeReviewCommand(command.args, context);
+        break;
+      case '/ai-status':
+        await this.executeStatusCommand(command.args, context);
+        break;
+      case '/ai-help':
+        await this.executeHelpCommand(context);
+        break;
+      default:
+        await this.postComment(issue, repository, octokit, 
+          `❓ Unknown command: \`${command.command}\`. Use \`/ai-help\` for available commands.`);
+        
+        await octokit.reactions.createForComment({
+          owner: repository.owner.login,
+          repo: repository.name,
+          comment_id: comment.id,
+          content: 'confused'
+        });
+        return;
+    }
 
-### Options
-- \`/review --strict\` - Use stricter review criteria
-- \`/review --fast\` - Quick review focusing on critical issues
+    // Add success reaction
+    await octokit.reactions.createForComment({
+      owner: repository.owner.login,
+      repo: repository.name,
+      comment_id: comment.id,
+      content: 'rocket'
+    });
+  }
+  
+  async executeReviewCommand(args, context) {
+    const { issue, repository, octokit } = context;
+    
+    try {
+      // Get PR details
+      const prResponse = await octokit.pulls.get({
+        owner: repository.owner.login,
+        repo: repository.name,
+        pull_number: issue.number
+      });
 
-### Examples
-\`\`\`
-/review
-/review security
-/suggest improvements
-/resolve-conflicts
-\`\`\`
+      const pr = prResponse.data;
+      
+      // Trigger new review
+      const result = await this.orchestrator.orchestratePRReview(pr, {
+        eventType: 'manual_command',
+        repository,
+        requestedBy: context.comment.user.login,
+        reviewType: args[0] || 'full'
+      });
+      
+      await this.postComprehensiveReview(pr, result.report, repository, octokit);
+      
+    } catch (error) {
+      await this.postComment(issue, repository, octokit, 
+        `❌ Failed to perform review: ${error.message}`);
+    }
+  }
+
+  async executeStatusCommand(args, context) {
+    const { issue, repository, octokit } = context;
+    
+    try {
+      // This would check for ongoing workflows for this PR
+      const statusMessage = `## 🔍 AI Review Status
+
+**PR #${issue.number}** - Current Status: **Ready**
+
+### Available Commands:
+- \`/ai-review\` - Trigger a new comprehensive review
+- \`/ai-review security\` - Focus on security analysis
+- \`/ai-review performance\` - Focus on performance analysis
+- \`/ai-help\` - Show all available commands
+
+### Last Analysis:
+Use \`/ai-review\` to get a fresh analysis of this PR.`;
+
+      await this.postComment(issue, repository, octokit, statusMessage);
+      
+    } catch (error) {
+      await this.postComment(issue, repository, octokit, 
+        `❌ Failed to get status: ${error.message}`);
+    }
+  }
+
+  async executeHelpCommand(context) {
+    const { issue, repository, octokit } = context;
+    
+    const helpMessage = `## 🤖 AI Code Review Assistant - Help
+
+### Available Commands:
+
+#### \`/ai-review [type]\`
+Trigger a comprehensive code review analysis.
+- \`/ai-review\` - Full analysis (feature understanding + codebase learning + code analysis)
+- \`/ai-review security\` - Focus on security considerations
+- \`/ai-review performance\` - Focus on performance optimization
+- \`/ai-review patterns\` - Focus on code patterns and reusability
+
+#### \`/ai-status\`
+Check the current status of AI review processes for this PR.
+
+#### \`/ai-help\`
+Show this help message.
+
+### What I Analyze:
+
+🎯 **Feature Understanding**
+- Extract requirements from JIRA tickets and PR description
+- Understand business purpose and technical requirements
+- Identify edge cases and system impact
+
+🧠 **Codebase Learning**
+- Discover existing functions and utilities you can reuse
+- Identify established patterns in your codebase
+- Find architectural constraints and guidelines
+
+🔍 **Code Analysis**
+- Suggest more efficient implementations using existing code
+- Identify potential logic flaws and edge case gaps
+- Provide security and performance recommendations
+- Generate actionable feedback with code examples
+
+### My Goal:
+Help you build better code by leveraging your existing codebase patterns and catching potential issues early!
 
 ---
-*Need help? Contact the team in #ai-code-review*
-    `.trim();
+*Powered by Claude Sonnet 4 and designed to follow developer workflows*`;
 
+    await this.postComment(issue, repository, octokit, helpMessage);
+  }
+  
+  async postComprehensiveReview(pr, report, repository, octokit) {
+    const comment = this.formatComprehensiveReview(report);
+    
+    try {
+      await octokit.issues.createComment({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: pr.number,
+        body: comment
+      });
+
+      // Also post inline comments for specific suggestions
+      await this.postInlineComments(pr, report, repository, octokit);
+      
+    } catch (error) {
+      this.logger.error('Failed to post comprehensive review', {
+        pr_number: pr.number,
+        repository: repository.full_name,
+        error: error.message
+      });
+    }
+  }
+
+  async postInlineComments(pr, report, repository, octokit) {
+    if (!report.findings?.suggestions) return;
+
+    const inlineComments = report.findings.suggestions
+      .filter(suggestion => suggestion.file && suggestion.line)
+      .slice(0, 10); // Limit inline comments
+
+    for (const suggestion of inlineComments) {
+      try {
+        const body = `💡 **${suggestion.title}**
+
+${suggestion.message}
+
+${suggestion.suggestedCode ? `\`\`\`suggestion\n${suggestion.suggestedCode}\n\`\`\`` : ''}
+
+${suggestion.reasoning ? `**Reasoning:** ${suggestion.reasoning}` : ''}`;
+
+        await octokit.pulls.createReviewComment({
+          owner: repository.owner.login,
+          repo: repository.name,
+          pull_number: pr.number,
+          body,
+          path: suggestion.file,
+          line: suggestion.line,
+          side: 'RIGHT'
+        });
+      } catch (error) {
+        this.logger.debug('Failed to post inline comment', {
+          file: suggestion.file,
+          line: suggestion.line,
+          error: error.message
+        });
+      }
+    }
+  }
+  
+  formatComprehensiveReview(report) {
+    const healthScore = report.healthScore || 0;
+    const healthEmoji = healthScore >= 80 ? '🟢' : healthScore >= 60 ? '🟡' : '🔴';
+    
+    return `## 🤖 Comprehensive AI Code Review
+
+${healthEmoji} **Health Score:** ${healthScore}/100 | **Risk Level:** ${report.summary?.riskLevel || 'unknown'}
+
+### 📋 Executive Summary
+**Purpose:** ${report.summary?.purpose || 'Not determined'}
+**Assessment:** ${report.summary?.overallAssessment || 'Analysis completed'}
+**Codebase Utilization:** ${report.summary?.codebaseUtilization || 'unknown'}
+
+${report.summary?.keyFindings?.length > 0 ? `
+**Key Findings:**
+${report.summary.keyFindings.map(finding => `- ${finding}`).join('\n')}
+` : ''}
+
+### 🔍 Detailed Findings
+
+${this.formatDetailedFindings(report.findings)}
+
+### 📝 Recommendations
+
+${this.formatDetailedRecommendations(report.recommendations)}
+
+### ⚡ Workflow Performance
+${this.formatWorkflowPerformance(report.workflow)}
+
+---
+<details>
+<summary>🤖 About this review</summary>
+
+This comprehensive review was generated using a multi-agent AI system that:
+
+1. **🎯 Understood your feature** by analyzing JIRA tickets and PR context
+2. **🧠 Learned your codebase** to find reusable functions and patterns  
+3. **🔍 Analyzed your implementation** for efficiency and potential issues
+
+**Model:** Claude Sonnet 4 | **Workflow ID:** \`${report.workflowId}\`
+**Analysis Time:** ${Math.round(report.workflow?.totalDuration / 1000)}s
+
+Use \`/ai-help\` for available commands.
+</details>`;
+  }
+
+  formatDetailedFindings(findings) {
+    if (!findings) return 'No specific findings to report.';
+    
+    let output = '';
+    
+    if (findings.critical && findings.critical.length > 0) {
+      output += '#### 🚨 Critical Issues\n';
+      findings.critical.forEach(finding => {
+        output += `- **${finding.title || 'Critical Issue'}**`;
+        if (finding.file) output += ` (${finding.file}${finding.line ? `:${finding.line}` : ''})`;
+        output += `\n  ${finding.message}\n`;
+      });
+      output += '\n';
+    }
+    
+    if (findings.warnings && findings.warnings.length > 0) {
+      output += '#### ⚠️ Warnings\n';
+      findings.warnings.forEach(warning => {
+        output += `- **${warning.title || 'Warning'}**`;
+        if (warning.file) output += ` (${warning.file}${warning.line ? `:${warning.line}` : ''})`;
+        output += `\n  ${warning.message}\n`;
+      });
+      output += '\n';
+    }
+    
+    if (findings.suggestions && findings.suggestions.length > 0) {
+      const topSuggestions = findings.suggestions.slice(0, 8);
+      output += '#### 💡 Suggestions\n';
+      topSuggestions.forEach(suggestion => {
+        output += `- **${suggestion.title || 'Suggestion'}**`;
+        if (suggestion.file) output += ` (${suggestion.file})`;
+        output += `\n  ${suggestion.message}\n`;
+      });
+      
+      if (findings.suggestions.length > 8) {
+        output += `\n*... and ${findings.suggestions.length - 8} more suggestions (see inline comments)*\n`;
+      }
+      output += '\n';
+    }
+    
+    if (findings.positive && findings.positive.length > 0) {
+      output += '#### ✅ Positive Findings\n';
+      findings.positive.slice(0, 3).forEach(positive => {
+        output += `- ${positive}\n`;
+      });
+      output += '\n';
+    }
+    
+    return output || 'No specific issues identified. Great work! 🎉';
+  }
+
+  formatDetailedRecommendations(recommendations) {
+    if (!recommendations) return 'No specific recommendations.';
+    
+    let output = '';
+    
+    if (recommendations.immediate && recommendations.immediate.length > 0) {
+      output += '#### 🔥 Immediate Actions\n';
+      recommendations.immediate.forEach(rec => {
+        output += `- **${rec.action}**`;
+        if (rec.file) output += ` (${rec.file})`;
+        output += `\n  ${rec.reason}\n`;
+      });
+      output += '\n';
+    }
+    
+    if (recommendations.shortTerm && recommendations.shortTerm.length > 0) {
+      output += '#### 📈 Short-term Improvements\n';
+      recommendations.shortTerm.slice(0, 5).forEach(rec => {
+        output += `- **${rec.action}**`;
+        if (rec.category) output += ` (${rec.category})`;
+        output += `\n  ${rec.reason}\n`;
+      });
+      output += '\n';
+    }
+    
+    if (recommendations.longTerm && recommendations.longTerm.length > 0) {
+      output += '#### 🏗️ Long-term Considerations\n';
+      recommendations.longTerm.slice(0, 3).forEach(rec => {
+        output += `- **${rec.action}**`;
+        if (rec.category) output += ` (${rec.category})`;
+        output += `\n  ${rec.reason}\n`;
+      });
+      output += '\n';
+    }
+    
+    return output || 'No specific recommendations at this time.';
+  }
+
+  formatWorkflowPerformance(workflow) {
+    if (!workflow) return 'Workflow data not available.';
+    
+    const duration = Math.round(workflow.totalDuration / 1000);
+    let output = `**Total Analysis Time:** ${duration}s\n\n`;
+    
+    if (workflow.agentPerformance) {
+      output += '**Agent Performance:**\n';
+      Object.entries(workflow.agentPerformance).forEach(([agent, perf]) => {
+        const status = perf.success ? '✅' : '❌';
+        const time = Math.round((perf.duration || 0) / 1000);
+        output += `- ${status} ${agent.replace(/([A-Z])/g, ' $1').trim()}: ${time}s (${perf.efficiency || 'unknown'})\n`;
+      });
+    }
+    
+    return output;
+  }
+  
+  async postComment(issue, repository, octokit, message) {
     await octokit.issues.createComment({
       owner: repository.owner.login,
       repo: repository.name,
       issue_number: issue.number,
-      body: helpText,
+      body: message
     });
   }
+  
+  async postErrorComment(pr, error, repository, octokit) {
+    const message = `## ❌ AI Review Error
 
-  async acknowledgeCommand({ repository, issue, command }, octokit) {
-    const emoji = '👀';
-    await octokit.reactions.createForIssueComment({
+I encountered an error while analyzing this PR:
+
+\`\`\`
+${error.message}
+\`\`\`
+
+**What you can do:**
+- Try running \`/ai-review\` to retry the analysis
+- Check if the PR has any unusual file changes that might be causing issues
+- Contact the development team if the issue persists
+
+**Error Details:**
+- Workflow: PR Review Analysis
+- Timestamp: ${new Date().toISOString()}
+- Repository: ${repository.full_name}
+
+The development team has been automatically notified of this issue.`;
+
+    await octokit.issues.createComment({
       owner: repository.owner.login,
       repo: repository.name,
-      comment_id: issue.id,
-      content: emoji,
+      issue_number: pr.number,
+      body: message
     });
   }
-
-  // Specialized review methods
-  async performSecurityReview({ repository, pull_request }, octokit) {
-    // Security-focused review implementation
-    console.log('Performing security-focused review...');
-    // Implementation would focus on security aspects
+  
+  getExpressApp() {
+    return this.app.webhooks.middleware;
   }
 
-  async performPerformanceReview({ repository, pull_request }, octokit) {
-    // Performance-focused review implementation
-    console.log('Performing performance-focused review...');
-    // Implementation would focus on performance aspects
+  // Analytics and metrics access
+  getAnalytics(timeRange = '24h') {
+    return this.orchestrator.getAnalytics(timeRange);
   }
 
-  async suggestImprovements({ repository, pull_request }, octokit) {
-    // Generate additional improvement suggestions
-    console.log('Generating improvement suggestions...');
-    // Implementation would provide more detailed suggestions
+  getSystemMetrics() {
+    return this.orchestrator.getSystemMetrics();
   }
 
-  // ... (include the original conflict resolution methods from github-app.js)
+  exportMetrics(format = 'json') {
+    return this.orchestrator.exportMetrics(format);
+  }
 
-  // Express middleware for webhook handling
-  createMiddleware() {
-    return createNodeMiddleware(this.app.webhooks, {
-      path: '/webhook',
-    });
+  // Health check method for monitoring
+  async healthCheck() {
+    try {
+      // Basic health checks
+      const health = {
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        components: {
+          orchestrator: this.orchestrator ? 'healthy' : 'unhealthy',
+          notifications: this.notificationService ? 'healthy' : 'unhealthy',
+          github_app: this.app ? 'healthy' : 'unhealthy'
+        }
+      };
+
+      return health;
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        timestamp: new Date().toISOString(),
+        error: error.message
+      };
+    }
   }
 }
 
-module.exports = { EnhancedGitHubApp };
-
+module.exports = EnhancedGitHubApp;

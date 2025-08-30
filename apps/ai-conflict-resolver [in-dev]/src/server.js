@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
-const { GitHubConflictResolverApp } = require('./github-app');
+const EnhancedGitHubApp = require('./github-app-enhanced');
 const winston = require('winston');
+const loggingConfig = require('./config/logging-config');
 
 // Configure logger
 const logger = winston.createLogger({
@@ -21,12 +22,8 @@ const logger = winston.createLogger({
 const requiredEnvVars = [
   'GITHUB_APP_ID',
   'GITHUB_PRIVATE_KEY',
-  'GITHUB_CLIENT_ID',
-  'GITHUB_CLIENT_SECRET',
+  'GITHUB_WEBHOOK_SECRET',
   'CLAUDE_API_KEY',
-  'JIRA_BASE_URL',
-  'JIRA_EMAIL',
-  'JIRA_API_TOKEN',
 ];
 
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
@@ -41,14 +38,11 @@ const config = {
   github: {
     appId: process.env.GITHUB_APP_ID,
     privateKey: process.env.GITHUB_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    clientId: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    webhookSecret: process.env.GITHUB_WEBHOOK_SECRET,
   },
-  claude: {
-    apiKey: process.env.CLAUDE_API_KEY,
-    model: process.env.CLAUDE_MODEL || 'claude-3-opus-20240229',
-    maxTokens: parseInt(process.env.CLAUDE_MAX_TOKENS) || 4096,
-  },
+  claudeApiKey: process.env.CLAUDE_API_KEY,
+  maxContextTokens: parseInt(process.env.MAX_CONTEXT_TOKENS) || 150000,
+  reserveTokens: parseInt(process.env.RESERVE_TOKENS) || 20000,
   jira: {
     baseUrl: process.env.JIRA_BASE_URL,
     email: process.env.JIRA_EMAIL,
@@ -58,7 +52,7 @@ const config = {
     slack: {
       enabled: process.env.SLACK_ENABLED === 'true',
       token: process.env.SLACK_TOKEN,
-      channel: process.env.SLACK_CHANNEL || '#conflict-resolutions',
+      channel: process.env.SLACK_CHANNEL || '#ai-code-review',
     },
     email: {
       enabled: process.env.EMAIL_ENABLED === 'true',
@@ -69,37 +63,124 @@ const config = {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
-      from: process.env.EMAIL_FROM || 'ai-conflict-resolver@example.com',
+      from: process.env.EMAIL_FROM || 'ai-code-review@example.com',
       defaultRecipients: process.env.EMAIL_DEFAULT_RECIPIENTS?.split(',') || [],
     },
     preferences: {
       notifyOnSuccess: process.env.NOTIFY_ON_SUCCESS !== 'false',
       notifyOnFailure: process.env.NOTIFY_ON_FAILURE !== 'false',
-      notifyOnLowConfidence: process.env.NOTIFY_ON_LOW_CONFIDENCE !== 'false',
+      notifyOnReview: process.env.NOTIFY_ON_REVIEW !== 'false',
       includeDetailedReport: process.env.INCLUDE_DETAILED_REPORT !== 'false',
-      includeRollbackInstructions: process.env.INCLUDE_ROLLBACK !== 'false',
     },
   },
-  confidenceThreshold: parseInt(process.env.CONFIDENCE_THRESHOLD) || 85,
+  // Enhanced logging and metrics configuration
+  ...loggingConfig,
   port: process.env.PORT || 3000,
 };
 
 // Initialize app
 const app = express();
-const conflictResolver = new GitHubConflictResolverApp(config);
+const enhancedGitHubApp = new EnhancedGitHubApp(config);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    service: 'ai-conflict-resolver',
-    version: '1.0.0',
-    timestamp: new Date().toISOString(),
-  });
+app.get('/health', async (req, res) => {
+  try {
+    const health = await enhancedGitHubApp.healthCheck();
+    res.json({
+      ...health,
+      service: 'ai-code-review-system',
+      version: '2.0.0',
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'unhealthy',
+      service: 'ai-code-review-system',
+      version: '2.0.0',
+      error: error.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
+// API endpoint for manual reviews
+app.post('/api/review', express.json(), async (req, res) => {
+  try {
+    const { repository, pr_number } = req.body;
+    
+    if (!repository || !pr_number) {
+      return res.status(400).json({
+        error: 'Missing required parameters: repository and pr_number'
+      });
+    }
+    
+    res.json({
+      message: 'Manual review not yet implemented',
+      repository,
+      pr_number
+    });
+  } catch (error) {
+    logger.error('Manual review API error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Analytics and metrics endpoints
+app.get('/api/analytics', async (req, res) => {
+  try {
+    const timeRange = req.query.range || '24h';
+    const analytics = enhancedGitHubApp.getAnalytics(timeRange);
+    
+    res.json({
+      success: true,
+      timeRange,
+      analytics,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    logger.error('Analytics API error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/metrics', async (req, res) => {
+  try {
+    const format = req.query.format || 'json';
+    const metrics = enhancedGitHubApp.exportMetrics(format);
+    
+    if (format === 'prometheus') {
+      res.set('Content-Type', 'text/plain');
+      res.send(metrics);
+    } else {
+      res.json({
+        success: true,
+        format,
+        metrics: JSON.parse(metrics),
+        timestamp: new Date().toISOString()
+      });
+    }
+  } catch (error) {
+    logger.error('Metrics API error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/system', async (req, res) => {
+  try {
+    const systemMetrics = enhancedGitHubApp.getSystemMetrics();
+    
+    res.json({
+      success: true,
+      system: systemMetrics,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    logger.error('System metrics API error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // GitHub webhook endpoint
-app.use(conflictResolver.createMiddleware());
+app.use('/webhook', enhancedGitHubApp.getExpressApp());
 
 // Error handling middleware
 app.use((error, req, res, next) => {
@@ -112,10 +193,15 @@ app.use((error, req, res, next) => {
 
 // Start server
 const server = app.listen(config.port, () => {
-  logger.info(`AI Conflict Resolver server running on port ${config.port}`);
+  logger.info(`AI Code Review & Conflict Resolution System running on port ${config.port}`);
   logger.info('Webhook endpoint: POST /webhook');
   logger.info('Health check: GET /health');
-  logger.info(`Confidence threshold: ${config.confidenceThreshold}%`);
+  logger.info('Manual review API: POST /api/review');
+  logger.info('Analytics API: GET /api/analytics?range=24h');
+  logger.info('Metrics API: GET /api/metrics?format=json');
+  logger.info('System metrics API: GET /api/system');
+  logger.info(`GitHub App ID: ${config.github.appId}`);
+  logger.info(`Max context tokens: ${config.maxContextTokens}`);
   logger.info(`Slack notifications: ${config.notifications.slack.enabled ? 'enabled' : 'disabled'}`);
   logger.info(`Email notifications: ${config.notifications.email.enabled ? 'enabled' : 'disabled'}`);
 });
