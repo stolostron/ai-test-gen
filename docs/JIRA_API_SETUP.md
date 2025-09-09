@@ -1,155 +1,108 @@
-# JIRA API Setup Guide for ACM-22620 Update
 
-## 🚀 **Quick Start**
+# JIRA API Script: Setup and Usage Guide
 
-This script automatically updates JIRA ticket ACM-22620 with comprehensive progress information using the JIRA REST API.
+## 🚀 Overview
 
-## 📋 **Prerequisites**
+This guide explains how to set up your environment and use a command-line script to interact with a JIRA ticket via its REST API. The focus is on secure configuration and common usage patterns.
 
-1. **JIRA Account**: Red Hat JIRA access with edit permissions on ACM-22620
-2. **API Token**: Personal Access Token from Red Hat JIRA
-3. **Tools**: `curl` and `jq` (both already available on your system)
+***
 
-## 🔑 **Step 1: Get Your JIRA API Token**
+## 📋 Prerequisites
 
-1. **Navigate to**: [https://issues.redhat.com/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens](https://issues.redhat.com/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens)
+1. **JIRA Account**: Access to a JIRA instance (e.g., Atlassian Cloud, a company-hosted server).  
+2. **API Token**: A Personal Access Token (PAT) for secure, password-less authentication.  
+3. **Required Tools**: `curl` and `jq` must be installed on your system.
 
-2. **Click "Create token"**
+***
 
-3. **Enter token details**:
-   - **Label**: `ACM-QE-API-Access` (or any descriptive name)
-   - **Expires**: Set appropriate expiration (e.g., 90 days)
+## 🔑 Step 1: Generate Your JIRA API Token
 
-4. **Copy the generated token** (save it securely - you won't see it again!)
+An API token is the recommended way to authenticate with the JIRA API.
 
-## 🔧 **Step 2: Set Environment Variables**
+1. **Navigate** to the Personal Access Tokens (PAT) section in your JIRA profile. The URL is often similar to:  
+   `https://your-jira-instance.com/secure/ViewProfile.jspa`
+
+2. Click **"Create token"**.
+
+3. **Configure the token**:  
+   - **Name**: Give it a memorable name like `CLI-Script-Access`.  
+   - **Expiry Date**: Set an expiration date for security.  
+
+4. **Copy the generated token immediately**. You will not be able to see it again. Store it securely.
+
+***
+
+## 🔧 Step 2: Configure Environment Variables
+
+Use environment variables to store your credentials securely, preventing them from being exposed in your command history or script files.
 
 ```bash
-# Set your Red Hat email
-export JIRA_USERNAME="your.email@redhat.com"
+# The base URL of your JIRA instance
+export JIRA_BASE_URL="https://your-jira-instance.com"
 
-# Set your JIRA API token (replace with your actual token)
+# The email address for your JIRA account
+export JIRA_USERNAME="your.email@example.com"
+
+# The API token you just generated
 export JIRA_API_TOKEN="your_generated_api_token_here"
+
+# The default ticket ID for the script to target (e.g., "PROJ-1234")
+export JIRA_TICKET_ID="PROJ-1234"
 ```
 
-**💡 Tip**: Add these to your `~/.zshrc` or `~/.bashrc` for persistence:
+💡 *Pro Tip*: Add these `export` commands to your shell's startup file (e.g., `~/.zshrc` or `~/.bashrc`) and run `source ~/.zshrc` to make them permanent for all future sessions.
+
+***
+
+## ▶️ Step 3: Typical Use Cases
+
+Here are the most common ways to use the script (`./update-jira.sh`) from your terminal.
+
+### Use Case 1: Check Ticket Info (Read-Only)
+Verify your connection and get the current status, summary, and assignee of the ticket without making any changes.
 
 ```bash
-echo 'export JIRA_USERNAME="your.email@redhat.com"' >> ~/.zshrc
-echo 'export JIRA_API_TOKEN="your_token_here"' >> ~/.zshrc
-source ~/.zshrc
+./update-jira.sh --info
 ```
 
-## ▶️ **Step 3: Run the Update Script**
-
-### **Option A: Full Update (Recommended)**
-```bash
-./update-jira-ticket.sh
-```
-
-This will:
-- ✅ Update the ticket description with comprehensive progress
-- ✅ Add a progress comment with key highlights
-- ✅ Show confirmation before making changes
-
-### **Option B: Check Ticket Info Only**
-```bash
-./update-jira-ticket.sh --info
-```
-
-This will:
-- 📋 Show current ticket status, assignee, and summary
-- 🔍 Verify your API access without making changes
-
-### **Option C: Show Help**
-```bash
-./update-jira-ticket.sh --help
-```
-
-## 🎯 **What Gets Updated**
-
-### **Ticket Description**
-- Complete framework progress summary
-- Workflow architecture diagram (text format)
-- Key achievements and performance metrics
-- Current implementation status (validated with ACM-22079 example)
-- Next steps and roadmap
-- All key links (GitHub repo, documentation, examples)
-
-### **Progress Comment**
-- High-level status update
-- Key deliverables summary
-- Links to framework and documentation
-
-## 🔍 **Verification**
-
-After running the script, verify the update:
-
-1. **Visit**: [https://issues.redhat.com/browse/ACM-22620](https://issues.redhat.com/browse/ACM-22620)
-2. **Check**: Updated description with comprehensive progress
-3. **Review**: New comment with framework highlights
-4. **Confirm**: All links are working (GitHub repo, documentation)
-
-## ⚠️ **Troubleshooting**
-
-### **Authentication Issues**
-```bash
-# Error: 401 Unauthorized
-# Solution: Check your username and API token
-echo "Username: $JIRA_USERNAME"
-echo "Token set: $(if [[ -n "$JIRA_API_TOKEN" ]]; then echo "Yes"; else echo "No"; fi)"
-```
-
-### **Permission Issues**
-```bash
-# Error: 403 Forbidden
-# Solution: Ensure you have edit permissions on ACM-22620
-./update-jira-ticket.sh --info  # Test read access first
-```
-
-### **Network Issues**
-```bash
-# Test JIRA connectivity
-curl -s -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
-  "https://issues.redhat.com/rest/api/2/issue/ACM-22620" | jq .key
-# Should return: "ACM-22620"
-```
-
-## 🛡️ **Security Notes**
-
-- ✅ **API tokens are safer than passwords** - they can be revoked individually
-- ✅ **Tokens have expiration dates** - set appropriate validity periods
-- ✅ **Script uses HTTPS** - all communication is encrypted
-- ⚠️ **Never commit tokens to git** - use environment variables only
-- ⚠️ **Store tokens securely** - treat them like passwords
-
-## 📊 **Expected Output**
+### Use Case 2: Add a Simple Comment
+Post a quick update or note to the ticket's comment section.
 
 ```bash
-[INFO] Starting JIRA ticket update for ACM-22620...
-================================================================
-[SUCCESS] JIRA credentials found
-[INFO] Fetching current ticket information...
-[SUCCESS] Successfully fetched ticket information
-Current ticket info:
-Summary: Investigate - Use Claude's agentic capabilities
-Status: In Progress
-Assignee: Atif Shafi
-================================================================
-[INFO] Creating update content...
-[SUCCESS] Update content created
-================================================================
-[WARNING] About to update JIRA ticket ACM-22620 with comprehensive progress information
-Do you want to proceed? (y/N): y
-================================================================
-[SUCCESS] ✅ Ticket description updated successfully
-[SUCCESS] ✅ Progress comment added successfully
-================================================================
-[SUCCESS] JIRA ticket update completed!
-[INFO] View the updated ticket: https://issues.redhat.com/browse/ACM-22620
-[INFO] Cleanup completed
+./update-jira.sh --comment "Quick update: Staging deployment was successful."
 ```
 
-## 🎯 **Ready to Go!**
+### Use Case 3: Update Description from a File
+For longer, formatted descriptions, write the content in a local file and use the script to apply it. This is ideal for detailed progress reports.
 
-Your script is ready to update ACM-22620 with all the framework progress we've made. Just set your credentials and run it! 🚀
+```bash
+# Assumes 'report.md' contains the new description text
+./update-jira.sh --description-file report.md
+```
+
+### Use Case 4: Target a Different Ticket
+Temporarily override the default `JIRA_TICKET_ID` for a one-off operation on another ticket.
+
+```bash
+JIRA_TICKET_ID="PROJ-5678" ./update-jira.sh --info
+```
+
+### Use Case 5: Show Help
+Display all available commands and flags for the script.
+
+```bash
+./update-jira.sh --help
+```
+
+***
+
+## ⚠️ Troubleshooting
+
+- **401 Unauthorized**: This error indicates your credentials are wrong. Double-check that `$JIRA_USERNAME` and `$JIRA_API_TOKEN` are set correctly and the token has not expired.  
+- **403 Forbidden**: You are authenticated, but your account lacks the necessary permissions to view or edit the target ticket.  
+- **Connection Errors**: Ensure `$JIRA_BASE_URL` is correct and that you have network access to your JIRA instance. You can test connectivity with:
+
+```bash
+curl --fail -u "$JIRA_USERNAME:$JIRA_API_TOKEN" "$JIRA_BASE_URL/rest/api/2/serverInfo"
+```
+
